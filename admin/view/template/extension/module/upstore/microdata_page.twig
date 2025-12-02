@@ -1,0 +1,96 @@
+<ul class="nav nav-tabs">
+	<li class="active"><a data-toggle="tab" href="#tab-schema-org">Schema.org</a></li>
+	<li><a data-toggle="tab" href="#tab-open-graph">Open Graph</a></li>
+</ul>
+<div class="tab-content">
+	<div class="tab-pane active" id="tab-schema-org">
+
+		<div class="form-group">
+			<label class="col-sm-3 control-label">{{ ns_text_status }}</label>
+			<div class="col-sm-9">
+				<div class="radio-group-infinity">
+					{% if (ch_microdata_status is defined and (ch_microdata_status == 1)) %}
+						<input id="smicrodata_status_yes" class="hide-radio" type="radio" name="ch_microdata_status" value="1" checked="checked" />
+						<label for="smicrodata_status_yes">{{ text_yes }}</label>
+					{% else %}
+						<input id="smicrodata_status_yes" class="hide-radio" type="radio" name="ch_microdata_status" value="1" />
+						<label for="smicrodata_status_yes">{{ text_yes }}</label>
+					{% endif %}
+					{% if (ch_microdata_status is not defined or (ch_microdata_status == 0)) %}
+						<input id="smicrodata_status_no" class="hide-radio" type="radio" name="ch_microdata_status" value="0" checked="checked" />
+						<label for="smicrodata_status_no">{{ text_no }}</label>
+					{% else %}
+						<input id="smicrodata_status_no" class="hide-radio" type="radio" name="ch_microdata_status" value="0" />
+						<label for="smicrodata_status_no">{{ text_no }}</label>
+					{% endif %}
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-3 control-label" for="input-microdata-city">{{ text_microdata_city }}</label>
+			<div class="col-sm-6">
+				<textarea class="form-control" name="ch_micsrodata[city]" id="input-microdata-city">{{ ch_micsrodata['city'] is defined ? ch_micsrodata['city'] : '' }}</textarea>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-3 control-label" for="input-microdata-address">{{ text_contact_address }}</label>
+			<div class="col-sm-6">
+				<textarea class="form-control" name="ch_micsrodata[address]" id="input-microdata-address">{{ ch_micsrodata['address'] is defined ? ch_micsrodata['address'] : '' }}</textarea>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-3 control-label" for="input-microdata-postcode">{{ text_microdata_postcode }}</label>
+			<div class="col-sm-6">
+				<input class="form-control" value="{{ ch_micsrodata['postcode'] is defined ? ch_micsrodata['postcode'] : '' }}" name="ch_micsrodata[postcode]" id="input-microdata-postcode"/>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-3 control-label" for="input-microdata-phones">{{ text_contact_phone }}</label>
+			<div class="col-sm-6">
+				<textarea class="form-control" name="ch_micsrodata[phones]" id="input-microdata-phones">{{ ch_micsrodata['phones'] is defined ? ch_micsrodata['phones'] : '' }}</textarea>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-3 control-label" for="input-microdata-email">{{ text_contact_email }}</label>
+			<div class="col-sm-6">
+				<input class="form-control" value="{{ ch_micsrodata['email'] is defined ? ch_micsrodata['email'] : '' }}" name="ch_micsrodata[email]" id="input-microdata-postcode"/>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-3 control-label" for="input-microdata-social">{{ text_microdata_social }}</label>
+			<div class="col-sm-6">
+				<textarea class="form-control" placeholder="https://youtube.com, https://vk.com" name="ch_micsrodata[social]" id="input-microdata-social">{{ ch_micsrodata['social'] is defined ? ch_micsrodata['social'] : '' }}</textarea>
+			</div>
+		</div>
+	</div>
+	<div class="tab-pane" id="tab-open-graph">
+		<div class="form-group">
+			<label class="col-sm-3 control-label">{{ ns_text_status }}</label>
+			<div class="col-sm-9">
+				<div class="toggle-switch">
+					<label>
+						<input type="hidden" name="up_og_data[status]" value="0" />
+						<input type="checkbox" name="up_og_data[status]" value="1" {% if up_og_data.status is defined and up_og_data.status == 1 %} checked="checked"{% endif %} />
+						<span></span>
+					</label>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-3 control-label">Open Graph Default Image</label>
+			<div class="col-sm-9">
+				{% for language in languages %}
+					<div class="input-group">
+						<span class="input-group-addon">
+							<img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" />
+						</span>
+						<a href="" id="thumb-og-image-logo-{{ language.language_id }}" data-toggle="image" class="img-thumbnail">
+							<img src="{{ up_og_data[language.language_id].thumb }}" alt="" title="" data-placeholder="{{ placeholder }}" />
+						</a>
+						<input type="hidden" name="up_og_data[{{ language.language_id }}][image]" value="{{ up_og_data[language.language_id].image }}" id="input-og-image-logo-{{ language.language_id }}" />
+					</div>
+				{% endfor %}
+			</div>
+		</div>
+	</div>
+</div>

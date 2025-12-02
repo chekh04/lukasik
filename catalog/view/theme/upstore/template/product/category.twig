@@ -1,0 +1,493 @@
+{{ header }}
+<div class="container">
+	<div class="breadcrumb-box">
+		<ul class="breadcrumb">
+			{% for i, breadcrumb in breadcrumbs %}
+				<li>
+					<a href="{{ breadcrumb.href }}"><span>{{ breadcrumb.text }}</span></a>
+				</li>
+			{% endfor %}
+		</ul>
+	</div>
+	<div class="row">
+		<div class="col-xs-12 col-sm-12">
+			<h1>{{ heading_title }}</h1>
+			{# === Макрос для вывода подкатегорий === #}
+			{% macro render_subcategories(categories, sub_category_type, subcategories_row_limit, sub_category_type_bg, show_subcategories_image, ns_subcat_width, ns_subcat_height) %}
+				{% if categories and sub_category_type is not empty %}
+					<div class="{% if sub_category_type == 'slider' %}sub-categories{% else %}box-sub-cat row{% endif %}">
+						{% if sub_category_type == 'slider' %}
+							<div class="swiper swiper-module swiper-sub-category">
+								<div class="swiper-sub-category__navigation type_arrow_{{ sub_category_type_bg }}">
+									<div class="swiper-sub-category__arrow swiper-sub-category__arrow_prev swiper-button-disabled"><i class="up-icon-arrow-left" aria-hidden="true"></i></div>
+									<div class="swiper-sub-category__arrow swiper-sub-category__arrow_next"><i class="up-icon-arrow-right" aria-hidden="true"></i></div>
+								</div>
+								<div class="swiper-wrapper">
+								{% endif %}
+								{% for category in categories %}
+									{% set item_class = sub_category_type == 'slider' ? 'swiper-slide text-center swiper-sub-category__item h-auto item-subc' : 'item-subc col-sm-6 col-md-3 col-lg-' ~ subcategories_row_limit %}
+									<div class="{{ item_class }}">
+										<a class="subcategory {{ sub_category_type_bg }}" href="{{ category.href }}">
+											{% if show_subcategories_image == 1 and category.thumb %}
+												<div class="sc-image"><img loading="lazy" width="{{ ns_subcat_width }}" height="{{ ns_subcat_height }}" class="img-responsive" alt="{{ category.name }}" src="{{ category.thumb }}"></div>
+											{% endif %}
+											<div class="sc-name">{{ category.name }}</div>
+										</a>
+									</div>
+								{% endfor %}
+								{% if sub_category_type == 'slider' %}
+								</div>
+							</div>
+						{% endif %}
+					</div>
+				{% endif %}
+			{% endmacro %}
+			{# Импорт макроса #}
+			{% import _self as sub_cat_macros %}
+
+			{# Вывод подкатегорий TOP #}
+			{% if categories and show_subcategories == 1 and sub_category_position == 'top' %}
+				{{ sub_cat_macros.render_subcategories(categories, sub_category_type, subcategories_row_limit, sub_category_type_bg, show_subcategories_image, ns_subcat_width, ns_subcat_height) }}
+			{% endif %}
+		</div>
+		{{ column_left }}
+
+		{# Логика классов колонок #}
+		{% set is_both = column_left and column_right %}
+		{% set is_one = column_left or column_right %}
+
+		{% set class = is_both ? 'col-md-6' : (is_one ? 'col-md-9' : 'col-md-12') %}
+
+		{% set cols_class = 'col-xs-12' %}
+		{% if display_view == 'grid' %}
+			{% set cols_class = is_both ? 'col-lg-6 col-md-6 col-sm-12 col-xs-6' : (is_one ? 'col-lg-4 col-md-4 col-sm-6 col-xs-6' : 'col-lg-3 col-md-3 col-sm-6 col-xs-6 col-lg-1-5') %}
+		{% endif %}
+
+		<div id="content" class="{{ class }} ns-smv">
+			{{ content_top }}
+
+			{# Описание категории (до списка товаров, если не сброшено) #}
+			{% if config_catalog_category_description_dropped != 1 and (thumb or description) %}
+				<div class="category_description psbt">
+					{% if thumb %}
+						<div class="psfl-l"><img loading="lazy" width="{{ thumb_width }}" height="{{ thumb_height }}" src="{{ thumb }}" alt="{{ heading_title }}" title="{{ heading_title }}" class="img-thumbnail" /></div>
+					{% endif %}
+					{% if description %}
+						<div class="p-content">{{ description }}</div>
+					{% endif %}
+				</div>
+			{% endif %}
+
+			{# Вывод подкатегорий RIGHT #}
+			{% if categories and show_subcategories == 1 and sub_category_position == 'right' %}
+				{{ sub_cat_macros.render_subcategories(categories, sub_category_type, subcategories_row_limit, sub_category_type_bg, show_subcategories_image, ns_subcat_width, ns_subcat_height) }}
+			{% endif %}
+
+			{% if products %}
+				{# Блок сортировки/лимита/вида отображения #}
+				{% set show_view_box = us_setting_pages.status_limit == 1 or us_setting_pages.status_sort == 1 or us_setting_pages.show_display_view == 1 %}
+				{% if show_view_box %}
+					<div class="view-box">
+						<div class="row">
+							<div class="col-xs-12 col-sm-12 localstorage dflex align-items-center justify-content-between">
+								<div class="ch-limit-sorts dflex">
+									{# Лимит #}
+									{% if us_setting_pages.status_limit == 1 %}
+										<div class="btn-group{% if us_setting_pages.sort_display_mode == 'inline' %} md-border-radius{% endif %}">
+											<button type="button" class="btn btn-sort-limit dropdown-toggle" data-toggle="dropdown" title="{{ text_limit }}">
+												{% for limit_active in limits if limit_active.value == limit %}{{ limit_active.text }}{% endfor %}
+												<svg xmlns="http://www.w3.org/2000/svg" width="7" height="5" fill="none" viewBox="0 0 7 5"><path fill="currentColor" fill-rule="evenodd" d="M3.174 2.856a.5.5 0 00.707-.004L6.144.562a.5.5 0 01.712.704L4.592 3.555a1.5 1.5 0 01-2.121.012L.148 1.27A.5.5 0 11.852.559l2.322 2.297z" clip-rule="evenodd"></path></svg>
+											</button>
+											<ul class="dropdown-menu ddm-limit ch-dropdown dropdown-menu-left">
+												{% for limit_item in limits %}
+													<li{% if limit_item.value == limit %} class="active"{% endif %}><button class="btn-limit-link" onclick="location.href='{{ limit_item.href }}'">{{ limit_item.text }}</button></li>
+												{% endfor %}
+											</ul>
+										</div>
+									{% endif %}
+									{# Сортировка #}
+									{% if us_setting_pages.status_sort == 1 %}
+										<div class="btn-group d-inline-flex align-items-center">
+											<button type="button" class="btn btn-sort-limit dropdown-toggle{% if us_setting_pages.sort_display_mode == 'inline' %} hidden-md hidden-lg{% endif %}" data-toggle="dropdown">
+												{% set current_sort = sort ~ '-' ~ order %}
+												{% for sort_active in sorts if sort_active.value == current_sort %}{{ sort_active.text }}{% endfor %}
+												<svg xmlns="http://www.w3.org/2000/svg" width="7" height="5" fill="none" viewBox="0 0 7 5"><path fill="currentColor" fill-rule="evenodd" d="M3.174 2.856a.5.5 0 00.707-.004L6.144.562a.5.5 0 01.712.704L4.592 3.555a1.5 1.5 0 01-2.121.012L.148 1.27A.5.5 0 11.852.559l2.322 2.297z" clip-rule="evenodd"></path></svg>
+											</button>
+											{% if us_setting_pages.sort_display_mode == 'inline' %}
+												<div class="us-category-sort-title">{{ text_sort }}</div>
+											{% endif %}
+											<ul class="dropdown-menu ddm-sort dropdown-menu-left ch-dropdown {% if us_setting_pages.sort_display_mode == 'inline' %}ddm-sort-list-pc{% endif %}">
+												{% for sort_item in sorts %}
+													<li{% if sort_item.value == current_sort %} class="active"{% endif %}><button class="btn-sort-link" onclick="location.href='{{ sort_item.href }}'">{{ sort_item.text }}</button></li>
+												{% endfor %}
+											</ul>
+										</div>
+									{% endif %}
+								</div>
+								{# Filter Button #}
+								<button type="button" id="filter-toggle-btn" class="btn btn-view active" data-toggle="modal" data-target="#filterModal" title="Filter">
+									<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z"/></svg>
+								</button>
+								{# Вид отображения #}
+								{% if us_setting_pages.show_display_view == 1 %}
+									<div class="btn-group dflex localstorage product_list_toolbar">
+										{% set views = [
+											{id: 'grid', label: 'Grid View', icon_path: 'M6.5 1H2a1 1 0 00-1 1v4.5a1 1 0 001 1h4.5a1 1 0 001-1V2a1 1 0 00-1-1zM16 1h-4.5a1 1 0 00-1 1v4.5a1 1 0 001 1H16a1 1 0 001-1V2a1 1 0 00-1-1zM6.5 10.5H2a1 1 0 00-1 1V16a1 1 0 001 1h4.5a1 1 0 001-1v-4.5a1 1 0 00-1-1zM16 10.5h-4.5a1 1 0 00-1 1V16a1 1 0 001 1H16a1 1 0 001-1v-4.5a1 1 0 00-1-1z', title: button_grid},
+											{id: 'list', label: 'List View', icon_path: 'M4.8 1H1.2a.2.2 0 00-.2.2v3.029c0 .11.09.2.2.2h3.6a.2.2 0 00.2-.2V1.2a.2.2 0 00-.2-.2zM16.8 1H8.2a.2.2 0 00-.2.2v3.029c0 .11.09.2.2.2h8.6a.2.2 0 00.2-.2V1.2a.2.2 0 00-.2-.2zM4.8 7.286H1.2a.2.2 0 00-.2.2v3.028c0 .11.09.2.2.2h3.6a.2.2 0 00.2-.2V7.486a.2.2 0 00-.2-.2zM16.8 7.286H8.2a.2.2 0 00-.2.2v3.028c0 .11.09.2.2.2h8.6a.2.2 0 00.2-.2V7.486a.2.2 0 00-.2-.2zM4.8 13.571H1.2a.2.2 0 00-.2.2V16.8c0 .11.09.2.2.2h3.6a.2.2 0 00.2-.2v-3.029a.2.2 0 00-.2-.2zM16.8 13.571H8.2a.2.2 0 00-.2.2V16.8c0 .11.09.2.2.2h8.6a.2.2 0 00.2-.2v-3.029a.2.2 0 00-.2-.2z', title: button_list},
+											{id: 'price', label: 'Price View', icon_path: 'M16.8 1H1.2a.2.2 0 00-.2.2v3.029c0 .11.09.2.2.2h15.6a.2.2 0 00.2-.2V1.2a.2.2 0 00-.2-.2zM16.8 7.286H1.2a.2.2 0 00-.2.2v3.028c0 .11.09.2.2.2h15.6a.2.2 0 00.2-.2V7.486a.2.2 0 00-.2-.2zM1 16.8v-3.029c0-.11.09-.2.2-.2h15.6c.11 0 .2.09.2.2V16.8a.2.2 0 01-.2.2H1.2a.2.2 0 01-.2-.2z', title: button_price, is_price: true},
+										] %}
+
+										{% for view in views %}
+											{% set price_cond = view.is_price is defined and us_setting_pages.status_price_list_view == 1 %}
+											{% if not view.is_price or price_cond %}
+												{% set price_class = view.is_price ? ' visible-lg' : '' %}
+												<button aria-label="{{ view.label }}" type="button" id="{{ view.id }}-view" class="btn btn-view{% if display_view == view.id %} active{% endif %}{{ price_class }}" data-toggle="tooltip" title="{{ view.title }}">
+													<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 18 18"><path stroke="currentColor" stroke-linecap="round" stroke-width="1.5" d="{{ view.icon_path }}"/></svg>
+												</button>
+											{% endif %}
+										{% endfor %}
+										<div class="indicator-active"></div>
+									</div>
+								{% endif %}
+							</div>
+						</div>
+					</div>
+				{% endif %}
+				
+				<div class="row-flex category-page{% if not bg_image %} no_bg_image{% endif %}">
+					{% for product in products %}
+						<div class="product-layout product-{{ display_view }} {{ cols_class }}">
+							<div class="product-thumb dflex flex-column h-100{% if bg_image %} bg_image{% endif %}{% if show_attr_cpage == 1 and product.attribute_groups is not empty %} top-r{% endif %}">
+								<div class="image">
+									{# Стикеры #}
+									<div class="stickers-ns">
+										{% if on_off_sticker_special == '1' and product.special %}
+											<div class="sticker-ns special">{% if config_change_icon_sticker_special is not empty %}<i class="fa {{ config_change_icon_sticker_special }}"></i>{% endif %}{{ text_sticker_special[lang_id].config_change_text_sticker_special }}</div>
+										{% endif %}
+										{% if on_off_percent_discount == '1' and product.special %}<span class="sticker-ns special">{{ product.skidka }} %</span>{% endif %}
+										{% if on_off_sticker_topbestseller == '1' and product.top_bestsellers >= config_limit_order_product_topbestseller %}
+											<div class="sticker-ns bestseller">{% if config_change_icon_sticker_topbestseller is not empty %}<i class="fa {{ config_change_icon_sticker_topbestseller }}"></i>{% endif %}{{ text_sticker_topbestseller[lang_id].config_change_text_sticker_topbestseller }}</div>
+										{% endif %}
+										{% if on_off_sticker_popular == '1' and product.viewed>=config_min_quantity_popular %}
+											<div class="sticker-ns popular">{% if config_change_icon_sticker_popular is not empty %}<i class="fa {{ config_change_icon_sticker_popular }}"></i>{% endif %}{{ text_sticker_popular[lang_id].config_change_text_sticker_popular }}</div>
+										{% endif %}
+										{% if on_off_sticker_newproduct == '1' and product.sticker_new_prod %}
+											<div class="sticker-ns newproduct">{% if config_change_icon_sticker_newproduct is not empty %}<i class="fa {{ config_change_icon_sticker_newproduct }}"></i>{% endif %}{{ text_sticker_newproduct[lang_id].config_change_text_sticker_newproduct }}</div>
+										{% endif %}
+									</div>
+									
+									{# PRO Стикеры #}
+									{% if product.pro_sticker.status and product.pro_sticker.items is not empty %}
+										<div class="pro_sticker {% if product.pro_sticker.hide_hover %}hide-hover{% endif %}">
+											{% for position, stickers in product.pro_sticker.items %}
+												<div class="pro_sticker__position {{ position }}">
+													{% for sticker in stickers %}
+														<div class="pro_sticker__item pro_sticker__{{ sticker.type }}">
+															{% if sticker.type == 'image' %}
+																<img loading="lazy" decoding="async" width="{{ sticker.width }}" height="{{ sticker.height }}" class="img-responsive" src="{{ sticker.image }}" alt="">
+															{% else %}
+																<span style="color:#{{ sticker.color }};background:#{{ sticker.bg }}">{{ sticker.text }}</span>
+															{% endif %}
+														</div>
+													{% endfor %}
+												</div>
+											{% endfor %}
+										</div>
+									{% endif %}
+									
+									{# Изображение #}
+									<a {% if product.image_hm is not empty %}class="gallery-images"{% endif %} href="{{ product.href }}">
+										<img class="img-responsive{% if product.image_hm is not empty %} ch-g-image active-image{% endif %}" {% if product.image_h %}data-additional-hover="{{ product.image_h }}"{% endif %} decoding="async" width="{{ product.width }}" height="{{ product.height }}" loading="lazy" src="{{ product.thumb }}" alt="{{ product.name }}" />
+										{% if product.image_hm is not empty %}
+											<div class="ch-g-items">
+												{% for dop_image in product.image_hm %}
+													<img class="ch-g-image img-responsive" decoding="async" width="{{ product.width }}" height="{{ product.height }}" loading="lazy" data-src="{{ dop_image }}" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="{{ product.name }}" />
+												{% endfor %}
+											</div>
+											<div class="ch-g-dots">
+												<div class="ch-g-line active-line"></div>
+												{% for _ in product.image_hm %}<div class="ch-g-line"></div>{% endfor %}
+											</div>
+										{% endif %}
+									</a>
+									
+									{# Таймер акции #}
+									{% if show_special_timer_page == '1' and product.special %}
+										<div class="action-timer" data-date-end="{{ product.date_end }}"></div>
+									{% endif %}
+								</div>
+								
+								<div class="caption dflex flex-column flex-grow-1">
+									<div class="product-name"><a href="{{ product.href }}">{{ product.name }}</a></div>
+									
+									{# PRO Стикеры блок #}
+									{% if product.pro_sticker and product.pro_sticker.status and product.pro_sticker.block is not empty %}
+										<div class="pro_sticker_block">
+											{% for sticker in product.pro_sticker.block %}
+												<div class="pro_sticker_block__item pro_sticker_block__{{ sticker.type }}{% if sticker.popover %} pro_sticker_popover{% endif %}"
+												{% if sticker.popover %}data-toggle="popover" data-content="{{ sticker.popover }}"{% endif %}>
+													{% if sticker.type == 'image' %}
+														<img loading="lazy" decoding="async" width="{{ sticker.width }}" height="{{ sticker.height }}" class="img-responsive" src="{{ sticker.image }}" alt="">
+													{% else %}
+														<span style="color:#{{ sticker.color }};background:#{{ sticker.bg }}">{{ sticker.text }}</span>
+													{% endif %}
+												</div>
+											{% endfor %}
+										</div>
+									{% endif %}
+									
+									{# Рейтинг и отзывы #}
+									{% if us_setting_pages.status_rating == 1 %}
+										<div class="rating mb-10 d-flex align-items-center">
+											<div class="rating-stars d-flex align-items-center">
+												{% for star_width in product.rating_stars %}
+													<div class="rating-star up-icon"><div class="rating-star-active up-icon" style="width:{{ star_width }}%"></div></div>
+												{% endfor %}
+											</div>
+											{% if us_setting_pages.status_quantity_reviews == 1 %}
+												<div class="product-reviews d-flex align-items-center">
+													<i class="up-icon-18 up-icon-message" aria-hidden="true"></i>
+													{% if product.reviews > 0 %}
+														<span class="total-reviews d-flex align-items-center justify-content-center">{{ product.reviews }}</span>
+													{% endif %}
+												</div>
+											{% endif %}
+										</div>
+									{% endif %}
+									
+									{# Модель (Код товара) #}
+									{% if us_setting_pages.status_model == 1 or show_stock_status %}
+										<div class="product_model_sstatus mb-10 justify-content-between dflex">
+											{% if us_setting_pages.status_model == 1 %}
+												<div class="product-model">{{ text_model }}{{ product.model }}</div>
+											{% endif %}
+										</div>
+									{% endif %}
+									
+									{# ДОПОЛНИТЕЛЬНЫЕ ДЕЙСТВИЯ (Quickview, Fastorder, Compare, Wishlist) - ПЕРЕМЕЩЕНЫ СЮДА и СДЕЛАНЫ ГОРИЗОНТАЛЬНЫМИ #}
+									<div class="addit-action dflex mb-10"> 
+										{% if config_on_off_category_page_quickview == '1' %}
+											<div class="quickview">
+												<button aria-label="Quickview" class="btn btn-quickview" title="{{ config_quickview_btn_name[lang_id]['config_quickview_btn_name'] }}" onclick="quickview_open({{ product.product_id }});"><i class="up-icon-quickview" aria-hidden="true"></i></button>
+											</div>
+										{% endif %}
+										{% if us_setting_pages.status_fastorder == 1 and product.show_buy_button %}
+											{% set fastorder_disabled = disable_fastorder_button and product.product_quantity <= 0 %}
+											{% if (not disable_fastorder_button) or (disable_fastorder_button and product.product_quantity > 0) %}
+												<div class="quick-order">
+													<button aria-label="Fastorder" class="btn btn-fastorder" title="{{ config_text_open_form_send_order[lang_id]['config_text_open_form_send_order'] }}" type="button" onclick="fastorder_open({{ product.product_id }});" {% if fastorder_disabled %}disabled{% endif %}><i class="up-icon-fastorder" aria-hidden="true"></i></button>
+												</div>
+											{% endif %}
+										{% endif %}
+										{% if us_setting_pages.status_compare == 1 %}
+											<div class="compare">
+												<button aria-label="Compare" class="btn btn-compare" type="button" title="{{ button_compare }}" onclick="compare.add('{{ product.product_id }}');"><i class="up-icon-compare" aria-hidden="true"></i></button>
+											</div>
+										{% endif %}
+										{% if us_setting_pages.status_wishlist == 1 %}
+											<div class="wishlist">
+												<button aria-label="Wishlist" class="btn btn-wishlist" type="button" title="{{ button_wishlist }}" onclick="wishlist.add('{{ product.product_id }}');"><i class="up-icon-wishlist" aria-hidden="true"></i></button>
+											</div>
+										{% endif %}
+									</div>
+									{# КОНЕЦ ПЕРЕМЕЩЕННОГО БЛОКА #}
+									
+									{# Описание #}
+									{% if us_setting_pages.status_description == 1 %}
+										<div class="product-description">{{ product.description }}</div>
+									{% endif %}
+									
+									{# Цена и кнопки действия #}
+									<div class="price-actions-box dflex flex-wrap mt-auto">
+										{# Ввод количества #}
+										{% if product.price and config_additional_settings_upstore.quantity_btn_page == '1' and product.show_buy_button %}
+											<div class="quantity_plus_minus">
+												<span class="add-up add-action">
+													<svg xmlns="http://www.w3.org/2000/svg" width="7" height="5" fill="none" viewBox="0 0 7 5"><path fill="#000" fill-rule="evenodd" d="M3.826 2.144a.5.5 0 00-.707.004L.856 4.438a.5.5 0 01-.712-.704l2.264-2.289a1.5 1.5 0 012.121-.012L6.852 3.73a.5.5 0 11-.704.711L3.826 2.144z" clip-rule="evenodd"/></svg>
+												</span>
+												<input type="text" class="quantity-num form-control" name="quantity" value="{{ product.minimum }}" data-minimum="{{ product.minimum }}" {% if config_additional_settings_upstore.quantity_multiple == '1' and product.minimum > 1 %}disabled{% endif %}>
+												<span class="add-down add-action">
+													<svg xmlns="http://www.w3.org/2000/svg" width="7" height="5" fill="none" viewBox="0 0 7 5"><path fill="#000" fill-rule="evenodd" d="M3.174 2.856a.5.5 0 00.707-.004L6.144.562a.5.5 0 01.712.704L4.592 3.555a1.5 1.5 0 01-2.121.012L.148 1.27A.5.5 0 11.852.559l2.322 2.297z" clip-rule="evenodd"/></svg>
+												</span>
+											</div>
+										{% endif %}
+										
+										{# Цена #}
+										{% if product.price %}
+											<div class="price" data-price-value="{{ product.price_value }}" data-special-value="{{ product.special_value }}">
+												{% if not product.special %}
+													<span class="price_value">{{ product.price }}</span>
+												{% else %}
+													<span class="price-old"><span class="price_value">{{ product.price }}</span></span>
+													<span class="price-new"><span class="special_value">{{ product.special }}</span></span>
+												{% endif %}
+												{% if product.tax %}
+													<span class="price-tax">{{ text_tax }} {{ product.tax }}</span>
+												{% endif %}
+											</div>
+										{% endif %}
+										
+										{# Кнопка КУПИТЬ / УВЕДОМИТЬ #}
+										<div class="cart">
+											{% set is_disabled = product.product_quantity <= 0 and disable_cart_button %}
+											{% set btn_text = product.in_cart ? text_in_cart : button_cart %}
+											{% set btn_action = "onclick=\"cart.add('" ~ product.product_id ~ "',this)\"" %}
+											{% if change_text_cart_button_out_of_stock == 1 and product.product_quantity <= 0 %}
+												{% set btn_text = disable_cart_button_text %}
+											{% endif %}
+
+											{% if product.show_buy_button %}
+												<button aria-label="Add to cart" class="btn btn-general {{ ch_type_btn }}{% if product.in_cart %} is-active{% endif %}" type="button" {% if is_disabled %}disabled{% else %}{{ btn_action }}{% endif %}>
+													<i class="up-icon-22 up-icon-cart" aria-hidden="true"></i>
+													<span class="text-cart-add">{{ btn_text }}</span>
+												</button>
+											{% else %}
+												<button aria-label="notify stock" class="btn btn-general {{ ch_type_btn }}{% if product.in_waitlist %} is-active{% endif %}" type="button" onclick="upstoreNotifyStock('{{ product.product_id }}');">
+													<i class="up-icon-22 up-icon-notify" aria-hidden="true"></i>
+													<span class="text-cart-add">{{ button_notify_stock }}</span>
+												</button>
+											{% endif %}
+										</div>
+									</div>
+								</div>
+								
+								{# Атрибуты #}
+								{% if show_attr_cpage == 1 and product.attribute_groups is not empty %}
+									<div class="us-product-attributes">
+										{% for key_attr_g, attribute_group in product.attribute_groups %}
+											{% if key_attr_g < cpage_attr_group_count %}
+												{% for key_attr_item, attribute in attribute_group.attribute %}
+													{% if key_attr_item < cpage_attr_group_item_count %}
+														<div class="us-product-attributes__item">
+															<span class="us-product-attributes__name">{{ attribute.name }}:</span>
+															<span class="us-product-attributes__text">{{ attribute.text }}</span>
+														</div>
+													{% endif %}
+												{% endfor %}
+											{% endif %}
+										{% endfor %}
+									</div>
+								{% endif %}
+							</div>
+						</div>
+					{% endfor %}
+				</div>
+				
+				<div class="row{% if us_setting_pages.status_showmore == 1 %} showmore_on{% endif %}">
+					<div class="col-sm-12 text-center showmore-paginatation d-flex align-items-center justify-content-between">{{ pagination }}</div>
+				</div>
+				<br />
+			{% endif %}
+
+			{# Описание категории (после списка товаров, если сброшено) #}
+			{% if config_catalog_category_description_dropped == 1 and (thumb or description) %}
+				<div class="category_description psbt">
+					{% if thumb %}
+						<div class="psfl-l"><img loading="lazy" width="{{ thumb_width }}" height="{{ thumb_height }}" src="{{ thumb }}" alt="{{ heading_title }}" title="{{ heading_title }}" class="img-thumbnail" /></div>
+					{% endif %}
+					{% if description %}
+						<div class="p-content">{{ description }}</div>
+					{% endif %}
+				</div>
+			{% endif %}
+
+			{# Если нет ни категорий, ни товаров #}
+			{% if not categories and not products %}
+				<p>{{ text_empty }}</p>
+				<div class="buttons">
+					<div class="pull-right"><a href="{{ continue }}" class="btn btn-primary">{{ button_continue }}</a></div>
+				</div>
+			{% endif %}
+			
+			{{ content_bottom }}
+		</div>
+		{{ column_right }}
+	</div>
+</div>
+
+{# Скрипт слайдера #}
+{% if sub_category_type == 'slider' %}
+	<script>
+		document.addEventListener('DOMContentLoaded', function() {
+			var swiperSelector = '.swiper-sub-category';
+			var $swiperElement = $(swiperSelector);
+			
+			if ($swiperElement.length) {
+				var sc_prev = $swiperElement.find('.swiper-sub-category__arrow_prev')[0],
+				sc_next = $swiperElement.find('.swiper-sub-category__arrow_next')[0];
+
+				const swiperSubCategory = new Swiper(swiperSelector, {
+					slidesPerView: 'auto',
+					watchSlidesVisibility: true,
+					watchSlidesProgress: true,
+					watchOverflow: true,
+					observer: true,
+					observeParents: true,
+					nested: true,
+					speed: 400,
+					breakpointsBase: 'container',
+					grabCursor: true,
+					navigation: {
+						nextEl: sc_next,
+						prevEl: sc_prev,
+					},
+					on: {
+						afterInit: function () {
+							setTimeout(function () {
+								$swiperElement.addClass('swiper-visible');
+							}, 500);
+							updateNavigation();
+						},
+						resize: function () {
+							setTimeout(function () {
+								updateNavigation();
+							}, 300);
+						}
+					},
+					breakpoints: {
+						200: {slidesPerView: 2},
+						500: {slidesPerView: 3},
+						768: {slidesPerView: 4},
+						992: {slidesPerView: 5},
+						1150: {slidesPerView: 6},
+						1350: {slidesPerView: 8},
+					},
+				});
+
+				function updateNavigation() {
+					var buttons = $swiperElement.find('.swiper-button-lock');
+					var $navigation = $swiperElement.find('.swiper-sub-category__navigation');
+					if (buttons.length === 2) {
+						$navigation.addClass('disabled-navigation');
+					} else {
+						$navigation.removeClass('disabled-navigation');
+					}
+				}
+			}
+		});
+	</script>
+{% endif %}
+
+{# Filter Modal #}
+<div class="modal fade" id="filterModal" tabindex="-1" role="dialog" aria-labelledby="filterModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title" id="filterModalLabel">Filter</h4>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				{# Filter content will go here #}
+				<p>Filter options coming soon...</p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary">Apply Filters</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+{{ footer }}

@@ -1,0 +1,197 @@
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right">
+        <button type="submit" form="form-banner-blocks" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+        <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a></div>
+      <h1>{{ heading_title }}</h1>
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+        <li><a href="{{ breadcrumb['href'] }}">{{ breadcrumb['text'] }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div class="container-fluid">
+    {% if (error_warning) %}
+    <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %}
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-pencil"></i> {{ text_edit }}</h3>
+      </div>
+      <div class="panel-body">
+        <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-banner-blocks" class="form-horizontal">
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-name">{{ entry_name }}</label>
+            <div class="col-sm-10">
+              <input type="text" name="name" value="{{ name }}" placeholder="{{ entry_name }}" id="input-name" class="form-control" />
+              {% if (error_name) %}
+              <div class="text-danger">{{ error_name }}</div>
+              {% endif %}
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-status">{{ entry_status }}</label>
+            <div class="col-sm-10">
+              <select name="status" id="input-status" class="form-control">
+                {% if (status) %}
+                <option value="1" selected="selected">{{ text_enabled }}</option>
+                <option value="0">{{ text_disabled }}</option>
+                {% else %}
+                <option value="1">{{ text_enabled }}</option>
+                <option value="0" selected="selected">{{ text_disabled }}</option>
+                {% endif %}
+              </select>
+            </div>
+          </div>
+		  <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-banner-column">{{ entry_banner_column }}</label>
+            <div class="col-sm-10">
+              <select name="banner_column" id="input-banner-column" class="form-control">
+                {% if (banner_column == 4) %}
+                <option value="3" selected="selected">4</option>
+                <option value="2">6</option>
+                {% else %}
+                <option value="3">4</option>
+                <option value="2" selected="selected">6</option>
+                {% endif %}
+              </select>
+            </div>
+          </div>
+					<table id="items" class="table table-bordered table-hover">
+						<thead>
+							<tr>
+								<td>{{ entry_image }}</td>
+								<td>{{ entry_title }}</td>
+								<td>{{ entry_description }}</td>
+								<td>{{ entry_link }}</td>
+								<td>{{ text_open_banner_popup }}</td>
+								<td>{{ entry_color }}</td>
+								<td>{{ entry_sort_order }}</td>
+								<td></td>
+							</tr>
+						</thead>
+						<tbody>
+						{% set item_row = 0 %}
+						{% for banner_item in banner_items %}
+							<tr id="item-row{{ item_row }}">
+								<td class="text-left">
+									<a href="" id="thumb-image{{ item_row }}" data-toggle="image" class="img-thumbnail"><img src="{{ banner_item['thumb'] }}" alt="" title="" data-placeholder="{{ placeholder }}"  /></a><input type="hidden" name="banner_item[{{ item_row }}][image]" value="{{ banner_item['image'] }}" id="input-image{{ item_row }}" />
+								</td>
+								<td class="text-left">
+									{% for language in languages %}
+									<div class="input-group pull-left">
+										<span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>
+										<input class="form-control" type="text" name="banner_item[{{ item_row }}][title][{{ language['language_id'] }}]" value="{{ banner_item['title'][language['language_id']] }}" />
+									</div>
+									{% endfor %}
+								</td>
+								<td class="text-left">
+									{% for language in languages %}
+									<div class="input-group pull-left">
+										<span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>
+										<input class="form-control" type="text" name="banner_item[{{ item_row }}][description][{{ language['language_id'] }}]" value="{{ banner_item['description'][language['language_id']] }}" />
+									</div>
+									{% endfor %}
+								</td>
+								<td class="text-left">
+									{% for language in languages %}
+									<div class="input-group pull-left">
+										<span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>
+											<input class="form-control" type="text" name="banner_item[{{ item_row }}][link][{{ language['language_id'] }}]" value="{{ banner_item['link'][language['language_id']] }}" />
+									</div>
+									{% endfor %}
+								</td>
+								<td class="text-center">
+									<div class="btn-group" data-toggle="buttons">
+										<label class="btn btn-default{% if banner_item['popup'] %} active{% endif %}">
+											<input type="radio" name="banner_item[{{ item_row }}][popup]" value="1" {% if banner_item['popup'] %}checked="checked"{% endif %}>
+											<span class="on-off">{{ text_yes }}</span>
+										</label>
+										<label class="btn btn-default{% if not banner_item['popup'] %} active{% endif %}">
+											<input type="radio" name="banner_item[{{ item_row }}][popup]" value="0" {% if not banner_item['popup'] %}checked="checked"{% endif %}>
+											<span class="on-off">{{ text_no }}</span>
+										</label>
+									</div>
+								</td>
+								<td class="text-left">
+									<input class="form-control color" type="text" name="banner_item[{{ item_row }}][color]" value="{{ banner_item['color'] }}" />
+								</td>
+								<td class="text-left">
+									<input class="form-control" type="text" name="banner_item[{{ item_row }}][sort]" value="{{ banner_item['sort'] }}" />
+								</td>
+								<td class="text-right">
+									<a class="btn btn-danger" onclick="$('#item-row{{ item_row }}').remove();" data-toggle="tooltip" title="{{ button_delete }}"><i class="fa fa-trash-o"></i></a>
+								</td>
+							</tr>
+						{% set item_row = item_row + 1 %}
+						{% endfor %}
+						</tbody>
+						<tfoot>
+							<tr>
+								<td colspan="6"></td>
+								<td class="text-right"><a class="btn btn-primary" onclick="addItem();" data-toggle="tooltip" title="{{ button_add }}"><i class="fa fa-plus-circle"></i></a></td>
+							</tr>
+						</tfoot>
+					</table>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+var item_row = {{ item_row }};
+
+function addItem() {
+  html  = '<tr id="item-row' + item_row + '">';
+	html += '<td class="text-left"><a href="" id="thumb-image' + item_row + '" data-toggle="image" class="img-thumbnail"><img src="{{ placeholder }}"  /></a><input type="hidden" name="banner_item[' + item_row + '][image]" value="" id="input-image' + item_row + '" /></td>';
+  html += '<td class="text-left">';
+	{% for language in languages %}
+	html += '<div class="input-group pull-left"><span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>';
+	html += '<input class="form-control" type="text" name="banner_item[' + item_row + '][title][{{ language['language_id'] }}]" value="" />';
+	html += '</div>';
+	{% endfor %}
+	html += '</td>';
+	html += '<td class="text-left">';
+	{% for language in languages %}
+	html += '<div class="input-group pull-left"><span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>';
+	html += '<input class="form-control" type="text" name="banner_item[' + item_row + '][description][{{ language['language_id'] }}]" value="" />';
+	html += '</div>';
+	{% endfor %}
+	html += '</td>';
+	html += '<td class="text-left">';
+	{% for language in languages %}
+	html += '<div class="input-group pull-left"><span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>';
+	html += '<input class="form-control"  type="text" name="banner_item[' + item_row + '][link][{{ language['language_id'] }}]" value="" />';
+	html += '</div>';
+	{% endfor %}
+	html += '</td>';
+	html += '<td class="text-center">';
+	html += '		<div class="btn-group" data-toggle="buttons">';
+	html += '			<label class="btn btn-default">';
+	html += '				<input type="radio" name="banner_item['+ item_row +'][popup]" value="1">';
+	html += '				<span class="on-off">{{ text_yes }}</span>';
+	html += '			</label>';
+	html += '			<label class="btn btn-default active">';
+	html += '				<input type="radio" name="banner_item['+ item_row +'][popup]" value="0" checked="checked">';
+	html += '				<span class="on-off">{{ text_no }}</span>';
+	html += '			</label>';
+	html += '		</div>';
+	html += '</td>';
+	html += '<td class="text-left"><input class="form-control color" type="text" name="banner_item[' + item_row + '][color]" value="" /></td>';
+	html += '<td class="text-left"><input class="form-control" type="text" name="banner_item[' + item_row + '][sort]" size="1" value="" /></td>';
+	html += '<td class="text-right"><a class="btn btn-danger" onclick="$(\'#item-row' + item_row  + '\').remove();" data-toggle="tooltip" title="{{ button_delete }}"><i class="fa fa-trash-o"></i></a></td>';
+	html += '</tr>';
+
+	$('#items tbody').append(html);;
+	jscolor.bind();
+	item_row++;
+}
+</script>
+{{ footer }}

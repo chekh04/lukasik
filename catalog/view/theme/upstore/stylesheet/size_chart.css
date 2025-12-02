@@ -1,0 +1,65 @@
+.order-3 {
+	order:3;
+}
+.btm-size-chart {
+	border: 0px;
+	border-radius: 8px;
+	display: inline-block;
+	font-size: 13px;
+	padding: 0px 16px;
+	line-height: 36px;
+	min-height: 36px;
+	font-weight: 400;
+	box-shadow: none;
+	text-shadow: none;
+}
+.light-theme .btm-size-chart {
+	color: #000;
+	background-color: #F8F8F8;
+}
+.dark-theme .btm-size-chart {
+	color: #fff;
+	background-color: #1D1D1D;
+}
+.dark-theme .btm-size-chart:hover,
+.dark-theme .btm-size-chart:focus {
+	background-color: var(--up-bg-btn-black-hover);
+}
+#modal-size-charts .modal-body {
+	padding-bottom: 0;
+}
+#modal-size-charts .modal-body > *:last-child {
+	margin-bottom: 0;
+}
+.table-size-chart-name {
+	margin-bottom: 15px;
+	font-weight: 600;
+	color: var(--up-text-wd-color);
+	text-align: center;
+}
+.table-size-chart thead tr td {
+	text-align: center;
+	font-weight: 600;
+}
+.light-theme #modal-size-charts .table thead tr td {
+	background-color:#dcdcdc !important;
+}
+.dark-theme #modal-size-charts .table thead tr td {
+	background-color:#0F0F0F !important;
+}
+.dark-theme #modal-size-charts .table-hover > tbody > tr:hover,
+.dark-theme #modal-size-charts .table-striped > tbody > tr:nth-of-type(2n+1) {
+	background-color: #1D1D1D;
+}
+
+.dark-theme #modal-size-charts .table-bordered > tbody > tr > td,
+.dark-theme #modal-size-charts .table-bordered > tbody > tr > th,
+.dark-theme #modal-size-charts .table-bordered > tfoot > tr > td,
+.dark-theme #modal-size-charts .table-bordered > tfoot > tr > th,
+.dark-theme #modal-size-charts .table-bordered > thead > tr > td,
+.dark-theme #modal-size-charts .table-bordered > thead > tr > th {
+	border: 1px solid #1D1D1D;
+}
+.table-size-chart tbody tr td {
+	text-align: center;
+}

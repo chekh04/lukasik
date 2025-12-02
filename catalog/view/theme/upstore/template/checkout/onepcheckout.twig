@@ -1,0 +1,129 @@
+{{ header }}
+<div class="container">
+	<div class="breadcrumbs-box">
+		<ul class="breadcrumb">
+			{% for breadcrumb in breadcrumbs %}
+				{% if (i+1 < breadcrumbs|length) %}<li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>{% else %}<li>{{ breadcrumb.text }}</li>{% endif %}
+			{% endfor %}
+		</ul>
+	</div>
+	<div class="error"></div>
+	<div class="row">
+		{{ column_left }}
+		{% if (column_left and column_right) %}
+		{% set class = 'col-sm-6' %}
+		{% elseif (column_left or column_right) %}
+		{% set class = 'col-sm-9' %}
+		{% else %}
+		{% set class = 'col-sm-12' %}
+		{% endif %}
+		<div id="content" class="{{ class }}">{{ content_top }}
+			<h1 class="opc-h1">{{ heading_title }}</h1>
+			{% if opc_errors is not empty %}
+			{% for opc_error in opc_errors %}
+				<div class="alert opc-alert-danger">
+					<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+						<path fill-rule="evenodd" clip-rule="evenodd" d="M9 17C13.4183 17 17 13.4183 17 9C17 4.58172 13.4183 1 9 1C4.58172 1 1 4.58172 1 9C1 13.4183 4.58172 17 9 17ZM9 18C13.9706 18 18 13.9706 18 9C18 4.02944 13.9706 0 9 0C4.02944 0 0 4.02944 0 9C0 13.9706 4.02944 18 9 18Z" fill="#d8300e"></path>
+						<path fill-rule="evenodd" clip-rule="evenodd" d="M9 4.50952C9.27614 4.50952 9.5 4.73338 9.5 5.00952V10.2151C9.5 10.4913 9.27614 10.7151 9 10.7151C8.72386 10.7151 8.5 10.4913 8.5 10.2151V5.00952C8.5 4.73338 8.72386 4.50952 9 4.50952Z" fill="#d8300e"></path>
+						<path fill-rule="evenodd" clip-rule="evenodd" d="M9 12.2985C9.27614 12.2985 9.5 12.5223 9.5 12.7985V13.6879C9.5 13.964 9.27614 14.1879 9 14.1879C8.72386 14.1879 8.5 13.964 8.5 13.6879V12.7985C8.5 12.5223 8.72386 12.2985 9 12.2985Z" fill="#d8300e"></path>
+					</svg>
+					{{ opc_error }}
+					<button type="button" class="close" data-dismiss="alert">×</button>
+				</div>
+			{% endfor %}
+			{% endif %}
+			<div id="onepcheckout" class="page-cart checkout_form">
+				{% if (opc_blocks['top_full'] is defined) %}
+					<div class="row checkout-col-top">
+						{% for block_name in opc_blocks['top_full'] %}
+							<div class="col-xs-12 col-sm-12 col-md-12 mb-30 opc_block_{{ block_name }}">
+								{{ opc_block[block_name] }}
+							</div>
+						{% endfor %}
+					</div>
+				{% endif %}
+
+				<div class="row dflex checkout-col-center">
+					<div class="checkout-col-left" style="width:{{ opc_cl_width }}%">
+						{% if (opc_blocks['top_left'] is defined) %}
+							{% for block_name in opc_blocks['top_left'] %}
+								<div class="col-xs-12 col-sm-12 col-md-12 mb-30 opc_block_{{ block_name }}">
+									{{ opc_block[block_name] }}
+								</div>
+							{% endfor %}
+						{% endif %}
+						{% if (opc_blocks['center_left'] or opc_blocks['center_right']) %}
+							<div class="col-xs-12 col-sm-12 col-md-12 two-column">
+								<div class="row-flex">
+									{% if (opc_blocks['center_left'] is defined) %}
+										<div class="opc-left-column dflex flex-column col-xs-12 col-sm-12 col-md-12 col-lg-6">
+											{% for block_name in opc_blocks['center_left'] %}
+												<div class="h-100 w-100 mb-30 opc_block_{{ block_name }}">
+													{{ opc_block[block_name] }}
+												</div>
+											{% endfor %}
+										</div>
+									{% endif %}
+									{% if (opc_blocks['center_right'] is defined) %}
+										<div class="opc-right-column dflex flex-column col-xs-12 col-sm-12 col-md-12 col-lg-6">
+										{% for block_name in opc_blocks['center_right'] %}
+											<div class="h-100 w-100 mb-30 opc_block_{{ block_name }}">
+												{{ opc_block[block_name] }}
+											</div>
+										{% endfor %}
+										</div>
+									{% endif %}
+								</div>
+							</div>
+						{% endif %}
+						{% if (opc_blocks['bottom_left'] is defined) %}
+							{% for block_name in opc_blocks['bottom_left'] %}
+								<div class="col-xs-12 col-sm-12 col-md-12 mb-30 opc_block_{{ block_name }}">
+									{{ opc_block[block_name] }}
+								</div>
+							{% endfor %}
+						{% endif %}
+					</div><!--<div class="checkout-col-left">-->
+					{% if (opc_blocks['fix_right'] is defined) %}
+					<div class="checkout-col-fix-right" style="width:{{ opc_cr_width }}%">
+						{% for block_name in opc_blocks['fix_right'] %}
+							<div class="col-xs-12 col-sm-12 col-md-12 mb-30 opc_block_{{ block_name }}{% if opc_cr_width < 40 and block_name == 'cart' %} sm-fix-cart{% endif %}">
+								{{ opc_block[block_name] }}
+							</div>
+						{% endfor %}
+					</div><!--<div class="checkout-col-fix-right">-->
+					{% endif %}
+				</div><!--<div class="checkout-col-center">-->
+
+				{% if (opc_blocks['bottom_full'] is defined) %}
+					<div class="row checkout-col-bottom">
+						{% for block_name in opc_blocks['bottom_full'] %}
+							<div class="col-xs-12 col-sm-12 col-md-12 mb-30 opc_block_{{ block_name }}">
+								{{ opc_block[block_name] }}
+							</div>
+						{% endfor %}
+					</div>
+				{% endif %}
+			</div><!-- END page-cart-->
+			<div class="payment hidden" id="opc-payment">{% if (payment) %}{{ payment }}{% endif %}</div>
+			{{ content_bottom }}
+		</div>
+		{{ column_right }}
+	</div>
+<script>
+$(function() {
+	let options = {
+		text_select: '{{ opc_setting.text_select }}',
+		tel_mask: '{{ opc_setting.tel_mask }}',
+		load_script: `{{ opc_setting.load_script }}`,
+		only_countries: `{{ opc_setting.only_countries }}`,
+		exclude_countries: `{{ opc_setting.exclude_countries }}`,
+		initial_country: `{{ opc_setting.initial_country }}`,
+		geoip_status: `{{ opc_setting.geoip_status }}`,
+	}
+	opc = new OnePageCheckout(options);
+	opc.init();
+});
+</script>
+</div>
+{{ footer }}

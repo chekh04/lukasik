@@ -1,0 +1,174 @@
+{{ header }}
+<div class="container">
+	<ul class="breadcrumb">
+		{% for breadcrumb in breadcrumbs %}
+		<li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+		{% endfor %}
+	</ul>
+	{% if (attention) %}
+	<div class="alert alert-info"><i class="fa fa-info-circle"></i> {{ attention }}
+		<button type="button" class="close" data-dismiss="alert"><i class="up-icon-close" aria-hidden="true"></i></button>
+	</div>
+	{% endif %}
+	{% if (success) %}
+		<div class="alert ch-alert-success">
+			<img class="success-icon" alt="success-icon" src="catalog/view/theme/upstore/image/success-icon.svg">
+			<div class="text-modal-block">{{ success }}</div>
+			<button type="button" class="close" data-dismiss="alert"><i class="up-icon-close" aria-hidden="true"></i></button>
+		</div>
+	{% endif %}
+	{% if (error_warning) %}
+		<div class="alert ch-alert-danger">
+			<img class="warning-icon" alt="warning-icon" src="catalog/view/theme/upstore/image/warning-icon.svg">
+			<div class="text-modal-block">{{ error_warning }}</div>
+			<button type="button" class="close" data-dismiss="alert"><i class="up-icon-close" aria-hidden="true"></i></button>
+		</div>
+	{% endif %}
+	<div class="row">{{ column_left }}
+		{% if (column_left and column_right) %}
+		{% set class = 'col-sm-6' %}
+		{% elseif (column_left or column_right) %}
+		{% set class = 'col-sm-9' %}
+		{% else %}
+		{% set class = 'col-sm-12' %}
+		{% endif %}
+		<div id="content" class="{{ class }}">{{ content_top }}
+			<h1>{{ heading_title }}{% if (weight) %}&nbsp;({{ weight }}){% endif %}</h1>
+			<div class="page-cart dflex">
+				<div class="cart-col-left">
+					{% if (products or vouchers) %}
+						<div class="cart-list">
+							{% for product in products %}
+								<div class="cart-item dflex">
+									<div class="cart-item-left">
+										{% if (product.thumb) %}
+											<a href="{{ product.href }}"><img src="{{ product.thumb }}" alt="{{ product.name }}" title="{{ product.name }}" class="img-responsive" /></a>
+										{% endif %}
+									</div>
+									<div class="cart-item-center dflex flex-column">
+										<div class="cart-item-prod-name"><a href="{{ product.href }}">{{ product.name }}</a></div>
+										<div class="product-model">{{ text_model }}{{ product.model }}</div>
+										{% if (not product.stock) %}
+										<div class="cart-prod-info-stock text-danger">***</div>
+										{% endif %}
+										{% if (product.option) %}
+											<div class="cart-item-options">
+												{% for option in product.option %}
+													<div class="cart-item-option dflex">
+														<div class="cart-item-option-name">{{ option.name }}:</div>
+														<div class="cart-item-option-value">{{ option.value }}</div>
+													</div>
+												{% endfor %}
+											</div>
+										{% endif %}
+										{% if (product.reward) %}
+											<div class="cart-prod-info-reward">{{ product.reward }}</div>
+										{% endif %}
+										{% if (product.recurring) %}
+											<br />
+											<span class="label label-info">{{ text_recurring_item }}</span> <small>{{ product.recurring }}</small>
+										{% endif %}
+										{% if product.ch_gift_id and product.ch_gift_id > 0%}
+											<div class="ch-gift">{{ text_gift }}</div>
+										{% endif %}
+									</div>
+									<div class="cart-item-price-quantity dflex">
+										<div class="dflex justify-content-end">
+											{% if not product.ch_gift_id or product.ch_gift_id == 0 %}
+											<div class="ch-cart-quantity">
+												<span class="input-btn">
+													<button class="btn btn-quantity-minus" type="button" onclick="ch_cart_minus('#input_pr_quantity_{{ product.cart_id }}')"><i class="fa fa-angle-left"></i></button>
+												</span>
+												<input type="text" name="quantity[{{ product.cart_id }}]" id="input_pr_quantity_{{ product.cart_id }}" class="form-control" data-minimum="{{ product.minimum }}" value="{{ product.quantity }}" onchange="updateQuantityCart('{{ product.cart_id }}', $(this).val());">
+												<span class="input-btn">
+													<button class="btn btn-quantity-plus" type="button" onclick="ch_cart_plus('#input_pr_quantity_{{ product.cart_id }}')"><i class="fa fa-angle-right"></i></button>
+												</span>
+											</div>
+											{% endif %}
+											<button type="button" data-toggle="tooltip" title="{{ button_remove }}" class="btn btn-remove" onclick="cart.remove('{{ product.cart_id }}');"><i class="fa fa-trash-o"></i></button>
+										</div>
+										<div class="cart-totals dflex">
+											<div class="cart-item-price"><span class="text-cart-item-price">{{ column_price }}</span>{{ product.price }}</div>
+											<div class="cart-item-total"><span class="text-cart-item-total">{{ column_total }}</span>{{ product.total }}</div>
+										</div>
+									</div>
+								</div>
+							{% endfor %}
+						</div>
+					{% endif %}
+					{% for voucher in vouchers %}
+						<div class="cart-item dflex">
+							<div class="cart-item-left"></div>
+							<div class="cart-item-center dflex flex-column">
+								<div class="cart-item-prod-name">{{ voucher['description'] }}</div>
+							</div>
+							<div class="cart-item-price-quantity dflex">
+								<div class="dflex justify-content-end">
+									<button type="button" data-toggle="tooltip" title="{{ button_remove }}" class="btn btn-remove" onclick="voucher.remove('{{ voucher['key'] }}');"><i class="fa fa-trash-o"></i></button>
+								</div>
+								<div class="cart-totals dflex">
+									<div class="cart-item-total"><span class="text-cart-item-total"></span>{{ voucher['amount'] }}</div>
+								</div>
+							</div>
+						</div>
+					{% endfor %}
+				</div>
+
+				<div class="cart-col-right">
+					{% if (modules) %}
+						<div class="checkout-cart-accordion" id="accordion">
+						<a href="#collapse-dop-module" class="text-checkout-modules accordion-toggle" data-toggle="collapse" data-parent="#accordion">{{ text_next }}
+							<svg class="icon-arrow-down"><use xlink:href="catalog/view/theme/upstore/image/sprite.svg#icon-arrow-down"></use></svg>
+						</a>
+						<div id="collapse-dop-module" class="panel-collapse collapse">
+							{% if (coupon is defined) %}
+								{{ coupon }}
+							{% endif %}
+							{% if (voucher is defined) %}
+								{{ voucher }}
+							{% endif %}
+							{% if (reward is defined) %}
+								{{ reward }}
+							{% endif %}
+							{% if (shipping is defined) %}
+								{{ shipping }}
+							{% endif %}
+						</div>
+					</div>
+					{% endif %}
+					<div class="row">
+						<div class="col-xs-12 col-sm-12">
+							<table class="table table-cart">
+								{% for key,total in totals %}
+									<tr>
+										<td class="text-left total-title{% if (key+1 == totals|length) %} total-last{% endif %}">{{ total.title }}:</td>
+										<td class="text-right total-text">{{ total.text }}</td>
+									</tr>
+								{% endfor %}
+							</table>
+						</div>
+					</div>
+					<div class="dflex">
+						<a href="{{ checkout }}" class="btn btn-primary w-100">{{ button_checkout }}</a>
+					</div>
+				</div>
+			</div>
+			{{ content_bottom }}</div>
+		{{ column_right }}</div>
+</div>
+<script>
+function addTopCartRight(){
+	if(viewport().width > 991){
+		$('.cart-col-right').css('top', document.querySelector('header').clientHeight + 20);
+	} else {
+		$('.cart-col-right').css('top', 0);
+	}
+}
+$(window).resize(function() {
+	 addTopCartRight();
+});
+$(function() {
+	addTopCartRight();
+});
+</script>
+{{ footer }}

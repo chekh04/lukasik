@@ -1,0 +1,100 @@
+{{ header }}
+<div class="container">
+	<div class="breadcrumbs-box">
+		<ul class="breadcrumb">
+			{% for i,breadcrumb in breadcrumbs %}
+				{% if (i+1 < breadcrumbs|length) %}
+					<li><a href="{{ breadcrumb.href }}"><span>{{ breadcrumb.text }}</span></a></li>
+				{% else %}
+					<li>{{ breadcrumb.text }}</li>
+				{% endif %}
+			{% endfor %}
+		</ul>
+	</div>
+	<div class="row">
+		{{ column_left }}
+		{% if (column_left and column_right) %}
+		{% set class = 'col-sm-6' %}
+		{% elseif (column_left or column_right) %}
+		{% set class = 'col-md-9' %}
+		{% else %}
+		{% set class = 'col-sm-12' %}
+		{% endif %}
+		<div id="content" class="{{ class }}">
+			{{ content_top }}
+			<h1 class="heading_title_reviews">{{ heading_title }}</h1>
+			{% if (reviews) %}
+				<div class="row-flex category-page">
+					{% for review in reviews %}
+						<div class="product-list reviews-list col-xs-12">
+							<div class="product-thumb dflex flex-column h-100 review-item">
+								<div class="image"><a href="{{ review.prod_href }}"><img src="{{ review.prod_thumb }}" alt="{{ review.prod_name }}" title="{{ review.prod_name }}" class="img-responsive" /></a></div>
+								<div class="caption dflex flex-column flex-grow-1">
+									<div class="rc-heading dflex align-items-center">
+										<div class="rc-author-letter">{{ review.first_letter }}</div>
+										<div class="rc-author-info">
+											<div class="rc-author">
+												{{ review.author }}
+												{% if review.purchased %}
+													<span title="{{ text_purchased }}" data-toggle="tooltip" class="purchased">
+														<svg width="12" height="14" viewBox="0 0 12 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+															<path fill-rule="evenodd" clip-rule="evenodd" d="M2.32542 4.69111V5.56731C2.32542 5.82222 2.53206 6.02886 2.78696 6.02886C3.04187 6.02886 3.24851 5.82222 3.24851 5.56731V4.68964H8.75153L8.75149 5.56729C8.75148 5.8222 8.95811 6.02885 9.21302 6.02886C9.46792 6.02887 9.67457 5.82224 9.67458 5.56733L9.67462 4.69111C10.5043 4.72929 11.1719 5.50417 11.066 6.42346L10.5536 10.8734C10.4661 11.633 9.87412 12.191 9.18262 12.2243C6.8367 12.3371 5.28481 12.3357 2.82214 12.2208C2.12816 12.1884 1.53347 11.6294 1.44584 10.8685L0.933952 6.42346C0.828083 5.50415 1.49568 4.72927 2.32542 4.69111ZM9.65725 3.76701C11.0862 3.79485 12.1481 5.09601 11.9831 6.52907L11.4706 10.979C11.3353 12.1539 10.4032 13.0898 9.22694 13.1463C6.85031 13.2606 5.26923 13.259 2.77913 13.1429C1.601 13.0879 0.66446 12.152 0.528811 10.9741L0.0169193 6.52906C-0.148115 5.09599 0.913865 3.79481 2.34281 3.767C2.43034 2.62853 2.84277 1.72471 3.45804 1.08359C4.15123 0.361283 5.07652 -2.0541e-06 6.00003 0C6.92355 2.05411e-06 7.84883 0.361291 8.54203 1.0836C9.15729 1.72472 9.56972 2.62853 9.65725 3.76701ZM8.73093 3.76655C8.64694 2.85188 8.31411 2.17927 7.87601 1.72277C7.36431 1.18957 6.68305 0.923095 6.00003 0.923093C5.31701 0.923092 4.63575 1.18956 4.12405 1.72276C3.68595 2.17926 3.35312 2.85187 3.26913 3.76655H8.73093ZM8.10221 6.53917C8.3143 6.68056 8.37161 6.96713 8.23022 7.17922L6.38403 9.9485C6.31227 10.0561 6.19864 10.1287 6.07081 10.1486C5.94298 10.1684 5.81269 10.1337 5.71167 10.0529L4.17318 8.82209C3.97414 8.66286 3.94187 8.37241 4.1011 8.17336C4.26034 7.97431 4.55079 7.94204 4.74984 8.10128L5.89522 9.01759L7.46216 6.66718C7.60355 6.45509 7.89011 6.39777 8.10221 6.53917Z" fill="#45BA5F"/>
+														</svg>
+													</span>
+												{% endif %}
+											</div>
+											<div class="rc-author-rating">
+												{% for i in 1..5 %}
+													{% if review.rating < i %}
+														<i class="up-icon-16 up-icon-star" aria-hidden="true"></i>
+													{% else %}
+														<i class="up-icon-16 up-icon-star active" aria-hidden="true"></i>
+													{% endif %}
+												{% endfor %}
+											</div>
+										</div>
+										<div class="rc-date">{{ review.date_added }}</div>
+									</div>
+									<div class="product-name"><a href="{{ review.prod_href }}">{{ review.prod_name }}</a></div>
+									<div class="review-info">
+										<div class="comment">
+											{{ review.description }}
+										</div>
+										{% if show_review_plus and review.plus %}
+											<div class="review_plus">
+												<div><span>{{ text_plus }}</span>
+													{{ review.plus }}
+												</div>
+											</div>
+										{% endif %}
+										{% if show_review_minus and review.minus %}
+											<div class="review_minus">
+												<div><span>{{ text_minus }}</span>
+													{{ review.minus }}
+												</div>
+											</div>
+										{% endif %}
+										{% if review.admin_reply is defined and review.admin_reply != '' %}
+											<div class="admin_reply">
+												<div>{{ text_admin_reply }}</div>
+												{{ review.admin_reply }}
+											</div>
+										{% endif %}
+									</div>
+								</div>
+							</div>
+						</div>
+					{% endfor %}
+				</div>
+				<div class="row showmore_on">
+				<div class="col-sm-12 text-center showmore-paginatation d-flex align-items-center justify-content-between">{{ pagination }}</div>
+			</div>
+			{% else %}
+				<p>{{ text_empty }}</p>
+			{% endif %}
+			{{ content_bottom }}
+		</div>
+		{{ column_right }}
+	</div>
+</div>
+{{ footer }}

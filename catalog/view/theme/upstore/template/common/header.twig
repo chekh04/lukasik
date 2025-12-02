@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<!--[if IE 8 ]><html dir="{{ direction }}" lang="{{ lang }}" class="ie8"><![endif]-->
+<!--[if IE 9 ]><html dir="{{ direction }}" lang="{{ lang }}" class="ie9"><![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!-->
+<html dir="{{ direction }}" lang="{{ lang }}" class="{{ theme_class }}">
+<!--<![endif]-->
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>{{ title }}</title>
+{% if robots %}
+<meta name="robots" content="{{ robots }}" />
+{% endif %}
+<base href="{{ base }}" />
+{% if (description) %}
+<meta name="description" content="{{ description }}" />
+{% endif %}
+{% if (keywords) %}
+<meta name="keywords" content= "{{ keywords }}" />
+{% endif %}
+{% for link in links %}
+<link href="{{ link.href }}" rel="{{ link.rel }}" />
+{% endfor %}
+{% if (logo) %}
+<link rel="preload" as="image" href="{{ logo }}">
+{% endif %}
+{% if theme_fonts %}
+<link rel="preload" href="catalog/view/theme/upstore/stylesheet/fonts/{{ theme_fonts }}-regular.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="catalog/view/theme/upstore/stylesheet/fonts/{{ theme_fonts }}-medium.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="catalog/view/theme/upstore/stylesheet/fonts/{{ theme_fonts }}-bold.woff2" as="font" type="font/woff2" crossorigin>
+{% endif %}
+{% if css_upstore %}
+{{ css_upstore }}
+{% else %}
+{# Fallback CSS when OCMOD modifications are not applied #}
+<link rel="stylesheet" href="{{ base }}catalog/view/javascript/bootstrap/css/bootstrap.min.css"/>
+<link rel="stylesheet" href="{{ base }}catalog/view/theme/upstore/stylesheet/stylesheet.css"/>
+<link rel="stylesheet" href="{{ base }}catalog/view/theme/upstore/stylesheet/dynamic_style.css"/>
+<link rel="stylesheet" href="{{ base }}catalog/view/theme/upstore/font-awesome/css/font-awesome.min.css"/>
+{% endif %}
+{% for style in styles %}
+<link href="{{ style.href }}" rel="{{ style.rel }}" media="{{ style.media }}" />
+{% endfor %}
+{% if js_upstore %}
+{{ js_upstore }}
+{% else %}
+{# Fallback JS when OCMOD modifications are not applied #}
+<script src="{{ base }}catalog/view/javascript/jquery/jquery-2.1.1.min.js"></script>
+<script src="{{ base }}catalog/view/javascript/bootstrap/js/bootstrap.min.js"></script>
+<script src="{{ base }}catalog/view/theme/upstore/js/common.js"></script>
+{% endif %}
+<script>
+var chSetting = {};
+{% if ch_setting %}
+try { chSetting = JSON.parse(atob('{{ ch_setting }}')); } catch(e) { chSetting = {}; }
+{% endif %}
+{% if (nst_data.defaut_display_view is defined) %}
+if (localStorage.getItem('display') === null) {localStorage.setItem('display', '{{ nst_data.defaut_display_view }}');}
+{% endif %}
+</script>
+{% if scripts is not empty %}
+{% for script in scripts %}
+<script src="{{ script }}"></script>
+{% endfor %}
+{% endif %}
+{% for analytic in analytics %}
+{{ analytic }}
+{% endfor %}
+</head>
+<body class="{{ class }} {{ fix_cart_price_footer }}">
+{% if (hbannerpc[lang_id]['image'] is defined and (hbannerpc[lang_id]['image'] != '')) %}
+{% if (deviceType == 'computer') %}
+<div class="htop-b-pc hidden-xs hidden-sm" {% if (nst_data['hbannerpc'][lang_id]['bg'] is defined and (nst_data['hbannerpc'][lang_id]['bg'] != '')) %}style="background:{{ nst_data['hbannerpc'][lang_id]['bg'] }}"{% endif %}>
+<a href="{{ nst_data['hbannerpc'][lang_id]['link'] is not empty ? nst_data['hbannerpc'][lang_id]['link'] : 'javascript:;' }}">
+	<img {% if (ch_hbannerpc_width) %}width="{{ ch_hbannerpc_width }}"{% endif %}{% if (ch_hbannerpc_height) %} height="{{ ch_hbannerpc_height }}"{% endif %} src="{{ hbannerpc[lang_id]['image'] }}" alt="" class="img-responsive" />
+</a>
+</div>
+{% endif %}
+{% endif %}
+{% if (hbannermob[lang_id]['image'] is defined and (hbannermob[lang_id]['image'] != '')) %}
+{% if (deviceType == 'phone') %}
+<div class="htop-b-mob visible-xs visible-sm" {% if (nst_data['hbannermob'][lang_id]['bg'] is defined and (nst_data['hbannermob'][lang_id]['bg'] != '')) %}style="background:{{ nst_data['hbannermob'][lang_id]['bg'] }}"{% endif %}>
+<a href="{{ nst_data['hbannermob'][lang_id]['link'] is not empty ? nst_data['hbannermob'][lang_id]['link'] : 'javascript:;' }}">
+	<img {% if (ch_hbannermob_width) %}width="{{ ch_hbannermob_width }}"{% endif %}{% if (ch_hbannermob_height) %} height="{{ ch_hbannermob_height }}"{% endif %} src="{{ hbannermob[lang_id]['image'] }}" class="img-responsive" />
+</a>
+</div>
+{% endif %}
+{% endif %}
+{% if fixed_bar_footer is defined and fixed_bar_footer == 1 %}
+    <div class="fixed-goods-bar">
+        {% if show_h_wishlist is defined and show_h_wishlist == 1 %}
+            <div class="box-wishlist" {% if all_wishlist is not empty %}data-w-ids="{{ all_wishlist }}"{% endif %}>
+                <a rel="nofollow" class="btn-wishlist-top" href="{{ wishlist }}" id="wishlist-total">
+                    <i class="up-icon-22 up-icon-wishlist" aria-hidden="true"></i>
+                    {{ text_wishlist }}
+                    {% if type_header == 2 %}
+                        <span class="text-a-icon hidden-md hidden-lg">{{ text_ai_wishlist }}</span>
+                    {% endif %}
+                </a>
+            </div>
+        {% endif %}
+        {% if show_h_compare is defined and show_h_compare == 1 %}
+            <div class="box-compare" {% if all_compare is not empty %}data-c-ids="{{ all_compare }}"{% endif %}>
+                <a rel="nofollow" class="btn-compare-top" href="{{ compare }}" id="compare-total">
+                    <i class="up-icon-22 up-icon-compare" aria-hidden="true"></i>
+                    {{ text_compare }}
+                    {% if type_header == 2 %}
+                        <span class="text-a-icon hidden-md hidden-lg">{{ text_ai_compare }}</span>
+                    {% endif %}
+                </a>
+            </div>
+        {% endif %}
+        <div class="box-viewed-pc">
+            <button type="button" class="btn-viewed-pc" {% if quantity_viewed > 0 %}onclick="loadViewedProduct()"{% endif %}>
+                <i class="up-icon-22 up-icon-quickview" aria-hidden="true"></i>
+                <span class="viewed-quantity">{{ quantity_viewed }}</span>
+            </button>
+        </div>
+    </div>
+{% endif %}
+<nav id="top" class="{% if header_nav_menu_links is empty and type_header == 1 %}hidden{% else %}visible-md visible-lg{% endif %}">
+  <div class="container">
+    {% if header_nav_menu_links is not empty %}
+      <div class="pull-left">
+        <div class="btn-group box-nav-links">
+          <ul class="header-nav-links">
+            {% for header_nav_menu_link in header_nav_menu_links %}
+              <li>
+                <button
+                  {% if header_nav_menu_link.popup == '1' and header_nav_menu_link.link is not empty %}
+                    onclick="$('.side-collapse').toggleClass('in'); banner_link_open('{{ header_nav_menu_link.link }}')"
+                  {% elseif header_nav_menu_link.popup == '0' and header_nav_menu_link.link is not empty %}
+                    onclick="location='{{ header_nav_menu_link.link }}'"
+                  {% endif %}
+                  type="button"
+                  class="btn btn-link">
+                  {% if header_nav_menu_link.icon_image is not empty %}
+                    <i class="{{ header_nav_menu_link.icon_image }}"></i>
+                  {% endif %}
+                  {{ header_nav_menu_link.title[lang_id] }}
+                </button>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    {% endif %}
+    {% if type_header == 2 and theme_mode_status is defined and theme_mode_status == 1 %}
+		<div class="pull-right dflex align-items-center">
+			<div class="up-theme-mode hidden-xs hidden-sm">
+				<button aria-label="Light Theme" type="button" class="up-theme-btn light-theme-btn{% if theme_class == 'light-theme' %} active{% endif %}" onclick="setTheme('light-theme')">
+					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+						<circle cx="12" cy="12" r="5"/>
+						<path d="M12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/>
+					</svg>
+				</button>
+				<button aria-label="Dark Theme" type="button" class="up-theme-btn dark-theme-btn{% if theme_class == 'dark-theme' %} active{% endif %}" onclick="setTheme('dark-theme')">
+					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+						<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+					</svg>
+				</button>
+			</div>
+		</div>
+	{% endif %}
+    {% if type_header == 2 and (language is not empty or currency is not empty) %}
+      <div class="pull-right dflex align-items-center top-lc {{ (currency is empty or language is empty) ? 'only_one_block' : '' }}">
+        {{ language }}
+        {{ currency }}
+      </div>
+    {% endif %}
+  </div>
+</nav>
+<header class="up-header up-header-type-{{ type_menu_header }}{% if config_fixed_panel_top %} fix-header h-sticky{% endif %}">
+	<div class="container">
+		<div class="row dflex align-items-center pt-xs-5 pb-xs-5 pt-md-15 pb-md-15">
+			<div class="up-header__left d-flex align-items-center">
+				{% if status_mm and catalog_before_logo == 1 %}
+					<div class="box-menu-top pl-10 pr-10 visible-md visible-lg col-auto">
+						<button aria-label="Catalog" type="button" class="btn-menu-top {% if type_menu_header == 1 %}vh1-bl{% else %}vh2{% endif %} dflex align-items-center">
+							{% if design_icon_menu == 1 %}
+								<svg class="icon-menu-line" id="icon-menu1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 22 18">
+									<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M2 2h18M2 9h18M2 16h18"/>
+								</svg>
+							{% else %}
+								<svg id="icon-menu" class="icon-menu" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 22 22">
+									<path stroke="currentColor" stroke-linecap="round" stroke-width="1.5" d="M12.8 13.25H20m-7.2 3.15H20m-7.2 3.15H20M3 20h5.2a1 1 0 0 0 1-1v-5.2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1V19a1 1 0 0 0 1 1zM13.8 9.65H19a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1h-5.2a1 1 0 0 0-1 1v5.65a1 1 0 0 0 1 1zM3 9.65h5.2a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v5.65a1 1 0 0 0 1 1z"/>
+								</svg>
+							{% endif %}
+						</button>
+					</div>
+				{% endif %}
+				<button aria-label="{{ text_ai_menu }}" type="button" class="up-header__btn-mobile-menu btn btn-menu-mobile hidden-md hidden-lg" onclick="open_mob_menu_left()">
+					<i class="up-icon-22 up-icon-menu-line" aria-hidden="true"></i>
+					{% if show_text_after_icon_top == 1 %}
+						<span class="text-a-icon">{{ text_ai_menu }}</span>
+					{% endif %}
+				</button>
+				<div id="logo" class="up-header__logo-top">
+					<div class="up-header__logo-desktop{% if fm_logo %} visible-sm visible-md visible-lg{% endif %}">
+						{% if logo %}
+							{% if home_page == 'active' %}
+								<img {% if logo_iwh_status %}width="{{ logo_w }}" height="{{ logo_h }}"{% endif %} src="{{ logo }}" alt="{{ name }}" class="img-responsive"/>
+							{% else %}
+								<a href="{{ home }}"><img {% if logo_iwh_status %}width="{{ logo_w }}" height="{{ logo_h }}"{% endif %} src="{{ logo }}" alt="{{ name }}" class="img-responsive"/></a>
+							{% endif %}
+						{% else %}
+							<h1><a href="{{ home }}">{{ name }}</a></h1>
+						{% endif %}
+					</div>
+					{% if fm_logo %}
+						<div class="up-header__logo-mobile mr-auto">
+							{% if home_page == 'active' %}
+								<img src="{{ fm_logo }}" alt="" class="img-responsive" width="{{ fm_logo_width }}" height="{{ fm_logo_height }}">
+							{% else %}
+								<a aria-label="Logo Mobile" href="{{ home }}">
+									<img src="{{ fm_logo }}" alt="" class="img-responsive" width="{{ fm_logo_width }}" height="{{ fm_logo_height }}">
+								</a>
+							{% endif %}
+						</div>
+					{% endif %}
+				</div>
+				{% if status_mm and catalog_before_logo == 0 %}
+					<div class="box-menu-top visible-md visible-lg col-auto">
+						<button aria-label="Catalog" type="button" class="btn-menu-top {% if type_menu_header == 1 %}vh1-bl{% else %}vh2{% endif %} dflex align-items-center{% if show_text_menu %} show-tc{% endif %}">
+							{% if design_icon_menu == 1 %}
+								<i class="up-icon-22 up-icon-menu-line" aria-hidden="true"></i>
+							{% else %}
+								<i class="up-icon-22 up-icon-menu-grid" aria-hidden="true"></i>
+							{% endif %}
+							{% if show_text_menu %}
+								<span class="text-category hidden-md">{{ text_catalog }}</span>
+								<i class="up-icon-angle-down" aria-hidden="true"></i>
+							{% endif %}
+						</button>
+					</div>
+				{% endif %}
+			</div>
+			<div class="up-header__right d-flex align-items-center flex-grow-sm-1 pl-10 pr-10">
+				<div class="phone-box col-auto {% if swap_header_blocks == '1' %}f-order-3{% endif %}">
+					<button aria-label="{{ text_ai_contact }}" type="button" class="btn-open-contact dflex align-items-center justify-content-center">
+						<i class="up-icon-22 up-icon-phone-sound" aria-hidden="true"></i>
+						{% if show_text_after_icon_top == 1 %}
+							<span class="text-a-icon">{{ text_ai_contact }}</span>
+						{% endif %}
+					</button>
+					<div class="up-header-phones visible-md visible-lg{% if header_phones_dropdown is not empty or arbitrary_text[lang_id].text is not empty %} hp-dd{% endif %}">
+						<div class="up-header-phones__top dropdown-toggle up-icon">
+							<i class="up-icon-22 up-icon-phone-sound" aria-hidden="true"></i>
+							<div class="up-header-phones__items">
+								{% for phone_main in header_phones %}
+									<div class="up-header-phones__item">
+										{% if phone_main.type is not empty %}
+											<a {{ phone_main.type }}>
+											{% endif %}
+											{% if phone_main.icon_phone is not empty %}
+												<div class="up-header-phones__icon-image"><img loading="lazy" width="22" height="22" src="{{ phone_main.icon_phone }}" alt="{{ phone_main.phone }}" /></div>
+											{% elseif phone_main.icon is not empty %}
+												<div class="up-header-phones__icon-image"><i class="{{ phone_main.icon }}"></i></div>
+											{% endif %}
+											{{ phone_main.phone }}
+											{% if phone_main.type is not empty %}
+											</a>
+										{% endif %}
+									</div>
+								{% endfor %}
+								<div class="up-header-phones__text-af">{{ text_after_phone }}</div>
+							</div>
+						</div>
+						{% if header_phones_dropdown is not empty or arbitrary_text[lang_id].text is not empty %}
+							<ul class="up-header-phones__dropdown dropdown-menu ch-dropdown">
+								{% if arbitrary_text[lang_id].text is not empty %}
+									<li>{{ arbitrary_text[lang_id].text | raw }}</li>
+								{% endif %}
+								{% for phone_dropdown in header_phones_dropdown %}
+									<li>
+										{% if phone_dropdown.type is not empty %}
+											<a {{ phone_dropdown.type }}>
+												{% if phone_dropdown.icon_phone is not empty %}
+													<div class="up-header-phones__icon-image"><img loading="lazy" width="25" height="25" src="{{ phone_dropdown.icon_phone }}" alt="{{ phone_dropdown.phone }}" /></div>
+												{% elseif phone_dropdown.icon is not empty %}
+													<div class="icon-image"><i class="{{ phone_dropdown.icon }}"></i></div>
+												{% endif %}
+												{{ phone_dropdown.phone | raw }}
+											</a>
+										{% else %}
+											<div>
+												{% if phone_dropdown.icon_phone is not empty %}
+													<div class="up-header-phones__icon-image"><img loading="lazy" width="25" height="25" src="{{ phone_dropdown.icon_phone }}" alt="{{ phone_dropdown.phone }}" /></div>
+												{% elseif phone_dropdown.icon is not empty %}
+													<div class="up-header-phones__icon-image"><i class="{{ phone_dropdown.icon }}"></i></div>
+												{% endif %}
+												{{ phone_dropdown.phone | raw }}
+											</div>
+										{% endif %}
+									</li>
+								{% endfor %}
+							</ul>
+						{% endif %}
+					</div>
+				</div>
+				<div class="box-search flex-grow-sm-1">
+					<button aria-label="Search" type="button" class="btn-open-search dflex align-items-center justify-content-center hidden-sm hidden-md hidden-lg"><i class="up-icon-22 up-icon-search" aria-hidden="true"></i></button>
+					<div class="search-top visible-sm visible-md visible-lg">{{ search | raw }}</div>
+				</div>
+				<div class="box-account {% if type_header == 2 %} text-ai-on{% endif %}">
+					<button {% if type_header == 1 or deviceType == 'phone' %}aria-label="Login Register"{% endif %} class="dropdown-toggle btn-account" {% if logged %}data-toggle="dropdown"{% else %}id="login-popup" data-load-url="index.php?route=common/login_modal"{% endif %} type="button">
+						<i class="up-icon-22 up-icon-account" aria-hidden="true"></i>
+						<span class="text-a-icon{% if type_header == 1 %} hidden-md hidden-lg{% endif %}">{{ text_ai_account }}</span>
+					</button>
+					{% if logged %}
+						<ul class="dropdown-menu dropdown-menu-right ch-dropdown">
+							<li><a rel="nofollow" href="{{ account }}">{{ text_account }}</a></li>
+							<li><a rel="nofollow" href="{{ order }}">{{ text_order }}</a></li>
+							<li><a rel="nofollow" href="{{ logout }}">{{ text_logout }}</a></li>
+						</ul>
+					{% endif %}
+				</div>
+				{% if fixed_bar_footer == 0 %}
+					{% if show_h_compare == 1 %}
+						<div class="box-compare visible-md visible-lg{% if type_header == 2 %} text-ai-on{% endif %}" {% if all_compare is not empty %}data-c-ids="{{ all_compare }}"{% endif %}>
+							<a rel="nofollow" class="btn-compare-top" href="{{ compare }}" id="compare-total">
+								<i class="up-icon-22 up-icon-compare" aria-hidden="true"></i>
+								{% if total_compare > 0 %}{{ text_compare }}{% endif %}
+								<span class="text-a-icon{% if type_header == 1 %} hidden-md hidden-lg{% endif %}">{{ text_ai_compare }}</span>
+							</a>
+						</div>
+					{% endif %}
+					{% if show_h_wishlist == 1 %}
+						<div class="box-wishlist visible-md visible-lg{% if type_header == 2 %} text-ai-on{% endif %}" {% if all_wishlist is not empty %}data-w-ids="{{ all_wishlist }}"{% endif %}>
+							<a rel="nofollow" class="btn-wishlist-top" href="{{ wishlist }}" id="wishlist-total">
+								<i class="up-icon-22 up-icon-wishlist" aria-hidden="true"></i>
+								{% if total_wishlist > 0 %}{{ text_wishlist }}{% endif %}
+								<span class="text-a-icon{% if type_header == 1 %} hidden-md hidden-lg{% endif %}">{{ text_ai_wishlist }}</span>
+							</a>
+						</div>
+					{% endif %}
+				{% endif %}
+				<div class="box-cart {% if type_header == 2 %} text-ai-on{% endif %}">{{ cart }}</div>
+				{% if type_header == 1 and (language is not empty or currency is not empty) %}
+					<div class="box-language-currency {{ (currency is empty or language is empty) ? 'only_one_block' : '' }}">
+						{{ language }}
+						{{ currency }}
+					</div>
+				{% endif %}
+				{% if type_header == 1 and theme_mode_status is defined and theme_mode_status == 1 %}
+					<div class="up-theme-mode hidden-xs hidden-sm">
+						<button aria-label="Light Theme" type="button" class="up-theme-btn light-theme-btn{% if theme_class == 'light-theme' %} active{% endif %}" onclick="setTheme('light-theme')">
+							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+								<circle cx="12" cy="12" r="5"/>
+								<path d="M12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/>
+							</svg>
+						</button>
+						<button aria-label="Dark Theme" type="button" class="up-theme-btn dark-theme-btn{% if theme_class == 'dark-theme' %} active{% endif %}" onclick="setTheme('dark-theme')">
+							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+								<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+							</svg>
+						</button>
+					</div>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+{% if (megamenu_status) %}
+	{{ upstore_dopmenu }}
+	{% include "upstore/template/common/hmob_menu.twig" %}
+{% endif %}
+</header>
+{% if (megamenu_status) %}
+	<div class="menu-header-box {% if chm_mm_open_hp %}mm_open_hp{% endif %} hidden-xs hidden-sm type-menu-h-{{ type_menu_header }}">
+		<div class="container pos-r">
+			<div class="row dflex">
+				{{ menuvh }}
+			</div>
+		</div>
+	</div>
+{% endif %}
+<main>

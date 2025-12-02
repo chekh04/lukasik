@@ -1,0 +1,40 @@
+<div class="form-group">
+	<label class="col-sm-3 control-label">{{ entry_status }}</label>
+	<div class="col-sm-9">
+		<div class="radio-group-infinity">
+			{% if (chm_not_found_status is defined and (chm_not_found_status == 1)) %}
+			<input id="chm_nf_status_yes" class="hide-radio" type="radio" name="chm_not_found_status" value="1" checked="checked" />
+			<label for="chm_nf_status_yes">{{ text_yes }}</label>
+			{% else %}
+			<input id="chm_nf_status_yes" class="hide-radio" type="radio" name="chm_not_found_status" value="1" />
+			<label for="chm_nf_status_yes">{{ text_yes }}</label>
+			{% endif %}
+			{% if (chm_not_found_status is not defined or (chm_not_found_status == 0)) %}
+			<input id="chm_nf_status_no" class="hide-radio" type="radio" name="chm_not_found_status" value="0" checked="checked" />
+			<label for="chm_nf_status_no">{{ text_no }}</label>
+			{% else %}
+			<input id="chm_nf_status_no" class="hide-radio" type="radio" name="chm_not_found_status" value="0" />
+			<label for="chm_nf_status_no">{{ text_no }}</label>
+			{% endif %}
+		</div>
+	</div>
+</div>
+<ul class="nav nav-tabs" id="page-404-language">
+	{% for language in languages %}
+		<li><a href="#page-404-language{{ language['language_id'] }}" data-toggle="tab"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /> {{ language['name'] }}</a></li>
+	{% endfor %}
+</ul>
+<div class="tab-content">
+{% for language in languages %}
+	<div class="tab-pane" id="page-404-language{{ language['language_id'] }}">
+		<div class="form-group">
+        <div class="col-sm-12">
+          <textarea name="chm_not_found_description[{{ language['language_id'] }}]" id="input-page-404-description{{ language['language_id'] }}" data-toggle="summernote" data-lang="{{ summernote }}" class="form-control">{{ chm_not_found_description[language.language_id] ? chm_not_found_description[language.language_id] }}</textarea>
+        </div>
+      </div>
+	</div>
+{% endfor %}
+</div>
+<script>
+$('#page-404-language a:first').tab('show');
+</script>

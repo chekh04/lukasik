@@ -1,0 +1,77 @@
+<div class="modal-dialog chm-modal sm-modal-4 modal-dialog-centered">
+	<div class="modal-content">
+		<form id="login_data" enctype="multipart/form-data" method="post">
+			<div class="modal-header">
+				<div class="modal-title">{{ text_login }}</div>
+				<button type="button" class="close-modal" data-dismiss="modal"><i class="up-icon-close" aria-hidden="true"></i></button>
+			</div>
+			<div class="modal-body">
+				<div class="form-group field_required">
+					<div class="input-group-flex">
+						<div class="input-group-icon"><img src="catalog/view/theme/upstore/image/form-icon/email-icon.svg" alt=""></div>
+						<input type="text" name="emailpopup" value="" placeholder="{{ entry_email }}" id="input-email-popup" class="form-control" />
+					</div>
+				</div>
+				<div class="form-group field_required">
+					<div class="input-group-flex">
+						<div class="input-group-icon"><img src="catalog/view/theme/upstore/image/form-icon/password-icon.svg" alt=""></div>
+						<input type="password" name="passwordpopup" value="" placeholder="{{ entry_password }}" id="input-password-popup" class="form-control" />
+					</div>
+					<div class="d-flex align-items-center justify-content-between mt-10">
+						<div class="register"><a class="register" href="{{ register }}">{{ text_register }}</a></div>
+						<div class="forgotten-pass"><a class="forgotten" href="{{ forgotten }}">{{ text_forgotten }}</a></div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<div class="row">
+					<div class="col-xs-12 col-sm-12">
+						<button class="chm-btn chm-btn-primary chm-lg-rounded w-100" type="button" id="button-login-popup">{{ button_login }}</button>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+<script>
+	$(document).delegate('#button-login-popup', 'click', function() {
+		$.ajax({
+			url: 'index.php?route=common/login_modal/login_validate',
+			type: 'post',
+			data: $('#login_data input[type="text"], #login_data input[type="password"]'),
+			dataType: 'json',
+			beforeSend: function() {
+				creatOverlayLoadPage(true);
+				$('#button-login-popup').data('original-content', $('#button-login-popup').html());
+				$('#button-login-popup').html('<i class="fa fa-spinner fa-spin"></i>').prop('disabled', true);
+			},
+			complete: function() {
+				setTimeout(function () {
+					creatOverlayLoadPage(false);
+					$('#button-login-popup').html($('#button-login-popup').data('original-content')).prop('disabled', false);
+				}, 300);
+			},
+			success: function(json) {
+				$('.alert.ch-alert-danger').remove();
+				if (json['islogged']) {
+					window.location.href="index.php?route=account/account";
+				}
+				if (json['error']) {
+					$('body').append('<div class="alert ch-alert-danger"><img class="success-icon" alt="success-icon" src="catalog/view/theme/upstore/image/warning-icon.svg"><div class="text-modal-block">' + json['error'] + '</div><button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+				}
+
+				setTimeout(function () {
+					$('.ch-alert-danger').remove();
+				}, 3000);
+
+				if (json['success']) {
+					location.reload();
+					$('#login-form-popup').modal('hide');
+				}
+			},
+			error: function(xhr, ajaxOptions, thrownError) {
+				alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+			}
+		});
+	});
+</script>

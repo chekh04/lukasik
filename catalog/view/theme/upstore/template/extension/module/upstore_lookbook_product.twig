@@ -1,0 +1,21 @@
+<div class="lookbook-product-popup">
+    <div class="lookbook-product-popup__image">
+        <img class="img-responsive" decoding="async" width="120" height="120" loading="lazy" src="{{ image }}" alt="{{ product_name }}" />
+    </div>
+    <div class="lookbook-product-popup__title"><a href="{{ href }}">{{ product_name }}</a></div>
+    <div class="lookbook-product-popup__price">
+        {% if not special %}
+            <span class="price_value">{{ price }}</span>
+        {% else %}
+            <span class="price-old"><span class="price_value">{{ price }}</span></span>
+            <span class="price-new"><span class="special_value">{{ special }}</span></span>
+        {% endif %}
+    </div>
+    <div class="lookbook-product-popup__cart">
+        {% if show_buy_button %}
+            <button aria-label="Add to cart" class="btn btn-general squircle" type="button" onclick="cart.add('{{ product_id }}', this)"><i class="up-icon-22 up-icon-cart" aria-hidden="true"></i><span class="text-cart-add">{{ button_cart }}</span></button>
+        {% else %}
+            <button aria-label="notify stock" class="btn btn-general squircle{% if in_waitlist %} is-active{% endif %}" type="button" onclick="upstoreNotifyStock('{{ product_id }}');"><i class="up-icon-22 up-icon-notify" aria-hidden="true"></i><span class="text-cart-add">{{ button_notify_stock }}</span></button>
+        {% endif %}
+    </div>
+</div>

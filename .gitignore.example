@@ -1,0 +1,69 @@
+# OpenCart Local Development .gitignore
+
+# Config files (contains credentials)
+config.php
+admin/config.php
+config.local.php
+admin/config.local.php
+*.production.php
+
+# Cache
+system/storage/cache/*
+!system/storage/cache/index.html
+minify-cache/*
+
+# Logs
+system/storage/logs/*
+!system/storage/logs/index.html
+*.log
+
+# Sessions
+system/storage/session/*
+!system/storage/session/index.html
+
+# Uploads
+system/storage/upload/*
+!system/storage/upload/index.html
+system/storage/download/*
+!system/storage/download/index.html
+
+# Image cache
+image/cache/*
+!image/cache/index.html
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Backup files
+*.bak
+*.backup
+*.sql
+*.sql.gz
+
+# Vendor (if using composer)
+vendor/
+node_modules/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Temp files
+tmp/
+temp/
+cookie.txt
+

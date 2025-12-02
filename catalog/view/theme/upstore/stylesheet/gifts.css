@@ -1,0 +1,100 @@
+.product-gifts {
+	border-bottom: 1px solid var(--up-border-color);
+	padding-bottom: 25px;
+	margin-bottom: 22px;
+}
+.product-gifts__title{
+	font-size: 16px;
+	color: var(--up-text-wd-color);
+	margin-bottom: 20px;
+	font-weight: 500;
+}
+.product-gifts__list {
+	display: flex;
+	gap:15px;
+}
+.product-gifts__item {
+	position: relative;
+}
+.product-gifts__item:last-child {
+	margin-bottom: 0px;
+}
+.product-gifts__item input {
+	display: none;
+}
+.product-gifts__item label {
+	display: -ms-flexbox;
+	display: -webkit-box;
+	display: flex;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+	margin-bottom: 0;
+	cursor: pointer;
+}
+.product-gifts__item label:hover > .product-gifts__image,
+.product-gifts__item input:checked + .product-gifts__image {
+	outline:2px solid #84C1A8;
+}
+.product-gifts__item input.off-gift + .product-gifts__image {
+	opacity: .5;
+}
+.product-gifts__item label.off-label-gift:hover {
+	cursor: not-allowed;
+}
+.product-gifts__item input:checked + .product-gifts__image:after {
+	position: absolute;
+	content: "\e906";
+	font-size: 12px;
+	display: inline-flex;
+	margin-right: 4px;
+	font-family: 'upstore' !important;
+	color: #84C1A8;
+	background: #fff;
+	padding: 2px;
+	border-radius: 50px;
+	bottom: 6px;
+	right: 1px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 16px;
+	height: 16px;
+}
+.product-gifts__image {
+	width: 70px;
+	height: 70px;
+	display: -ms-flexbox;
+	display: -webkit-box;
+	display: flex;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+	-webkit-box-pack: center;
+	-ms-flex-pack: center;
+	justify-content: center;
+	border-radius:16px;
+	max-width: 70px;
+}
+.product-gifts__image img {
+	padding: 5px;
+	max-width: 56px;
+}
+.light-theme .product-gifts__image img {
+	mix-blend-mode: multiply;
+}
+.light-theme .product-gifts__image:before {
+	content: '';
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	right: 0px;
+	bottom: 0px;
+	height: auto;
+	background-color: rgba(0,0,0,.022);
+	border-radius: 16px;
+}
+.dark-theme .product-gifts__image {
+	background: #ffffff;
+	border-radius: 16px;
+}

@@ -1,0 +1,52 @@
+<div class="container-slideshow">
+    <div id="slideshow{{ module }}" class="swiper swiper-slideshow">
+        <div class="swiper-slideshow-arrow prev-prod"><i class="up-icon-22 up-icon-arrow-left" aria-hidden="true"></i></div>
+        <div class="swiper-slideshow-arrow next-prod"><i class="up-icon-22 up-icon-arrow-right" aria-hidden="true"></i></div>
+        <div class="swiper-wrapper">
+            {% for banner in banners %}
+            <div class="item swiper-slide">
+                <div class="inner-item">
+                    {% if banner.link %}
+                        <a href="{{ banner.link }}"><img width="{{ banner.width }}" height="{{ banner.height }}" src="{{ banner.image }}" alt="{{ banner.title }}" class="img-responsive" /></a>
+                    {% else %}
+                        <img width="{{ banner.width }}" height="{{ banner.height }}" src="{{ banner.image }}" alt="{{ banner.title }}" class="img-responsive" />
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="swiper-slideshow-pagination swiper-pagination"></div>
+    </div>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var slideshow_next = document.querySelector('#slideshow{{ module }}').closest('.container-slideshow').querySelector('.next-prod'),
+            slideshow_prev = document.querySelector('#slideshow{{ module }}').closest('.container-slideshow').querySelector('.prev-prod'),
+            slideshow_pagination = document.querySelector('#slideshow{{ module }}').closest('.container-slideshow').querySelector('.swiper-slideshow-pagination');
+
+        var swiperSlideshow = new Swiper('#slideshow{{ module }}', {
+            watchSlidesVisibility: true,
+            watchSlidesProgress: true,
+            watchOverflow: true,
+            observer: true,
+            observeParents: true,
+            nested: false,
+            slidesPerView: 1,
+            effect: 'fade',
+            loop: true,
+            fadeEffect: {
+                crossFade: true
+            },
+            navigation: {
+                nextEl: slideshow_next,
+                prevEl: slideshow_prev,
+            },
+            pagination: {
+                el: slideshow_pagination,
+                type: 'bullets',
+                clickable: true
+            },
+            speed: 300,
+        });
+    });
+    </script>
+</div>

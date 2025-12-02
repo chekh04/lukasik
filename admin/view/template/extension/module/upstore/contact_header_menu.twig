@@ -1,0 +1,342 @@
+<div class="form-group">
+	<label class="col-sm-3 control-label">{{ text_show_h_compare }}</label>
+	<div class="col-sm-9">
+		<div class="checkbox-group-pixelshop">
+			<label><input type="checkbox" name="show_h_compare" value="1" {{ show_h_compare is defined and show_h_compare == '1' ? 'checked="checked"' : '' }} /><span></span></label>
+		</div>
+	</div>
+</div>
+<div class="form-group">
+	<label class="col-sm-3 control-label">{{ text_show_h_wishlist }}</label>
+	<div class="col-sm-9">
+		<div class="checkbox-group-pixelshop">
+			<label><input type="checkbox" name="show_h_wishlist" value="1" {{ show_h_wishlist is defined and show_h_wishlist == '1' ? 'checked="checked"' : '' }} /><span></span></label>
+		</div>
+	</div>
+</div>
+<div class="form-group">
+	<label class="col-sm-3 control-label">{{ text_fixed_bar_footer }}</label>
+	<div class="col-sm-9">
+		<div class="checkbox-group-pixelshop">
+			<label><input type="checkbox" name="fixed_bar_footer" value="1" {{ fixed_bar_footer is defined and fixed_bar_footer == '1' ? 'checked="checked"' : '' }} /><span></span></label>
+		</div>
+	</div>
+</div>
+<div class="form-group">
+	<label class="col-sm-3 control-label">{{ text_show_category_search }}</label>
+	<div class="col-sm-9">
+		<div class="checkbox-group-pixelshop">
+			<label><input type="checkbox" name="show_hc_search" value="1" {{ show_hc_search is defined and show_hc_search == '1' ? 'checked="checked"' : '' }} /><span></span></label>
+		</div>
+	</div>
+</div>
+<div class="form-group">
+	<div class="col-sm-12">
+	<b>{{ text_info_mob }}</b><hr>
+	<ul class="nav nav-tabs" id="language_description_info_mob">
+		{% for language in languages %}
+			<li><a href="#language_description_info_mob{{ language['language_id'] }}" data-toggle="tab"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /> {{ language['name'] }}</a></li>
+		{% endfor %}
+	</ul>
+	<div class="tab-content">
+		{% for language in languages %}
+			<div class="tab-pane" id="language_description_info_mob{{ language['language_id'] }}">
+				<textarea class="form-control" data-toggle="summernote" data-lang="{{ summernote }}" name="language_description_info_mob[{{ language['language_id'] }}][text]" id="input-description-info-mob{{ language['language_id'] }}" class="form-control">{{ language_description_info_mob[language['language_id']]['text'] is defined ? language_description_info_mob[language['language_id']]['text'] : '' }}</textarea>
+			</div>
+		{% endfor %}
+	</div>
+	</div>
+	<script>
+	$('#language_description_info_mob a:first').tab('show');
+	</script>
+</div>
+<div class="form-group">
+	<div class="col-sm-12 title-setting">{{ text_header_nav_menu }}</div>
+</div>
+<table id="items_top_menu" class="table table-bordered table-hover">
+	<thead>
+		<tr>
+			<td>{{ column_banner_icon }}</td>
+			<td>{{ column_banner_name }}</td>
+			<td>{{ column_banner_link }}</td>
+			<td>{{ text_open_banner_popup }}</td>
+			<td></td>
+		</tr>
+	</thead>
+	<tbody>
+	{% set item_row_nav_menu = 0 %}
+	{% for header_nav_menu_link in header_nav_menu_links %}
+		<tr id="item-row-menu-top{{ item_row_nav_menu }}">
+			<td class="text-left">
+				<span class="icon_open" id="header_nav_menu_link_icon_{{ item_row_nav_menu }}" onclick="icon_fontawesome_popup($(this).attr('id'))">
+					{{ text_select_icon }}
+					{% if (header_nav_menu_link['icon_image'] is defined) %}<i class="{{ header_nav_menu_link['icon_image'] }}"></i>{% endif %}
+				</span>
+				<input class="form-control" type="hidden" name="header_nav_menu_link[{{ item_row_nav_menu }}][icon_image]" value="{{ header_nav_menu_link['icon_image'] }}" />
+			</td>
+			<td class="text-left">
+				{% for language in languages %}
+				<div class="input-group pull-left">
+				<span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>
+				<input class="form-control" type="text" name="header_nav_menu_link[{{ item_row_nav_menu }}][title][{{ language['language_id'] }}]" value="{{ header_nav_menu_link['title'][language['language_id']] }}" />
+				</div>
+				{% endfor %}
+			</td>
+			<td class="text-left">
+				{% for language in languages %}
+					<div class="input-group pull-left">
+						<span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>
+						<input class="form-control" type="text" name="header_nav_menu_link[{{ item_row_nav_menu }}][link][{{ language['language_id']}}]" value="{{ header_nav_menu_link['link'][language['language_id']] is defined ? header_nav_menu_link['link'][language['language_id']] : '' }}" />
+					</div>
+				{% endfor %}
+			</td>
+			<td class="text-center">
+			<div class="form-group">
+					<div class="col-sm-12">
+						<div class="radio-group-infinity">
+							{% if (header_nav_menu_link['popup']) %}
+								<input id="header_nav_menu_link_popup_yes_{{ item_row_nav_menu }}" class="hide-radio" type="radio" name="header_nav_menu_link[{{ item_row_nav_menu }}][popup]" value="1" checked="checked" />
+								<label for="header_nav_menu_link_popup_yes_{{ item_row_nav_menu }}">{{ text_yes }}</label>
+							{% else %}
+								<input id="header_nav_menu_link_popup_yes_{{ item_row_nav_menu }}" class="hide-radio" type="radio" name="header_nav_menu_link[{{ item_row_nav_menu }}][popup]" value="1" />
+								<label for="header_nav_menu_link_popup_yes_{{ item_row_nav_menu }}">{{ text_yes }}</label>
+							{% endif %}
+							{% if (not header_nav_menu_link['popup']) %}
+								<input id="header_nav_menu_link_popup_no_{{ item_row_nav_menu }}" class="hide-radio" type="radio" name="header_nav_menu_link[{{ item_row_nav_menu }}][popup]" value="0" checked="checked" />
+								<label for="header_nav_menu_link_popup_no_{{ item_row_nav_menu }}">{{ text_no }}</label>
+							{% else %}
+								<input id="header_nav_menu_link_popup_no_{{ item_row_nav_menu }}" class="hide-radio" type="radio" name="header_nav_menu_link[{{ item_row_nav_menu }}][popup]" value="0" />
+								<label for="header_nav_menu_link_popup_no_{{ item_row_nav_menu }}">{{ text_no }}</label>
+							{% endif %}
+						</div>
+					</div>
+			</div>
+			</td>
+			<td class="text-right">
+				<a class="btn btn-danger" onclick="$('#item-row-menu-top{{ item_row_nav_menu }}').remove();" data-toggle="tooltip" title="{{ text_delete }}"><i class="fa fa-trash-o"></i></a>
+			</td>
+		</tr>
+		{% set item_row_nav_menu = item_row_nav_menu + 1 %}
+	{% endfor %}
+	</tbody>
+	<tfoot>
+		<tr>
+			<td colspan="4"></td>
+			<td class="text-right"><a class="btn btn-primary" onclick="addMenuTop();" data-toggle="tooltip" title="{{ text_add }}"><i class="fa fa-plus-circle"></i></a></td>
+		</tr>
+	</tfoot>
+</table>
+<script>
+var item_row_nav_menu = {{ item_row_nav_menu }};
+
+function addMenuTop() {
+	html  = '<tr id="item-row-menu-top' + item_row_nav_menu + '">';
+	html += '<td class="text-left">';
+	html += '<span class="icon_open" id="header_nav_menu_link_icon_' + item_row_nav_menu + '" onclick="icon_fontawesome_popup($(this).attr(\'id\'))">';
+	html += '{{ text_select_icon }}';
+	html += '</span>';
+	html += '<input class="form-control" type="hidden" name="header_nav_menu_link[' + item_row_nav_menu + '][icon_image]" value="" />';
+	html += '</td>';
+	html += '<td class="text-left">';
+	{% for language in languages %}
+	html += '<div class="input-group pull-left"><span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>';
+	html += '<input class="form-control" type="text" name="header_nav_menu_link[' + item_row_nav_menu + '][title][{{ language['language_id'] }}]" value="" />';
+	html += '</div>';
+	{% endfor %}
+	html += '</td>';
+	html += '<td class="text-left">';
+	html += '	{% for language in languages %}';
+	html += '		<div class="input-group pull-left">';
+	html += '			<span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>';
+	html += '			<input class="form-control"  type="text" name="header_nav_menu_link[' + item_row_nav_menu + '][link][{{ language['language_id'] }}]" value="" />';
+	html += '		</div>';
+	html += '	{% endfor %}';
+	html += '</td>';
+	html += '<td>';
+	html += '<div class="form-group">';
+	html += '	<div class="col-sm-12 text-center">';
+	html += '	<div class="radio-group-infinity">';
+	html += '		<input id="banner_items_footer_yes_' + item_row_nav_menu + '" class="hide-radio" type="radio" name="header_nav_menu_link[' + item_row_nav_menu + '][popup]" value="1"/>';
+	html += '		<label for="banner_items_footer_yes_' + item_row_nav_menu + '">{{ text_yes }}</label>';
+	html += '		<input id="banner_items_footer_no_' + item_row_nav_menu + '" class="hide-radio" type="radio" name="header_nav_menu_link[' + item_row_nav_menu + '][popup]" value="0" checked="checked" />';
+	html += '		<label for="banner_items_footer_no_' + item_row_nav_menu + '">{{ text_no }}</label>';
+	html += '	</div>';
+	html += '	</div>';
+	html += '</div>';
+	html += '</td>';
+	html += '<td class="text-right"><a class="btn btn-danger" onclick="$(\'#item-row-menu-top' + item_row_nav_menu  + '\').remove();" data-toggle="tooltip" title="{{ text_delete }}"><i class="fa fa-trash-o"></i></a></td>';
+	html += '</tr>';
+
+	$('#items_top_menu tbody').append(html);;
+
+	item_row_nav_menu++;
+}
+</script>
+
+	<div class="form-group">
+		<label class="col-sm-3 control-label">{{ text_swap_header_blocks }}</label>
+		<div class="col-sm-9">
+			<div class="radio-group-infinity">
+				{% if (swap_header_blocks) %}
+				<input id="swap_header_blocks_yes" class="hide-radio" type="radio" name="swap_header_blocks" value="1" checked="checked" />
+				<label for="swap_header_blocks_yes">{{ text_yes }}</label>
+				{% else %}
+				<input id="swap_header_blocks_yes" class="hide-radio" type="radio" name="swap_header_blocks" value="1" />
+				<label for="swap_header_blocks_yes">{{ text_yes }}</label>
+				{% endif %}
+				{% if (not swap_header_blocks) %}
+				<input id="swap_header_blocks_no" class="hide-radio" type="radio" name="swap_header_blocks" value="0" checked="checked" />
+				<label for="swap_header_blocks_no">{{ text_no }}</label>
+				{% else %}
+				<input id="swap_header_blocks_no" class="hide-radio" type="radio" name="swap_header_blocks" value="0" />
+				<label for="swap_header_blocks_no">{{ text_no }}</label>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-3 control-label">{{ entry_search_word }}</label>
+		<div class="col-sm-5">
+			<tr>
+				<td class="text-left">
+				{% for language in languages %}
+					<div class="input-group"><span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>
+						<textarea name="search_word[{{ language['language_id'] }}][text]" rows="5" placeholder="" class="form-control">{{ search_word[language['language_id']] is defined ? search_word[language['language_id']]['text'] : '' }}</textarea>
+					</div>
+				{% endfor %}
+				</td>
+			</tr>
+		</div>
+	</div>
+		<div class="form-group">
+			<label class="col-sm-12 text-left">{{ text_additional_phone }}</label>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-12 ns-input-group">
+			{% set phone_row = 0 %}
+			<div id="telephone_header">
+				{% if (config_phones_array) %}
+				{% for config_phone in config_phones_array %}
+				<div class="input-group">
+					<span class="input-group-addon" style="cursor:move;"><i class="fa fa-hand-grab-o" aria-hidden="true"></i></span>
+					<span class="input-group-addon image_phone">
+						<a href="" id="thumb-image-phone{{ phone_row }}" data-toggle="image" class="img-thumbnail">
+						<img data-placeholder="{{ placeholder_phone }}" src="{{ config_phone['icon_phone'] }}" alt=""/></a>
+						<input type="hidden" name="config_phones_header[{{ phone_row }}][image]" value="{{ config_phone['image'] }}" id="input-image-phone-{{ phone_row }}" />
+					</span>
+
+					<span class="input-group-addon icon_open" style="display: table-cell;float:none;" id="header_phone_icon_{{ phone_row }}" onclick="icon_fontawesome_popup($(this).attr('id'))">
+						{{ text_select_icon }}
+						{% if (config_phone['icon'] is defined) %}<i class="{{ config_phone['icon'] }}"></i>{% endif %}
+					</span>
+					<input class="form-control" type="hidden" name="config_phones_header[{{ phone_row }}][icon]" value="{{ config_phone['icon'] }}" />
+
+					<div class="group-ta">
+					{% for language in languages %}
+					<div class="input-group-dflex">
+						<span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>
+						<textarea placeholder="{{ text_type_fields }}" class="form-control textarea-no-resize" type="text" name="config_phones_header[{{ phone_row }}][type][{{ language['language_id'] }}]">{{ config_phone['type'][language['language_id']] is defined ? config_phone['type'][language['language_id']]: '' }}</textarea>
+						<textarea class="form-control textarea-no-resize" type="text" name="config_phones_header[{{ phone_row }}][phone][{{ language['language_id'] }}]">{{ config_phone['phone'][language['language_id']] is defined ? config_phone['phone'][language['language_id']] : '' }}</textarea>
+
+					</div>
+					{% endfor %}
+
+					</div>
+					<span style="min-width: 175px;" class="input-group-addon cs-pad-addon">
+						<select class="form-control" name="config_phones_header[{{ phone_row }}][dropdown]">
+							{% if (config_phone['dropdown'] == '1') %}
+								<option value="1" selected="selected">{{ text_show_in_site_header_tel }}</option>
+								<option value="0">{{ text_in_dropdown_list_tel }}</option>
+							{% else %}
+								<option value="1">{{ text_show_in_site_header_tel }}</option>
+								<option value="0" selected="selected">{{ text_in_dropdown_list_tel }}</option>
+							{% endif %}
+						</select>
+					</span>
+					<span class="input-group-addon cs-pad-addon"><a class="btn btn-danger" onclick="$(this).parent().parent().remove()" data-toggle="tooltip" title="" data-original-title="{{ text_delete }}"><i class="fa fa-trash-o"></i></a></span>
+				</div>
+				{% set phone_row = phone_row + 1 %}
+				{% endfor %}
+				{% endif %}
+			</div>
+				<div style="margin-top:10px;">
+					<a onclick="addPhone();" class="btn btn-primary">{{ text_add }}</a></div>
+			</div>
+		</div>
+		<script>
+			Sortable.create(telephone_header, {
+			  handle: '.fa-hand-grab-o',
+			  animation: 150
+			});
+		</script>
+		<hr>
+
+ <script><!--
+var phone_row = {{ phone_row }};
+function addPhone() {
+	html  = '<div class="input-group">';
+	html += ' 	<span class="input-group-addon" style="cursor:move;"><i class="fa fa-arrows" aria-hidden="true"></i></span>';
+	html += ' 	<span class="input-group-addon image_phone">';
+	html += '  		<a href="" id="thumb-image-phone'+ phone_row +'" data-toggle="image" class="img-thumbnail">';
+	html += '  		<img data-placeholder="{{ placeholder_phone }}" src="{{ placeholder_phone }}" alt=""/></a>';
+	html += '  		<input type="hidden" name="config_phones_header['+ phone_row +'][image]" value="" id="input-image-phone-'+ phone_row +'" />';
+	html += ' 	</span>';
+	html += '	<span style="display: table-cell;float:none;" class="input-group-addon icon_open" id="header_phone_icon_'+ phone_row +'" onclick="icon_fontawesome_popup($(this).attr(\'id\'))">';
+	html += '		{{ text_select_icon }}';
+	html += '	</span>';
+
+	html += '	<div class="group-ta">';
+				{% for language in languages %}
+	html += '			<div class="input-group-dflex">';
+	html += '				<span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>';
+	html += '				<textarea placeholder="{{ text_type_fields }}" class="form-control textarea-no-resize" type="text" name="config_phones_header['+ phone_row +'][type][{{ language['language_id'] }}]"></textarea>';
+	html += '				<textarea class="form-control textarea-no-resize" type="text" name="config_phones_header['+ phone_row +'][phone][{{ language['language_id'] }}]"></textarea>';
+	html += '			</div>';
+				{% endfor %}
+	html += ' 	</div>';
+
+	html += ' 	<span style="min-width: 175px;" class="input-group-addon cs-pad-addon">';
+	html += '	<select class="form-control" name="config_phones_header['+ phone_row +'][dropdown]">';
+	html += '		<option value="0">{{ text_in_dropdown_list_tel }}</option>';
+	html += '		<option value="1">{{ text_show_in_site_header_tel }}</option>';
+	html += '	</select>';
+	html += '	</span>';
+
+	html += '	<span class="input-group-addon cs-pad-addon"><a class="btn btn-danger" onclick="$(this).parent().parent().remove()" data-toggle="tooltip" title="" data-original-title="{{ text_delete }}"><i class="fa fa-trash-o"></i></a></span>';
+	html += '</div>';
+	$('#telephone_header').append(html);
+	phone_row++;
+}
+//--></script>
+	<div class="form-group">
+		<label class="col-sm-3 control-label">{{ entry_custom_text_after_tel }}</label>
+		<div class="col-sm-5">
+			<tr>
+				<td class="text-left">
+				{% for language in languages %}
+					<div class="input-group"><span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>
+												<textarea rows="4" name="text_after_phone[{{ language['language_id'] }}][text]" class="form-control">{{ text_after_phone[language['language_id']] is defined ? text_after_phone[language['language_id']]['text'] : '' }}</textarea>
+					</div>
+				{% endfor %}
+				</td>
+			</tr>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-3 control-label">{{ entry_custom_text_in_dropdown_list }}</label>
+		<div class="col-sm-5">
+			<tr>
+				<td class="text-left">
+				{% for language in languages %}
+					<div class="input-group"><span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>
+						<textarea rows="4" name="arbitrary_text[{{ language['language_id'] }}][text]" class="form-control">{{ arbitrary_text[language['language_id']] is defined ? arbitrary_text[language['language_id']]['text'] : '' }}</textarea>
+
+					</div>
+				{% endfor %}
+				</td>
+			</tr>
+		</div>
+	</div>
+
+
+

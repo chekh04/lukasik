@@ -1,0 +1,118 @@
+<div class="checkout-payment-method h-100">
+	<div class="checkout-heading">{{ title_payment_method }}</div>
+	<div class="payment-method">
+		{% if error_warning %}
+			<div class="alert alert-warning"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}</div>
+		{% endif %}
+		{% if payment_methods %}
+			{% for payment_method in payment_methods %}
+				<div class="radio chm-radio">
+					<label>
+						{% if (payment_method['code'] == payment_code or not payment_code) %}
+							{% set payment_code = payment_method['code'] %}
+							<input type="radio" name="payment_method" value="{{ payment_method['code'] }}" checked="checked" />
+						{% else %}
+							<input type="radio" name="payment_method" value="{{ payment_method['code'] }}" />
+						{% endif %}
+						{% if payment_method.image %}<img class="img-responsive" width="{{ payment_method.image_width }}" height="{{ payment_method.image_height }}" src="{{ payment_method.image }}">{% endif %}
+						{{ payment_method['title'] }}
+					</label>
+					{% if ((payment_method['code'] == payment_code or not payment_code) and (payment_method['pm_description'] is not empty)) %}
+					<div class="text-info-pm">
+						{{ payment_method['pm_description'] }}
+					</div>
+					{% endif %}
+				</div>
+				{% if (payment_method.code == payment_code or not payment_code) and payment_method.custom_fields is not empty %}
+					{% for custom_field in payment_method.custom_fields %}
+						{% if custom_field.type == 'select' %}
+							<div class="form-group col-xs-12 col-sm-6 custom-field{% if custom_field.required %} required{% endif %}" id="input-custom-field{{ custom_field.custom_field_id }}">
+								<label class="control-label opc-label" for="input-custom-field{{ custom_field.custom_field_id }}">{{ custom_field.name }}</label>
+								<select name="custom_field[{{ custom_field.location }}][{{ custom_field.custom_field_id }}]" id="input-custom-field{{ custom_field.custom_field_id }}" class="form-control">
+									<option value="">{{ text_select }}</option>
+									{% for custom_field_value in custom_field.custom_field_value %}
+										<option value="{{ custom_field_value.custom_field_value_id }}" {% if payment_custom_field[custom_field.custom_field_id] is defined and custom_field_value.custom_field_value_id == payment_custom_field[custom_field.custom_field_id] %}selected="selected"{% endif %}>
+											{{ custom_field_value.name }}
+										</option>
+									{% endfor %}
+								</select>
+							</div>
+						{% elseif custom_field.type == 'radio' %}
+							<div class="form-group col-xs-12 col-sm-6 custom-field{% if custom_field.required %} required{% endif %}" id="custom-field{{ custom_field.custom_field_id }}">
+								<label class="control-label opc-label">{{ custom_field.name }}</label>
+								<div id="input-custom-field{{ custom_field.custom_field_id }}">
+									{% for custom_field_value in custom_field.custom_field_value %}
+										<div class="radio">
+											<label class="chm-radio">
+												<input class="checkbox-input" type="radio" name="custom_field[{{ custom_field.location }}][{{ custom_field.custom_field_id }}]" value="{{ custom_field_value.custom_field_value_id }}" {% if payment_custom_field[custom_field.custom_field_id] is defined and custom_field_value.custom_field_value_id == payment_custom_field[custom_field.custom_field_id] %}checked="checked"{% endif %} />
+												<span class="checkbox-radio"></span>
+												{{ custom_field_value.name }}
+											</label>
+										</div>
+									{% endfor %}
+								</div>
+							</div>
+						{% elseif custom_field.type == 'checkbox' %}
+							<div class="form-group col-xs-12 col-sm-6 custom-field{% if custom_field.required %} required{% endif %}" id="custom-field{{ custom_field.custom_field_id }}">
+								<label class="control-label opc-label">{{ custom_field.name }}</label>
+								<div id="input-custom-field{{ custom_field.custom_field_id }}">
+									{% for custom_field_value in custom_field.custom_field_value %}
+										<div class="checkbox">
+											<label class="chm-checkbox">
+												<input class="checkbox-input" type="checkbox" name="custom_field[{{ custom_field.location }}][{{ custom_field.custom_field_id }}][]" value="{{ custom_field_value.custom_field_value_id }}" {% if payment_custom_field[custom_field.custom_field_id] is defined and custom_field_value.custom_field_value_id in payment_custom_field[custom_field.custom_field_id] %}checked="checked"{% endif %} />
+												<span class="checkbox-check"></span>
+												{{ custom_field_value.name }}
+											</label>
+										</div>
+									{% endfor %}
+								</div>
+							</div>
+						{% elseif custom_field.type == 'text' %}
+							<div class="form-group col-xs-12 col-sm-6 custom-field{% if custom_field.required %} required{% endif %}" id="custom-field{{ custom_field.custom_field_id }}">
+								<label class="control-label opc-label" for="input-custom-field{{ custom_field.custom_field_id }}">{{ custom_field.name }}</label>
+								<input type="text" name="custom_field[{{ custom_field.location }}][{{ custom_field.custom_field_id }}]" value="{{ payment_custom_field[custom_field.custom_field_id] is defined ? payment_custom_field[custom_field.custom_field_id] : custom_field.value }}" placeholder="{{ custom_field.name }}" id="input-custom-field{{ custom_field.custom_field_id }}" class="form-control" />
+							</div>
+						{% elseif custom_field.type == 'textarea' %}
+							<div class="form-group col-xs-12 col-sm-6 custom-field{% if custom_field.required %} required{% endif %}" id="custom-field{{ custom_field.custom_field_id }}">
+								<label class="control-label opc-label" for="input-custom-field{{ custom_field.custom_field_id }}">{{ custom_field.name }}</label>
+								<textarea name="custom_field[{{ custom_field.location }}][{{ custom_field.custom_field_id }}]" rows="1" placeholder="{{ custom_field.name }}" id="input-custom-field{{ custom_field.custom_field_id }}" class="form-control">{{ payment_custom_field[custom_field.custom_field_id] is defined ? payment_custom_field[custom_field.custom_field_id] : custom_field.value }}</textarea>
+							</div>
+						{% elseif custom_field.type == 'date' %}
+							<div class="form-group col-xs-12 col-sm-6 custom-field{% if custom_field.required %} required{% endif %}" id="custom-field{{ custom_field.custom_field_id }}">
+								<label class="control-label opc-label" for="input-custom-field{{ custom_field.custom_field_id }}">{{ custom_field.name }}</label>
+								<div class="input-group date">
+									<input type="text" name="custom_field[{{ custom_field.location }}][{{ custom_field.custom_field_id }}]" value="{{ payment_custom_field[custom_field.custom_field_id] is defined ? payment_custom_field[custom_field.custom_field_id] : custom_field.value }}" placeholder="{{ custom_field.name }}" data-date-format="YYYY-MM-DD" id="input-custom-field{{ custom_field.custom_field_id }}" class="form-control" />
+									<span class="input-group-btn">
+										<button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
+									</span>
+								</div>
+							</div>
+						{% elseif custom_field.type == 'time' %}
+							<div class="form-group col-xs-12 col-sm-6 custom-field{% if custom_field.required %} required{% endif %}" id="custom-field{{ custom_field.custom_field_id }}">
+								<label class="control-label opc-label" for="input-custom-field{{ custom_field.custom_field_id }}">{{ custom_field.name }}</label>
+								<div class="input-group time">
+									<input type="text" name="custom_field[{{ custom_field.location }}][{{ custom_field.custom_field_id }}]" value="{{ payment_custom_field[custom_field.custom_field_id] is defined ? payment_custom_field[custom_field.custom_field_id] : custom_field.value }}" placeholder="{{ custom_field.name }}" data-date-format="HH:mm" id="input-custom-field{{ custom_field.custom_field_id }}" class="form-control" />
+									<span class="input-group-btn">
+										<button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
+									</span>
+								</div>
+							</div>
+						{% elseif custom_field.type == 'datetime' %}
+							<div class="form-group col-xs-12 col-sm-6 custom-field{% if custom_field.required %} required{% endif %}" id="custom-field{{ custom_field.custom_field_id }}">
+								<label class="control-label opc-label" for="input-custom-field{{ custom_field.custom_field_id }}">{{ custom_field.name }}</label>
+								<div class="input-group datetime">
+									<input type="text" name="custom_field[{{ custom_field.location }}][{{ custom_field.custom_field_id }}]" value="{{ payment_custom_field[custom_field.custom_field_id] is defined ? payment_custom_field[custom_field.custom_field_id] : custom_field.value }}" placeholder="{{ custom_field.name }}" data-date-format="YYYY-MM-DD HH:mm" id="input-custom-field{{ custom_field.custom_field_id }}" class="form-control" />
+									<span class="input-group-btn">
+										<button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
+									</span>
+								</div>
+							</div>
+						{% endif %}
+					{% endfor %}
+				{% endif %}
+
+
+			{% endfor %}
+		{% endif %}
+	</div>
+</div>

@@ -1,0 +1,781 @@
+<div class="form-group">
+	<div class="col-sm-12 title-setting">{{ text_card_roduct_tunes_here}}</div>
+</div>
+<div class="form-group">
+	<label class="col-sm-3 control-label">{{ text_next_prev_product }}</label>
+	<div class="col-sm-9">
+		<div class="radio-group-infinity">
+			{% if (ns_show_nextprev_prod) %}
+				<input id="ns_show_nextprev_prod_yes" class="hide-radio" type="radio" name="ns_show_nextprev_prod" value="1" checked="checked" />
+				<label for="ns_show_nextprev_prod_yes">{{ text_yes }}</label>
+			{% else %}
+				<input id="ns_show_nextprev_prod_yes" class="hide-radio" type="radio" name="ns_show_nextprev_prod" value="1" />
+				<label for="ns_show_nextprev_prod_yes">{{ text_yes }}</label>
+			{% endif %}
+			{% if (not ns_show_nextprev_prod) %}
+				<input id="ns_show_nextprev_prod_no" class="hide-radio" type="radio" name="ns_show_nextprev_prod" value="0" checked="checked" />
+				<label for="ns_show_nextprev_prod_no">{{ text_no }}</label>
+			{% else %}
+				<input id="ns_show_nextprev_prod_no" class="hide-radio" type="radio" name="ns_show_nextprev_prod" value="0" />
+				<label for="ns_show_nextprev_prod_no">{{ text_no }}</label>
+			{% endif %}
+		</div>
+	</div>
+</div>
+<div class="form-group">
+	<label class="col-sm-3 control-label">{{ text_fix_cart_price_footer }}</label>
+	<div class="col-sm-9">
+		<div class="radio-group-infinity">
+			{% if (ch_fix_cart_price_footer) %}
+				<input id="ch_fix_cart_price_footer1" class="hide-radio" type="radio" name="ch_fix_cart_price_footer" value="1" checked="checked" />
+				<label for="ch_fix_cart_price_footer1">{{ text_yes }}</label>
+			{% else %}
+				<input id="ch_fix_cart_price_footer1" class="hide-radio" type="radio" name="ch_fix_cart_price_footer" value="1" />
+				<label for="ch_fix_cart_price_footer1">{{ text_yes }}</label>
+			{% endif %}
+			{% if (not ch_fix_cart_price_footer) %}
+				<input id="ch_fix_cart_price_footer0" class="hide-radio" type="radio" name="ch_fix_cart_price_footer" value="0" checked="checked" />
+				<label for="ch_fix_cart_price_footer0">{{ text_no }}</label>
+			{% else %}
+				<input id="ch_fix_cart_price_footer0" class="hide-radio" type="radio" name="ch_fix_cart_price_footer" value="0" />
+				<label for="ch_fix_cart_price_footer0">{{ text_no }}</label>
+			{% endif %}
+		</div>
+	</div>
+</div>
+<div class="form-group">
+	<label class="col-sm-3 control-label">{{ text_fix_left_block }}</label>
+	<div class="col-sm-9">
+		<div class="radio-group-infinity">
+			{% if (config_fix_left_block) %}
+				<input id="config_fix_left_block_yes" class="hide-radio" type="radio" name="config_fix_left_block" value="1" checked="checked" />
+				<label for="config_fix_left_block_yes">{{ text_yes }}</label>
+			{% else %}
+				<input id="config_fix_left_block_yes" class="hide-radio" type="radio" name="config_fix_left_block" value="1" />
+				<label for="config_fix_left_block_yes">{{ text_yes }}</label>
+			{% endif %}
+			{% if (not config_fix_left_block) %}
+				<input id="config_fix_left_block_no" class="hide-radio" type="radio" name="config_fix_left_block" value="0" checked="checked" />
+				<label for="config_fix_left_block_no">{{ text_no }}</label>
+			{% else %}
+				<input id="config_fix_left_block_no" class="hide-radio" type="radio" name="config_fix_left_block" value="0" />
+				<label for="config_fix_left_block_no">{{ text_no }}</label>
+			{% endif %}
+		</div>
+	</div>
+</div>
+<div class="form-group">
+	<label class="col-sm-3 control-label">{{ text_show_sku }}</label>
+	<div class="col-sm-9">
+		<div class="radio-group-infinity">
+			{% if (ch_show_sku) %}
+				<input id="ch_show_sku1" class="hide-radio" type="radio" name="ch_show_sku" value="1" checked="checked" />
+				<label for="ch_show_sku1">{{ text_yes }}</label>
+			{% else %}
+				<input id="ch_show_sku1" class="hide-radio" type="radio" name="ch_show_sku" value="1" />
+				<label for="ch_show_sku1">{{ text_yes }}</label>
+			{% endif %}
+			{% if (not ch_show_sku) %}
+				<input id="ch_show_sku0" class="hide-radio" type="radio" name="ch_show_sku" value="0" checked="checked" />
+				<label for="ch_show_sku0">{{ text_no }}</label>
+			{% else %}
+				<input id="ch_show_sku0" class="hide-radio" type="radio" name="ch_show_sku" value="0" />
+				<label for="ch_show_sku0">{{ text_no }}</label>
+			{% endif %}
+		</div>
+	</div>
+</div>
+<div class="form-group">
+	<label class="col-sm-3 control-label">{{ text_show_weight }}</label>
+	<div class="col-sm-9">
+		<div class="radio-group-infinity">
+			{% if (ch_show_weight) %}
+				<input id="ch_show_weight1" class="hide-radio" type="radio" name="ch_show_weight" value="1" checked="checked" />
+				<label for="ch_show_weight1">{{ text_yes }}</label>
+			{% else %}
+				<input id="ch_show_weight1" class="hide-radio" type="radio" name="ch_show_weight" value="1" />
+				<label for="ch_show_weight1">{{ text_yes }}</label>
+			{% endif %}
+			{% if (not ch_show_weight) %}
+				<input id="ch_show_weight0" class="hide-radio" type="radio" name="ch_show_weight" value="0" checked="checked" />
+				<label for="ch_show_weight0">{{ text_no }}</label>
+			{% else %}
+				<input id="ch_show_weight0" class="hide-radio" type="radio" name="ch_show_weight" value="0" />
+				<label for="ch_show_weight0">{{ text_no }}</label>
+			{% endif %}
+		</div>
+	</div>
+</div>
+<div class="form-group">
+	<label class="col-sm-3 control-label">{{ text_show_group_attr_name }}</label>
+	<div class="col-sm-9">
+		<div class="radio-group-infinity">
+			{% if (show_group_attr_name) %}
+				<input id="show_group_attr_name1" class="hide-radio" type="radio" name="show_group_attr_name" value="1" checked="checked" />
+				<label for="show_group_attr_name1">{{ text_yes }}</label>
+			{% else %}
+				<input id="show_group_attr_name1" class="hide-radio" type="radio" name="show_group_attr_name" value="1" />
+				<label for="show_group_attr_name1">{{ text_yes }}</label>
+			{% endif %}
+			{% if (not show_group_attr_name) %}
+				<input id="show_group_attr_name0" class="hide-radio" type="radio" name="show_group_attr_name" value="0" checked="checked" />
+				<label for="show_group_attr_name0">{{ text_no }}</label>
+			{% else %}
+				<input id="show_group_attr_name0" class="hide-radio" type="radio" name="show_group_attr_name" value="0" />
+				<label for="show_group_attr_name0">{{ text_no }}</label>
+			{% endif %}
+		</div>
+	</div>
+</div>
+<div class="form-group">
+	<label class="col-sm-3 control-label">{{ text_short_description_status }}</label>
+	<div class="col-sm-9">
+		<div class="radio-group-infinity">
+			{% if (config_short_description_status) %}
+				<input id="config_short_description_status_yes" class="hide-radio" type="radio" name="config_short_description_status" value="1" checked="checked" />
+				<label for="config_short_description_status_yes">{{ text_yes }}</label>
+			{% else %}
+				<input id="config_short_description_status_yes" class="hide-radio" type="radio" name="config_short_description_status" value="1" />
+				<label for="config_short_description_status_yes">{{ text_yes }}</label>
+			{% endif %}
+			{% if (not config_short_description_status) %}
+				<input id="config_short_description_status_no" class="hide-radio" type="radio" name="config_short_description_status" value="0" checked="checked" />
+				<label for="config_short_description_status_no">{{ text_no }}</label>
+			{% else %}
+				<input id="config_short_description_status_no" class="hide-radio" type="radio" name="config_short_description_status" value="0" />
+				<label for="config_short_description_status_no">{{ text_no }}</label>
+			{% endif %}
+		</div>
+	</div>
+</div>
+<div class="form-group">
+	<label class="col-sm-3 control-label">{{ text_hide_short_desc }}</label>
+	<div class="col-sm-9">
+		<div class="radio-group-infinity">
+			{% if (hide_short_desc_mob) %}
+				<input id="hide_short_desc_mob1" class="hide-radio" type="radio" name="hide_short_desc_mob" value="1" checked="checked" />
+				<label for="hide_short_desc_mob1">{{ text_yes }}</label>
+			{% else %}
+				<input id="hide_short_desc_mob1" class="hide-radio" type="radio" name="hide_short_desc_mob" value="1" />
+				<label for="hide_short_desc_mob1">{{ text_yes }}</label>
+			{% endif %}
+			{% if (not hide_short_desc_mob) %}
+				<input id="hide_short_desc_mob0" class="hide-radio" type="radio" name="hide_short_desc_mob" value="0" checked="checked" />
+				<label for="hide_short_desc_mob0">{{ text_no }}</label>
+			{% else %}
+				<input id="hide_short_desc_mob0" class="hide-radio" type="radio" name="hide_short_desc_mob" value="0" />
+				<label for="hide_short_desc_mob0">{{ text_no }}</label>
+			{% endif %}
+		</div>
+	</div>
+</div>
+<div class="form-group">
+	<label class="col-sm-3 control-label">{{ text_short_attribute_status }}</label>
+	<div class="col-sm-9">
+		<div class="radio-group-infinity">
+			{% if (config_short_attribut_status) %}
+				<input id="config_short_attribut_status_yes" class="hide-radio" type="radio" name="config_short_attribut_status" value="1" checked="checked" />
+				<label for="config_short_attribut_status_yes">{{ text_yes }}</label>
+			{% else %}
+				<input id="config_short_attribut_status_yes" class="hide-radio" type="radio" name="config_short_attribut_status" value="1" />
+				<label for="config_short_attribut_status_yes">{{ text_yes }}</label>
+			{% endif %}
+			{% if (not config_short_attribut_status) %}
+				<input id="config_short_attribut_status_no" class="hide-radio" type="radio" name="config_short_attribut_status" value="0" checked="checked" />
+				<label for="config_short_attribut_status_no">{{ text_no }}</label>
+			{% else %}
+				<input id="config_short_attribut_status_no" class="hide-radio" type="radio" name="config_short_attribut_status" value="0" />
+				<label for="config_short_attribut_status_no">{{ text_no }}</label>
+			{% endif %}
+		</div>
+	</div>
+</div>
+<div class="form-group">
+	<label class="col-sm-3 control-label">{{ text_hide_short_attr }}</label>
+	<div class="col-sm-9">
+		<div class="radio-group-infinity">
+			{% if (hide_short_attr_mob) %}
+				<input id="hide_short_attr_mob1" class="hide-radio" type="radio" name="hide_short_attr_mob" value="1" checked="checked" />
+				<label for="hide_short_attr_mob1">{{ text_yes }}</label>
+			{% else %}
+				<input id="hide_short_attr_mob1" class="hide-radio" type="radio" name="hide_short_attr_mob" value="1" />
+				<label for="hide_short_attr_mob1">{{ text_yes }}</label>
+			{% endif %}
+			{% if (not hide_short_attr_mob) %}
+				<input id="hide_short_attr_mob0" class="hide-radio" type="radio" name="hide_short_attr_mob" value="0" checked="checked" />
+				<label for="hide_short_attr_mob0">{{ text_no }}</label>
+			{% else %}
+				<input id="hide_short_attr_mob0" class="hide-radio" type="radio" name="hide_short_attr_mob" value="0" />
+				<label for="hide_short_attr_mob0">{{ text_no }}</label>
+			{% endif %}
+		</div>
+	</div>
+</div>
+<div class="form-group">
+	<label class="col-sm-3 control-label">{{ text_short_attribute_show_name }}</label>
+	<div class="col-sm-9">
+		<div class="radio-group-infinity">
+			{% if (config_short_attribute_show_name) %}
+				<input id="config_short_attribute_show_name_yes" class="hide-radio" type="radio" name="config_short_attribute_show_name" value="1" checked="checked" />
+				<label for="config_short_attribute_show_name_yes">{{ text_yes }}</label>
+			{% else %}
+				<input id="config_short_attribute_show_name_yes" class="hide-radio" type="radio" name="config_short_attribute_show_name" value="1" />
+				<label for="config_short_attribute_show_name_yes">{{ text_yes }}</label>
+			{% endif %}
+			{% if (not config_short_attribute_show_name) %}
+				<input id="config_short_attribute_show_name_no" class="hide-radio" type="radio" name="config_short_attribute_show_name" value="0" checked="checked" />
+				<label for="config_short_attribute_show_name_no">{{ text_no }}</label>
+			{% else %}
+				<input id="config_short_attribute_show_name_no" class="hide-radio" type="radio" name="config_short_attribute_show_name" value="0" />
+				<label for="config_short_attribute_show_name_no">{{ text_no }}</label>
+			{% endif %}
+		</div>
+	</div>
+</div>
+<div class="form-group">
+	<label class="col-sm-3 control-label">{{ text_short_attribute_group_product }}</label>
+	<div class="col-sm-9">
+		<input class="form-control"  type="text" name="config_short_attribute_group_product" value="{{ config_short_attribute_group_product }}"/>
+	</div>
+</div>
+<div class="form-group">
+	<label class="col-sm-3 control-label">{{ text_short_attribute_group_product_item }}</label>
+	<div class="col-sm-9">
+		<input class="form-control"  type="text" name="config_short_attribute_group_product_item" value="{{ config_short_attribute_group_product_item }}"/>
+	</div>
+</div>
+
+<div class="form-group">
+	<label class="col-sm-3 control-label">{{ text_status_fastorder }}</label>
+	<div class="col-sm-9">
+		<div class="radio-group-infinity">
+			{% if (config_show_nsproduct_btn_fastorder) %}
+				<input id="config_show_nsproduct_btn_fastorder_yes" class="hide-radio" type="radio" name="config_show_nsproduct_btn_fastorder" value="1" checked="checked" />
+				<label for="config_show_nsproduct_btn_fastorder_yes">{{ text_yes }}</label>
+			{% else %}
+				<input id="config_show_nsproduct_btn_fastorder_yes" class="hide-radio" type="radio" name="config_show_nsproduct_btn_fastorder" value="1" />
+				<label for="config_show_nsproduct_btn_fastorder_yes">{{ text_yes }}</label>
+			{% endif %}
+			{% if (not config_show_nsproduct_btn_fastorder) %}
+				<input id="config_show_nsproduct_btn_fastorder_no" class="hide-radio" type="radio" name="config_show_nsproduct_btn_fastorder" value="0" checked="checked" />
+				<label for="config_show_nsproduct_btn_fastorder_no">{{ text_no }}</label>
+			{% else %}
+				<input id="config_show_nsproduct_btn_fastorder_no" class="hide-radio" type="radio" name="config_show_nsproduct_btn_fastorder" value="0" />
+				<label for="config_show_nsproduct_btn_fastorder_no">{{ text_no }}</label>
+			{% endif %}
+		</div>
+	</div>
+</div>
+<div class="form-group">
+	<label class="col-sm-3 control-label">{{ text_status_wishlist }}</label>
+	<div class="col-sm-9">
+		<div class="radio-group-infinity">
+			{% if (config_show_nsproduct_btn_wishlist) %}
+				<input id="config_show_nsproduct_btn_wishlist_yes" class="hide-radio" type="radio" name="config_show_nsproduct_btn_wishlist" value="1" checked="checked" />
+				<label for="config_show_nsproduct_btn_wishlist_yes">{{ text_yes }}</label>
+			{% else %}
+				<input id="config_show_nsproduct_btn_wishlist_yes" class="hide-radio" type="radio" name="config_show_nsproduct_btn_wishlist" value="1" />
+				<label for="config_show_nsproduct_btn_wishlist_yes">{{ text_yes }}</label>
+			{% endif %}
+			{% if (not config_show_nsproduct_btn_wishlist) %}
+				<input id="config_show_nsproduct_btn_wishlist_no" class="hide-radio" type="radio" name="config_show_nsproduct_btn_wishlist" value="0" checked="checked" />
+				<label for="config_show_nsproduct_btn_wishlist_no">{{ text_no }}</label>
+			{% else %}
+				<input id="config_show_nsproduct_btn_wishlist_no" class="hide-radio" type="radio" name="config_show_nsproduct_btn_wishlist" value="0" />
+				<label for="config_show_nsproduct_btn_wishlist_no">{{ text_no }}</label>
+			{% endif %}
+		</div>
+	</div>
+</div>
+<div class="form-group">
+	<label class="col-sm-3 control-label">{{ text_status_compare }}</label>
+	<div class="col-sm-9">
+		<div class="radio-group-infinity">
+			{% if (config_show_nsproduct_btn_compare) %}
+				<input id="config_show_nsproduct_btn_compare_yes" class="hide-radio" type="radio" name="config_show_nsproduct_btn_compare" value="1" checked="checked" />
+				<label for="config_show_nsproduct_btn_compare_yes">{{ text_yes }}</label>
+			{% else %}
+				<input id="config_show_nsproduct_btn_compare_yes" class="hide-radio" type="radio" name="config_show_nsproduct_btn_compare" value="1" />
+				<label for="config_show_nsproduct_btn_compare_yes">{{ text_yes }}</label>
+			{% endif %}
+			{% if (not config_show_nsproduct_btn_compare) %}
+				<input id="config_show_nsproduct_btn_compare_no" class="hide-radio" type="radio" name="config_show_nsproduct_btn_compare" value="0" checked="checked" />
+				<label for="config_show_nsproduct_btn_compare_no">{{ text_no }}</label>
+			{% else %}
+				<input id="config_show_nsproduct_btn_compare_no" class="hide-radio" type="radio" name="config_show_nsproduct_btn_compare" value="0" />
+				<label for="config_show_nsproduct_btn_compare_no">{{ text_no }}</label>
+			{% endif %}
+		</div>
+	</div>
+</div>
+<div class="form-group">
+	<label class="col-sm-3 control-label">{{ text_on_off_countdown_product }}</label>
+	<div class="col-sm-9">
+		<div class="radio-group-infinity">
+			{% if (config_on_off_countdown_product) %}
+				<input id="config_on_off_countdown_product_yes" class="hide-radio" type="radio" name="config_on_off_countdown_product" value="1" checked="checked" />
+				<label for="config_on_off_countdown_product_yes">{{ text_yes }}</label>
+			{% else %}
+				<input id="config_on_off_countdown_product_yes" class="hide-radio" type="radio" name="config_on_off_countdown_product" value="1" />
+				<label for="config_on_off_countdown_product_yes">{{ text_yes }}</label>
+			{% endif %}
+			{% if (not config_on_off_countdown_product) %}
+				<input id="config_on_off_countdown_product_no" class="hide-radio" type="radio" name="config_on_off_countdown_product" value="0" checked="checked" />
+				<label for="config_on_off_countdown_product_no">{{ text_no }}</label>
+			{% else %}
+				<input id="config_on_off_countdown_product_no" class="hide-radio" type="radio" name="config_on_off_countdown_product" value="0" />
+				<label for="config_on_off_countdown_product_no">{{ text_no }}</label>
+			{% endif %}
+		</div>
+	</div>
+</div>
+
+<div class="form-group">
+	<label class="col-sm-3 control-label">{{ text_show_share }}</label>
+	<div class="col-sm-9">
+		<div class="radio-group-infinity">
+			{% if (config_show_share) %}
+				<input id="config_show_share1" class="hide-radio" type="radio" name="config_show_share" value="1" checked="checked" />
+				<label for="config_show_share1">{{ text_yes }}</label>
+			{% else %}
+				<input id="config_show_share1" class="hide-radio" type="radio" name="config_show_share" value="1" />
+				<label for="config_show_share1">{{ text_yes }}</label>
+			{% endif %}
+			{% if (not config_show_share) %}
+				<input id="config_show_share0" class="hide-radio" type="radio" name="config_show_share" value="0" checked="checked" />
+				<label for="config_show_share0">{{ text_no }}</label>
+			{% else %}
+				<input id="config_show_share0" class="hide-radio" type="radio" name="config_show_share" value="0" />
+				<label for="config_show_share0">{{ text_no }}</label>
+			{% endif %}
+		</div>
+	</div>
+</div>
+<div class="form-group">
+	<label class="col-sm-3 control-label">{{ entry_status_zoom_image }}</label>
+	<div class="col-sm-9">
+		<div class="radio-group-infinity">
+			{% if (config_status_zoom_image) %}
+				<input id="status_zoom_image_yes" class="hide-radio" type="radio" name="config_status_zoom_image" value="1" checked="checked" />
+				<label for="status_zoom_image_yes">{{ text_yes }}</label>
+			{% else %}
+				<input id="status_zoom_image_yes" class="hide-radio" type="radio" name="config_status_zoom_image" value="1" />
+				<label for="status_zoom_image_yes">{{ text_yes }}</label>
+			{% endif %}
+			{% if (not config_status_zoom_image) %}
+				<input id="status_zoom_image_no" class="hide-radio" type="radio" name="config_status_zoom_image" value="0" checked="checked" />
+				<label for="status_zoom_image_no">{{ text_no }}</label>
+			{% else %}
+				<input id="status_zoom_image_no" class="hide-radio" type="radio" name="config_status_zoom_image" value="0" />
+				<label for="status_zoom_image_no">{{ text_no }}</label>
+			{% endif %}
+		</div>
+	</div>
+</div>
+<div class="form-group">
+	<label class="col-sm-3 control-label">{{ entry_related_product_position }}</label>
+	<div class="col-sm-9">
+		<div class="btn-group" data-toggle="buttons">
+			<label class="btn btn-default{% if related_product_position == 'bottom' or (related_product_position is empty) %} active{% endif %}">
+				<input type="radio" name="related_product_position" value="bottom" {% if related_product_position == 'bottom' %}checked="checked"{% endif %}>
+				<span class="on-off">{{ text_related_product_position_bottom }}</span>
+			</label>
+			<label class="btn btn-default{% if related_product_position == 'right' %} active{% endif %}">
+				<input type="radio" name="related_product_position" value="right" {% if related_product_position == 'right' %}checked="checked"{% endif %}>
+				<span class="on-off">{{ text_related_product_position_right }}</span>
+			</label>
+		</div>
+	</div>
+</div>
+<div class="form-group">
+	<label class="col-sm-3 control-label">{{ entry_product_related_auto_status }}</label>
+	<div class="col-sm-9">
+		<div class="toggle-switch">
+			<label>
+				<input type="hidden" name="product_related_auto_status" value="0" />
+				<input type="checkbox" name="product_related_auto_status" value="1" {% if product_related_auto_status is defined and product_related_auto_status == 1 %} checked="checked"{% endif %} />
+				<span></span>
+			</label>
+		</div>
+	</div>
+</div>
+<div class="form-group">
+	<label class="col-sm-3 control-label">{{ text_related_product_title }}</label>
+	<div class="col-sm-9">
+		{% for language in languages %}
+			<div class="input-group pull-left">
+				<span class="input-group-addon">
+					<img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" />
+				</span>
+				<input class="form-control" type="text" name="related_product_title[{{ language.language_id }}]" value="{{ related_product_title[language.language_id] is defined ? related_product_title[language.language_id] : '' }}" />
+			</div>
+		{% endfor %}
+	</div>
+</div>
+<hr class="m-0">
+<div id="related_product_position_right" class="collapse fade{% if related_product_position == 'right' %} in{% endif %}">
+	<div class="form-group">
+		<label class="col-sm-3 control-label">{{ text_related_product_showmore }}</label>
+		<div class="col-sm-9">
+			<div class="toggle-switch">
+				<label for="related_product_showmore">
+					<input type="hidden" name="related_product_showmore" value="0" />
+					<input id="related_product_showmore" type="checkbox" name="related_product_showmore" value="1" {% if related_product_showmore is defined and related_product_showmore == 1 %}checked="checked"{% endif %} />
+					<span class="toggle-slider"></span>
+				</label>
+			</div>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-3 control-label">{{ text_related_product_limit }}</label>
+		<div class="col-sm-9 form-inline">
+			<input class="form-control" type="number" name="related_product_limit" value="{{ related_product_limit }}" />
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-3 control-label">{{ text_related_product_max_limit }}</label>
+		<div class="col-sm-9 form-inline">
+			<input class="form-control" type="number" name="related_product_max_limit" value="{{ related_product_max_limit }}" />
+		</div>
+	</div>
+	<script>
+	$(document).on('change', '[name=related_product_position]', function(){
+		setTimeout(function () {
+			if ($('[name=related_product_position]:checked').val() == 'right') {
+				$('#related_product_position_right').collapse('show');
+			} else {
+				$('#related_product_position_right').collapse('hide');
+			}
+		}, 50);
+	});
+	</script>
+</div>
+<div class="form-group">
+	<div class="col-sm-12 title-setting">{{ text_product_delivery }}</div>
+</div>
+<div class="form-group">
+	<label class="col-sm-3 control-label">{{ entry_product_delivery_status }}</label>
+	<div class="col-sm-9">
+		<div class="radio-group-infinity">
+			{% if config_product_delivery_status %}
+				<input id="product_delivery_status_yes" class="hide-radio" type="radio" name="config_product_delivery_status" value="1" checked="checked" />
+				<label for="product_delivery_status_yes">{{ text_yes }}</label>
+			{% else %}
+				<input id="product_delivery_status_yes" class="hide-radio" type="radio" name="config_product_delivery_status" value="1" />
+				<label for="product_delivery_status_yes">{{ text_yes }}</label>
+			{% endif %}
+
+			{% if not config_product_delivery_status %}
+				<input id="product_delivery_status_no" class="hide-radio" type="radio" name="config_product_delivery_status" value="0" checked="checked" />
+				<label for="product_delivery_status_no">{{ text_no }}</label>
+			{% else %}
+				<input id="product_delivery_status_no" class="hide-radio" type="radio" name="config_product_delivery_status" value="0" />
+				<label for="product_delivery_status_no">{{ text_no }}</label>
+			{% endif %}
+		</div>
+	</div>
+</div>
+<div class="form-group">
+	<label class="col-sm-3 control-label">{{ entry_product_delivery_title }}</label>
+	<div class="col-sm-9">
+		{% for language in languages %}
+			<div class="input-group">
+				<span class="input-group-addon">
+					<img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" />
+				</span>
+				<input type="text" name="config_product_delivery_title[{{ language.language_id }}][text]" value="{{ config_product_delivery_title[language.language_id].text ?? '' }}" placeholder="" class="form-control" />
+			</div>
+		{% endfor %}
+	</div>
+</div>
+
+<table id="product_delivery" class="table table-bordered table-hover">
+	<thead>
+		<tr>
+			<td>{{ entry_image }}</td>
+			<td>{{ entry_title }}</td>
+			<td>{{ entry_description }}</td>
+			<td>{{ entry_link }}</td>
+			<td>{{ text_before_price }}<br />[{{ entry_product_delivery_price }}]</td>
+			<td>{{ text_open_banner_popup }}</td>
+			<td>{{ entry_sort_order }}</td>
+			<td></td>
+		</tr>
+	</thead>
+	<tbody>
+		{% set delivery_row = 0 %}
+		{% for delivery in product_delivery %}
+			<tr id="item-row{{ delivery_row }}">
+				<td class="text-left">
+					<a href="" id="thumb-image-delivery-row{{ delivery_row }}" data-toggle="image" class="img-thumbnail">
+						<img src="{{ delivery.thumb }}" alt="" title="" data-placeholder="{{ placeholder }}" />
+					</a>
+					<input type="hidden" name="product_delivery[{{ delivery_row }}][image]" value="{{ delivery.image }}" id="input-image-delivery-row{{ delivery_row }}" />
+				</td>
+				<td class="text-left">
+					{% for language in languages %}
+						<div class="input-group pull-left">
+							<span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+							<input class="form-control" type="text" name="product_delivery[{{ delivery_row }}][title][{{ language.language_id }}]" value="{{ delivery.title[language.language_id] }}" />
+						</div>
+					{% endfor %}
+				</td>
+				<td class="text-left">
+					{% for language in languages %}
+						<div class="input-group pull-left">
+							<span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+							<textarea class="form-control" type="text" name="product_delivery[{{ delivery_row }}][description][{{ language.language_id }}]">{{ delivery.description[language.language_id] is defined ? delivery.description[language.language_id] : '' }}</textarea>
+						</div>
+					{% endfor %}
+				</td>
+				<td class="text-left">
+					{% for language in languages %}
+						<div class="input-group pull-left">
+							<span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+							<input class="form-control" type="text" name="product_delivery[{{ delivery_row }}][link][{{ language.language_id }}]" value="{{ delivery.link[language.language_id] is defined ? delivery.link[language.language_id] : '' }}" />
+						</div>
+					{% endfor %}
+				</td>
+				<td class="text-left">
+					{% for language in languages %}
+						<div class="input-group pull-left">
+							<span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+							<input class="form-control" type="text" name="product_delivery[{{ delivery_row }}][text_price][{{ language.language_id }}]" value="{{ delivery.text_price[language.language_id] is defined ? delivery.text_price[language.language_id] : '' }}" />
+						</div>
+					{% endfor %}
+					<input class="form-control" type="text" name="product_delivery[{{ delivery_row }}][price]" value="{{ delivery.price is defined ? delivery.price : '' }}" />
+				</td>
+				<td class="text-center">
+					<div class="toggle-switch">
+						<label for="product_delivery_popup_{{ delivery_row }}">
+							<input type="hidden" name="product_delivery[{{ delivery_row }}][popup]" value="0" />
+							<input id="product_delivery_popup_{{ delivery_row }}" type="checkbox" name="product_delivery[{{ delivery_row }}][popup]" value="1" {{ delivery.popup is defined and delivery.popup == 1 ? 'checked="checked"' : '' }} />
+							<span class="toggle-slider"></span>
+						</label>
+					</div>
+				</td>
+				<td class="text-left">
+					<input class="form-control" type="text" name="product_delivery[{{ delivery_row }}][sort]" value="{{ delivery.sort is defined ? delivery.sort : '' }}" />
+				</td>
+				<td class="text-right">
+					<a class="btn btn-danger" onclick="$('#item-row{{ delivery_row }}').remove();" data-toggle="tooltip" title="{{ text_delete }}"><i class="fa fa-trash-o"></i></a>
+				</td>
+			</tr>
+			{% set delivery_row = delivery_row + 1 %}
+		{% endfor %}
+	</tbody>
+	<tfoot>
+		<tr>
+			<td colspan="7"></td>
+			<td class="text-right"><a class="btn btn-primary" onclick="addDelivery();" data-toggle="tooltip" title="{{ button_add }}"><i class="fa fa-plus-circle"></i></a></td>
+		</tr>
+	</tfoot>
+</table>
+<div class="form-group">
+	<div class="col-sm-12 title-setting">{{ text_product_payments }}</div>
+</div>
+<div class="form-group">
+	<label class="col-sm-3 control-label">{{ entry_product_payments_status }}</label>
+	<div class="col-sm-9">
+		<div class="radio-group-infinity">
+			{% if config_product_payments_status %}
+				<input id="product_payments_status_yes" class="hide-radio" type="radio" name="config_product_payments_status" value="1" checked="checked" />
+				<label for="product_payments_status_yes">{{ text_yes }}</label>
+			{% else %}
+				<input id="product_payments_status_yes" class="hide-radio" type="radio" name="config_product_payments_status" value="1" />
+				<label for="product_payments_status_yes">{{ text_yes }}</label>
+			{% endif %}
+			{% if not config_product_payments_status %}
+				<input id="product_payments_status_no" class="hide-radio" type="radio" name="config_product_payments_status" value="0" checked="checked" />
+				<label for="product_payments_status_no">{{ text_no }}</label>
+			{% else %}
+				<input id="product_payments_status_no" class="hide-radio" type="radio" name="config_product_payments_status" value="0" />
+				<label for="product_payments_status_no">{{ text_no }}</label>
+			{% endif %}
+		</div>
+	</div>
+</div>
+<div class="form-group">
+	<label class="col-sm-3 control-label">{{ entry_product_payments_title }}</label>
+	<div class="col-sm-9">
+		{% for language in languages %}
+			<div class="input-group">
+				<span class="input-group-addon">
+					<img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" />
+				</span>
+				<input type="text" name="config_product_payments_title[{{ language.language_id }}][text]" value="{{ config_product_payments_title[language.language_id].text is defined ? config_product_payments_title[language.language_id].text : '' }}" placeholder="" class="form-control" />
+			</div>
+		{% endfor %}
+	</div>
+</div>
+<table id="product_payments" class="table table-bordered table-hover">
+	<thead>
+		<tr>
+			<td>{{ entry_image }}</td>
+			<td>{{ entry_title }}</td>
+			<td>{{ entry_link }}</td>
+			<td>{{ text_open_banner_popup }}</td>
+			<td>{{ entry_sort_order }}</td>
+			<td></td>
+		</tr>
+	</thead>
+	<tbody>
+		{% set payment_row = 0 %}
+		{% for product_payment in product_payments %}
+			<tr id="product-payment-row-{{ payment_row }}">
+				<td class="text-left">
+					<a href="" id="thumb-image-payment-row{{ payment_row }}" data-toggle="image" class="img-thumbnail">
+						<img src="{{ product_payment.thumb }}" alt="" title="" data-placeholder="{{ placeholder }}" />
+					</a>
+					<input type="hidden" name="product_payments[{{ payment_row }}][image]" value="{{ product_payment.image }}" id="input-image-payment-row{{ payment_row }}" />
+				</td>
+				<td class="text-left">
+					{% for language in languages %}
+						<div class="input-group pull-left">
+							<span class="input-group-addon">
+								<img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" />
+							</span>
+							<input class="form-control" type="text" name="product_payments[{{ payment_row }}][title][{{ language.language_id }}]" value="{{ product_payment.title[language.language_id] }}" />
+						</div>
+					{% endfor %}
+				</td>
+				<td class="text-left">
+					{% for language in languages %}
+						<div class="input-group pull-left">
+							<span class="input-group-addon">
+								<img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" />
+							</span>
+							<input class="form-control" type="text" name="product_payments[{{ payment_row }}][link][{{ language.language_id }}]" value="{{ product_payment.link[language.language_id] is defined ? product_payment.link[language.language_id] : '' }}" />
+						</div>
+					{% endfor %}
+				</td>
+				<td class="text-center">
+					<div class="toggle-switch">
+						<label for="product_payment_popup_{{ payment_row }}">
+							<input type="hidden" name="product_payments[{{ payment_row }}][popup]" value="0" />
+							<input id="product_payment_popup_{{ payment_row }}" type="checkbox" name="product_payments[{{ payment_row }}][popup]" value="1" {% if product_payment.popup is defined and product_payment.popup == 1 %} checked="checked" {% endif %} />
+							<span class="toggle-slider"></span>
+						</label>
+					</div>
+				</td>
+				<td class="text-left">
+					<input class="form-control" type="text" name="product_payments[{{ payment_row }}][sort]" value="{{ product_payment.sort is defined ? product_payment.sort : '' }}" />
+				</td>
+				<td class="text-right">
+					<a class="btn btn-danger" onclick="$('#product-payment-row-{{ payment_row }}').remove();" data-toggle="tooltip" title="{{ text_delete }}"><i class="fa fa-trash-o"></i></a>
+				</td>
+			</tr>
+			{% set payment_row = payment_row + 1 %}
+		{% endfor %}
+	</tbody>
+	<tfoot>
+		<tr>
+			<td colspan="5"></td>
+			<td class="text-right">
+				<a class="btn btn-primary" onclick="addProductPayment();" data-toggle="tooltip" title="{{ button_add }}">
+					<i class="fa fa-plus-circle"></i>
+				</a>
+			</td>
+		</tr>
+	</tfoot>
+</table>
+
+<script>
+var payment_row = Number('{{ payment_row }}');
+
+function addProductPayment(){
+    var html = '';
+    html += '<tr id="item-row' + payment_row + '">';
+    html += '<td class="text-left"><a href="" id="thumb-image-payment-row' + payment_row + '" data-toggle="image" class="img-thumbnail"><img data-placeholder="{{ placeholder }}" src="{{ placeholder }}" /></a><input type="hidden" name="product_payments[' + payment_row + '][image]" value="" id="input-image-payment-row' + payment_row + '" /></td>';
+    html += '<td class="text-left">';
+    {% for language in languages %}
+    html += '<div class="input-group pull-left"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>';
+    html += '<input class="form-control" type="text" name="product_payments[' + payment_row + '][title][{{ language.language_id }}]" value="" />';
+    html += '</div>';
+    {% endfor %}
+    html += '</td>';
+    html += '<td class="text-left">';
+    {% for language in languages %}
+    html += '<div class="input-group pull-left"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>';
+    html += '<input class="form-control" type="text" name="product_payments[' + payment_row + '][link][{{ language.language_id }}]" value="" />';
+    html += '</div>';
+    {% endfor %}
+    html += '</td>';
+    html += '<td class="text-center">';
+    html += '<div class="toggle-switch">';
+    html += '<label for="product_delivery_popup_' + payment_row + '">';
+    html += '<input type="hidden" name="product_payments[' + payment_row + '][popup]" value="0" />';
+    html += '<input id="product_delivery_popup_' + payment_row + '" type="checkbox" name="product_payments[' + payment_row + '][popup]" value="1" />';
+    html += '<span class="toggle-slider"></span>';
+    html += '</label>';
+    html += '</div>';
+    html += '</td>';
+    html += '<td class="text-left"><input class="form-control" type="text" name="product_payments[' + payment_row + '][sort]" size="1" value="" /></td>';
+    html += '<td class="text-right"><a class="btn btn-danger" onclick="$(\'#item-row' + payment_row + '\').remove();" data-toggle="tooltip" title="{{ text_delete }}"><i class="fa fa-trash-o"></i></a></td>';
+    html += '</tr>';
+
+    $('#product_payments tbody').append(html);
+
+    payment_row++;
+}
+
+var delivery_row = Number('{{ delivery_row }}');
+
+function addDelivery() {
+    var html = '';
+    html += '<tr id="item-row' + delivery_row + '">';
+    html += '<td class="text-left"><a href="" id="thumb-image-delivery-row' + delivery_row + '" data-toggle="image" class="img-thumbnail"><img data-placeholder="{{ placeholder }}" src="{{ placeholder }}" /></a><input type="hidden" name="product_delivery[' + delivery_row + '][image]" value="" id="input-image-delivery-row' + delivery_row + '" /></td>';
+    html += '<td class="text-left">';
+    {% for language in languages %}
+    html += '<div class="input-group pull-left"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>';
+    html += '<input class="form-control" type="text" name="product_delivery[' + delivery_row + '][title][{{ language.language_id }}]" value="" />';
+    html += '</div>';
+    {% endfor %}
+    html += '</td>';
+    html += '<td class="text-left">';
+    {% for language in languages %}
+    html += '<div class="input-group pull-left"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>';
+    html += '<textarea class="form-control" type="text" name="product_delivery[' + delivery_row + '][description][{{ language.language_id }}]"></textarea>';
+    html += '</div>';
+    {% endfor %}
+    html += '</td>';
+    html += '<td class="text-left">';
+    {% for language in languages %}
+    html += '<div class="input-group pull-left"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>';
+    html += '<input class="form-control" type="text" name="product_delivery[' + delivery_row + '][link][{{ language.language_id }}]" value="" />';
+    html += '</div>';
+    {% endfor %}
+    html += '</td>';
+    html += '<td class="text-left">';
+    {% for language in languages %}
+    html += '<div class="input-group pull-left"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>';
+    html += '<input class="form-control" type="text" name="product_delivery[' + delivery_row + '][text_price][{{ language.language_id }}]" value="" />';
+    html += '</div>';
+    {% endfor %}
+    html += '<input class="form-control" type="text" name="product_delivery[' + delivery_row + '][price]" value="" />';
+    html += '</td>';
+    html += '<td class="text-center">';
+    html += '<div class="toggle-switch">';
+    html += '<label for="product_delivery_popup_' + delivery_row + '">';
+    html += '<input type="hidden" name="product_delivery[' + delivery_row + '][popup]" value="0" />';
+    html += '<input id="product_delivery_popup_' + delivery_row + '" type="checkbox" name="product_delivery[' + delivery_row + '][popup]" value="1" />';
+    html += '<span class="toggle-slider"></span>';
+    html += '</label>';
+    html += '</div>';
+    html += '</td>';
+    html += '<td class="text-left"><input class="form-control" type="text" name="product_delivery[' + delivery_row + '][sort]" size="1" value="" /></td>';
+    html += '<td class="text-right"><a class="btn btn-danger" onclick="$(\'#item-row' + delivery_row + '\').remove();" data-toggle="tooltip" title="{{ text_delete }}"><i class="fa fa-trash-o"></i></a></td>';
+    html += '</tr>';
+
+    $('#product_delivery tbody').append(html);
+
+    delivery_row++;
+}
+</script>
+
+
+
+
+
+
+

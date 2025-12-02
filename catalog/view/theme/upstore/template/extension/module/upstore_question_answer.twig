@@ -1,0 +1,126 @@
+<link href="catalog/view/theme/upstore/stylesheet/popup-question-answer/stylefcp.css" rel="stylesheet" media="screen" />
+<button type="button" class="chm-btn chm-btn-black chm-px-lg chm-lg chm-lg-rounded xs-w-100 sm-w-auto" data-toggle="modal" data-target="#ch-modal-question-answer">{{ text_ask_faq }}</button>
+{% if (not question_answer) %}
+	<div class="text-left mt-20">{{ text_no_question }}</div>
+{% else %}
+<div class="box-question-answer">
+	{% for result in question_answer %}
+		<div class="qa-item">
+			<div class="info-client dflex align-items-center">
+				<div class="client-name">{{ result['name_field'] }}</div>
+				<div class="client-date-added">{{ result['date_added'] }}</div>
+			</div>
+			<div class="question-answer">
+				<div class="question-client">{{ result['comment_field'] }}</div>
+				{% if (result['comment_manager'] != '') %}<div class="answer-admin"><div>{{ text_answer_admin }}</div>{{ result['comment_manager'] }}</div>{% endif %}
+				</div>
+			</div>
+		{% endfor %}
+		<div class="pagination_question">
+			<div class="text-center">{{ pagination }}</div>
+		</div>
+	</div>
+{% endif %}
+
+<div class="modal fade" id="ch-modal-question-answer" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog chm-modal sm-modal-4 modal-dialog-centered">
+		<div class="modal-content">
+			<div class="modal-header">
+				<div class="modal-title">{{ text_ask_faq }}</div>
+				<button type="button" class="close-modal" data-dismiss="modal"><i class="up-icon-close" aria-hidden="true"></i></button>
+			</div>
+			<div class="modal-body">
+				<form id="form-question-answer" enctype="multipart/form-data" method="post">
+					<input type="hidden" name="qa_product_id" value="{{ product_id }}"/>
+					{% if qadata['name_field'] == 1 %}
+						<div class="form-group {{ qadata['name_field_required'] is defined ? 'required_field' : '' }}">
+							<input id="contact-name" class="form-control contact-name" type="text" placeholder="{{ qadata['name_field_placeholder'][lang_id] is defined ? qadata['name_field_placeholder'][lang_id]['text'] : '' }}" value="{{ name_field }}" name="name_field">
+						</div>
+					{% endif %}
+					{% if qadata['telephone_field'] == 1 %}
+						<div class="form-group {{ qadata['telephone_field_required'] is defined ? 'required_field' : '' }}">
+							<input id="contact-telephone" class="form-control contact-telephone" type="text" placeholder="{{ qadata['telephone_field_placeholder'][lang_id] is defined ? qadata['telephone_field_placeholder'][lang_id]['text'] : '' }}" value="{{ telephone_field }}" name="telephone_field">
+						</div>
+					{% endif %}
+					{% if qadata['email_field'] == 1 %}
+						<div class="form-group {{ qadata['email_field_required'] is defined ? 'required_field' : '' }}">
+							<input id="contact-email" class="form-control contact-email" type="text" placeholder="{{ qadata['email_field_placeholder'][lang_id] is defined ? qadata['email_field_placeholder'][lang_id]['text'] : '' }}" value="{{ email_field }}" name="email_field">
+						</div>
+					{% endif %}
+					<div class="form-group required_field">
+						<textarea name="comment_field" rows="5" placeholder="{{ entry_question }}" id="input-comment-field" class="form-control"></textarea>
+					</div>
+					<div class="form-group help-block">{{ text_note_html }}</div>
+					{% if (text_agree) %}
+						<div class="form-group">
+							<label class="chm-checkbox mb-0">
+								<input class="checkbox-input" type="checkbox" name="agree" value="1" />
+								<span class="checkbox-check"></span>{{ text_agree }}
+							</label>
+							<div class="error_agree"></div>
+						</div>
+					{% endif %}
+					{% if (qadata['captcha_field'] == 1) %}
+						{{ captcha_qa }}
+					{% endif %}
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button class="chm-btn chm-btn-primary chm-px-lg chm-lg-rounded w-100" type="button" id="button-question-answer" data-loading-text="{{ text_loading }}">{{ add_question }}</button>
+			</div>
+{% if (qadata['telephone_field_mask'] != '') %}
+<script src="catalog/view/theme/upstore/js/maskedinput.js" type="text/javascript"></script>
+<script>
+$(document).ready(function() {
+$("#contact-telephone").mask("{{ qadata['telephone_field_mask'] }}");
+});
+</script>
+{% endif %}
+<script>
+	let chmQaTimeout_id = 0;
+	$(document).on('click', '#button-question-answer', function () {
+		$.ajax({
+			url: 'index.php?route=extension/module/upstore_question_answer/validateForm',
+			type: 'post',
+			data: $('#form-question-answer input, #form-question-answer textarea').serialize(),
+			dataType: 'json',
+			beforeSend: function() {
+				creatOverlayLoadPage(true);
+				$('#button-question-answer').data('original-content', $('#button-question-answer').html());
+				$('#button-question-answer').html('<i class="fa fa-spinner fa-spin"></i>').prop('disabled', true);
+			},
+			complete: function() {
+				setTimeout(function () {
+					creatOverlayLoadPage(false);
+					$('#button-question-answer').html($('#button-question-answer').data('original-content')).prop('disabled', false);
+				}, 300);
+			},
+			success: function(json) {
+				$('#form-question-answer .form-control').removeClass('error_input');
+				$('#form-question-answer .form-control').removeClass('success_input');
+				$('#form-question-answer').find('.us-error-agree').removeClass('us-error-agree');
+				$('.alert.ch-alert-danger,.us-success-icon,.us-error-icon,.us-text-error').remove();
+
+				if (json['error']) {
+					handleFieldNotifications('#form-question-answer', json['error']);
+				}
+
+				if (json['success']) {
+					$('#form-question-answer input[name=\'name_field\']').val('');
+					$('#form-question-answer input[name=\'telephone_field\']').val('');
+					$('#form-question-answer input[name=\'email_field\']').val('');
+					$('#form-question-answer textarea[name=\'comment_field\']').val('');
+
+					$('#ch-modal-question-answer').modal('hide');
+
+					setTimeout(function () {
+						showModalWithMessage(json['success']);
+					}, 300);
+				}
+			}
+		});
+	});
+</script>
+		</div>
+	</div>
+</div>

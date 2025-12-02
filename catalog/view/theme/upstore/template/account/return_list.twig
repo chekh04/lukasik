@@ -1,0 +1,64 @@
+{{ header }}
+<div id="account-return" class="container">
+	<ul class="breadcrumb">
+		{% for i,breadcrumb in breadcrumbs %}
+			{% if (i+1 < breadcrumbs|length) %}
+				<li><a href="{{ breadcrumb.href }}"><span>{{ breadcrumb.text }}</span></a></li>
+			{% else %}
+				<li><span>{{ breadcrumb.text }}</span></li>
+			{% endif %}
+		{% endfor %}
+	</ul>
+	<h1>{{ heading_title }}</h1>
+	<div class="row-flex">{{ column_left }}
+	{% if column_left and column_right %}
+	{% set class = 'col-sm-6' %}
+	{% elseif column_left or column_right %}
+	{% set class = 'col-sm-9' %}
+	{% else %}
+	{% set class = 'col-sm-12' %}
+	{% endif %}
+	<div id="content" class="{{ class }}">{{ content_top }}
+		<div class="chm-account-content h-100">
+			{% if returns %}
+				<div class="table-responsive">
+					<table class="table ch-table">
+						<thead>
+							<tr>
+								<td class="text-left">{{ column_return_id }}</td>
+								<td class="text-left">{{ column_status }}</td>
+								<td class="text-left">{{ column_date_added }}</td>
+								<td class="text-right">{{ column_order_id }}</td>
+								<td class="text-left">{{ column_customer }}</td>
+								<td></td>
+							</tr>
+						</thead>
+						<tbody>
+							{% for return in returns %}
+								<tr>
+									<td class="text-left">#{{ return.return_id }}</td>
+									<td class="text-left">{{ return.status }}</td>
+									<td class="text-left">{{ return.date_added }}</td>
+									<td class="text-right">{{ return.order_id }}</td>
+									<td class="text-left">{{ return.name }}</td>
+									<td class="text-right pr-0"><a href="{{ return.href }}" data-toggle="tooltip" title="{{ button_view }}" class="chm-btn chm-btn-grey chm-sm"><i class="fa fa-eye"></i></a></td>
+								</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+				<div class="row">
+					<div class="col-sm-12 text-center">{{ pagination }}</div>
+					<div class="col-sm-12 text-center">{{ results }}</div>
+				</div>
+			{% else %}
+				<div class="chm-text-empty">{{ text_empty }}</div>
+			{% endif %}
+			<div class="buttons clearfix">
+				<a href="{{ continue }}" class="btn btn-primary">{{ button_continue }}</a>
+			</div>
+		</div>
+		{{ content_bottom }}</div>
+	{{ column_right }}</div>
+</div>
+{{ footer }}

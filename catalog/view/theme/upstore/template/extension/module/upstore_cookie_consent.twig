@@ -1,0 +1,32 @@
+<div class="up-cookie-consent">
+	<div class="container">
+		<div class="up-cookie-consent__inner">
+			<div class="up-cookie-consent__content">{{ description }}</div>
+			<div class="up-cookie-consent__action">
+				<button type="button" onclick="setCookie();" class="btn-agree-cookie">{{ button_agree }}</button>
+			</div>
+		</div>
+	</div>
+	<script>
+	function setCookie() {
+		$.ajax({
+			url: 'index.php?route=extension/module/upstore_cookie_consent/setCookie',
+			type: "post",
+			dataType: "json",
+			cache: false,
+			data: { saveCookie: true },
+			success: function(json) {
+				if (json.status === 'success') {
+					$('.up-cookie-consent').removeClass('active-block-cookie');
+				}
+			},
+			error: function(xhr, status, error) {
+				console.error('Error AJAX:', error);
+			}
+		});
+	}
+	</script>
+<style>
+{{ css_root }}
+</style>
+</div>

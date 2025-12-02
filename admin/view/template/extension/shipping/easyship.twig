@@ -1,0 +1,662 @@
+{{ header }}{{ column_left }}
+<div id="content">
+	<div class="page-header">
+		<div class="container-fluid">
+			<div class="pull-right">
+				<button type="submit" form="form-easyship" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+				<a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a>
+			</div>
+			<h1>{{ heading_title }}</h1>
+			<ul class="breadcrumb">
+				{% for breadcrumb in breadcrumbs %}
+					<li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+				{% endfor %}
+			</ul>
+		</div>
+	</div>
+	<div class="container-fluid">
+		{% if error_warning %}
+			<div class="alert alert-danger">
+				<i class="fa fa-exclamation-circle"></i>
+				{{ error_warning }}
+				<button type="button" class="close" data-dismiss="alert">&times;</button>
+			</div>
+		{% endif %}
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title"><i class="fa fa-pencil"></i> {{ text_edit }}</h3>
+			</div>
+			<div class="panel-body">
+				<form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-easyship" class="form-horizontal">
+					<div class="col-sm-5 col-md-4">
+						<div class="form-group">
+							<label class="col-sm-4 control-label" for="input-status">{{ entry_status }}</label>
+							<div class="col-sm-8">
+								<select name="shipping_easyship_status" id="input-status" class="form-control">
+									{% if shipping_easyship_status %}
+										<option value="1" selected="selected">{{ text_enabled }}</option>
+										<option value="0">{{ text_disabled }}</option>
+									{% else %}
+										<option value="1">{{ text_enabled }}</option>
+										<option value="0" selected="selected">{{ text_disabled }}</option>
+									{% endif %}
+								</select>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-4 control-label" for="input-sort-order">{{ entry_sort_order }}</label>
+							<div class="col-sm-8">
+								<input type="text" name="shipping_easyship_sort_order" value="{{ shipping_easyship_sort_order }}" placeholder="{{ entry_sort_order }}" id="input-sort-order" class="form-control" />
+							</div>
+						</div>
+						<div class="nav nav-pills nav-stacked">
+							<ul id="left_es_items" class="list-unstyled content-group">
+								{% set row = 0 %}
+								{% if (shipping_easyship is not empty) %}
+								{% for method_group_name,item_list in shipping_easyship %}
+									<li id="esg-left-row-{{ row }}" class="es-group-methods {% if (row == 0) %}active{% endif %}">
+										<div class="es-methods">
+											<a data-toggle="tab" data-target="#esg-{{ row }}" href="#esg-{{ row }}" class="method-info">
+												<div class="esg-code">{{ method_group_name }}</div>-
+												<span class="es-title">{{ item_list['group_name'][lang_id] is not empty ? item_list['group_name'][lang_id] : text_noname }}</span>
+												<div class="es-action ignore-drag">
+													<div class="es-group-radio">
+														<input id="es-status-on-{{ row }}" class="hide-radio" type="radio" name="shipping_easyship[{{ method_group_name }}][status]" value="on" {% if (item_list['status'] == 'on') %}checked="checked"{% endif %}>
+														<label class="btn btn-xs btn-link esg-status es-off" for="es-status-on-{{ row }}"><i class="fa fa-power-off"></i></label>
+														<input id="es-status-off-{{ row }}" class="hide-radio" type="radio" name="shipping_easyship[{{ method_group_name }}][status]" value="off" {% if (item_list['status'] == 'off') %}checked="checked"{% endif %}>
+														<label class="btn btn-xs btn-link esg-status es-on" for="es-status-off-{{ row }}"><i class="fa fa-power-off"></i></label>
+													</div>
+													<button class="btn btn-xs btn-link esg-remove"><i class="fa fa-trash-o"></i></button>
+												</div>
+											</a>
+											<ul class="list-unstyled es-method-items ignore-drag-methods" data-parent="{{ row }}">
+												{% set sub_row = 0 %}
+												{% if (item_list['shipping_methods'] is not empty) %}
+													{% for shipping_method,result in item_list['shipping_methods'] %}
+														<li id="esg-left-subm-{{ row }}-{{ sub_row }}" data-row="#esg-{{ row }}-{{ sub_row }}" class="m-item">
+															<a data-toggle="tab" data-target="#esg-{{ row }}-{{ sub_row }}" class="m-item-info">
+																<div class="es-item-code">{{ shipping_method }}</div>-
+																<div class="es-item-name">{{ result['name'][lang_id] is not empty ? result['name'][lang_id] : text_noname }}</div>
+																<div class="es-action ignore-drag">
+																	<div class="es-group-radio">
+																		<input id="es-status-on-{{ row }}-{{ sub_row }}" class="hide-radio" type="radio" name="shipping_easyship[{{ method_group_name }}][shipping_methods][{{ shipping_method }}][status]" value="on" {% if (result['status'] == 'on') %}checked="checked"{% endif %}>
+																		<label class="btn btn-xs btn-link esg-status es-off" for="es-status-on-{{ row }}-{{ sub_row }}"><i class="fa fa-power-off"></i></label>
+																		<input id="es-status-off-{{ row }}-{{ sub_row }}" class="hide-radio" type="radio" name="shipping_easyship[{{ method_group_name }}][shipping_methods][{{ shipping_method }}][status]" value="off" {% if (result['status'] == 'off') %}checked="checked"{% endif %}>
+																		<label class="btn btn-xs btn-link esg-status es-on" for="es-status-off-{{ row }}-{{ sub_row }}"><i class="fa fa-power-off"></i></label>
+																	</div>
+																	<button class="btn btn-xs btn-link esg-remove"><i class="fa fa-trash-o"></i></button>
+																</div>
+															</a>
+														</li>
+														{% set sub_row = sub_row + 1 %}
+													{% endfor %}
+												{% endif %}
+											</ul>
+											<button class="btn btn-link btn-opc-success" type="button" onclick="createEasyshipItem('{{ row }}');"><i class="fa fa-plus"></i> {{ text_create_shipping_method }}</button>
+										</div>
+									</li>
+								{% set row = row + 1 %}
+								{% endfor %}
+								{% endif %}
+							</ul>
+							<button class="btn btn-success w-100 btn-opc-success" type="button" onclick="createEasyshipGroup();">{{ text_create_shipping_group }}</button>
+						</div>
+					</div>
+					<div class="col-sm-7 col-md-8">
+						<div class="tab-content setting-methods">
+							{% set row_group = 0 %}
+							{% if (shipping_easyship is not empty) %}
+							{% for mg_name,method_group in shipping_easyship %}
+								<div class="methods-group-{{ row_group }}">
+									<div id="esg-{{ row_group }}" class="tab-pane {% if (row_group == 0) %}active{% endif %}">
+										<div class="method-title">{{ text_edit_shipping_group }} <span class="esg-code">{{ mg_name }}</span></div>
+										<div class="method-name">
+											<div class="form-group">
+												<label class="col-sm-12 es-control-label">{{ entry_group_name }}</label>
+												<div class="col-xs-12 col-sm-12">
+													{% for language in languages %}
+														<div class="input-group mb-10">
+															<span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>
+															<input data-group-name="#esg-left-row-{{ row_group }}" class="form-control{% if (language['language_id'] == lang_id) %} group-shipping-name{% endif %}" type="text" name="shipping_easyship[{{ mg_name }}][group_name][{{ language['language_id'] }}]" value="{{ method_group['group_name'][language['language_id']] is not empty ? method_group['group_name'][language['language_id']] : '' }}" />
+														</div>
+													{% endfor %}
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="list-shipping-methods">
+										{% if (method_group['shipping_methods'] is not empty) %}
+											{% set sub_row_group = 0 %}
+											{% for sm_name,item in method_group['shipping_methods'] %}
+												<div id="esg-{{ row_group }}-{{ sub_row_group }}" class="tab-pane">
+													<div class="method-title">{{ text_edit_shipping_method }}<div class="shipping-group"><span class="esg-code">{{ mg_name }}</span><span class="es-item-code">{{ sm_name }}</span></div></div>
+													<div class="method-setting">
+														<div class="form-group">
+															<label class="col-sm-12 es-control-label">{{ entry_name }}</label>
+															<div class="col-xs-12 col-sm-12">
+																{% for language in languages %}
+																	<div class="input-group mb-10">
+																		<span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>
+																		<input data-sm-name="#esg-left-subm-{{ row_group }}-{{ sub_row_group }}" class="form-control{% if (language['language_id'] == lang_id) %} shipping-method-name{% endif %}" type="text" name="shipping_easyship[{{ mg_name }}][shipping_methods][{{ sm_name }}][name][{{ language['language_id'] }}]" value="{{ item['name'][language['language_id']] is not empty ? item['name'][language['language_id']] : '' }}" />
+																	</div>
+																{% endfor %}
+															</div>
+														</div>
+														<div class="form-group">
+															<label class="col-sm-12 es-control-label">{{ entry_geo_zone }}</label>
+															<div class="col-xs-12 col-sm-12">
+																<select name="shipping_easyship[{{ mg_name }}][shipping_methods][{{ sm_name }}][geo_zone_id]" class="form-control">
+																	<option value="0">{{ text_all_zones }}</option>
+																	{% for geo_zone in geo_zones %}
+																		{% if (geo_zone['geo_zone_id'] == item['geo_zone_id']) %}
+																			<option value="{{ geo_zone['geo_zone_id'] }}" selected="selected">{{ geo_zone['name'] }}</option>
+																		{% else %}
+																			<option value="{{ geo_zone['geo_zone_id'] }}">{{ geo_zone['name'] }}</option>
+																		{% endif %}
+																	{% endfor %}
+																</select>
+															</div>
+														</div>
+														<div class="form-group">
+															<div class="col-xs-12 col-sm-6">
+																<label class="es-control-label">{{ entry_min_totals }}</label>
+																<input class="form-control" name="shipping_easyship[{{ mg_name }}][shipping_methods][{{ sm_name }}][minimum_order_amount]" type="text" value="{{ item['minimum_order_amount'] is not empty ? item['minimum_order_amount'] : '' }}">
+															</div>
+															<div class="col-xs-12 col-sm-6">
+																<label class="es-control-label">{{ entry_max_totals }}</label>
+																<input class="form-control" name="shipping_easyship[{{ mg_name }}][shipping_methods][{{ sm_name }}][maximum_order_amount]" type="text" value="{{ item['maximum_order_amount'] is not empty ? item['maximum_order_amount'] : '' }}">
+															</div>
+														</div>
+														<div class="form-group">
+															<div class="col-xs-12 col-sm-6">
+																<label class="es-control-label">{{ entry_free_shipping_price }}</label>
+																<input class="form-control" name="shipping_easyship[{{ mg_name }}][shipping_methods][{{ sm_name }}][free_shipping]" type="text" value="{{ item['free_shipping'] is not empty ? item['free_shipping'] : '' }}">
+															</div>
+															<div class="col-xs-12 col-sm-6">
+																<label class="es-control-label">{{ entry_free_shipping_text }}</label>
+																{% for language in languages %}
+																	<div class="input-group mb-10">
+																		<span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>
+																		<input class="form-control" type="text" name="shipping_easyship[{{ mg_name }}][shipping_methods][{{ sm_name }}][free_shipping_text][{{ language['language_id'] }}]" value="{{ item['free_shipping_text'][language['language_id']] is not empty ? item['free_shipping_text'][language['language_id']] : '' }}" />
+																	</div>
+																{% endfor %}
+															</div>
+														</div>
+														<div class="form-group">
+															<div class="col-xs-12 col-sm-6">
+																<label class="es-control-label">{{ entry_cost }}</label>
+																<input class="form-control" name="shipping_easyship[{{ mg_name }}][shipping_methods][{{ sm_name }}][cost]" type="text" value="{{ item['cost'] is not empty ? item['cost'] : '' }}">
+															</div>
+															<div class="col-xs-12 col-sm-6">
+																<label class="es-control-label">{{ entry_shipping_text }}</label>
+																{% for language in languages %}
+																	<div class="input-group mb-10">
+																		<span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>
+																		<input class="form-control" type="text" name="shipping_easyship[{{ mg_name }}][shipping_methods][{{ sm_name }}][shipping_text][{{ language['language_id'] }}]" value="{{ item['shipping_text'][language['language_id']] is not empty ? item['shipping_text'][language['language_id']] : '' }}" />
+																	</div>
+																{% endfor %}
+															</div>
+														</div>
+													</div>
+												</div>
+												{% set sub_row_group = sub_row_group + 1 %}
+											{% endfor %}
+										{% endif %}
+									</div>
+								</div>
+							{% set row_group = row_group + 1 %}
+							{% endfor %}
+							{% endif %}
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+	Sortable.create(left_es_items, {
+		animation: 400,
+		filter: ".ignore-drag,.ignore-drag-methods",
+		swapThreshold: 0.5,
+		draggable: '.es-group-methods',
+		handle: '.es-group-methods',
+		onEnd: function (evt) {
+			if(evt.oldIndex > evt.newIndex){
+				$('.setting-methods > div').eq(evt.oldIndex).insertBefore($('.setting-methods > div').eq(evt.newIndex));
+			} else {
+				$('.setting-methods > div').eq(evt.oldIndex).insertAfter($('.setting-methods > div').eq(evt.newIndex));
+			}
+		},
+	});
+
+	var el_esmethods_items = $('.es-methods .es-method-items');
+	$(el_esmethods_items).each(function (i,e) {
+		SortableShippingMethod(e)
+	})
+
+	function SortableShippingMethod(elem){
+		var id = $(elem).attr('data-parent');
+
+		Sortable.create(elem, {
+			animation: 400,
+			swapThreshold: 0.5,
+			filter: ".ignore-drag",
+			draggable: '.m-item',
+			handle: '.m-item',
+			onEnd: function (evt) {
+				if(evt.oldIndex > evt.newIndex){
+					$('.methods-group-'+ id + ' .list-shipping-methods > div').eq(evt.oldIndex).insertBefore($('.methods-group-'+ id + ' .list-shipping-methods > div').eq(evt.newIndex));
+				} else {
+					$('.methods-group-'+ id + ' .list-shipping-methods > div').eq(evt.oldIndex).insertAfter($('.methods-group-'+ id + ' .list-shipping-methods > div').eq(evt.newIndex));
+				}
+			},
+		});
+	}
+
+	$(document).on("change", "input.group-shipping-name", function() {
+		var elem = $(this).attr('data-group-name');
+		$(elem).find('.es-title').html(this.value);
+	});
+
+	$(document).on("change", "input.shipping-method-name", function() {
+		var elem = $(this).attr('data-sm-name');
+		$(elem).find('.es-item-name').html(this.value);
+	});
+
+	$(document).on("show.bs.tab", "a[data-toggle=\"tab\"]", function(e) {
+		$(this).closest('.nav').find('.active').removeClass('active');
+		$('.tab-content .tab-pane:not(' + $(this).attr('data-target') + ')').removeClass('active');
+	});
+
+
+	$(document).on("click", ".es-group-radio label", function(e) {
+		e.stopPropagation();
+		e.preventDefault();
+		var input_id = $(this).attr('for');
+		$('#' + input_id).prop('checked', true);
+	});
+
+	function createEasyshipGroup(){
+		var es_group_row = 0;
+
+		if($('.content-group > li').length){
+			for (var i = 0; i < $('.content-group > li').length + 1; i++) {
+				if($('.content-group > #esg-left-row-'+ i).length === 0){
+					var es_group_row = i;
+					break;
+				}
+			}
+		}
+
+		html_left = '<li id="esg-left-row-'+ es_group_row +'" data-row=".methods-group-' + es_group_row + '" class="es-group-methods">';
+		html_left += '	<div class="es-methods">';
+		html_left += '		<a data-toggle="tab" data-target="#esg-'+ es_group_row +'" class="method-info">';
+		html_left += '			<div class="esg-code">easyship' + es_group_row +'</div>-';
+		html_left += '			<span class="es-title">{{ text_noname }}</span>';
+		html_left += '			<div class="es-action ignore-drag">';
+		html_left += '				<div class="es-group-radio">';
+		html_left += '					<input id="es-status-on-'+ es_group_row +'" class="hide-radio" type="radio" name="shipping_easyship[easyship'+ es_group_row +'][status]" value="on" checked="checked">';
+		html_left += '					<label class="btn btn-xs btn-link esg-status es-off" for="es-status-on-'+ es_group_row +'"><i class="fa fa-power-off"></i></label>';
+		html_left += '					<input id="es-status-off-'+ es_group_row +'" class="hide-radio" type="radio" name="shipping_easyship[easyship'+ es_group_row +'][status]" value="off">';
+		html_left += '					<label class="btn btn-xs btn-link esg-status es-on" for="es-status-off-'+ es_group_row +'"><i class="fa fa-power-off"></i></label>';
+		html_left += '				</div>';
+		html_left += '				<button type="button" class="btn btn-xs btn-link esg-remove"><i class="fa fa-trash-o"></i></button>';
+		html_left += '			</div>';
+		html_left += '		</a>';
+		html_left += '		<ul class="list-unstyled es-method-items ignore-drag-methods" data-parent="'+ es_group_row +'"></ul>';
+		html_left += '		<button class="btn btn-link btn-opc-success" type="button" onclick="createEasyshipItem('+ es_group_row +');"><i class="fa fa-plus"></i> {{ text_create_shipping_method }}</button>';
+		html_left += '	</div>';
+		html_left += '</li>'
+
+		$('.content-group').append(html_left);
+
+		html_right = '<div class="methods-group-'+ es_group_row +'">';
+		html_right += '	<div id="esg-'+ es_group_row +'" class="tab-pane">';
+		html_right += '		<div class="method-title">{{ text_edit_shipping_group }} <span class="esg-code">easyship' + es_group_row +'</span></div>';
+		html_right += '			<div class="method-name">';
+		html_right += '				<div class="form-group">';
+		html_right += '					<label class="col-sm-12 es-control-label">{{ entry_group_name }}</label>';
+		html_right += '					<div class="col-xs-12 col-sm-12">';
+		{% for language in languages %}
+			html_right += '							<div class="input-group mb-10">';
+			html_right += '								<span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>';
+			html_right += '								<input data-group-name="#esg-left-row-'+ es_group_row +'" class="form-control{% if (language['language_id'] == lang_id) %} group-shipping-name{% endif %}" type="text" name="shipping_easyship[easyship'+ es_group_row +'][group_name][{{ language['language_id'] }}]" value="" />';
+			html_right += '							</div>';
+		{% endfor %}
+		html_right += '					</div>';
+		html_right += '				</div>';
+		html_right += '			</div>';
+		html_right += '	</div>';
+		html_right += '</div>';
+
+		$('.setting-methods').append(html_right);
+
+		$('#esg-left-row-'+ es_group_row + ' a.method-info').trigger('click');
+
+		SortableShippingMethod( $('#esg-left-row-'+ es_group_row + ' .es-method-items')[0]);
+	}
+
+	function createEasyshipItem(es_group_row){
+		var es_item_row = 0;
+
+		if($('#esg-left-row-'+ es_group_row + ' .es-method-items > li').length){
+			for (var i = 0; i < $('#esg-left-row-'+ es_group_row + ' .es-method-items > li').length + 1; i++) {
+				if($('#esg-left-row-'+ es_group_row + ' .es-method-items > #esg-left-subm-'+ es_group_row +'-'+ i).length === 0){
+					var es_item_row = i;
+					break;
+				}
+			}
+		}
+
+		html_lsm =  '<li id="esg-left-subm-'+ es_group_row +'-'+ es_item_row +'" data-row="#esg-'+ es_group_row +'-'+ es_item_row +'" class="m-item">';
+		html_lsm += '	<a data-toggle="tab" data-target="#esg-'+ es_group_row +'-'+ es_item_row +'" class="m-item-info">';
+		html_lsm += '		<div class="es-item-code">easyship'+ es_item_row +'</div>-';
+		html_lsm += '		<div class="es-item-name">{{ text_noname }}</div>';
+		html_lsm += '		<div class="es-action ignore-drag">';
+		html_lsm += '			<div class="es-group-radio">';
+		html_lsm += '				<input id="es-status-on-'+ es_group_row +'-'+ es_item_row +'" class="hide-radio" type="radio" name="shipping_easyship[easyship'+ es_group_row +'][shipping_methods][easyship'+ es_item_row +'][status]" value="on" checked="checked">';
+		html_lsm += '				<label class="btn btn-xs btn-link esg-status es-off" for="es-status-on-'+ es_group_row +'-'+ es_item_row +'"><i class="fa fa-power-off"></i></label>';
+		html_lsm += '				<input id="es-status-off-'+ es_group_row +'-'+ es_item_row +'" class="hide-radio" type="radio" name="shipping_easyship[easyship'+ es_group_row +'][shipping_methods][easyship'+ es_item_row +'][status]" value="off">';
+		html_lsm += '				<label class="btn btn-xs btn-link esg-status es-on" for="es-status-off-'+ es_group_row +'-'+ es_item_row +'"><i class="fa fa-power-off"></i></label>';
+		html_lsm += '			</div>';
+		html_lsm += '			<button type="button" class="btn btn-xs btn-link esg-remove"><i class="fa fa-trash-o"></i></button>';
+		html_lsm += '		</div>';
+		html_lsm += '	</a>';
+		html_lsm += '</li>';
+
+		$('#esg-left-row-'+ es_group_row +' .es-method-items').append(html_lsm);
+
+
+
+		html_rsm = '<div class="list-shipping-methods">';
+		html_rsm += '<div id="esg-'+ es_group_row +'-'+ es_item_row +'" class="tab-pane">';
+		html_rsm += '	<div class="method-title">{{ text_edit_shipping_method }}<div class="shipping-group"><span class="esg-code">easyship'+ es_group_row +'</span><span class="es-item-code">easyship'+ es_item_row +'</span></div></div>';
+
+		html_rsm += '		<div class="method-setting">';
+		html_rsm += '			<div class="form-group">';
+		html_rsm += '				<label class="col-sm-12 es-control-label">{{ entry_name }}</label>';
+		html_rsm += '				<div class="col-xs-12 col-sm-12">';
+		{% for language in languages %}
+			html_rsm += '						<div class="input-group mb-10">';
+			html_rsm += '							<span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>';
+			html_rsm += '							<input data-sm-name="#esg-left-subm-'+ es_group_row +'-'+ es_item_row +'" class="form-control{% if (language['language_id'] == lang_id) %} shipping-method-name{% endif %}" type="text" name="shipping_easyship[easyship'+ es_group_row +'][shipping_methods][easyship'+ es_item_row +'][name][{{ language['language_id'] }}]" value="" />';
+			html_rsm += '						</div>';
+		{% endfor %}
+		html_rsm += '				</div>';
+		html_rsm += '			</div>';
+		html_rsm += '			<div class="form-group">';
+		html_rsm += '				<label class="col-sm-12 es-control-label">{{ entry_geo_zone }}</label>';
+		html_rsm += '				<div class="col-xs-12 col-sm-12">';
+		html_rsm += '					<select name="shipping_easyship[easyship'+ es_group_row +'][shipping_methods][easyship'+ es_item_row +'][geo_zone_id]" class="form-control">';
+		html_rsm += '						<option value="0">{{ text_all_zones }}</option>';
+		{% for geo_zone in geo_zones %}
+			html_rsm += '						<option value="{{ geo_zone['geo_zone_id'] }}">{{ geo_zone['name'] }}</option>';
+		{% endfor %}
+		html_rsm += '					</select>';
+		html_rsm += '				</div>';
+		html_rsm += '			</div>';
+		html_rsm += '			<div class="form-group">';
+		html_rsm += '				<div class="col-xs-12 col-sm-6">';
+		html_rsm += '					<label class="es-control-label">{{ entry_min_totals }}</label>';
+		html_rsm += '					<input class="form-control" name="shipping_easyship[easyship'+ es_group_row +'][shipping_methods][easyship'+ es_item_row +'][minimum_order_amount]" type="text" value="">';
+		html_rsm += '				</div>';
+		html_rsm += '				<div class="col-xs-12 col-sm-6">';
+		html_rsm += '					<label class="es-control-label">{{ entry_max_totals }}</label>';
+		html_rsm += '					<input class="form-control" name="shipping_easyship[easyship'+ es_group_row +'][shipping_methods][easyship'+ es_item_row +'][maximum_order_amount]" type="text" value="">';
+		html_rsm += '				</div>';
+		html_rsm += '			</div>';
+		html_rsm += '			<div class="form-group">';
+		html_rsm += '				<div class="col-xs-12 col-sm-6">';
+		html_rsm += '					<label class="es-control-label">{{ entry_free_shipping_price }}</label>';
+		html_rsm += '					<input class="form-control" name="shipping_easyship[easyship'+ es_group_row +'][shipping_methods][easyship'+ es_item_row +'][free_shipping]" type="text" value="">';
+		html_rsm += '				</div>';
+		html_rsm += '				<div class="col-xs-12 col-sm-6">';
+		html_rsm += '					<label class="es-control-label">{{ entry_free_shipping_text }}</label>';
+		{% for language in languages %}
+			html_rsm += '					<div class="input-group mb-10">';
+			html_rsm += '						<span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>';
+			html_rsm += '						<input class="form-control{% if (language['language_id'] == lang_id) %} name-field{% endif %}" type="text" name="shipping_easyship[easyship'+ es_group_row +'][shipping_methods][easyship'+ es_item_row +'][free_shipping_text][{{ language['language_id'] }}]" value="" />';
+			html_rsm += '					</div>';
+		{% endfor %}
+		html_rsm += '				</div>';
+		html_rsm += '			</div>';
+		html_rsm += '			<div class="form-group">';
+		html_rsm += '				<div class="col-xs-12 col-sm-6">';
+		html_rsm += '					<label class="es-control-label">{{ entry_cost }}</label>';
+		html_rsm += '					<input class="form-control" name="shipping_easyship[easyship'+ es_group_row +'][shipping_methods][easyship'+ es_item_row +'][cost]" type="text" value="">';
+		html_rsm += '				</div>';
+		html_rsm += '				<div class="col-xs-12 col-sm-6">';
+		html_rsm += '					<label class="es-control-label">{{ entry_shipping_text }}</label>';
+											{% for language in languages %}
+		html_rsm += '					<div class="input-group mb-10">';
+		html_rsm += '						<span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>';
+		html_rsm += '						<input class="form-control" type="text" name="shipping_easyship[easyship'+ es_group_row +'][shipping_methods][easyship'+ es_item_row +'][shipping_text][{{ language['language_id'] }}]" value="" />';
+		html_rsm += '					</div>';
+											{% endfor %}
+		html_rsm += '				</div>';
+		html_rsm += '			</div>';
+
+		html_rsm += '		</div>';
+
+		html_rsm += '</div>';
+		html_rsm += '</div>';
+
+		$('.methods-group-'+ es_group_row).append(html_rsm);
+
+		$('#esg-left-row-'+ es_group_row + ' #esg-left-subm-'+ es_group_row +'-'+ es_item_row +' a.m-item-info').trigger('click');
+	}
+
+	$(document).on("click", ".esg-remove", function(e) {
+		e.stopPropagation();
+		e.preventDefault();
+
+		var selector_grow = $(this).closest('li').attr('data-row');
+		$(selector_grow).remove();
+		$(this).closest('li').remove();
+
+		var methods_group_id = $(this).closest('li').attr('id');
+
+		if (methods_group_id) {
+			var group_number = methods_group_id.replace('esg-left-row-', '');
+			$('.methods-group-' + group_number).remove();
+		}
+	});
+
+</script>
+<style>
+	.ml-0 {
+		margin-left: 0;
+	}
+	.mr-0 {
+		margin-right: 0;
+	}
+	.shipping-group {
+		display: inline-block;
+		position: relative;
+	}
+	.shipping-group .esg-code::after {
+		position: absolute;
+		content: '';
+		width: 4px;
+		height: 4px;
+		background: #fff;
+		border-radius: 100%;
+		bottom: 4px;
+		right: 0;
+		left: 0;
+		margin: 0 auto;
+	}
+	.shipping-group .esg-code {
+		border-radius: 3px 0px 0px 3px;
+		margin-right: -0.5px;
+	}
+	.shipping-group .es-item-code {
+		border-radius: 0px 3px 3px 0px;
+		margin-right: 0px;
+		margin-left: 0.5px;
+	}
+	#form-easyship {
+		color:#000;
+	}
+	.es-control-label {
+		margin-bottom: 15px;
+		font-size: 16px;
+		font-weight: 400;
+		color:#000;
+	}
+	.mb-10 {
+		margin-bottom: 10px;
+	}
+	.input-group.mb-10:last-child {
+		margin-bottom: 0;
+	}
+	.method-title {
+		background: #f8f9fa;
+		color: #000;
+		width: 100%;
+		padding: 10px 16px;
+		margin-bottom: 2px;
+		font-size: 16px;
+		border-radius: 5px;
+	}
+	.es-group-radio {
+		display: inline-block;
+	}
+	.hide-radio {
+		display: none;
+	}
+	.hide-radio:checked + label:last-child {
+		display: none;
+	}
+	.es-group-radio .hide-radio:first-child:checked + label {
+		display: none;
+	}
+	.tab-content div > .tab-pane {
+		display: none;
+	}
+	.tab-content div > .tab-pane.active {
+		display: block;
+	}
+	li.active > div > a.method-info{
+		border-style: solid;
+		background-color: rgba(49, 176, 213, 0.08);
+	}
+
+	li.active > a.m-item-info {
+		border-style: solid;
+		background-color: rgba(239, 113, 14, 0.08);
+	}
+	a.method-info,
+	a.m-item-info {
+		cursor:pointer;
+		outline: none;
+	}
+	.es-methods {
+		padding: 15px;
+		border-radius:6px;
+		border: 1px dashed #ccc;
+		margin-bottom: 15px;
+	}
+	.method-info {
+		display: flex;
+		align-items: center;
+		border: 1px dashed #31b0d5;
+		padding: 6px;
+		border-radius: 4px;
+		margin-bottom: 8px;
+	}
+	.esg-code {
+		padding: 3px 6px;
+		background: #31b0d5;
+		color: #fff;
+		border-radius: 3px;
+		margin-right: 8px;
+	}
+	.es-title {
+		font-weight: 600;
+	}
+	.es-title,
+	.es-item-name {
+		font-size: 12px;
+		color:#000;
+		margin-left: 6px;
+	}
+	.es-action {
+		margin-left: auto;
+		min-width: 55px;
+	}
+	.es-action .esg-remove {
+		margin-left: 8px;
+	}
+	.btn-link.esg-status.es-on {
+		color:#26B663;
+		border:1px solid #26B663;
+		background: #fff;
+	}
+	.btn-link.esg-status.es-off {
+		color:#f24545;
+		border:1px solid #f24545;
+		background: #fff;
+	}
+	.btn-link.esg-remove {
+		color:#f24545;
+		border:1px solid #f24545;
+		background: #fff;
+	}
+	.m-item-info {
+		display: flex;
+		align-items: center;
+		border: 1px dashed #ef710e;
+		padding: 6px;
+		border-radius: 4px;
+		margin-bottom: 8px;
+		margin-left: 15px;
+	}
+	.es-item-code {
+		padding: 3px 6px;
+		background: #ef710e;
+		color: #fff;
+		border-radius: 3px;
+		margin-right: 8px;
+	}
+	.m-item {
+		position: relative;
+	}
+	.m-item:before {
+		content: "\f148";
+		position: absolute;
+		font: normal normal normal 14px/1 FontAwesome;
+		color: #57646f;
+		transform: rotate(90deg);
+		top: 30%;
+	}
+	.w-100 {
+		width: 100%;
+		display: block;
+	}
+	.btn-success.btn-opc-success {
+		background: #26B663;
+	}
+	.btn-success.btn-opc-success:focus,
+	.btn-success.btn-opc-success:active,
+	.btn-success.btn-opc-success:hover {
+		background: #1EA958;
+		border-color: #1EA958;
+	}
+	.btn-link.btn-opc-success {
+		color:#26B663;
+		padding: 2px 15px;
+		margin-top: 10px;
+		background: #fff;
+	}
+	.btn-link.btn-opc-success:focus,
+	.btn-link.btn-opc-success:active,
+	.btn-link.btn-opc-success:hover {
+		color:#1EA958;
+	}
+	#form-easyship > div.col-sm-5 {
+		border-right: 1px solid #eee;
+	}
+</style>
+{{ footer }}

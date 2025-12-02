@@ -1,0 +1,38 @@
+<div class="container-module module-articles latest-atricles">
+    {% if title %}
+        <div class="title-module rc-mod"><span>{{ title }}</span></div>
+    {% endif %}
+    <div class="module-articles__list row-flex">
+        {% for article in articles %}
+            <div class="module-articles__item col-xs-12 col-sm-6 col-md-3">
+                <div class="module-articles__content dflex flex-column h-100">
+                    <div class="module-articles__image">
+                        <a href="{{ article.href }}">
+                            <img decoding="async" width="{{ article.width }}" height="{{ article.height }}" loading="lazy" src="{{ article.image }}" alt="{{ article.name }}" class="img-responsive" />
+                        </a>
+                    </div>
+                    <div class="module-articles__caption dflex flex-column flex-grow-1">
+                        <div class="module-articles__title">
+                            <a href="{{ article.href }}">{{ article.name }}</a>
+                        </div>
+                        {% if desctiption_status %}
+                            <div class="module-articles__description">{{ article.description }}</div>
+                        {% endif %}
+                        <div class="module-atricles__footer">
+                            <div class="module-articles__date">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="19" height="20" fill="none" viewBox="0 0 19 20">
+                                    <path fill="currentColor" fill-rule="evenodd" d="M5.506.25a.75.75 0 0 1 .75.75v1.05h5.873V1a.75.75 0 0 1 1.5 0v1.05h.157a4.35 4.35 0 0 1 4.35 4.35v9a4.35 4.35 0 0 1-4.35 4.35H4.6A4.35 4.35 0 0 1 .25 15.4v-9A4.35 4.35 0 0 1 4.6 2.05h.156V1a.75.75 0 0 1 .75-.75Zm-.75 3.3H4.6A2.85 2.85 0 0 0 1.75 6.4v1.05h14.886V6.4a2.85 2.85 0 0 0-2.85-2.85h-.156V4.6a.75.75 0 0 1-1.5 0V3.55H6.256V4.6a.75.75 0 0 1-1.5 0V3.55Zm11.88 5.4H1.75v6.45a2.85 2.85 0 0 0 2.85 2.85h9.186a2.85 2.85 0 0 0 2.85-2.85V8.95ZM4.3 12.25a.75.75 0 0 1 .75-.75h.9a.75.75 0 0 1 0 1.5h-.9a.75.75 0 0 1-.75-.75Zm3.6 0a.75.75 0 0 1 .75-.75h.9a.75.75 0 0 1 0 1.5h-.9a.75.75 0 0 1-.75-.75Zm3.6 0a.75.75 0 0 1 .75-.75h.9a.75.75 0 0 1 0 1.5h-.9a.75.75 0 0 1-.75-.75Zm-7.2 2.7a.75.75 0 0 1 .75-.75h.9a.75.75 0 0 1 0 1.5h-.9a.75.75 0 0 1-.75-.75Zm3.6 0a.75.75 0 0 1 .75-.75h.9a.75.75 0 0 1 0 1.5h-.9a.75.75 0 0 1-.75-.75Zm3.6 0a.75.75 0 0 1 .75-.75h.9a.75.75 0 0 1 0 1.5h-.9a.75.75 0 0 1-.75-.75Z" clip-rule="evenodd"></path>
+                                </svg>
+                                <span class="module-articles__date-text">{{ article.date_added }}</span>
+                            </div>
+                            <div class="module-atricles__viewed">
+                                <i class="up-icon-22 up-icon-quickview" aria-hidden="true"></i>
+                                {{ article.viewed }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>

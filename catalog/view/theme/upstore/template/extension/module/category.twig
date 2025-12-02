@@ -1,0 +1,54 @@
+{% if categories is not empty %}
+<div class="mod-categories">
+    <ul class="list-unstyled mod-cat-list-items">
+        {% for category in categories %}
+        <li class="mc-item{% if category.category_id == category_id %} is-active-item{% endif %}">
+            <span class="dflex justify-content-between">
+                <a href="{{ category.href }}">{{ category.name }}</a>
+                {% if category.children is not empty %}
+                <span class="mc-show-child dflex"><i class="up-icon-angle-down icon-mc-down" aria-hidden="true"></i></span>
+                {% endif %}
+            </span>
+            {% if category.children is not empty %}
+            <ul class="list-unstyled mc-children children-2-lv">
+                {% for child in category.children %}
+                    <li class="mc-child-item child-2-lv{% if child.category_id == child_id %} is-active-item{% endif %}">
+                        <span class="dflex justify-content-between">
+                            <a href="{{ child.href }}">{{ child.name }}</a>
+                            {% if child.children is not empty %}
+                            <span class="mc-show-child dflex"><i class="up-icon-angle-down icon-mc-down" aria-hidden="true"></i></span>
+                            {% endif %}
+                        </span>
+                        {% if child.children is not empty %}
+                            <ul class="list-unstyled mc-children children-3-lv">
+                                {% for child_3lv in child.children %}
+                                    <li class="mc-child-item child-3-lv{% if child_3lv.category_id == child_3lv_id %} is-active-item{% endif %}">
+                                        <a href="{{ child_3lv.href }}">{{ child_3lv.name }}</a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+<script>
+$(document).on('click', '.mc-show-child', function(e){
+    e.preventDefault();
+
+    if ($(this).closest('li').hasClass('is-active-item')) {
+        $(this).parent().next().slideUp('fast', function () {
+            $(this).closest('li').removeClass('is-active-item');
+        });
+    } else {
+        $(this).parent().next().slideDown('fast', function () {
+            $(this).closest('li').addClass('is-active-item');
+        });
+    }
+});
+</script>
+{% endif %}

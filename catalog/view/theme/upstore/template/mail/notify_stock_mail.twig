@@ -1,0 +1,35 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/1999/REC-html401-19991224/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title></title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
+<body style="font-family: Tahoma, Arial, Helvetica, sans-serif; font-size: 12px; color: #000000;">
+<div>
+<a href="{{ store_url }}" title="{{ store_name }}"><img src="{{ logo }}" alt="{{ store_name }}" style="margin-bottom: 20px; border: none;" /></a>
+<br/>
+<table style="border-collapse: collapse; width: 100%; border-top: 1px solid #DDDDDD; border-left: 1px solid #DDDDDD; margin-bottom: 20px;margin-top: 10px;">
+  <thead>
+    <tr>
+      <td style="font-size: 12px; border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; background-color: #EFEFEF; font-weight: bold; text-align: left; padding: 7px; color: #222222;">{{ text_customer }}</td>
+      <td style="font-size: 12px; border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; background-color: #EFEFEF; font-weight: bold; text-align: left; padding: 7px; color: #222222;">{{ text_date_added }}</td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="font-size: 12px; border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: left; padding: 7px;">
+      {% if name is not empty %}<b>{{ text_name }}:</b> {{ name }}<br/>{% endif %}
+      {% if telephone is not empty %}<?php if(!empty($telephone)) { ?><b>{{ text_telephone }}:</b> {{ telephone }}<br/>{% endif %}
+      <b>{{ text_email }}:</b> {{ email }}<br/>
+      </td>
+      <td style="font-size: 12px; border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: left; padding: 7px;">{{ date_added }}</td>
+    </tr>
+    <tr>
+      <td style="font-size: 12px; border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: left; padding: 7px;" colspan="2"><b>{{ text_link_product }}:</b> <a href="{{ product_link }}">{{ product_name }}</a></td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</body>
+</html>

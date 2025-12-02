@@ -1,0 +1,459 @@
+<ul class="nav nav-tabs">
+	<li class="active">
+		<a href="#tab-category-setting" data-toggle="tab">{{ tab_general_ns_setting }}</a>
+	</li>
+	<li>
+		<a href="#tab-sorts-setting" data-toggle="tab">{{ text_sort_options }}</a>
+	</li>
+</ul>
+<div class="tab-content">
+	<div class="tab-pane active" id="tab-category-setting">
+		<div class="form-group">
+			<div class="col-sm-12 title-setting">{{ text_setting_category_page }}</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-3 control-label">{{ text_on_off_subcategory }}</label>
+			<div class="col-sm-9">
+				<div class="checkbox-group-pixelshop">
+					<label>
+						<input type="checkbox" name="show_subcategories" value="1" {% if show_subcategories is defined and show_subcategories == '1' %}checked="checked"{% endif %} />
+						<span></span>
+					</label>
+				</div>
+			</div>
+		</div>
+		<hr class="m-0">
+		<div id="sub_category_setting" class="collapse fade {% if show_subcategories == '1' %} in{% endif %}">
+			<div class="form-group">
+				<label class="col-sm-3 control-label">{{ entry_sub_category_position }}</label>
+				<div class="col-sm-9">
+					<div class="btn-group" data-toggle="buttons">
+						<label class="btn btn-default {% if sub_category_position == 'top' %} active{% endif %}">
+							<input type="radio" name="sub_category_position" value="top" {% if sub_category_position == 'top' %}checked="checked"{% endif %}>
+							<span class="on-off">{{ text_sub_category_position_top }}</span>
+						</label>
+						<label class="btn btn-default {% if sub_category_position == 'right' %} active{% endif %}">
+							<input type="radio" name="sub_category_position" value="right" {% if sub_category_position == 'right' %}checked="checked"{% endif %}>
+							<span class="on-off">{{ text_sub_category_position_right }}</span>
+						</label>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">{{ entry_sub_category_type }}</label>
+				<div class="col-sm-9">
+					<div class="btn-group" data-toggle="buttons">
+						<label class="btn btn-default {% if sub_category_type == 'grid' %} active{% endif %}">
+							<input type="radio" name="sub_category_type" value="grid" {% if sub_category_type == 'grid' %}checked="checked"{% endif %}>
+							<span class="on-off">{{ text_sub_category_type_grid }}</span>
+						</label>
+						<label class="btn btn-default {% if sub_category_type == 'slider' %} active{% endif %}">
+							<input type="radio" name="sub_category_type" value="slider" {% if sub_category_type == 'slider' %}checked="checked"{% endif %}>
+							<span class="on-off">{{ text_sub_category_type_slider }}</span>
+						</label>
+					</div>
+				</div>
+			</div>
+			<hr class="m-0">
+			<div id="sub_categories_limit_row" class="collapse fade {% if sub_category_type == 'grid' %} in{% endif %}">
+				<div class="form-group">
+					<label class="col-sm-3 control-label">{{ text_subcategories_row_limit }}</label>
+					<div class="col-sm-9">
+						<div class="btn-group" data-toggle="buttons">
+							<label class="btn btn-default {% if subcategories_row_limit == '3' %} active{% endif %}">
+								<input type="radio" name="subcategories_row_limit" value="3" {% if subcategories_row_limit == '3' %}checked="checked"{% endif %}>
+								<span class="on-off">4</span>
+							</label>
+							<label class="btn btn-default {% if subcategories_row_limit == '2' %} active{% endif %}">
+								<input type="radio" name="subcategories_row_limit" value="2" {% if subcategories_row_limit == '2' %}checked="checked"{% endif %}>
+								<span class="on-off">6</span>
+							</label>
+							<label class="btn btn-default {% if subcategories_row_limit == '1-8' %} active{% endif %}">
+								<input type="radio" name="subcategories_row_limit" value="1-8" {% if subcategories_row_limit == '1-8' %}checked="checked"{% endif %}>
+								<span class="on-off">8</span>
+							</label>
+						</div>
+					</div>
+				</div>
+				<hr class="m-0">
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">{{ text_on_off_subcategory_image }}</label>
+				<div class="col-sm-9">
+					<div class="checkbox-group-pixelshop">
+						<label>
+							<input type="checkbox" name="show_subcategories_image" value="1" {% if show_subcategories_image is defined and show_subcategories_image == '1' %}checked="checked"{% endif %} />
+							<span></span>
+						</label>
+					</div>
+				</div>
+			</div>
+			<hr class="m-0">
+			<div id="sub_category_type_bg" class="collapse fade {% if show_subcategories_image == '1' %} in{% endif %}">
+				<div class="form-group">
+					<label class="col-sm-3 control-label">{{ entry_sub_category_type_bg }}</label>
+					<div class="col-sm-9">
+						<div class="btn-group" data-toggle="buttons">
+							<label class="btn btn-default {% if sub_category_type_bg == 'bg_item' %} active{% endif %}">
+								<input type="radio" name="sub_category_type_bg" value="bg_item" {% if sub_category_type_bg == 'bg_item' %}checked="checked"{% endif %}>
+								<span class="on-off">{{ text_sub_category_bg_item }}</span>
+							</label>
+							<label class="btn btn-default {% if sub_category_type_bg == 'bg_image' %} active{% endif %}">
+								<input type="radio" name="sub_category_type_bg" value="bg_image" {% if sub_category_type_bg == 'bg_image' %}checked="checked"{% endif %}>
+								<span class="on-off">{{ text_sub_category_bg_image }}</span>
+							</label>
+						</div>
+					</div>
+				</div>
+				<hr class="m-0">
+			</div>
+			<div id="sub_category_size_image" class="collapse fade {% if show_subcategories_image == '1' %} in{% endif %}">
+				<div class="form-group">
+					<label class="col-sm-3 control-label">{{ ns_text_subcat_width }}</label>
+					<div class="col-sm-9 form-inline">
+						<input class="form-control" type="number" name="ns_subcat_width" value="{{ ns_subcat_width }}" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">{{ ns_text_subcat_height }}</label>
+					<div class="col-sm-9 form-inline">
+						<input class="form-control" type="number" name="ns_subcat_height" value="{{ ns_subcat_height }}" />
+					</div>
+				</div>
+			</div>
+			<hr class="m-0">
+		</div>
+		<script>
+		$(document).on('change', '[name=show_subcategories_image]', function(){
+			setTimeout(function () {
+				if ($('[name=show_subcategories_image]').is(':checked')) {
+					$('#sub_category_type_bg').collapse('show');
+				} else {
+					$('#sub_category_type_bg').collapse('hide');
+					$('[name=sub_category_type_bg][value=bg_item]').click();
+				}
+			}, 50);
+		});
+		$(document).on('change', '[name=show_subcategories]', function(){
+			setTimeout(function () {
+				if ($('[name=show_subcategories]').is(':checked')) {
+					$('#sub_category_setting').collapse('show');
+				} else {
+					$('#sub_category_setting').collapse('hide');
+				}
+			}, 50);
+		});
+		$(document).on('change', '[name=show_subcategories_image]', function(){
+			setTimeout(function () {
+				if ($('[name=show_subcategories_image]').is(':checked')) {
+					$('#sub_category_size_image').collapse('show');
+				} else {
+					$('#sub_category_size_image').collapse('hide');
+				}
+			}, 50);
+		});
+		$(document).on('change', '[name=sub_category_type]', function(){
+			setTimeout(function () {
+				if ($('[name=sub_category_type]:checked').val() == 'grid') {
+					$('#sub_categories_limit_row').collapse('show');
+				} else {
+					$('#sub_categories_limit_row').collapse('hide');
+				}
+			}, 50);
+		});
+		</script>
+		<div class="form-group">
+			<label class="col-sm-3 control-label">{{ text_short_attribute_status }}</label>
+			<div class="col-sm-9">
+				<div class="checkbox-group-pixelshop">
+					<label>
+						<input type="checkbox" name="show_attr_cpage" value="1" {% if show_attr_cpage is defined and show_attr_cpage == '1' %}checked="checked"{% endif %} />
+						<span></span>
+					</label>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-3 control-label">{{ text_short_attribute_group_product }}</label>
+			<div class="col-sm-9 form-inline">
+				<input class="form-control" type="text" name="cpage_attr_group_count" value="{{ cpage_attr_group_count }}" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-3 control-label">{{ text_short_attribute_group_product_item }}</label>
+			<div class="col-sm-9 form-inline">
+				<input class="form-control" type="text" name="cpage_attr_group_item_count" value="{{ cpage_attr_group_item_count }}" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-3 control-label">{{ text_catalog_category_description_dropped }}</label>
+			<div class="col-sm-5">
+				<div class="radio-group-infinity">
+					<input id="config_catalog_category_description_dropped_yes" class="hide-radio" type="radio" name="config_catalog_category_description_dropped" value="1" {% if config_catalog_category_description_dropped %}checked="checked"{% endif %} />
+					<label for="config_catalog_category_description_dropped_yes">{{ text_yes }}</label>
+
+					<input id="config_catalog_category_description_dropped_no" class="hide-radio" type="radio" name="config_catalog_category_description_dropped" value="0" {% if not config_catalog_category_description_dropped %}checked="checked"{% endif %} />
+					<label for="config_catalog_category_description_dropped_no">{{ text_no }}</label>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-12 title-setting">
+				{{ text_general_setting_for_pages }}
+				<div class="label-description">{{ text_pages }}</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-3 control-label">{{ text_localstorege_pricelist }}</label>
+			<div class="col-sm-9">
+				<div class="toggle-switch">
+					<label>
+						<input type="hidden" name="us_setting_pages[status_price_list_view]" value="0" />
+						<input type="checkbox" name="us_setting_pages[status_price_list_view]" value="1" {% if us_setting_pages.status_price_list_view is defined and us_setting_pages.status_price_list_view == 1 %}checked="checked"{% endif %} />
+						<span class="toggle-slider"></span>
+					</label>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-3 control-label">{{ text_status_model }}</label>
+			<div class="col-sm-9">
+				<div class="toggle-switch">
+					<label>
+						<input type="hidden" name="us_setting_pages[status_model]" value="0" />
+						<input type="checkbox" name="us_setting_pages[status_model]" value="1" {% if us_setting_pages.status_model is defined and us_setting_pages.status_model == 1 %}checked="checked"{% endif %} />
+						<span class="toggle-slider"></span>
+					</label>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-3 control-label">{{ text_status_description }}</label>
+			<div class="col-sm-9">
+				<div class="toggle-switch">
+					<label>
+						<input type="hidden" name="us_setting_pages[status_description]" value="0" />
+						<input type="checkbox" name="us_setting_pages[status_description]" value="1" {% if us_setting_pages.status_description is defined and us_setting_pages.status_description == 1 %}checked="checked"{% endif %} />
+						<span class="toggle-slider"></span>
+					</label>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-3 control-label">{{ text_additional_image }}</label>
+			<div class="col-sm-9">
+				<label class="radio">
+					<input type="radio" name="us_setting_pages[image_hover]" value="0" {% if (us_setting_pages.image_hover is defined and (us_setting_pages.image_hover == 0)) or (us_setting_pages.image_hover is not defined) %}checked="checked"{% endif %}> {{ text_disabled }}
+				</label>
+				<label class="radio">
+					<input type="radio" name="us_setting_pages[image_hover]" value="1" {% if us_setting_pages.image_hover is defined and us_setting_pages.image_hover == 1 %}checked="checked"{% endif %}> {{ text_addit_image_type1 }}
+				</label>
+				<label class="radio">
+					<input type="radio" name="us_setting_pages[image_hover]" value="2" {% if us_setting_pages.image_hover is defined and us_setting_pages.image_hover == 2 %}checked="checked"{% endif %}> {{ text_addit_image_type2 }}
+				</label>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-3 control-label">{{ text_status_rating }}</label>
+			<div class="col-sm-9">
+				<div class="toggle-switch">
+					<label>
+						<input type="hidden" name="us_setting_pages[status_rating]" value="0" />
+						<input type="checkbox" name="us_setting_pages[status_rating]" value="1" {% if us_setting_pages.status_rating is defined and us_setting_pages.status_rating == 1 %}checked="checked"{% endif %} />
+						<span class="toggle-slider"></span>
+					</label>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-3 control-label">{{ text_status_quantity_reviews }}</label>
+			<div class="col-sm-9">
+				<div class="toggle-switch">
+					<label>
+						<input type="hidden" name="us_setting_pages[status_quantity_reviews]" value="0" />
+						<input type="checkbox" name="us_setting_pages[status_quantity_reviews]" value="1" {% if us_setting_pages.status_quantity_reviews is defined and us_setting_pages.status_quantity_reviews == 1 %}checked="checked"{% endif %} />
+						<span class="toggle-slider"></span>
+					</label>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-3 control-label">{{ text_status_fastorder }}</label>
+			<div class="col-sm-9">
+				<div class="toggle-switch">
+					<label>
+						<input type="hidden" name="us_setting_pages[status_fastorder]" value="0" />
+						<input type="checkbox" name="us_setting_pages[status_fastorder]" value="1" {% if us_setting_pages.status_fastorder is defined and us_setting_pages.status_fastorder == 1 %}checked="checked"{% endif %} />
+						<span class="toggle-slider"></span>
+					</label>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-3 control-label">{{ text_status_wishlist }}</label>
+			<div class="col-sm-9">
+				<div class="toggle-switch">
+					<label>
+						<input type="hidden" name="us_setting_pages[status_wishlist]" value="0" />
+						<input type="checkbox" name="us_setting_pages[status_wishlist]" value="1" {% if us_setting_pages.status_wishlist is defined and us_setting_pages.status_wishlist == 1 %}checked="checked"{% endif %} />
+						<span class="toggle-slider"></span>
+					</label>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-3 control-label">{{ text_status_compare }}</label>
+			<div class="col-sm-9">
+				<div class="toggle-switch">
+					<label>
+						<input type="hidden" name="us_setting_pages[status_compare]" value="0" />
+						<input type="checkbox" name="us_setting_pages[status_compare]" value="1" {% if us_setting_pages.status_compare is defined and us_setting_pages.status_compare == 1 %}checked="checked"{% endif %} />
+						<span class="toggle-slider"></span>
+					</label>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-3 control-label">{{ text_status_limit }}</label>
+			<div class="col-sm-9">
+				<div class="toggle-switch">
+					<label>
+						<input type="hidden" name="us_setting_pages[status_limit]" value="0" />
+						<input type="checkbox" name="us_setting_pages[status_limit]" value="1" {% if us_setting_pages.status_limit is defined and us_setting_pages.status_limit == 1 %}checked="checked"{% endif %} />
+						<span class="toggle-slider"></span>
+					</label>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-3 control-label">{{ text_status_sort }}</label>
+			<div class="col-sm-9">
+				<div class="toggle-switch">
+					<label>
+						<input type="hidden" name="us_setting_pages[status_sort]" value="0" />
+						<input type="checkbox" name="us_setting_pages[status_sort]" value="1" {% if us_setting_pages.status_sort is defined and us_setting_pages.status_sort == 1 %}checked="checked"{% endif %} />
+						<span class="toggle-slider"></span>
+					</label>
+				</div>
+			</div>
+		</div>
+		<hr class="m-0">
+		<div id="sort_display_mode" class="collapse fade {% if us_setting_pages.status_sort == '1' %}in{% endif %}">
+			<div class="form-group">
+				<label class="col-sm-3 control-label">{{ text_sort_display_mode }}</label>
+				<div class="col-sm-9">
+					<div class="btn-group" data-toggle="buttons">
+						<label class="btn btn-default {% if us_setting_pages.sort_display_mode is not defined or us_setting_pages.sort_display_mode == 'dropdown' %}active{% endif %}">
+							<input type="radio" name="us_setting_pages[sort_display_mode]" value="dropdown" {% if us_setting_pages.sort_display_mode is not defined or us_setting_pages.sort_display_mode == 'dropdown' %}checked="checked"{% endif %}>
+							<span class="on-off">{{ text_dropdown }}</span>
+						</label>
+						<label class="btn btn-default {% if us_setting_pages.sort_display_mode is defined and us_setting_pages.sort_display_mode == 'inline' %}active{% endif %}">
+							<input type="radio" name="us_setting_pages[sort_display_mode]" value="inline" {% if us_setting_pages.sort_display_mode is defined and us_setting_pages.sort_display_mode == 'inline' %}checked="checked"{% endif %}>
+							<span class="on-off">{{ text_inline }}</span>
+						</label>
+					</div>
+				</div>
+			</div>
+			<hr class="m-0">
+		</div>
+		<script>
+		function toggleSortDisplayMode() {
+			if ($('[name="us_setting_pages[status_sort]"]').is(':checked')) {
+				$('#sort_display_mode').collapse('show');
+			} else {
+				$('#sort_display_mode').collapse('hide');
+			}
+		}
+		$(document).on('change', '[name="us_setting_pages[status_sort]"]', function() {
+			setTimeout(toggleSortDisplayMode, 50);
+		});
+		</script>
+		<div class="form-group">
+			<label class="col-sm-3 control-label">{{ text_status_showmore }}</label>
+			<div class="col-sm-9">
+				<div class="toggle-switch">
+					<label>
+						<input type="hidden" name="us_setting_pages[status_showmore]" value="0" />
+						<input type="checkbox" name="us_setting_pages[status_showmore]" value="1" {% if us_setting_pages.status_showmore is defined and us_setting_pages.status_showmore == 1 %}checked="checked"{% endif %} />
+						<span class="toggle-slider"></span>
+					</label>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-3 control-label">{{ text_show_display_view }}</label>
+			<div class="col-sm-9">
+				<div class="toggle-switch">
+					<label>
+						<input type="hidden" name="us_setting_pages[show_display_view]" value="0" />
+						<input type="checkbox" name="us_setting_pages[show_display_view]" value="1" {% if us_setting_pages.show_display_view is defined and us_setting_pages.show_display_view == 1 %}checked="checked"{% endif %} />
+						<span class="toggle-slider"></span>
+					</label>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-12 title-setting">{{ text_setting_manufacturer_page }}</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-3 control-label">{{ text_show_image_brand }}</label>
+			<div class="col-sm-9">
+				<div class="checkbox-group-pixelshop">
+					<label>
+						<input type="checkbox" name="show_image_brand" value="1" {% if show_image_brand is defined and show_image_brand == '1' %}checked="checked"{% endif %} />
+						<span></span>
+					</label>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tab-pane" id="tab-sorts-setting">
+		<div class="form-group">
+			<div class="table-responsive">
+				<table id="sortable-table" class="table table-bordered">
+					<thead>
+						<tr>
+							<td></td>
+							<td></td>
+							<td>{{ column_sort_name }}</td>
+							<td>{{ column_default_sort }}</td>
+							<td>{{ column_custom_text }}</td>
+						</tr>
+					</thead>
+					<tbody>
+						{% for key, sort in sorts.sort %}
+							<tr>
+								<td class="sort-handle text-center"><i class="fa fa-arrows-alt"></i></td>
+								<td class="text-center">
+									<input type="checkbox" name="custom_sort_data[sort][{{ key }}][show]" value="1" {% if sort.show is defined and sort.show == 1 %}checked="checked"{% endif %}/>
+									<input type="hidden" name="custom_sort_data[sort][{{ key }}][value]" value="{{ sort.value }}">
+								</td>
+								<td>{{ sort.text }}</td>
+								<td class="text-center">
+									<input type="radio" name="custom_sort_data[default]" value="{{ sort.value }}" {% if sorts.default is defined and sorts.default == sort.value %}checked="checked"{% endif %}/>
+								</td>
+								<td class="text-left">
+									{% for language in languages %}
+										<div class="input-group">
+											<span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+											<input type="text" name="custom_sort_data[sort][{{ key }}][custom_text][{{ language.language_id }}]" value="{{ sort.custom_text[language.language_id] is defined ? sort.custom_text[language.language_id] : '' }}" class="form-control"/>
+										</div>
+									{% endfor %}
+								</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<script>
+			document.addEventListener('DOMContentLoaded', function() {
+				const table = document.getElementById('sortable-table').getElementsByTagName('tbody')[0];
+				Sortable.create(table, {
+					handle: '.sort-handle',
+					animation: 150,
+				});
+			});
+		</script>
+	</div>
+</div>

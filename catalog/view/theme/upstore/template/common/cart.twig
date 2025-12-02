@@ -1,0 +1,136 @@
+<div id="cart" class="shopping-cart">
+	<button class="dflex align-items-center btn" type="button" {% if on_off_shopping_cart_click == '1' %}onclick="fastorder_open_cart();"{% else %} onclick="openFixedCart(this);"{% endif %}>
+		<i class="up-icon-22 up-icon-cart" aria-hidden="true"></i>
+		<span class="cart-total">{{ count_products }}</span>
+		{% if show_text_after_icon and show_text_after_icon == 1 or type_header == 2 %}
+			<span class="text-a-icon-cart{% if type_header == 1 %} hidden-md hidden-lg{% endif %}">{{ text_ai_cart }}</span>
+		{% endif %}
+	</button>
+	<div class="cart-content">
+	<div class="header-cart-backdrop"></div>
+	<div class="header-cart-fix-right" {% if (pids_in_cart is not empty) %}data-pids="{{ pids_in_cart }}"{% endif %}>
+		<div class="header-cart-top dflex">
+			<div class="header-cart-title">{{ text_ai_cart }}</div>
+			<button type="button" class="header-cart-close"><i class="up-icon-close" aria-hidden="true"></i></button>
+		</div>
+		<div class="header-cart-scroll dflex flex-column">
+			{% if products or vouchers %}
+				<div class="header-cart-products">
+					{% for product in products %}
+						<div class="header-cart-product-item dflex">
+							<div class="header-cart-product-item-left">
+								{% if product.thumb %}
+									<a href="{{ product.href }}"><img src="{{ product.thumb }}" alt="{{ product.name }}" title="{{ product.name }}" class="img-responsive" /></a>
+								{% endif %}
+								<button class="btn btn-link-delete" type="button" onclick="cart.remove('{{ product.cart_id }}',{{ product.product_id }});" title="{{ button_remove }}"><i class="fa fa-trash-o"></i></button>
+							</div>
+							<div class="header-cart-product-item-center dflex flex-column">
+								<div class="header-cart-product-name">
+									<a href="{{ product.href }}">{{ product.name }}</a>
+								</div>
+								{% if product.option %}
+									<div class="header-cart-options">
+										{% for option in product['option'] %}
+											<div class="header-cart-product-option dflex">
+												<div class="hcp-option-name">{{ option.name }}:</div>
+												<div class="hcp-option-value">{{ option.value }}</div>
+											</div>
+										{% endfor %}
+									</div>
+								{% endif %}
+								{% if product.recurring %}
+									<div class="header-cart-product-recurring dflex">
+										<div class="hcp-recurring-text">{{ text_recurring }}</div>
+										<div class="hcp-recurring-value">{{ product.recurring }}</div>
+									</div>
+								{% endif %}
+								{% if product.ch_gift_id and product.ch_gift_id > 0 %}
+									<div class="ch-gift">{{ text_gift }}</div>
+								{% endif %}
+							</div>
+							<div class="header-cart-price-quantity">
+								{% if not product.ch_gift_id or product.ch_gift_id == 0%}
+								<div class="ch-cart-quantity">
+									<span class="input-btn">
+										<button class="btn btn-quantity-minus" type="button" onclick="ch_cart_minus('.cart_input_{{ product.cart_id }}')"><i class="fa fa-angle-left"></i></button>
+									</span>
+									<input type="text" class="form-control cart_input_{{ product.cart_id }}" data-minimum="{{ product.minimum }}" value="{{ product.quantity }}" onkeyup="validateQuantity(this)" onchange="updateQuantityCart('{{ product.cart_id }}', $(this).val());">
+									<span class="input-btn">
+										<button class="btn btn-quantity-plus" type="button" onclick="ch_cart_plus('.cart_input_{{ product.cart_id }}')"><i class="fa fa-angle-right"></i></button>
+									</span>
+								</div>
+								{% endif %}
+								<div class="header-cart-item-total">{{ product.total }}</div>
+							</div>
+						</div>
+					{% endfor %}
+					{% for voucher in vouchers %}
+						<div class="header-cart-voucher-item dflex">
+							<div class="header-cart-voucher-item-left dflex">
+								<div class="header-cart-voucher-remove"><button type="button" onclick="voucher.remove('{{ voucher.key }}');" title="{{ button_remove }}" class="btn btn-link-delete"><i class="fa fa-trash-o"></i></button></div>
+								<div class="header-cart-voucher-name">{{ voucher.description }}</div>
+								<div class="header-cart-voucher-quantity">x&nbsp;1</div>
+							</div>
+							<div class="header-cart-voucher-amount">{{ voucher.amount }}</div>
+						</div>
+					{% endfor %}
+				</div>
+				<div class="header-cart-totals text-right">
+					<a class="header-cart-text-info collapsed" data-toggle="collapse" href=".header-cart-total-info">{{ text_ch_totals }}<i class="up-icon-angle-down" aria-hidden="true"></i></a>
+					<div class="header-cart-total-info collapse">
+						{% for total in totals %}
+							<div class="ch-total-item dflex">
+								<div class="text-right header-cart-total-title">{{ total.title }}</div>
+								<div class="text-right header-cart-total-text">{{ total.text }}</div>
+							</div>
+						{% endfor %}
+					</div>
+				</div>
+				<div class="header-cart-actions">
+					{% if show_shopping_cart_btn and show_shopping_cart_btn == 1 %}
+					<a class="chm-btn chm-btn-primary chm-lg w-100 xs-mb-20 sm-mb-30" href="{{ checkout }}">{{ text_checkout }}</a>
+					{% endif %}
+					<div class="row">
+						{% if show_shopping_cart_btn and show_shopping_cart_btn == 1 %}
+						<div class="col-xs-12 col-sm-6">
+							<a class="chm-btn chm-btn-grey chm-lg w-100 xs-mb-10 sm-mb-0" href="javascript:void(0)" onclick="$('.header-cart-close').trigger('click'); fastorder_open_cart();">{{ text_fast_checkout }}</a>
+						</div>
+						{% else  %}
+						<div class="col-xs-12 col-sm-6">
+							<a class="chm-btn chm-btn-primary chm-lg w-100 xs-mb-20 sm-mb-0" href="{{ checkout }}">{{ text_checkout }}</a>
+						</div>
+						{% endif %}
+						<div class="col-xs-12 col-sm-6">
+							<a class="chm-btn chm-btn-white chm-lg w-100" href="{{ cart }}">{{ text_cart }}</a>
+						</div>
+					</div>
+				</div>
+			{% else %}
+				<div class="text-center box-empty-cart-icon">
+					<svg class="icon-empty-cart" id="icon-empty-shop-cart" xmlns="http://www.w3.org/2000/svg" width="195" height="151" fill="none" viewBox="0 0 195 151">
+						<path fill="#9CA9BC" d="m170.452 109.713 1.98.273-1.49 10.798-1.982-.274 1.492-10.797ZM38 45h2v32h-2V45Zm0 39h2v9h-2v-9Zm107.8 42.7c.2.3.5.4.8.4.2 0 .4-.1.6-.2 1.5-1 3.6-1.1 5.2-.1.5.3 1.1.2 1.4-.3.3-.5.2-1.1-.3-1.4-2.2-1.4-5.2-1.4-7.4.1-.5.4-.6 1-.3 1.5ZM70 113h9v2h-9v-2ZM5 144h13v2H5v-2Z"/>
+						<path fill="#9CA9BC" d="m173 144 .3-.9 5-39.1h.7c2.2 0 4-1.4 4-3.2v-1.5c0-1.8-1.8-3.2-4-3.2h-34.7l9.1-22c.8-2-.1-4.4-2.2-5.2-1-.4-2.1-.4-3.1 0s-1.8 1.2-2.2 2.2L136.5 94c-1.2.4-2.1 1.1-2.9 2H132V37c0-3.3-2.7-6-5.9-6-6.3 0-12.6-.7-18.9-.9-4-14.7-14-25.1-25.7-25.1S59.8 15.4 55.8 30c-6.4.2-12.7.5-18.8 1-3.3 0-6 2.7-6 6v75.9L27.1 144H23v2h167v-2h-17Zm-1.7-1.2c-.1.9-.9 1.2-1.6 1.2h-33.8l-3.9-31.1V104h2.2c1.1 1 2.3 1.7 3.9 1.7s2.9-.6 3.9-1.7h34.3l-5 38.8Zm9.7-43.6v1.5c0 .6-.8 1.2-2 1.2h-35.1c.3-.7.5-1.5.5-2.3 0-.6-.1-1.1-.2-1.7H179c1.2.1 2 .8 2 1.3Zm-33.2-27.5c.2-.5.6-.9 1.1-1.1.5-.2 1-.2 1.5 0 1 .4 1.5 1.6 1.1 2.6l-9.1 22c-1.1-1-2.4-1.5-3.6-1.7l9-21.8Zm-9.5 24c2.2 0 4 1.8 4 4s-1.8 4-4 4-4-1.8-4-4 1.8-4 4-4Zm-5.7 2.3c-.2.5-.2 1.1-.2 1.7 0 .8.2 1.6.5 2.3h-.9v-4h.6ZM81.5 7c10.7 0 19.8 9.5 23.6 23-16.1-.5-31.9-.5-47.2 0 3.8-13.5 13-23 23.6-23ZM32.8 115H59v-2H33V37c0-2.2 1.8-4 4.1-4 6-.4 12.1-.7 18.3-.9-.5 2.3-.9 4.7-1.1 7.2-2.3.4-4.1 2.4-4.1 4.8 0 2.7 2.2 4.9 4.9 4.9s4.9-2.2 4.9-4.9c0-2.3-1.6-4.1-3.6-4.7.2-2.5.6-5 1.2-7.3 15.6-.5 31.7-.5 48.2.1.6 2.3.9 4.8 1.2 7.3-2.1.5-3.6 2.4-3.6 4.7 0 2.7 2.2 4.9 4.9 4.9s4.9-2.2 4.9-4.9c0-2.4-1.8-4.4-4.1-4.8-.2-2.4-.6-4.8-1.1-7.1 6.1.2 12.2.5 18.3.9 2.2 0 4 1.8 4 4v76H89v2h41.2l3.6 29H29.1l3.7-29.2Zm23.3-73.6c1 .4 1.8 1.5 1.8 2.6 0 1.6-1.3 2.9-2.9 2.9-1.6 0-2.9-1.3-2.9-2.9 0-1.3.8-2.3 1.9-2.7 0 .9-.1 1.8-.1 2.7h2c.1-.9.1-1.8.2-2.6ZM107 44h2c0-.9 0-1.8-.1-2.7 1.1.4 1.9 1.4 1.9 2.7 0 1.6-1.3 2.9-2.9 2.9-1.6 0-2.9-1.3-2.9-2.9 0-1.2.7-2.2 1.8-2.6.2.8.2 1.7.2 2.6Z"/>
+						<path fill="#9CA9BC" d="M145.6 120.2a2 2 0 1 0 .001-3.999 2 2 0 0 0-.001 3.999Zm8 0a2 2 0 1 0 .001-3.999 2 2 0 0 0-.001 3.999Zm-67-40.9c-2.8-1.8-6.7-1.8-9.4.2-.5.3-.6.9-.3 1.4.2.3.5.4.8.4.2 0 .4-.1.6-.2 2.1-1.5 5.1-1.5 7.2-.1.5.3 1.1.2 1.4-.3.3-.5.1-1.1-.3-1.4Zm-12.9-5.9a2.7 2.7 0 1 0 0-5.4 2.7 2.7 0 0 0 0 5.4Zm16 0a2.7 2.7 0 1 0 0-5.4 2.7 2.7 0 0 0 0 5.4Z"/>
+					</svg>
+				</div>
+				<div class="text-center cart-empty">{{ text_empty }}</div>
+				<div class="text-center cart-empty-info-text">{{ text_slogan_empty_cart }}</div>
+			{% endif %}
+		</div>
+		{% if products or vouchers %}
+		<div class="header-cart-sticky">
+			<div class="row">
+				{% if show_shopping_cart_btn and show_shopping_cart_btn == 1 %}
+				<div class="col-xs-12 col-sm-6">
+					<a class="chm-btn chm-btn-grey chm-lg w-100 xs-mb-20 sm-mb-0" href="javascript:void(0)" onclick="$('.header-cart-close').trigger('click'); fastorder_open_cart();">{{ text_fast_checkout }}</a>
+				</div>
+				{% endif %}
+				<div class="col-xs-12 {% if show_shopping_cart_btn and show_shopping_cart_btn == 1 %}col-sm-6{% else %}col-sm-12{% endif %}">
+					<a class="chm-btn chm-btn-primary chm-lg w-100" href="{{ checkout }}">{{ text_checkout }}</a>
+				</div>
+			</div>
+		</div>
+		{% endif %}
+	</div>
+	</div>
+</div>

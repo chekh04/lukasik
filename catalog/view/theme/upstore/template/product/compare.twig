@@ -1,0 +1,212 @@
+{{ header }}
+<div id="product-compare" class="container">
+	<ul class="breadcrumb">
+		{% for i,breadcrumb in breadcrumbs %}
+			{% if (i+1 < breadcrumbs|length) %}
+				<li><a href="{{ breadcrumb.href }}"><span>{{ breadcrumb.text }}</span></a></li>
+			{% else %}
+				<li><span>{{ breadcrumb.text }}</span></li>
+			{% endif %}
+		{% endfor %}
+	</ul>
+	{% if success %}
+		<div class="alert ch-alert-success">
+			<img class="success-icon" alt="success-icon" src="catalog/view/theme/upstore/image/success-icon.svg">
+			<div class="text-modal-block">{{ success }}</div>
+			<button type="button" class="close" data-dismiss="alert"><i class="up-icon-close" aria-hidden="true"></i></button>
+		</div>
+	{% endif %}
+	<div class="row">{{ column_left }}
+		{% if column_left and column_right %}
+			{% set class = 'col-sm-6' %}
+		{% elseif column_left or column_right %}
+			{% set class = 'col-sm-9' %}
+		{% else %}
+			{% set class = 'col-sm-12' %}
+		{% endif %}
+		<div id="content" class="{{ class }}">{{ content_top }}
+			<h1>{{ heading_title }}</h1>
+			{% if products %}
+				<div class="compare-table-scroll">
+					<table class="up-table-compare{% if products|length > 2 %} mob-vw-40{% endif %}">
+						<thead>
+							<tr>
+								{% for product in products %}
+									<td class="up-table-compare__border">
+										<div class="compare-product">
+											<div class="compare-product__image">
+												{% if products[product.product_id].thumb %}
+													<img class="img-responsive" width="90" height="90" src="{{ products[product.product_id].thumb }}" alt="{{ products[product.product_id].name }}" title="{{ products[product.product_id].name }}" />
+												{% endif %}
+												<a href="{{ product.remove }}" class="btn btn-remove-compare"><i class="fa fa-trash-o"></i></a>
+											</div>
+											<div class="compare-product__caption">
+												<div class="compare-product__name">
+													<a href="{{ products[product.product_id].href }}">{{ products[product.product_id].name }}</a>
+												</div>
+												<div class="compare-product__action">
+													<div class="compare-product__price price">
+														{% if not products[product.product_id].special %}
+															{{ products[product.product_id].price }}
+														{% else %}
+															<div class="price-old">{{ products[product.product_id].price }}</div>
+															<div class="price-new">{{ products[product.product_id].special }}</div>
+														{% endif %}
+													</div>
+													<div class="cart">
+														{% if products[product.product_id].show_buy_button %}
+															<button aria-label="Add to cart" class="btn btn-general squircle" type="button" {% if product.product_quantity <= 0 and disable_cart_button %}disabled {% else %}onclick="cart.add('{{ product.product_id }}', this)"{% endif %}><i class="up-icon-22 up-icon-cart" aria-hidden="true"></i></button>
+														{% else %}
+															<button aria-label="notify stock" class="btn btn-general squircle{% if product.in_waitlist %} is-active{% endif %}" type="button" onclick="upstoreNotifyStock('{{ product['product_id'] }}');"><i class="up-icon-22 up-icon-notify" aria-hidden="true"></i></button>
+														{% endif %}
+													</div>
+												</div>
+											</div>
+										</div>
+									</td>
+								{% endfor %}
+							</tr>
+						</thead>
+						<tbody>
+							<tr class="compare-property-name">
+								<th colspan="{{ products | length + 1 }}">
+									<div class="compare-fixed-block">{{ text_model }}</div>
+								</th>
+							</tr>
+							<tr>
+								{% for product in products %}
+									<td>
+										<div class="compare-product-name">{{ products[product.product_id].name }}</div>
+										<div class="compare-property-value">{{ products[product.product_id].model }}</div>
+									</td>
+								{% endfor %}
+							</tr>
+							<tr class="compare-property-name">
+								<th colspan="{{ products|length + 1 }}">
+									<div class="compare-fixed-block">{{ text_manufacturer }}</div>
+								</th>
+							</tr>
+							<tr>
+								{% for product in products %}
+									<td>
+										<div class="compare-product-name">{{ products[product.product_id].name }}</div>
+										<div class="compare-property-value">{{ products[product.product_id].manufacturer }}</div>
+									</td>
+								{% endfor %}
+							</tr>
+							<tr class="compare-property-name">
+								<th colspan="{{ products|length + 1 }}">
+									<div class="compare-fixed-block">{{ text_availability }}</div>
+								</th>
+							</tr>
+							<tr>
+								{% for product in products %}
+									<td>
+										<div class="compare-product-name">{{ products[product.product_id].name }}</div>
+										<div class="compare-property-value">{{ products[product.product_id].availability }}</div>
+									</td>
+								{% endfor %}
+							</tr>
+							{% if review_status %}
+								<tr class="compare-property-name">
+									<th colspan="{{ products|length + 1 }}">
+										<div class="compare-fixed-block">{{ text_rating }}</div>
+									</th>
+								</tr>
+								<tr>
+									{% for product in products %}
+										<td>
+											<div class="compare-product-name">{{ products[product.product_id].name }}</div>
+											<div class="compare-property-value">
+												<div class="rating d-flex align-items-center">
+													<div class="rating-stars d-flex align-items-center">
+														{% for star_width in products[product.product_id].rating_stars %}
+															<div class="rating-star up-icon">
+																<div class="rating-star-active up-icon" style="width:{{ star_width }}%"></div>
+															</div>
+														{% endfor %}
+													</div>
+													<div class="compare-rating-info">
+														{{ products[product.product_id].total_rating }}
+														<span>/ {{ products[product.product_id].total_reviews }}</span>
+													</div>
+												</div>
+											</div>
+										</td>
+									{% endfor %}
+								</tr>
+							{% endif %}
+							<tr class="compare-property-name">
+								<th colspan="{{ products|length + 1 }}">
+									<div class="compare-fixed-block">{{ text_weight }}</div>
+								</th>
+							</tr>
+							<tr>
+								{% for product in products %}
+									<td>
+										<div class="compare-product-name">{{ products[product.product_id].name }}</div>
+										<div class="compare-property-value">{{ products[product.product_id].weight }}</div>
+									</td>
+								{% endfor %}
+							</tr>
+							<tr class="compare-property-name">
+								<th colspan="{{ products|length + 1 }}">
+									<div class="compare-fixed-block">{{ text_dimension }}</div>
+								</th>
+							</tr>
+							<tr>
+								{% for product in products %}
+									<td>
+										<div class="compare-product-name">{{ products[product.product_id].name }}</div>
+										<div class="compare-property-value">
+											{{ products[product.product_id].length }} x
+											{{ products[product.product_id].width }} x
+											{{ products[product.product_id].height }}
+										</div>
+									</td>
+								{% endfor %}
+							</tr>
+							{% for attribute_group in attribute_groups %}
+								<tr class="compare-property-group-name">
+									<th colspan="{{ products|length + 1 }}">
+										<div class="compare-fixed-block">{{ attribute_group.name }}</div>
+									</th>
+								</tr>
+								{% for key, attribute in attribute_group.attribute %}
+									<tr class="compare-property-name">
+										<th colspan="{{ products|length + 1 }}">
+											<div class="compare-fixed-block">{{ attribute.name }}</div>
+										</th>
+									</tr>
+									<tr>
+										{% for product in products %}
+											{% if products[product.product_id].attribute[key] is defined %}
+												<td>
+													<div class="compare-product-name">{{ products[product.product_id].name }}</div>
+													<div class="compare-property-value">{{ products[product.product_id].attribute[key] }}</div>
+												</td>
+											{% else %}
+												<td>
+													<div class="compare-product-name">{{ products[product.product_id].name }}</div>
+													<div class="compare-property-value">-</div>
+												</td>
+											{% endif %}
+										{% endfor %}
+									</tr>
+								{% endfor %}
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			{% else %}
+				<p>{{ text_empty }}</p>
+				<div class="buttons">
+					<div class="pull-right"><a href="{{ continue }}" class="btn btn-default">{{ button_continue }}</a></div>
+				</div>
+			{% endif %}
+			{{ content_bottom }}
+		</div>
+		{{ column_right }}
+	</div>
+</div>
+{{ footer }}

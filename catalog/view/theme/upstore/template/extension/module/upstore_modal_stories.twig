@@ -1,0 +1,84 @@
+<div class="modal-dialog chm-modal modal-dialog-centered">
+	<div class="modal-content">
+		<div class="modal-body">
+			<div class="swiper swiper-chm-stories chm_stories_{{ module_id }}">
+				<div class="swiper-wrapper">
+					{% for key_story, stories in chm_stories %}
+						<div class="sl-item swiper-slide">
+							<div class="chm-gallery-story">
+								{% for key_item, result in stories %}
+									<div class="item-story {% if key_item == 0 %}active-image{% endif %}">
+										<button type="button" class="chm-close-modal" data-dismiss="modal">
+											<svg class="icon-chm-close" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 16">
+												<path fill="currentColor" fill-rule="evenodd" d="M1.293 1.293a1 1 0 0 1 1.414 0L8 6.586l5.293-5.293a1 1 0 1 1 1.414 1.414L9.414 8l5.293 5.293a1 1 0 0 1-1.414 1.414L8 9.414l-5.293 5.293a1 1 0 0 1-1.414-1.414L6.586 8 1.293 2.707a1 1 0 0 1 0-1.414z" clip-rule="evenodd"/>
+											</svg>
+										</button>
+										<img src="{{ result.image }}" decoding="async" loading="lazy" alt="" class="img-responsive" />
+										{% if result.btn_text and result.link %}
+											<div class="type-btn-stories {{ result.type_btn }} {% if result.location == 'bottom' %}chm-sb{% else %}chm-st{% endif %}">
+												<a class="chm-btn-stories" href="{{ result.link }}">{{ result.btn_text }}</a>
+											</div>
+										{% endif %}
+									</div>
+								{% endfor %}
+							</div>
+						</div>
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+function initializeStoriesSwiper() {
+	var store_id = '{{ story_id }}';
+	var initialSlide = parseInt(store_id);
+
+	var chm_Stories = new Swiper('.chm_stories_{{ module_id }}', {
+		slidesPerView: 1,
+		effect: 'coverflow',
+		centeredSlides : true,
+		loop:true,
+		parallax: true,
+		coverflowEffect: {
+			rotate: 0,
+			scale:0.6,
+			slideShadows: false,
+
+		},
+		initialSlide: initialSlide,
+		observer: true,
+		observeParents: true,
+		grabCursor: true,
+		watchSlidesVisibility: true,
+		watchSlidesProgress: true,
+		watchOverflow: true,
+		speed:300,
+		breakpoints: {
+			992: {slidesPerView: 3}
+		}
+	});
+
+	$('.swiper-chm-stories .chm-gallery-story').each(function( index ) {
+		var chm_gs = $(this);
+		var chm_gs_length = chm_gs.find('.item-story').length;
+
+		if (chm_gs_length > 1) {
+			chm_gs.prepend('<div class="chm-story-pagination"></div>')
+			for ( var i = 0 ; i < chm_gs_length ; i++ ) {
+				chm_gs.find('.chm-story-pagination').append('<div class="chm-story-line"></div>');
+			}
+		}
+
+		chm_gs.find('.chm-story-pagination .chm-story-line').eq(0).addClass('active-line');
+		chm_gs.find('.item-story').eq(0).addClass('active-image');
+
+
+		$(document).on('mouseenter touchstart', '.chm-story-pagination .chm-story-line', function(){
+			$(this).closest('.chm-gallery-story').find('.item-story').eq($(this).index()).addClass('active-image').siblings().removeClass('active-image');
+			$(this).closest('.chm-gallery-story').find('.chm-story-line').eq($(this).index()).addClass('active-line').siblings().removeClass('active-line');
+			$(this).closest('.story-action').find('.type-btn-stories a').eq($(this).index()).addClass('active-btn').siblings().removeClass('active-btn');
+		});
+	});
+}
+</script>

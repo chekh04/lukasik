@@ -1,0 +1,58 @@
+<div class="nextprevprod dflex {% if products.prev is defined and products.next is defined %}next__prev{% else %}only_one_btn{% endif %}">
+    {% if (products.prev is defined) %}
+		<button aria-label="Prev Product" id="prev-prod-btn" type="button" onclick="location.href='{{ products.prev.href }}'" class="prev-product {% if (products.next is not defined) %}no-next{% endif %}">
+			<i class="up-icon-22 up-icon-arrow-left" aria-hidden="true"></i>
+		</button>
+	{% endif %}
+    {% if (products.next is defined) %}
+		<button aria-label="Next Product" id="next-prod-btn" type="button" onclick="location.href='{{ products.next.href }}'" class="next-product {% if (products.prev is not defined) %}no-prev{% endif %}">
+			<i class="up-icon-22 up-icon-arrow-right" aria-hidden="true"></i>
+		</button>
+    {% endif %}
+	<script>
+	document.addEventListener('DOMContentLoaded', function() {
+	{% if (products.prev is defined) %}
+	$('#prev-prod-btn').popover({
+		html: true,
+		placement: 'bottom',
+		trigger: 'hover',
+		content: function() {
+			html  = '<div class="popover-pr-image"><img class="img-responsive" src="{{ products.prev.image }}" title="" alt="" /></div>';
+			html += '<div class="popover-pr-name">{{ products.prev.name|escape('js') }}</div>';
+			html += '<div class="price">';
+			html += '	{% if (products.prev.price) %}';
+			html += '	  {% if (not products.prev.special) %}';
+			html += '		<span>{{ products.prev.price }}</span>';
+			html += '	  {% else %}';
+			html += '		<span class="price-old"><span>{{ products.prev.price }}</span></span> <span class="price-new"><span>{{ products.prev.special }}</span></span>';
+			html += '	  {% endif %}';
+			html += '	{% endif %}';
+			html += '</div>';
+			return html;
+		}
+	}).data('bs.popover').tip().addClass('popover-prev-prod');
+	 {% endif %}
+	 {% if (products.next is defined) %}
+	$('#next-prod-btn').popover({
+		html: true,
+		placement: 'bottom',
+		trigger: 'hover',
+		content: function() {
+			html  = '<div class="popover-pr-image"><img class="img-responsive" src="{{ products.next.image }}" title="" alt="" /></div>';
+			html += '<div class="popover-pr-name">{{ products.next.name|escape('js') }}</div>';
+			html += '<div class="price">';
+			html += '	{% if (products.next.price) %}';
+			html += '	  {% if (not products.next.special) %}';
+			html += '		<span>{{ products.next.price }}</span>';
+			html += '	  {% else %}';
+			html += '		<span class="price-old"><span>{{ products.next.price }}</span></span> <span class="price-new"><span>{{ products.next.special }}</span></span>';
+			html += '	  {% endif %}';
+			html += '	{% endif %}';
+			html += '</div>';
+			return html;
+		}
+	}).data('bs.popover').tip().addClass('popover-next-prod');
+	{% endif %}
+	});
+	</script>
+</div>

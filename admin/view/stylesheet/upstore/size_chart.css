@@ -1,0 +1,42 @@
+
+.toggle-switch label {margin-bottom:0px;}
+.toggle-switch {
+	background-color: white;
+	background-image: linear-gradient(to bottom, #eeeeee, white 25px);
+	border-radius: 20px / 20px;
+	box-shadow: 0 -1px white inset, 0 1px 1px rgba(0, 0, 0, 0.05) inset;
+	display: inline-block;
+	padding: 3px;
+}
+.toggle-switch input[type="checkbox"] {display:none}
+.toggle-switch input[type="checkbox"] + span {
+position:relative;
+display:inline-block;
+vertical-align:middle;
+width:50px;
+height:28px;
+background:#ECEEEF;
+border-radius:20px / 20px;
+box-shadow:0 1px 2px rgba(0, 0, 0, 0.15) inset, 0 0 3px rgba(0, 0, 0, 0.2) inset;
+cursor:pointer;
+transition:all ease-in-out .2s;}
+.toggle-switch input[type="checkbox"]:checked + span {background:#00BC52;}
+
+.toggle-switch label:hover input[type="checkbox"] + span {background:#ECEEEF;}
+.toggle-switch label:hover input[type="checkbox"]:checked + span {background:#00BC52;}
+
+.toggle-switch input[type="checkbox"] + span:after {
+	position:absolute;
+	top:3px;
+	right:25px;
+	left:auto;
+	width:22px;
+	height:22px;
+	content:'';
+	background:#fff;
+	border-radius:100%;
+	box-shadow:0 1px 1px #777;
+	transition:all ease-in-out .2s;
+}
+.toggle-switch input[type="checkbox"]:checked + span:after {right:3px;left:auto;background:#fff;transition:all ease-in-out .2s;}
+

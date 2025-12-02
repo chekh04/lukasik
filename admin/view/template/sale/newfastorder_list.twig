@@ -1,0 +1,253 @@
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+       <div class="pull-right">
+      <div class="buttons">
+	  <a class="btn btn-primary" onclick="$('#form').attr('action', '{{ update }}'); $('#form').submit();" class="button"><span  data-toggle="tooltip" title="{{ status_done }}" ><i class="fa fa-refresh"></i></span></a>
+	  <a data-toggle="tooltip" title="{{ button_delete }}" class="btn btn-danger" onclick="$('form').submit();" class="button"><span><i class="fa fa-trash-o fa-fw"></i></span></a>
+		<a class="button btn btn-primary" href="{{ fastorder_setting }}"><span>{{ button_fastorder_setting }}</span></a></div>
+	</div>
+      <h1>{{ heading_title }}</h1>
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+        <li><a href="{{ breadcrumb['href'] }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  {% if (error_warning) %}
+  <div class="warning">{{ error_warning }}</div>
+  {% endif %}
+  {% if (success) %}
+  <div class="alert alert-success">{{ success }}</div>
+  {% endif %}
+  <div class="content">
+
+    <div class="container-fluid">
+      <form action="{{ delete }}" method="post" enctype="multipart/form-data" id="form">
+	  <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+          <thead>
+              <tr>
+              <td width="1" style="text-align: center;"><input type="checkbox" onclick="$('input[name*=\'selected\']').attr('checked', this.checked);" /></td>
+              <td class="text-center">{% if (sort == 'fast_id') %}
+                <a href="{{ sort_fast_id }}" class="{{ order|lower }}">{{ text_id }}</a>
+                {% else %}
+                <a href="{{ sort_fast_id }}">{{ text_id }}</a>
+                {% endif %}</td>
+              <td class="center">{% if (sort == 'name') %}
+                <a href="{{ sort_name }}" class="{{ order|lower }}">{{ column_name }}</a>
+                {% else %}
+                <a href="{{ sort_name }}">{{ column_name }}</a>
+                {% endif %}</td>
+
+			  <td class="text-center"><i class="fa fa-comments"></i>{{ text_comment_buyer }}</td>
+			  <td class="text-center">{{ number_order_id }}</td>
+			  <td class="text-center">{{ product_name_fast }}</td>
+			  <td class="text-center">{{ text_total_all }}</td>
+			  <td class="text-center">{{ text_newfastorder_url }}</td>
+			  <td class="text-center"><i class="fa fa-comments"></i>{{ text_comment }}</td>
+			  <td class="text-center"></td>
+
+              <td class="text-center">{{ text_status }}</td>
+              <td class="text-center">{{ text_added }}</td>
+              <td class="text-center">{{ text_modified }}</td>
+              <td class="text-center"><i class="btn btn-primary fa fa-pencil"></i></td>
+            </tr>
+			<tr>
+				<td class="text-center"></td>
+				<td class="text-center"></td>
+				<td class="text-center"><input name="searh_info_user" class="form-control" value="{{ searh_info_user }}"/></td>
+				<td class="text-center"></td>
+				<td class="text-center"></td>
+				<td class="text-center"></td>
+				<td class="text-center"></td>
+				<td class="text-center"><input name="filter_url" class="form-control" value="{{ filter_url }}"/></td>
+				<td class="text-center"></td>
+				<td class="text-center">
+				<select class="form-control" name="filter_manager">
+						{% if (filter_manager is not empty) %}
+							<option value="" selected="selected">{{ " --- " }}</option>
+						{% else %}
+							<option value="">{{ " --- " }}</option>
+						{% endif %}
+
+					{% for user in users %}
+						{% if (filter_manager is not empty) %}
+							{% if (filter_manager == user.username) %}
+							<option selected="selected" value="{{ user.username }}{% endif %}">{{ user.username }}</option>
+						{% else %}
+						<option value="{{ user['username']}}">{{ user.username }}</option>
+						{% endif %}
+					{% endfor %}
+					</select>
+				</td>
+				<td class="text-center">
+				<select class="form-control" name="filter_status">
+					<option value="" selected="selected">{{ " --- " }}</option>
+					<option {% if (filter_status == '1') %}selected="selected" {% endif %} value="1">{{ status_done }}</option>
+					<option {% if (filter_status == '0') %}selected="selected" {% endif %}  value="0">{{ status_wait }}</option>
+				</select>
+				</td>
+				<td class="text-center">
+					<div class="input-group date">
+						<input type="text" name="filter_date_added" value="{{ filter_date_added }}" data-date-format="YYYY-MM-DD" id="input-date-added" class="form-control" />
+						<span class="input-group-btn">
+						<button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
+						</span>
+					</div>
+				</td>
+				<td class="text-center">
+					<div class="input-group date">
+						<input type="text" name="filter_date_modified" value="{{ filter_date_modified }}" data-date-format="YYYY-MM-DD" id="input-date-modified" class="form-control" />
+						<span class="input-group-btn">
+						<button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
+						</span>
+					</div>
+				</td>
+				<td class="text-center"><button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-search"></i></button></td>
+			</tr>
+          </thead>
+          <tbody>
+            {% if (newfastorders) %}
+            {% for newfastorder in newfastorders %}
+            <tr>
+              <td style="text-align: center;">
+			  {% if newfastorder.newfastorder_id in selected %}
+                <input type="checkbox" name="selected[]" value="{{ newfastorder.newfastorder_id }}" checked="checked" />
+                {% else %}
+                <input type="checkbox" name="selected[]" value="{{ newfastorder.newfastorder_id }}" />
+                {% endif %}</td>
+              <td class="left">{{ newfastorder.newfastorder_id }}</td>
+              <td class="left" style="min-width:180px;">
+				<div class="firstname"><i class="fa fa-user fa-fw"></i> {{ newfastorder.name }}</div>
+				<div class="telephone"><i class="fa fa-phone fa-fw"></i>{{ newfastorder.telephone }}</div>
+				{% if (newfastorder.email_buyer != '') %}<div class="email"><i class="fa fa-envelope-o fa-fw"></i> {{ newfastorder.email_buyer }}</div>{% endif %}
+			  </td>
+              <td class="left">{{ newfastorder.comment_buyer }}</td>
+
+
+              <td class="center"><a href="index.php?route=sale/order/edit&user_token={{ user_token }}&order_id={{ newfastorder['order_id']}}">{{ text_number_order_id_ }}{{ newfastorder.order_id }}</a></td>
+              <td class="left">
+
+				{% for result_prod in newfastorder.fastproduct %}
+					<div class="product_name"><a target="_blank" href="index.php?route=catalog/product/edit&user_token={{ user_token }}&product_id={{ result_prod['product_id'] }}">{{ result_prod.product_name }}</a></div>
+					<div class="product_model">{{ result_prod.model }}</div>
+						{% for res_option in result_prod.options %}
+							<small>- {{ res_option.name }}: {{ res_option.value }}</small><br>
+						{% endfor %}
+					<div><img style="max-height:50px;" src="{{ result_prod.product_image }}"/></div>
+
+					<div class="price_fast">{{ result_prod.price }} x {{ result_prod.quantity }} = {{ result_prod.total }}</div>
+				<br>
+				{% endfor %}
+			  </td>
+			 <style>
+				.price_fast {
+					display: block;
+					min-width: 180px;
+				}
+				.product_model{
+					font-weight:bold;
+				}
+			 </style>
+				<td class="right" style="font-weight:bold;">{{ newfastorder.total }}</td>
+              <td class="text-center">
+			   <span><a data-toggle="tooltip" title="{{ text_link_description }}" class="btn btn-info" href="{{ newfastorder.url_site }}" target="_blank">{{ text_link }}</a></span>
+			  </td>
+			  <td class="left">{{ newfastorder.comment }}</td>
+			  <td class="right">{{ newfastorder.username }}</td>
+           {% if (newfastorder.status == status_done) %}
+              <td class="right" style="background:#0BED0B;">{{ newfastorder.status }}</td>
+            {% else %}
+              <td class="right" style="background:#EDB40B;">{{ newfastorder.status }}</td>
+            {% endif %}
+              <td class="right">{{ newfastorder.date_added }}</td>
+             <td class="right">{{ newfastorder.date_modified }}</td>
+              <td class="text-right"><a href="{{ newfastorder.action }}" data-toggle="tooltip" title="{{ text_edit }}" class="btn btn-primary"><i class="fa fa-pencil"></i></a></td>
+            </tr>
+            {% endfor %}
+            {% else %}
+            <tr>
+              <td class="text-center" colspan="9">{{ text_no_results }}</td>
+            </tr>
+            {% endif %}
+          </tbody>
+        </table>
+		</div>
+      </form>
+		<div class="row">
+			<div class="col-sm-6 text-left">{{ pagination }}</div>
+			<div class="col-sm-6 text-right">{{ results }}</div>
+		</div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript"><!--
+$('.date').datetimepicker({
+	pickTime: false
+});
+//--></script>
+<script type="text/javascript"><!--
+$('#button-filter').on('click', function() {
+	url = 'index.php?route=sale/newfastorder&user_token={{ user_token }}';
+
+	var searh_info_user = $('input[name=\'searh_info_user\']').val();
+
+	if (searh_info_user) {
+		url += '&searh_info_user=' + encodeURIComponent(searh_info_user);
+	}
+	var filter_url = $('input[name=\'filter_url\']').val();
+
+	if (filter_url) {
+		url += '&filter_url=' + encodeURIComponent(filter_url);
+	}
+	var filter_manager = $('select[name=\'filter_manager\']').val();
+
+	if (filter_manager) {
+		url += '&filter_manager=' + encodeURIComponent(filter_manager);
+	}
+
+	var filter_status = $('select[name=\'filter_status\']').val();
+
+	if (filter_status) {
+		url += '&filter_status=' + encodeURIComponent(filter_status);
+	}
+
+	var filter_date_added = $('input[name=\'filter_date_added\']').val();
+
+	if (filter_date_added) {
+		url += '&filter_date_added=' + encodeURIComponent(filter_date_added);
+	}
+	var filter_date_modified = $('input[name=\'filter_date_modified\']').val();
+
+	if (filter_date_modified) {
+		url += '&filter_date_modified=' + encodeURIComponent(filter_date_modified);
+	}
+
+	location = url;
+});
+//--></script>
+ <script type="text/javascript"><!--
+$('input[name=\'searh_info_user\']').autocomplete({
+	'source': function(request, response) {
+		$.ajax({
+			url: 'index.php?route=sale/newfastorder/autocomplete&user_token={{ user_token }}&filter_name=' +  encodeURIComponent(request),
+			dataType: 'json',
+			success: function(json) {
+				response($.map(json, function(item) {
+					return {
+						label: item['name'],
+						value: item['fast_id']
+					}
+				}));
+			}
+		});
+	},
+	'select': function(item) {
+		$('input[name=\'searh_info_user\']').val(item['label']);
+	}
+});
+//--></script>
+{{ footer }}

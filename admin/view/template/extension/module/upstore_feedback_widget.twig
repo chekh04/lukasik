@@ -1,0 +1,196 @@
+{{ header }}{{ column_left }}
+	<div id="content">
+		<div class="page-header">
+			<div class="container-fluid">
+				<div class="pull-right">
+					<button type="submit" form="form_upstore_feedback_widget" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+					<a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a>
+				</div>
+				<h1>{{ heading_title }}</h1>
+				<ul class="breadcrumb">
+					{% for breadcrumb in breadcrumbs %}
+						<li><a href="{{ breadcrumb['href'] }}">{{ breadcrumb['text'] }}</a></li>
+					{% endfor %}
+				</ul>
+			</div>
+		</div>
+	<div class="container-fluid">
+		{% if (error_warning) %}
+			<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+				<button type="button" class="close" data-dismiss="alert">&times;</button>
+			</div>
+		{% endif %}
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title"><i class="fa fa-pencil"></i> {{ text_edit }}</h3>
+			</div>
+			<div class="panel-body">
+				<form action="{{ action }}" method="post" enctype="multipart/form-data" id="form_upstore_feedback_widget" class="form-horizontal">
+					<div class="form-group">
+						<label class="col-sm-2 control-label">{{ entry_status }}</label>
+						<div class="col-sm-10">
+							 <select name="fb_widget[status]" id="input-status" class="form-control">
+								{% if (fb_widget['status']) %}
+								<option value="1" selected="selected">{{ text_enabled }}</option>
+								<option value="0">{{ text_disabled }}</option>
+								{% else %}
+								<option value="1">{{ text_enabled }}</option>
+								<option value="0" selected="selected">{{ text_disabled }}</option>
+								{% endif %}
+							  </select>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">{{ entry_display_type }}</label>
+						<div class="col-sm-10">
+							<select name="fb_widget[display_type]" id="input-display-type" class="form-control">
+								{% if (fb_widget['display_type'] == 2) %}
+								<option value="1">1</option>
+								<option value="2" selected="selected">2</option>
+								{% else %}
+								<option value="1" selected="selected">1</option>
+								<option value="2">2</option>
+								{% endif %}
+							  </select>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">{{ entry_position }}</label>
+						<div class="col-sm-10">
+							 <select name="fb_widget[position]" id="input-position" class="form-control">
+								{% if (fb_widget['position'] == 'left') %}
+								<option value="left" selected="selected">{{ text_left }}</option>
+								<option value="right">{{ text_right }}</option>
+								{% else %}
+								<option value="left">{{ text_left }}</option>
+								<option value="right" selected="selected">{{ text_right }}</option>
+								{% endif %}
+							  </select>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label"></label>
+						<div class="col-sm-10 ns-input-group">
+							{% set fb_item_widget = 0 %}
+							<div id="fb_box_widget">
+							{% if (fb_widget['items'] is not empty) %}
+								{% for result in fb_widget['items'] %}
+								<div class="input-group">
+								<span class="input-group-addon cs-pad-addon" style="cursor:move;"><i class="fa fa-arrows" aria-hidden="true"></i></span>
+									<span class="input-group-addon cs-pad-addon icon_open" id="fbw_icon_{{ fb_item_widget }}" onclick="icon_fontawesome_popup($(this).attr('id'))">
+										{% if (result['fbw_icon'] is defined and result['fbw_icon'] != '') %}
+											<img class="fb-widget-icon" data-image-name="icon_callback" src="view/stylesheet/upstore/feedback_widget/icon/{{ result['fbw_icon'] }}.svg" />
+										{% else %}<i class="fa fa-opencart"></i>{% endif %}
+									</span>
+								<input class="form-control" type="hidden" name="fb_widget[items][{{ fb_item_widget }}][fbw_icon]" value="{{ result['fbw_icon'] }}" />
+								<div class="group-ta">
+									{% for language in languages %}
+									<div class="input-group-dflex">
+										<span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>
+										<textarea placeholder="{{ text_type_fields }}" class="form-control textarea-no-resize" type="text" name="fb_widget[items][{{ fb_item_widget }}][fbw_type][{{ language['language_id'] }}]">{{ result['fbw_type'][language['language_id']] is defined ? result['fbw_type'][language['language_id']]: '' }}</textarea>
+										<textarea class="form-control textarea-no-resize" type="text" name="fb_widget[items][{{ fb_item_widget }}][fbw_text][{{ language['language_id'] }}]">{{ result['fbw_text'][language['language_id']] is defined ? result['fbw_text'][language['language_id']] : '' }}</textarea>
+									</div>
+									{% endfor %}
+								</div>
+								<span class="input-group-addon cs-pad-addon"><a class="btn btn-danger" onclick="$(this).parent().parent().remove()"><i class="fa fa-trash-o"></i></a></span>
+								</div>
+
+								{% set fb_item_widget = fb_item_widget + 1 %}
+								{% endfor %}
+							{% endif %}
+							</div>
+						<div>
+							<a onclick="addItemWidget();" class="btn btn-primary">{{ text_add }}</a>
+						</div>
+						</div>
+					</div>
+					<script>
+						Sortable.create(fb_box_widget, {
+						  handle: '.fa-arrows',
+						  animation: 150
+						});
+					</script>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+var fb_item_widget = {{ fb_item_widget }};
+function addItemWidget() {
+	html  = '<div class="input-group">';
+	html += '	<span class="input-group-addon cs-pad-addon" style="cursor:move;"><i class="fa fa-arrows" aria-hidden="true"></i></span>';
+	html += '	<span class="input-group-addon icon_open" id="phones_footer_icon_'+ fb_item_widget +'" onclick="icon_fontawesome_popup($(this).attr(\'id\'))">';
+	html += '	<i class="fa fa-opencart"></i></span>';
+	html += '	<input class="form-control" type="hidden" name="fb_widget[items]['+ fb_item_widget +'][fbw_icon]" value="" />';
+	html += '	<div class="group-ta">';
+				{% for language in languages %}
+	html += '		<div class="input-group-dflex">';
+	html += '			<span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>';
+	html += '			<textarea placeholder="{{ text_type_fields }}" class="form-control textarea-no-resize" type="text" name="fb_widget[items]['+ fb_item_widget +'][fbw_type][{{ language['language_id'] }}]"></textarea>';
+	html += '			<textarea class="form-control textarea-no-resize" type="text" name="fb_widget[items]['+ fb_item_widget +'][fbw_text][{{ language['language_id'] }}]"></textarea>';
+	html += '		</div>';
+				{% endfor %}
+	html += '	</div>';
+	html += '	<span class="input-group-addon cs-pad-addon"><a class="btn btn-danger" onclick="$(this).parent().parent().remove()"><i class="fa fa-trash-o"></i></a></span>';
+	html += '	</div>';
+	$('#fb_box_widget').append(html);
+	fb_item_widget++;
+}
+
+function icon_fontawesome_popup(id) {
+	$('.icon_fontawesome_popup').popup('show');
+	$('.id_icon').val(id);
+
+	$('.icon_fontawesome_popup .fb-widget-icon').on('click', function() {
+		var class_this_icon = $(this).attr('src');
+		var data_image_name = $(this).attr('data-image-name');
+		$('.src_icon').val(class_this_icon);
+		$('.img_name').val(data_image_name);
+		save_icons_fontawesome();
+		$('.icon_fontawesome_popup').popup('hide');
+	});
+	$('.icon_fontawesome_popup .empty-icon').on('click', function() {
+		$('.src_icon').val('');
+		save_icons_fontawesome();
+		$('.icon_fontawesome_popup').popup('hide');
+	});
+}
+
+function save_icons_fontawesome() {
+	var id_icon = $('.id_icon').val();
+	var val_this_icon = $('.src_icon').val();
+	if(val_this_icon == ''){
+		val_this_icon = 'fa fa-opencart';
+		$('#'+id_icon).html('<i class="'+ val_this_icon +'"></i>');
+	} else {
+		$('#'+id_icon).html('<img src="'+ val_this_icon +'"/>');
+	}
+	var data_image_name = $('.img_name').val();
+
+	$('#'+id_icon).next().val(data_image_name);
+}
+</script>
+<input type="hidden" class="id_icon" name="target" value="" />
+<input type="hidden" class="src_icon" name="class" value="" />
+<input type="hidden" class="img_name" name="img_name" value="" />
+<style>
+.icon_fontawesome_popup {display:none;max-width:80%;background:#fff; padding:10px; border-radius:10px;}
+.icon_fontawesome_popup .col-xs-3 {width:50px; padding:5px;text-align:center;}
+.icon_fontawesome_popup i{padding:5px;font-size:18px !important;color:#555;cursor:pointer;border:solid 1px transparent;border-radius:2px;}
+.icon_fontawesome_popup img{cursor:pointer;}
+.icon_fontawesome_popup i:hover{color:#4FC605;border:solid 1px #ccc}
+</style>
+<div class="icon_fontawesome_popup">
+	<div class="icon_fontawesome_list">
+		<div class="col-xs-3"><i class="empty-icon">X</i></div>
+		<div class="col-xs-3"><img class="fb-widget-icon" data-image-name="icon_callback" src="view/stylesheet/upstore/feedback_widget/icon/icon_callback.svg" /></div>
+		<div class="col-xs-3"><img class="fb-widget-icon" data-image-name="icon_email" src="view/stylesheet/upstore/feedback_widget/icon/icon_email.svg" /></div>
+		<div class="col-xs-3"><img class="fb-widget-icon" data-image-name="icon_mes" src="view/stylesheet/upstore/feedback_widget/icon/icon_mes.svg" /></div>
+		<div class="col-xs-3"><img class="fb-widget-icon" data-image-name="icon_skype" src="view/stylesheet/upstore/feedback_widget/icon/icon_skype.svg" /></div>
+		<div class="col-xs-3"><img class="fb-widget-icon" data-image-name="icon_teleg" src="view/stylesheet/upstore/feedback_widget/icon/icon_teleg.svg" /></div>
+		<div class="col-xs-3"><img class="fb-widget-icon" data-image-name="icon_viber" src="view/stylesheet/upstore/feedback_widget/icon/icon_viber.svg" /></div>
+		<div class="col-xs-3"><img class="fb-widget-icon" data-image-name="icon_whatsapp" src="view/stylesheet/upstore/feedback_widget/icon/icon_whatsapp.svg" /></div>
+	</div>
+</div>
+{{ footer }}

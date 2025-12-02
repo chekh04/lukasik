@@ -1,0 +1,115 @@
+<div id="popup-reviews-store" class="modal-dialog chm-modal modal-dialog-centered">
+	<div class="modal-content">
+		<div class="modal-header">
+			<div class="modal-title">{{ text_store_rating }}</div>
+			<button type="button" class="close-modal" data-dismiss="modal"><i class="up-icon-close" aria-hidden="true"></i></button>
+		</div>
+		<div class="modal-body">
+			<form id="form-reviews-store" method="post" enctype="multipart/form-data">
+				<div class="form-group required_field">
+					<input id="input-name" class="form-control" type="text" placeholder="{{ entry_name }}" value="" name="author">
+				</div>
+				<div class="form-group required_field">
+					<textarea id="input-review-description" class="form-control" rows="5" type="text" placeholder="{{ entry_review }}" name="description"></textarea>
+				</div>
+				<div class="help-block">{{ text_note }}</div>
+				<div class="form-group reviews_theme popup-reviews-block">
+					{% if reviews_theme %}
+						{% for item in reviews_theme %}
+							<div class="reviews_theme__item">
+								<div class="reviews_theme__text theme_text_{{ item.reviews_store_theme_id }}">{{ item.theme_text }}</div>
+								<div class="reviews_theme__stars">
+									<div class="rating-store">
+										{% for i in 1..5 %}
+											<input class="hidden" id="rat{{ i }}{{ item.reviews_store_theme_id }}" type="radio" name="rating[{{ item.reviews_store_theme_id }}]" value="{{ i }}" />
+											<label class="up-icon star-rating label-star{{ item.reviews_store_theme_id }}" for="rat{{ i }}{{ item.reviews_store_theme_id }}"></label>
+										{% endfor %}
+									</div>
+									<script>
+									$('.label-star{{ item.reviews_store_theme_id }}').hover(function () {
+										$(this).prevAll('.label-star{{ item.reviews_store_theme_id }}').addClass('active');
+										$(this).addClass('active');
+									}, function () {
+										$(this).prevAll('.label-star{{ item.reviews_store_theme_id }}').removeClass('active');
+										$(this).removeClass('active');
+									});
+									$('.label-star{{ item.reviews_store_theme_id }}').click(function () {
+										$('.label-star{{ item.reviews_store_theme_id }}').each(function () {
+											$(this).removeClass('checked');
+											$(this).prevAll('.label-star{{ item.reviews_store_theme_id }}').removeClass('checked');
+										});
+										$(this).addClass('checked');
+										$(this).prevAll('.label-star{{ item.reviews_store_theme_id }}').addClass('checked');
+									});
+									</script>
+								</div>
+							</div>
+						{% endfor %}
+					{% endif %}
+				</div>
+				{% if reviews_store_setting.captcha is defined %}
+					<div class="form-group">
+						{{ captcha_rs }}
+					</div>
+				{% endif %}
+			</form>
+		</div>
+		<div class="modal-footer">
+			<button id="up-btn-reviews-store" class="chm-btn chm-btn-primary chm-px-xlg chm-lg chm-lg-rounded xs-w-100 sm-w-auto" type="button">{{ btn_add_new_review_store }}</button>
+		</div>
+		<script>
+		$('#up-btn-reviews-store').on('click', function() {
+			$.ajax({
+				url: 'index.php?route=product/upstore_reviews_store/write',
+				type: 'post',
+				data: $('#form-reviews-store').serialize(),
+				dataType: 'json',
+				beforeSend: function() {
+					creatOverlayLoadPage(true);
+					$('#up-btn-reviews-store').data('original-content', $('#up-btn-reviews-store').html());
+					$('#up-btn-reviews-store').html('<i class="fa fa-spinner fa-spin"></i>').prop('disabled', true);
+				},
+				complete: function() {
+					setTimeout(function () {
+						creatOverlayLoadPage(false);
+						$('#up-btn-reviews-store').html($('#up-btn-reviews-store').data('original-content')).prop('disabled', false);
+					}, 300);
+				},
+				success: function(json) {
+					$('#modal-review-store .form-control').removeClass('error_input');
+					$('#modal-review-store .form-control').removeClass('success_input');
+					$('#modal-review-store').find('.us-error-agree').removeClass('us-error-agree');
+					$('.alert.ch-alert-danger,.us-success-icon,.us-error-icon,.us-text-error').remove();
+
+					if (json['error']) {
+						if (json['error']['review_store_rating']) {
+							$('#modal-review-store .reviews_theme').append('<span class="us-text-error">' + json['error']['review_store_rating'] + '</span>');
+						}
+
+						if (json.error.themes) {
+							json.error.themes.forEach(function(theme) {
+								$(`.theme_text_${theme.id}`).addClass('us-error-agree');
+							});
+						}
+						if (json['error']['captcha']) {
+							$('.captcha-block').find('legend').append('<span class="us-text-error">' + json['error']['captcha'] + '</span>');
+						}
+					}
+
+					if (json['error']) {
+						handleFieldNotifications('#modal-review-store', json['error']);
+					}
+
+					if (json.success) {
+						$('#modal-review-store').modal('hide');
+
+						setTimeout(function () {
+							showModalWithMessage(json['success']);
+						}, 300);
+					}
+				}
+			});
+		});
+		</script>
+	</div>
+</div>

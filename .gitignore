@@ -1,0 +1,85 @@
+# Images and Media
+/image
+/img
+
+# Database Backups
+database_backup_*.sql
+*.sql
+
+# Configuration Files (keep examples, ignore active configs)
+config.php
+admin/config.php
+config-local.php
+admin/config-local.php
+
+# Storage Directories
+/storage/cache/*
+/storage/download/*
+/storage/logs/*
+/storage/modification/*
+/storage/session/*
+/storage/upload/*
+!/storage/cache/.htaccess
+!/storage/download/.htaccess
+!/storage/logs/.htaccess
+!/storage/modification/.htaccess
+!/storage/session/.htaccess
+!/storage/upload/.htaccess
+
+# System Storage
+/system/storage/cache/*
+/system/storage/logs/*
+/system/storage/download/*
+/system/storage/modification/*
+/system/storage/session/*
+/system/storage/upload/*
+
+# Minified Assets Cache
+/minify-cache/*
+
+# Image Cache
+/image/cache/*
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Thumbnails
+._*
+
+# IDE
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+*.swp
+*.swo
+*~
+
+# Docker
+docker-compose.override.yml
+
+# Node modules (if any)
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# PHP
+vendor/
+composer.phar
+composer.lock
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.backup
+
+# Environment variables
+.env
+.env.local
+.env.*.local

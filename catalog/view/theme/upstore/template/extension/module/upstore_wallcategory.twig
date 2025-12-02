@@ -1,0 +1,69 @@
+<div class="container-module categorywall-{{ module }}">
+	{% if heading_title[lang_id].title_name is not empty %}
+		<div class="title-module"><span>{{ heading_title[lang_id].title_name }}</span></div>
+	{% endif %}
+	<div class="wall-category-box d-flex clearfix{% if type_view_mob == 0 %} d-xs-flex flex-xs-nowrap flex-sm-wrap{% else %} flex-wrap{% endif %}">
+		{% for category in categories %}
+			<div class="mb-20 {% if type_view_mob == 0 %}wc-col-xs {% else %}col-xs-12 {% endif %}col-sm-6 col-md-3 col-lg-3">
+				<div class="d-flex flex-column h-100 item-category {% if category.subcategories %}parent_category{% endif %}">
+					<div class="wall-cat-image show-sub-cat-{{ module }}">
+						<a href="{{ category.href }}"><img decoding="async" width="{{ category.width }}" height="{{ category.height }}" loading="lazy" src="{{ category.image }}" alt="{{ category.name }}" class="img-responsive" /></a>
+					</div>
+					<div class="wall-cat-name dflex align-items-center">
+						{% if category.subcategories %}
+							<span class="open-sub-cat">
+								<i class="up-icon-16 up-icon-grid-plus" aria-hidden="true"></i>
+								<i class="up-icon-16 up-icon-close" aria-hidden="true"></i>
+							</span>
+						{% endif %}
+						<a href="{{ category.href }}">{{ category.name }}</a>
+					</div>
+					{% if category.subcategories %}
+						<div class="item-sub-category">
+							{% for subcategory in category.subcategories %}
+								<div class="subcategory-name"><a href="{{ subcategory.href }}">{{ subcategory.name }}</a></div>
+							{% endfor %}
+						</div>
+					{% endif %}
+				</div>
+			</div>
+		{% endfor %}
+		{% for manufacturer in manufacturers %}
+			<div class="box-item col-xs-12 col-sm-6 col-md-3 col-lg-3">
+				<div class="item-category">
+					<a href="{{ manufacturer.href }}">
+						<div class="wall-cat-image"><img decoding="async" width="{{ manufacturer.width }}" height="{{ manufacturer.height }}" loading="lazy" src="{{ manufacturer.thumb }}" alt="{{ manufacturer.name }}" class="img-responsive" /></div>
+						<div class="wall-cat-name">
+							<div class="display-table">
+								<div class="display-table-cell">{{ manufacturer.name }}</div>
+							</div>
+						</div>
+					</a>
+				</div>
+			</div>
+		{% endfor %}
+	</div>
+	<script>
+	$(document).ready(function() {
+		if ($(".categorywall-{{ module }}").parents("#column-left, #column-right").length) {
+			$('.categorywall-{{ module }} .box-item').removeClass("col-sm-6 col-md-4 col-lg-3");
+			$('.categorywall-{{ module }} .box-item').addClass("col-sm-12 col-md-12 col-lg-12");
+		}
+	});
+	$(document).on('click', '.open-sub-cat', function () {
+		var $parentCategoryWall = $(this).closest('.categorywall-{{ module }}');
+		var $currentCategory = $(this).closest('.item-category');
+		var wasActive = $currentCategory.hasClass('sc-active');
+
+		$parentCategoryWall.find('.sc-active').removeClass('sc-active');
+		$parentCategoryWall.find('.active').removeClass('active');
+
+		if (!wasActive) {
+			$currentCategory.addClass('sc-active');
+			$currentCategory.find('.wall-cat-image').addClass('sc-active');
+			$currentCategory.find('.item-sub-category').addClass('active');
+			$currentCategory.find('.item-sub-category').mCustomScrollbar({ theme: "dark-3", scrollInertia: 300 });
+		}
+	});
+	</script>
+</div>

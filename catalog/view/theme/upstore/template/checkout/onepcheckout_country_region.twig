@@ -1,0 +1,35 @@
+<div class="checkout-address h-100">
+	<div class="checkout-heading">{{ title_country_region }}</div>
+	<div class="checkout-address-info">
+		<div class="row">
+			<div class="form-group col-xs-12 col-sm-6 required">
+				<label for="input-payment-country" class="control-label opc-label">{{ entry_country }}</label>
+				<select {{ shipping_field['type'] }} {% if (shipping_field['type'] == 'select2') %}data-type="select2"{% endif %} id="input-payment-country" name="country_id" class="form-control">
+					<option value="">{{ text_select }}</option>
+					{% for country in countries %}
+						{% if country['country_id'] == country_id %}
+							<option value="{{ country['country_id'] }}" selected="selected">{{ country['name'] }}</option>
+						{% else %}
+							<option value="{{ country['country_id'] }}">{{ country['name'] }}</option>
+						{% endif %}
+					{% endfor %}
+				</select>
+			</div>
+			<div class="form-group col-xs-12 col-sm-6 required{% if country_id == '' %} hidden{% endif %}">
+				<label for="input-payment-zone" class="control-label opc-label">{{ entry_zone }}</label>
+				<select {% if (shipping_field['type'] == 'select2') %}data-type="select2"{% endif %} id="input-payment-zone" name="zone_id" class="form-control">
+					{% if zones is not empty  %}
+						<option value="">{{ text_select }}</option>
+						{% for zone in zones %}
+							{% if zone['zone_id'] == zone_id %}
+								<option value="{{ zone['zone_id'] }}" selected="selected">{{ zone['name'] }}</option>
+							{% else %}
+								<option value="{{ zone['zone_id'] }}">{{ zone['name'] }}</option>
+							{% endif %}
+						{% endfor %}
+					{% endif %}
+				</select>
+			</div>
+		</div>
+	</div>
+</div>

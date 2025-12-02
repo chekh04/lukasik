@@ -1,0 +1,734 @@
+<div class="form-group">
+	<label class="col-sm-3 control-label">{{ ch_footer_theme_mode }}</label>
+	<div class="col-sm-9">
+		<div class="checkbox-group-pixelshop">
+		<label><input type="checkbox" name="footer_theme_mode" value="1" {{ footer_theme_mode is defined and footer_theme_mode == '1' ? 'checked="checked"' : '' }} /><span></span></label>
+	</div>
+	</div>
+</div>
+<ul class="nav nav-tabs">
+	<li class="active"><a data-toggle="tab" href="#tab-footer-info-contact">{{ text_footer_contact }}</a></li>
+	<li><a data-toggle="tab" href="#tab-footer-desc-store">{{ text_description_store_footer }}</a></li>
+	<li><a data-toggle="tab" href="#tab-footer-gmap">{{ text_footer_map }}</a></li>
+	<li><a data-toggle="tab" href="#tab-footer-banner">{{ text_banner_footer }}</a></li>
+	<li><a data-toggle="tab" href="#tab-footer-column-setting">{{ text_title_column_footer }}</a></li>
+	<li><a data-toggle="tab" href="#tab-social-column-setting">{{ text_social_link_header }}</a></li>
+	<li><a data-toggle="tab" href="#tab-payment-column-setting">{{ text_payments_method }}</a></li>
+	<li><a data-toggle="tab" href="#tab-footer-counter">{{ tab_footer_counters }}</a></li>
+</ul>
+<div class="tab-pane" id="tab-footer-counter">
+<div class="form-group">
+	<label class="col-sm-3 control-label">{{ text_counters_footer }}</label>
+	<div class="col-sm-7">
+		<textarea class="form-control" type="text"  name="config_ns_footer_counters" rows="10">{{ config_ns_footer_counters }}</textarea>
+	</div>
+</div>
+</div>
+<div class="tab-pane active" id="tab-footer-info-contact">
+<div class="form-group">
+	<label class="col-sm-2 control-label" for="input-logo-footer">{{ text_logo_footer }}</label>
+	<div class="col-sm-9"><a href="" id="thumb-logo-footer" data-toggle="image" class="img-thumbnail"><img style="max-width:35px;" src="{{ ns_logo_footer_image }}" alt="" title="" data-placeholder="{{ placeholder_small }}" /></a>
+		<input type="hidden" name="ns_logo_footer" value="{{ config_ns_logo_footer }}" id="input-logo-footer" />
+	</div>
+</div>
+<div class="form-group">
+	<label class="col-sm-12 text-left">{{ text_phone_footer }}</label>
+</div>
+<div class="form-group">
+	<div class="col-sm-12 ns-input-group">
+	{% set phone_row_footer = 0 %}
+	<div id="phone_footer">
+		{% if (config_phones_footer) %}
+		{% for result_phones_footer in config_phones_array_footer %}
+		<div class="input-group">
+			<span class="input-group-addon cs-pad-addon" style="cursor:grab;"><i class="fa fa-hand-grab-o" aria-hidden="true"></i></span>
+			<span class="input-group-addon image_phone">
+				<a href="" id="thumb-image-phone-footer-{{ phone_row_footer }}" data-toggle="image" class="img-thumbnail">
+				<img data-placeholder="{{ placeholder_phone }}" src="{{ result_phones_footer['icon_image'] }}" alt=""/></a>
+				<input type="hidden" name="config_phones_footer[{{ phone_row_footer }}][image]" value="{{ result_phones_footer['image'] }}" id="input-image-phone-footer-{{ phone_row_footer }}" />
+			</span>
+			<span class="input-group-addon cs-pad-addon icon_open" id="phone_footer_icon_{{ phone_row_footer }}" onclick="icon_fontawesome_popup($(this).attr('id'))">
+				{{ text_select_icon }}
+				{% if (config_phone_footer['icon_footer_phone'] is defined and config_phone_footer['icon_footer_phone'] != '') %}<i class="{{ result_phones_footer['icon_footer_phone'] }}"></i>{% else %}<i class="fa fa-opencart"></i>{% endif %}
+			</span>
+			<input class="form-control" type="hidden" name="config_phones_footer[{{ phone_row_footer }}][icon_footer_phone]" value="{{ result_phones_footer['icon_footer_phone'] }}" />
+			<div class="group-ta">
+			{% for language in languages %}
+			<div class="input-group-dflex">
+				<span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>
+				<textarea placeholder="{{ text_type_fields }}" class="form-control textarea-no-resize" type="text" name="config_phones_footer[{{ phone_row_footer }}][type][{{ language['language_id'] }}]">{{ result_phones_footer['type'][language['language_id']] is defined ? result_phones_footer['type'][language['language_id']]: '' }}</textarea>
+				<textarea class="form-control textarea-no-resize" type="text" name="config_phones_footer[{{ phone_row_footer }}][phone_footer][{{ language['language_id'] }}]">{{ result_phones_footer['phone_footer'][language['language_id']] is defined ? result_phones_footer['phone_footer'][language['language_id']] : '' }}</textarea>
+			</div>
+			{% endfor %}
+			</div>
+			<span class="input-group-addon cs-pad-addon"><a class="btn btn-danger" onclick="$(this).parent().parent().remove()" data-toggle="tooltip" title="" data-original-title="{{ text_delete }}"><i class="fa fa-trash-o"></i></a></span>
+		</div>
+		{% set phone_row_footer = phone_row_footer + 1 %}
+		{% endfor %}
+		{% endif %}
+	</div>
+		<div style="margin-top:10px;">
+			<a onclick="addPhoneFooter();" class="btn btn-primary">{{ text_add }}</a></div>
+	</div>
+</div>
+<script>
+	Sortable.create(phone_footer, {
+	  handle: '.fa-hand-grab-o',
+	  animation: 150
+	});
+</script>
+</div>
+<div class="tab-pane" id="tab-footer-desc-store">
+  <div class="form-group">
+      <label class="col-sm-3 control-label">{{ ns_text_status }}</label>
+      <div class="col-sm-9">
+        <div class="checkbox-group-pixelshop">
+          <label><input type="checkbox" name="footer_desc_status" value="1" {{ footer_desc_status is defined and footer_desc_status == '1' ? 'checked="checked"' : '' }} /><span></span></label>
+        </div>
+      </div>
+    </div>
+    <hr>
+	<div class="tab-pane-footer-description">
+		<ul class="nav nav-tabs" id="language_description_store_footer">
+		  {% for language in languages %}
+		  <li><a href="#language_description_store_footer{{ language['language_id'] }}" data-toggle="tab"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /> {{ language['name'] }}</a></li>
+		  {% endfor %}
+		</ul>
+		<div class="tab-content">
+		  {% for language in languages %}
+		  <div class="tab-pane" id="language_description_store_footer{{ language['language_id'] }}">
+			<div class="form-group">
+			  <label class="col-sm-3 control-label" for="input-description-store-footer{{ language['language_id'] }}">{{ text_description_store_footer }}</label>
+			  <div class="col-sm-9">
+			   <textarea class="form-control" data-toggle="summernote" data-lang="{{ summernote }}" name="config_description_store_footer[{{ language['language_id'] }}][config_description_store_footer]" id="input-description-store-footer{{ language['language_id'] }}" class="form-control">{{ config_description_store_footer[language['language_id']]['config_description_store_footer'] is defined ? config_description_store_footer[language['language_id']]['config_description_store_footer'] : '' }}</textarea>
+			  </div>
+			</div>
+		  </div>
+		  {% endfor %}
+		</div>
+	</div>
+<script><!--
+$('#language_description_store_footer a:first').tab('show');
+//--></script>
+</div>
+
+<div class="tab-pane" id="tab-footer-gmap">
+<div class="form-group">
+    <label class="col-sm-3 control-label" >{{ ns_text_status }}</label>
+    <div class="col-sm-9">
+      <div class="radio-group-text">
+        {% if (footer_map_status is defined and (footer_map_status == 'off') or (not footer_map_status)) %}
+        <input id="footer_map_status_off" class="hide-radio-text" type="radio" name="footer_map_status" value="off" checked="checked" />
+        <label for="footer_map_status_off">{{ text_disabled }}</label>
+        {% else %}
+        <input id="footer_map_status_off" class="hide-radio-text" type="radio" name="footer_map_status" value="off" />
+        <label for="footer_map_status_off">{{ text_disabled }}</label>
+        {% endif %}
+        {% if (footer_map_status is defined and (footer_map_status == 'codemap')) %}
+        <input id="footer_map_status_ymap" class="hide-radio-text" type="radio" name="footer_map_status" value="codemap" checked="checked" />
+        <label for="footer_map_status_ymap">{{ text_codemap }}</label>
+        {% else %}
+        <input id="footer_map_status_ymap" class="hide-radio-text" type="radio" name="footer_map_status" value="codemap" />
+        <label for="footer_map_status_ymap">{{ text_codemap }}</label>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+<script>
+$(document).ready(function () {
+  var footer_map_status = $('input[name=footer_map_status]:checked').val();
+  if (footer_map_status =='off') {
+    $('.codemap-box').addClass('hidden');
+  } else {
+    $('.codemap-box').removeClass('hidden');
+  }
+})
+$(document).on('change', 'input[name=footer_map_status]:checked', function () {
+  var fms = $(this).val();
+  if (fms =='off') {
+    $('.codemap-box').addClass('hidden');
+  } else {
+    $('.codemap-box').removeClass('hidden');
+  }
+});
+</script>
+<div class="codemap-box">
+    <div class="form-group">
+      <div class="col-sm-12">
+        <textarea class="form-control" rows="5" type="checkbox" name="code_map">{{ code_map is not empty ? code_map : ''}}</textarea>
+      </div>
+    </div>
+</div>
+</div>
+<div class="tab-pane" id="tab-footer-banner">
+<div class="form-group">
+	<div class="col-sm-12 title-setting">{{ text_footer_ribbon }}</div>
+</div>
+<div class="form-group">
+	<label class="col-sm-3 control-label">{{ text_footer_ribbon_on_off }}</label>
+	<div class="col-sm-9">
+		<div class="radio-group-infinity">
+			{% if (config_on_off_footer_ribbon) %}
+				<input id="config_on_off_footer_ribbon_yes" class="hide-radio" type="radio" name="config_on_off_footer_ribbon" value="1" checked="checked" />
+				<label for="config_on_off_footer_ribbon_yes">{{ text_yes }}</label>
+			{% else %}
+				<input id="config_on_off_footer_ribbon_yes" class="hide-radio" type="radio" name="config_on_off_footer_ribbon" value="1" />
+				<label for="config_on_off_footer_ribbon_yes">{{ text_yes }}</label>
+			{% endif %}
+			{% if (not config_on_off_footer_ribbon) %}
+				<input id="config_on_off_footer_ribbon_no" class="hide-radio" type="radio" name="config_on_off_footer_ribbon" value="0" checked="checked" />
+				<label for="config_on_off_footer_ribbon_no">{{ text_no }}</label>
+			{% else %}
+				<input id="config_on_off_footer_ribbon_no" class="hide-radio" type="radio" name="config_on_off_footer_ribbon" value="0" />
+				<label for="config_on_off_footer_ribbon_no">{{ text_no }}</label>
+			{% endif %}
+		</div>
+	</div>
+</div>
+<div class="form-group">
+	<label class="col-sm-3 control-label">{{ entry_footer_ribbon_text }}</label>
+	<div class="col-sm-5">
+	{% for language in languages %}
+        <div class="input-group"><span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>
+            <input name="config_footer_ribbon[{{ language['language_id'] }}][config_footer_ribbon]" class="form-control" value="{{ config_footer_ribbon[language['language_id']] is defined ? config_footer_ribbon[language['language_id']]['config_footer_ribbon'] : '' }}" />
+        </div>
+    {% endfor %}
+	</div>
+</div>
+<div class="form-group">
+	<div class="col-sm-12 title-setting">{{ text_banner_footer }}</div>
+</div>
+<table id="items" class="table table-bordered table-hover">
+	<thead>
+		<tr>
+			<td></td>
+			<td>{{ column_banner_icon }}</td>
+			<td>{{ column_banner_name }}</td>
+			<td>{{ column_banner_description }}</td>
+			<td>{{ column_banner_link }}</td>
+			<td></td>
+		</tr>
+	</thead>
+	<tbody id="banner_footer_drag">
+	{% set item_row = 0 %}
+	{% for banner_items_footer in banner_items_footers %}
+		<tr id="item-row{{ item_row }}">
+			<td class="text-left sortable" style="cursor:move;"><i class="fa fa-arrows" aria-hidden="true"></i></td>
+			<td class="text-center">
+				<div class="radio-group-text" style="display: flex; margin-bottom: 5px;">
+					<input id="icon_type_0_{{ item_row }}" onchange="$(this).parent().parent().find('.show-icon').show().next().hide();" class="hide-radio-text" type="radio" name="banner_items_footer[{{ item_row }}][icon_type]" value="0" {% if (banner_items_footer['icon_type'] is defined and (banner_items_footer['icon_type'] == '0') or (not banner_items_footer['icon_type'])) %}checked="checked"{% endif %}/>
+					<label for="icon_type_0_{{ item_row }}">{{ text_select_icon }}</label>
+					<input id="icon_type_1_{{ item_row }}" onchange="$(this).parent().parent().find('.show-icon').hide().next().show();" class="hide-radio-text" type="radio" name="banner_items_footer[{{ item_row }}][icon_type]" value="1" {% if (banner_items_footer['icon_type'] is defined and (banner_items_footer['icon_type'] == '1')) %}checked="checked"{% endif %} />
+					<label for="icon_type_1_{{ item_row }}">{{ ns_text_thumb }}</label>
+				</div>
+				<div class="show-icon" {% if (banner_items_footer['icon_type'] is defined and (banner_items_footer['icon_type'] == '1')) %}style="display:none;"{% endif %}>
+					<span style="min-width:40px;float:none;display:inline-block;margin-right:0px;" class="icon_open" id="banner_items_footer_{{ item_row }}" onclick="icon_fontawesome_popup($(this).attr('id'))">
+						{% if (banner_items_footer['icon_image'] is defined and banner_items_footer['icon_image'] != '') %}<i class="{{ banner_items_footer['icon_image'] }}"></i>{% else %}<i class="fa fa-opencart"></i>{% endif %}
+					</span>
+					<input class="form-control" type="hidden" name="banner_items_footer[{{ item_row }}][icon_image]" value="{{ banner_items_footer['icon_image'] }}" />
+				</div>
+				<div class="show-image" {% if (banner_items_footer['icon_type'] is defined and (banner_items_footer['icon_type'] == '0') or (not banner_items_footer['icon_type'])) %}style="display:none;"{% endif %}>
+					<a href="" id="thumb-image-banner-footer{{ item_row }}" data-toggle="image" class="img-thumbnail">
+						<img style="max-width: 32px;" data-placeholder="{{ placeholder_small }}" src="{{ banner_items_footer['b_image'] }}" alt=""/>
+					</a>
+					<input type="hidden" name="banner_items_footer[{{ item_row }}][image]" value="{{ banner_items_footer['image'] }}" id="input-image-banner-footer{{ item_row }}" />
+				</div>
+			</td>
+			<td class="text-left">
+				{% for language in languages %}
+				<div class="input-group pull-left">
+				<span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>
+				<input class="form-control" type="text" name="banner_items_footer[{{ item_row }}][title][{{ language['language_id'] }}]" value="{{ banner_items_footer['title'][language['language_id']] }}" />
+				</div>
+				{% endfor %}
+			</td>
+			<td class="text-left">
+				{% for language in languages %}
+					<div class="input-group pull-left">
+						<span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>
+						<input class="form-control" type="text" name="banner_items_footer[{{ item_row }}][description][{{ language['language_id'] }}]" value="{{ banner_items_footer['description'][language['language_id']] }}" />
+					</div>
+				{% endfor %}
+			</td>
+			<td class="text-left">
+				{% for language in languages %}
+					<div class="input-group pull-left">
+						<span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>
+						<input class="form-control" type="text" name="banner_items_footer[{{ item_row }}][link][{{ language['language_id'] }}]" value="{{ banner_items_footer['link'][language['language_id']] is defined ? banner_items_footer['link'][language['language_id']] : '' }}" />
+					</div>
+				{% endfor %}
+				<div class="form-group">
+					<label class="col-sm-12 text-center">{{ text_open_banner_popup }}</label>
+					<div class="col-sm-12 text-center">
+						<div class="radio-group-infinity">
+							{% if (banner_items_footer['popup']) %}
+								<input id="config_banner_items_footer_popup_yes_{{ item_row }}" class="hide-radio" type="radio" name="banner_items_footer[{{ item_row }}][popup]" value="1" checked="checked" />
+								<label for="config_banner_items_footer_popup_yes_{{ item_row }}">{{ text_yes }}</label>
+							{% else %}
+								<input id="config_banner_items_footer_popup_yes_{{ item_row }}" class="hide-radio" type="radio" name="banner_items_footer[{{ item_row }}][popup]" value="1" />
+								<label for="config_banner_items_footer_popup_yes_{{ item_row }}">{{ text_yes }}</label>
+							{% endif %}
+							{% if (not banner_items_footer['popup']) %}
+								<input id="config_banner_items_footer_popup_no_{{ item_row }}" class="hide-radio" type="radio" name="banner_items_footer[{{ item_row }}][popup]" value="0" checked="checked" />
+								<label for="config_banner_items_footer_popup_no_{{ item_row }}">{{ text_no }}</label>
+							{% else %}
+								<input id="config_banner_items_footer_popup_no_{{ item_row }}" class="hide-radio" type="radio" name="banner_items_footer[{{ item_row }}][popup]" value="0" />
+								<label for="config_banner_items_footer_popup_no_{{ item_row }}">{{ text_no }}</label>
+							{% endif %}
+						</div>
+					</div>
+				</div>
+			</td>
+			<td class="text-right">
+				<a class="btn btn-danger" onclick="$('#item-row{{ item_row }}').remove();" data-toggle="tooltip" title="{{ text_delete }}"><i class="fa fa-trash-o"></i></a>
+			</td>
+		</tr>
+		{% set item_row = item_row + 1 %}
+	{% endfor %}
+	</tbody>
+	<tfoot>
+		<tr>
+			<td colspan="4"></td>
+			<td class="text-right"><a class="btn btn-primary" onclick="addItem();" data-toggle="tooltip" title="{{ text_add }}"><i class="fa fa-plus-circle"></i></a></td>
+		</tr>
+	</tfoot>
+</table>
+<style>
+	#items .text-sel-icon {display: none;}
+</style>
+<script>
+Sortable.create(banner_footer_drag, {
+	handle: '.sortable',
+	animation: 150
+});
+var item_row = {{ item_row }};
+
+function addItem() {
+	html  = '<tr id="item-row' + item_row + '">';
+	html += '<td class="text-left sortable" style="cursor:move;"><i class="fa fa-arrows" aria-hidden="true"></i></td>';
+	html += '<td class="text-center">';
+
+	html += '	<div class="radio-group-text" style="display: flex; margin-bottom: 5px;">';
+	html += '		<input id="icon_type_0_' + item_row + '" onchange="$(this).parent().parent().find(\'.show-icon\').show().next().hide();" class="hide-radio-text" type="radio" name="banner_items_footer[' + item_row + '][icon_type]" value="0" checked="checked"/>';
+	html += '		<label for="icon_type_0_' + item_row + '">{{ text_select_icon }}</label>';
+	html += '		<input id="icon_type_1_' + item_row + '" onchange="$(this).parent().parent().find(\'.show-icon\').hide().next().show();" class="hide-radio-text" type="radio" name="banner_items_footer[' + item_row + '][icon_type]" value="1" />';
+	html += '		<label for="icon_type_1_' + item_row + '">{{ ns_text_thumb }}</label>';
+	html += '	</div>';
+	html += '	<div class="show-icon">';
+	html += '		<span style="min-width:40px;float:none;display:inline-block;margin-right:0px;" class="icon_open" id="banner_items_footer_' + item_row + '" onclick="icon_fontawesome_popup($(this).attr(\'id\'))">';
+	html += '			<i class="fa fa-opencart"></i>';
+	html += '		</span>';
+	html += '		<input class="form-control" type="hidden" name="banner_items_footer[' + item_row + '][icon_image]" value="" />';
+	html += '	</div>';
+	html += '	<div class="show-image" style="display:none;">';
+	html += '		<a href="" id="thumb-image-banner-footer' + item_row + '" data-toggle="image" class="img-thumbnail">';
+	html += '			<img style="max-width: 32px;" data-placeholder="{{ placeholder_small }}" src="{{ placeholder_small }}" alt=""/>';
+	html += '		</a>';
+	html += '		<input type="hidden" name="banner_items_footer[' + item_row + '][image]" value="" id="input-image-banner-footer' + item_row + '" />';
+	html += '	</div>';
+
+	html += '</td>';
+	html += '<td class="text-left">';
+	{% for language in languages %}
+	html += '<div class="input-group pull-left"><span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>';
+	html += '<input class="form-control" type="text" name="banner_items_footer[' + item_row + '][title][{{ language['language_id'] }}]" value="" />';
+	html += '</div>';
+	{% endfor %}
+	html += '</td>';
+	html += '<td class="text-left">';
+	{% for language in languages %}
+	html += '<div class="input-group pull-left"><span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>';
+	html += '<input class="form-control" type="text" name="banner_items_footer[' + item_row + '][description][{{ language['language_id'] }}]" value="" />';
+	html += '</div>';
+	{% endfor %}
+	html += '</td>';
+	html += '<td class="text-left">';
+	html += '	{% for language in languages %}';
+	html += '		<div class="input-group pull-left">';
+	html += '			<span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>';
+	html += '			<input class="form-control"  type="text" name="banner_items_footer[' + item_row + '][link][{{ language['language_id'] }}]" value="" />';
+	html += '		</div>';
+	html += '	{% endfor %}';
+
+	html += '<div class="form-group">';
+	html += '	<label class="col-sm-12 text-center">{{ text_open_banner_popup }}</label>';
+	html += '	<div class="col-sm-12 text-center">';
+	html += '	<div class="radio-group-infinity">';
+	html += '		<input id="config_banner_items_footer_popup_yes_' + item_row + '" class="hide-radio" type="radio" name="banner_items_footer[' + item_row + '][popup]" value="1"/>';
+	html += '		<label for="config_banner_items_footer_popup_yes_' + item_row + '">{{ text_yes }}</label>';
+	html += '		<input id="config_banner_items_footer_popup_no_' + item_row + '" class="hide-radio" type="radio" name="banner_items_footer[' + item_row + '][popup]" value="0" checked="checked" />';
+	html += '		<label for="config_banner_items_footer_popup_no_' + item_row + '">{{ text_no }}</label>';
+	html += '	</div>';
+	html += '	</div>';
+	html += '</div>';
+	html += '</td>';
+	html += '<td class="text-right"><a class="btn btn-danger" onclick="$(\'#item-row' + item_row  + '\').remove();" data-toggle="tooltip" title="{{ text_delete }}"><i class="fa fa-trash-o"></i></a></td>';
+	html += '</tr>';
+
+	$('#items tbody').append(html);;
+
+	item_row++;
+}
+</script>
+</div>
+<div class="tab-pane" id="tab-footer-column-setting">
+
+	<div class="form-group">
+		<div class="col-sm-12 title-setting">{{ text_title_column_footer }}</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-3 control-label">{{ text_title_information }}</label>
+		<div class="col-sm-6 ns-input-group">
+			{% for language in languages %}
+				<div class="input-group">
+					<span class="input-group-addon">
+					<img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>
+					<span class="input-group-addon icon_open" id="columnfn_1_{{ language['language_id'] }}" onclick="icon_fontawesome_popup($(this).attr('id'))">
+						{{ text_select_icon }}
+						{% if (footer_column_setting_ns['column_1'][language['language_id']]['icon_image'] is defined) %}
+						<i class="{{ footer_column_setting_ns['column_1'][language['language_id']]['icon_image'] }}"></i>
+						{% endif %}
+					</span>
+					<input class="form-control" type="hidden" name="footer_column_setting_ns[column_1][{{ language['language_id'] }}][icon_image]" value="{{ footer_column_setting_ns['column_1'][language['language_id']]['icon_image'] is defined ? footer_column_setting_ns['column_1'][language['language_id']]['icon_image'] : '' }}" />
+					<input type="text" name="footer_column_setting_ns[column_1][{{ language['language_id'] }}][name_column]" class="form-control" value="{{ footer_column_setting_ns['column_1'][language['language_id']]['name_column'] is defined ? footer_column_setting_ns['column_1'][language['language_id']]['name_column'] : '' }}"></input>
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+	<div class="form-group hidden">
+		<label class="col-sm-3 control-label">{{ text_title_extra }}</label>
+		<div class="col-sm-6 ns-input-group">
+			{% for language in languages %}
+				<div class="input-group">
+					<span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>
+					<span class="input-group-addon icon_open" id="columnfn_2_{{ language['language_id'] }}" onclick="icon_fontawesome_popup($(this).attr('id'))">
+						{{ text_select_icon }}
+						{% if (footer_column_setting_ns['column_2'][language['language_id']]['icon_image'] is defined) %}<i class="{{ footer_column_setting_ns['column_2'][language['language_id']]['icon_image'] }}"></i>{% endif %}
+					</span>
+					<input class="form-control" type="hidden" name="footer_column_setting_ns[column_2][{{ language['language_id'] }}][icon_image]" value="{{ footer_column_setting_ns['column_2'][language['language_id']]['icon_image'] is defined ? footer_column_setting_ns['column_2'][language['language_id']]['icon_image'] : '' }}" />
+					<input type="text" name="footer_column_setting_ns[column_2][{{ language['language_id'] }}][name_column]" class="form-control" value="{{ footer_column_setting_ns['column_2'][language['language_id']]['name_column'] is defined ? footer_column_setting_ns['column_2'][language['language_id']]['name_column'] : '' }}"></input>
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-3 control-label">{{ text_title_account }}</label>
+		<div class="col-sm-6 ns-input-group">
+			{% for language in languages %}
+				<div class="input-group">
+					<span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>
+					<span class="input-group-addon icon_open" id="columnfn_3{{ language['language_id'] }}" onclick="icon_fontawesome_popup($(this).attr('id'))">
+						{{ text_select_icon }}
+						{% if (footer_column_setting_ns['column_3'][language['language_id']]['icon_image'] is defined) %}<i class="{{ footer_column_setting_ns['column_3'][language['language_id']]['icon_image'] }}"></i>{% endif %}
+					</span>
+					<input class="form-control" type="hidden" name="footer_column_setting_ns[column_3][{{ language['language_id'] }}][icon_image]" value="{{ footer_column_setting_ns['column_3'][language['language_id']]['icon_image'] is defined ? footer_column_setting_ns['column_3'][language['language_id']]['icon_image'] : '' }}" />
+					<input type="text" name="footer_column_setting_ns[column_3][{{ language['language_id'] }}][name_column]" class="form-control" value="{{ footer_column_setting_ns['column_3'][language['language_id']]['name_column'] is defined ? footer_column_setting_ns['column_3'][language['language_id']]['name_column'] : '' }}"></input>
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-3 control-label">{{ text_title_category }}</label>
+		<div class="col-sm-6 ns-input-group">
+			{% for language in languages %}
+				<div class="input-group">
+					<span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>
+					<span class="input-group-addon icon_open" id="columnfn_4{{ language['language_id'] }}" onclick="icon_fontawesome_popup($(this).attr('id'))">
+						{{ text_select_icon }}
+						{% if (footer_column_setting_ns['column_4'][language['language_id']]['icon_image'] is defined) %}<i class="{{ footer_column_setting_ns['column_4'][language['language_id']]['icon_image'] }}"></i>{% endif %}
+					</span>
+					<input class="form-control" type="hidden" name="footer_column_setting_ns[column_4][{{ language['language_id'] }}][icon_image]" value="{{ footer_column_setting_ns['column_4'][language['language_id']]['icon_image'] is defined ? footer_column_setting_ns['column_4'][language['language_id']]['icon_image'] : '' }}" />
+					<input type="text" name="footer_column_setting_ns[column_4][{{ language['language_id'] }}][name_column]" class="form-control" value="{{ footer_column_setting_ns['column_4'][language['language_id']]['name_column'] is defined ? footer_column_setting_ns['column_4'][language['language_id']]['name_column'] : '' }}"></input>
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+	<div class="form-group">
+		<div class="col-sm-12 title-setting">{{ text_title_extra }}</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-3 control-label">{{ text_link_manufacturer }}</label>
+		<div class="col-sm-9">
+			<div class="checkbox-group-pixelshop">
+				<label><input type="checkbox" name="footer_column_setting_ns[link_manufacturer]" value="1" {{ footer_column_setting_ns['link_manufacturer'] is defined ? 'checked="checked"' : '' }} /><span></span></label>
+			</div>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-3 control-label">{{ text_link_voucher }}</label>
+		<div class="col-sm-9">
+			<div class="checkbox-group-pixelshop">
+				<label><input type="checkbox" name="footer_column_setting_ns[link_voucher]" value="1" {{ footer_column_setting_ns['link_voucher'] is defined ? 'checked="checked"' : '' }} /><span></span></label>
+			</div>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-3 control-label">{{ text_link_affiliate }}</label>
+		<div class="col-sm-9">
+			<div class="checkbox-group-pixelshop">
+				<label><input type="checkbox" name="footer_column_setting_ns[link_affiliate]" value="1" {{ footer_column_setting_ns['link_affiliate'] is defined ? 'checked="checked"' : '' }} /><span></span></label>
+			</div>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-3 control-label">{{ text_link_special }}</label>
+		<div class="col-sm-9">
+			<div class="checkbox-group-pixelshop">
+				<label><input type="checkbox" name="footer_column_setting_ns[link_special]" value="1" {{ footer_column_setting_ns['link_special'] is defined ? 'checked="checked"' : '' }} /><span></span></label>
+			</div>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-3 control-label">{{ text_link_sitemap }}</label>
+		<div class="col-sm-9">
+			<div class="checkbox-group-pixelshop">
+				<label><input type="checkbox" name="footer_column_setting_ns[link_sitemap]" value="1" {{ footer_column_setting_ns['link_sitemap'] is defined ? 'checked="checked"' : '' }} /><span></span></label>
+			</div>
+		</div>
+	</div>
+	<div class="form-group">
+		<div class="col-sm-12 title-setting">{{ text_title_account }}</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-3 control-label">{{ text_link_account }}</label>
+		<div class="col-sm-9">
+			<div class="checkbox-group-pixelshop">
+				<label><input type="checkbox" name="footer_column_setting_ns[link_account]" value="1" {{ footer_column_setting_ns['link_account'] is defined ? 'checked="checked"' : '' }} /><span></span></label>
+			</div>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-3 control-label">{{ text_link_order }}</label>
+		<div class="col-sm-9">
+			<div class="checkbox-group-pixelshop">
+				<label><input type="checkbox" name="footer_column_setting_ns[link_order]" value="1" {{ footer_column_setting_ns['link_order'] is defined ? 'checked="checked"' : '' }} /><span></span></label>
+			</div>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-3 control-label">{{ text_link_wishlist }}</label>
+		<div class="col-sm-9">
+			<div class="checkbox-group-pixelshop">
+				<label><input type="checkbox" name="footer_column_setting_ns[link_wishlist]" value="1" {{ footer_column_setting_ns['link_wishlist'] is defined ? 'checked="checked"' : '' }} /><span></span></label>
+			</div>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-3 control-label">{{ text_link_newsletter }}</label>
+		<div class="col-sm-9">
+			<div class="checkbox-group-pixelshop">
+				<label><input type="checkbox" name="footer_column_setting_ns[link_newsletter]" value="1" {{ footer_column_setting_ns['link_newsletter'] is defined ? 'checked="checked"' : '' }} /><span></span></label>
+			</div>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-3 control-label">{{ text_link_contact }}</label>
+		<div class="col-sm-9">
+			<div class="checkbox-group-pixelshop">
+				<label><input type="checkbox" name="footer_column_setting_ns[link_contact]" value="1" {{ footer_column_setting_ns['link_contact'] is defined ? 'checked="checked"' : '' }} /><span></span></label>
+			</div>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-3 control-label">{{ text_link_return }}</label>
+		<div class="col-sm-9">
+			<div class="checkbox-group-pixelshop">
+				<label><input type="checkbox" name="footer_column_setting_ns[link_return]" value="1" {{ footer_column_setting_ns['link_return'] is defined ? 'checked="checked"' : '' }} /><span></span></label>
+			</div>
+		</div>
+	</div>
+	<div class="form-group">
+		<div class="col-sm-12 title-setting">{{ text_random_link_fs }}</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-3 control-label">{{ text_links_fs }}</label>
+	<div class="col-sm-9 ns-input-group">
+		{% for key,language in languages %}
+		{% set footer_links_row = 1 %}
+		<div class="footer_column_links_{{ language['language_id'] }}">
+		{% if (footer_column_setting_ns[language['language_id']]['footer_links'] is defined) %}
+		{% for result in footer_column_setting_ns[language['language_id']]['footer_links'] %}
+		<div class="input-group footer_links">
+			<span class="input-group-addon">
+			<img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" />
+			</span>
+			<input class="form-control" type="text" name="footer_column_setting_ns[{{ language['language_id'] }}][footer_links][{{ footer_links_row }}][title]" value="{% if (result['title'] is defined) %}{{ result['title'] }}{% endif %}" placeholder="{{ text_title_fs }}#{{ footer_links_row }}" />
+			<input class="form-control" type="text" name="footer_column_setting_ns[{{ language['language_id'] }}][footer_links][{{ footer_links_row }}][link]" value="{% if (result['link'] is defined) %}{{ result['link'] }}{% endif %}" placeholder="{{ text_link_fs }}#{{ footer_links_row }}" />
+			<select class="form-control" name="footer_column_setting_ns[{{ language['language_id'] }}][footer_links][{{ footer_links_row }}][column_link]">';
+				<option value="4" {% if (result['column_link'] == '4') %} {{ 'selected="selected"' }} {% endif %}>{{ text_show_link_in }} {{ text_title_category }}</option>
+				<option value="2" {% if (result['column_link'] == '2') %} {{ 'selected="selected"' }} {% endif %}>{{ text_show_link_in }} {{ text_title_information }}</option>
+				<option value="3" {% if (result['column_link'] == '3') %} {{ 'selected="selected"' }} {% endif %}>{{ text_show_link_in }} {{ text_title_account }}</option>
+			</select>
+			<span class="input-group-btn"><a class="btn btn-danger" onclick="$(this).parent().parent().remove()" data-toggle="tooltip" title="{{ text_delete }}"><i class="fa fa-trash-o"></i></a></span>
+
+		</div>
+		{% set footer_links_row = footer_links_row + 1 %}
+		{% endfor %}
+		{% endif %}
+		<input type="hidden" id="footer-links-all-column-row-number-{{ language['language_id'] }}" value="{{ footer_links_row }}">
+		</div>
+		<div style="margin-top:10px;">
+		<a href="javascript:void(0);" onclick="addFooterLinksAllColumn('{{ language['language_id'] }}','{{ language['code'] }}');" class="btn btn-primary">{{ text_add_link_for }} <img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></a></div>
+		<hr>
+		{% endfor %}
+	</div>
+	</div>
+	<script>
+function addFooterLinksAllColumn(lang_id,code) {
+	var footer_links_row = $('#footer-links-all-column-row-number-'+ lang_id).val();
+	$('#footer-links-all-column-row-number-'+ lang_id).val(parseInt(footer_links_row) + 1);
+	html  = '';
+	html += '<div class="input-group footer_links">';
+	html += '<span class="input-group-addon"><img src="language/'+ code +'/'+ code +'.png" /></span>';
+	html += '<input class="form-control" type="text" name="footer_column_setting_ns['+lang_id+'][footer_links]['+footer_links_row+'][title]" value="" placeholder="{{ text_title_fs }} #'+footer_links_row+'" />';
+	html += '<input class="form-control" type="text" name="footer_column_setting_ns['+lang_id+'][footer_links]['+footer_links_row+'][link]" value="" placeholder="{{ text_link_fs }} #'+footer_links_row+'" />';
+	html += '<select class="form-control" name="footer_column_setting_ns['+lang_id+'][footer_links]['+footer_links_row+'][column_link]">';
+	html += '<option value="4" selected="selected">{{ text_show_link_in }} {{ text_title_category }}</option>';
+	html += '<option value="2">{{ text_show_link_in }} {{ text_title_information }}</option>';
+	html += '<option value="3">{{ text_show_link_in }} {{ text_title_account }}</option>';
+	html += '</select>';
+	html += '<span class="input-group-btn"><a class="btn btn-danger" onclick="$(this).parent().parent().remove()" data-toggle="tooltip" title="{{ text_delete }}"><i class="fa fa-trash-o"></i></a></span>';
+	html += '</div>';
+
+	$('.footer_column_links_'+lang_id).append(html);
+}
+</script>
+</div>
+<div class="tab-pane" id="tab-social-column-setting">
+	<div class="form-group">
+		<div class="col-sm-12 title-setting">{{ text_social_link_header }}</div>
+	</div>
+	<div class="form-group">
+		<div class="col-sm-12 ns-input-group">
+		<div id="social_footer_icon_link">
+			{% if (config_social_footer) %}
+				{% set social_row_footer = 0 %}
+					{% for config_social_footer in config_social_array_footer %}
+						<div class="input-group">
+							<span class="input-group-addon image_phone">
+								<a href="" id="thumb-image-social-footer{{ social_row_footer }}" data-toggle="image" class="img-thumbnail">
+									<img data-placeholder="{{ no_image_phone }}" src="{{ config_social_footer.thumb_footer_social }}" alt=""/>
+								</a>
+								<input type="hidden" name="config_social_footer[{{ social_row_footer }}][image_footer_social]" value="{{ config_social_footer.image_footer_social }}" id="input-image-social-footer{{ social_row_footer }}" />
+							</span>
+							<span class="input-group-addon icon_open" id="social_footer_icon_{{ social_row_footer }}" onclick="icon_fontawesome_popup($(this).attr('id'))">
+								{{ text_select_icon }}
+								{% if config_social_footer.social_icon_footer is defined %}
+									<i class="{{ config_social_footer.social_icon_footer }}"></i>
+								{% endif %}
+							</span>
+							<input class="form-control" type="hidden" name="config_social_footer[{{ social_row_footer }}][social_icon_footer]" value="{{ config_social_footer.social_icon_footer }}" />
+							<input class="form-control" placeholder="{{ ns_text_html_description }}" type="text" name="config_social_footer[{{ social_row_footer }}][text]" value="{{ config_social_footer.text }}" />
+							<input class="form-control" placeholder="{{ text_link_social }}" type="text" name="config_social_footer[{{ social_row_footer }}][social_link_footer]" value="{{ config_social_footer.social_link_footer }}" />
+							<span class="input-group-btn">
+								<a class="btn btn-danger" onclick="$(this).parent().parent().remove()" data-toggle="tooltip" title="{{ text_delete }}"><i class="fa fa-trash-o"></i></a>
+							</span>
+						</div>
+					{% set social_row_footer = social_row_footer + 1 %}
+					{% endfor %}
+			{% else %}
+				{% set social_row_footer = 0 %}
+			{% endif %}
+			</div>
+			<div style="margin-top:10px;">
+				<a onclick="addsocialFooter();" class="btn btn-primary">{{ text_add }}</a>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="tab-pane" id="tab-payment-column-setting">
+	<div class="form-group">
+		<div class="col-sm-12 title-setting">{{ text_payments_method }}</div>
+	</div>
+	<div class="form-group">
+		<div class="col-sm-12 ns-input-group">
+				{% set payments_row_footer = 0 %}
+				<div id="payments_footer_icon_link">
+				{% if (config_payments_footer) %}
+					{% for config_payments_footer in config_payments_array_footer %}
+						<div class="input-group">
+							<span class="input-group-addon image_phone">
+								<a href="" id="thumb-image-payments-footer{{ payments_row_footer }}" data-toggle="image" class="img-thumbnail">
+								<img data-placeholder="{{ no_image_phone }}" src="{{ config_payments_footer['icon_footer_payments'] }}" alt=""/></a>
+								<input type="hidden" name="config_payments_footer[{{ payments_row_footer }}][image_footer_payments]" value="{{ config_payments_footer['image_footer_payments'] }}" id="input-image-payments-footer{{ payments_row_footer }}" />
+							</span>
+							<input class="form-control" placeholder="{{ text_link_social }}" type="text"  name="config_payments_footer[{{ payments_row_footer }}][payments_link_footer]" value="{{ config_payments_footer['payments_link_footer'] }}"/>
+							<span class="input-group-btn"><a class="btn btn-danger" onclick="$(this).parent().parent().remove()" data-toggle="tooltip" title="" data-original-title="{{ text_delete }}"><i class="fa fa-trash-o"></i></a></span>
+						</div>
+					{% set payments_row_footer = payments_row_footer + 1 %}
+					{% endfor %}
+			{% else %}
+				{% set payments_row_footer = 0 %}
+			{% endif %}
+			</div>
+			<div style="margin-top:10px;">
+				<a onclick="addPaymentsFooter();" class="btn btn-primary">{{ text_add }}</a>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+var phone_row_footer = {{ phone_row_footer }};
+function addPhoneFooter() {
+	html  = '<div class="input-group">';
+	html += '	<span class="input-group-addon cs-pad-addon" style="cursor:move;"><i class="fa fa-hand-grab-o" aria-hidden="true"></i></span>';
+	html += '	<span class="input-group-addon image_phone">';
+	html += '		<a href="" id="thumb-image-phone-footer-'+ phone_row_footer +'" data-toggle="image" class="img-thumbnail">';
+	html += '		<img data-placeholder="{{ placeholder_phone }}" src="{{ placeholder_phone }}" alt=""/></a>';
+	html += '		<input type="hidden" name="config_phones_footer['+ phone_row_footer +'][image]" value="" id="input-image-phone-footer-'+ phone_row_footer +'" />';
+	html += '	</span>';
+	html += '	<span class="input-group-addon cs-pad-addon icon_open" id="phones_footer_icon_'+ phone_row_footer +'" onclick="icon_fontawesome_popup($(this).attr(\'id\'))">';
+	html += '	{{ text_select_icon }}<i class="fa fa-opencart"></i></span>';
+	html += '	<input class="form-control" type="hidden" name="config_phones_footer['+ phone_row_footer +'][icon_footer_phone]" value="" />';
+	html += '	<div class="group-ta">';
+				{% for language in languages %}
+	html += '		<div class="input-group-dflex">';
+	html += '			<span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>';
+	html += '			<textarea placeholder="{{ text_type_fields }}" class="form-control textarea-no-resize" type="text" name="config_phones_footer['+ phone_row_footer +'][type][{{ language['language_id'] }}]"></textarea>';
+	html += '			<textarea class="form-control textarea-no-resize" type="text" name="config_phones_footer['+ phone_row_footer +'][phone_footer][{{ language['language_id'] }}]"></textarea>';
+	html += '		</div>';
+				{% endfor %}
+	html += '	</div>';
+	html += '	<span class="input-group-addon cs-pad-addon"><a class="btn btn-danger" onclick="$(this).parent().parent().remove()" data-toggle="tooltip" title="" data-original-title="{{ text_delete }}"><i class="fa fa-trash-o"></i></a></span>';
+	html += '	</div>';
+	$('#phone_footer').append(html);
+	phone_row_footer++;
+}
+
+var social_row_footer = '{{ social_row_footer }}';
+function addsocialFooter() {
+	html  = '<div class="input-group social-ginput">';
+	html += '	<span class="input-group-addon image_phone">';
+	html += '  		<a href="" id="thumb-image-social-footer'+ social_row_footer +'" data-toggle="image" class="img-thumbnail">';
+	html += '  		<img data-placeholder="{{ no_image_phone }}" src="{{ no_image_phone }}" alt=""/></a>';
+	html += '  		<input type="hidden" name="config_social_footer['+ social_row_footer +'][image_footer_social]" value="" id="input-image-social-footer-'+ social_row_footer +'" />';
+	html += '	</span>';
+
+	html += '	<span class="input-group-addon icon_open" id="social_footer_icon_'+ social_row_footer +'" onclick="icon_fontawesome_popup($(this).attr(\'id\'))">{{ text_select_icon }}</span>';
+	html += '		<input class="form-control" type="hidden" name="config_social_footer['+ social_row_footer +'][social_icon_footer]" value="" />';
+	html += '		<input class="form-control" placeholder="{{ ns_text_html_description }}" type="text" name="config_social_footer['+ social_row_footer +'][text]" value=""/>';
+	html += '	<input class="form-control" placeholder="{{ text_link_social }}" type="text"  name="config_social_footer['+ social_row_footer +'][social_link_footer]" value=""/>';
+	html += '	<span class="input-group-btn"><a class="btn btn-danger" onclick="$(this).parent().parent().remove()" data-toggle="tooltip" title="" data-original-title="{{ text_delete }}"><i class="fa fa-trash-o"></i></a></span>';
+	html += '</div>';
+
+
+	$('#social_footer_icon_link').append(html);
+	jscolor.init();
+	social_row_footer++;
+}
+var payments_row_footer = {{ payments_row_footer }};
+function addPaymentsFooter() {
+	html  = '<div class="input-group">';
+	html += '	<span class="input-group-addon image_phone">';
+	html += '  		<a href="" id="thumb-image-payments-footer'+ payments_row_footer +'" data-toggle="image" class="img-thumbnail">';
+	html += '  		<img data-placeholder="{{ no_image_phone }}" src="{{ no_image_phone }}" alt=""/></a>';
+	html += '  		<input type="hidden" name="config_payments_footer['+ payments_row_footer +'][image_footer_payments]" value="" id="input-image-payments-footer-'+ payments_row_footer +'" />';
+	html += '	</span>';
+	html += '	<input class="form-control" placeholder="{{ text_link_social }}" type="text"  name="config_payments_footer['+ payments_row_footer +'][payments_link_footer]" value=""/>';
+	html += '	<span class="input-group-btn"><a class="btn btn-danger" onclick="$(this).parent().parent().remove()" data-toggle="tooltip" title="" data-original-title="{{ text_delete }}"><i class="fa fa-trash-o"></i></a></span>';
+	html += '</div>';
+	$('#payments_footer_icon_link').append(html);
+	payments_row_footer++;
+}
+</script>
+

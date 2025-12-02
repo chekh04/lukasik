@@ -1,0 +1,650 @@
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="page-header">
+	<div class="container-fluid">
+	  <div class="pull-right">
+		<button type="submit" form="form-kits-products" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+		<a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a></div>
+	  <h1>{{ heading_title }}</h1>
+	  <ul class="breadcrumb">
+		{% for breadcrumb in breadcrumbs %}
+			<li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+		{% endfor %}
+	  </ul>
+	</div>
+  </div>
+  <div class="container-fluid">
+	{% if error_warning %}
+	<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+	  <button type="button" class="close" data-dismiss="alert">&times;</button>
+	</div>
+	{% endif %}
+	{% if error_variant_kits %}
+		<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_variant_kits }}
+		  <button type="button" class="close" data-dismiss="alert">&times;</button>
+		</div>
+	{% endif %}
+	<div class="panel panel-default">
+	  <div class="panel-heading">
+		<h3 class="panel-title"><i class="fa fa-pencil"></i> {{ text_form }}</h3>
+	  </div>
+	  	<div class="panel-body">
+			<form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-kits-products" class="form-horizontal">
+				<div class="form-group">
+					<label class="col-sm-2 control-label" for="input-status">{{ entry_status }}</label>
+					<div class="col-sm-10">
+						<select name="status" id="input-status" class="form-control">
+							{% if status %}
+								<option value="1" selected="selected">{{ text_enabled }}</option>
+								<option value="0">{{ text_disabled }}</option>
+							{% else %}
+								<option value="1">{{ text_enabled }}</option>
+								<option value="0" selected="selected">{{ text_disabled }}</option>
+							{% endif %}
+						</select>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2 control-label" for="input-status">{{ entry_name }}</label>
+					<div class="col-sm-10">
+						{% for language in languages %}
+						<div class="input-group pull-left">
+							<span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+							<input class="form-control" type="text" name="kits_description[{{ language.language_id }}][name]" value="{{ kits_description[language['language_id']]['name'] is defined ? kits_description[language['language_id']]['name'] : '' }}" />
+						</div>
+							{% if (error_name[language.language_id] is defined) %}
+								<div class="text-danger">{{ error_name[language.language_id] }}</div>
+							{% endif %}
+						{% endfor %}
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2 control-label" for="input-main-product">{{ entry_main_product }}</label>
+					<div class="col-sm-10">
+						<input type="hidden" name="main_product" value="{{ main_product }}" />
+						<input type="text" name="main_product_name" value="{{ main_product_name }}" placeholder="{{ entry_main_product }}" id="input-main-product" class="form-control" />
+						{% if (error_main_product is not empty) %}
+							<div class="text-danger">{{ error_main_product }}</div>
+						{% endif %}
+					</div>
+				</div>
+				<table id="kits" class="table table-striped table-bordered table-hover">
+					<thead>
+						<tr>
+							<td></td>
+							<td class="text-left">{{ column_products }}</td>
+							<td class="text-left">{{ column_type_discount }}</td>
+							<td class="text-left">{{ column_discount }}</td>
+							<td></td>
+						</tr>
+					</thead>
+					<tbody id="kits_variants">
+						{% set kit_row = 0 %}
+							{% for variant_kit in variant_kits %}
+							<tr id="kit-row-{{ kit_row }}">
+								<td class="text-center"><i class="fa fa-hand-grab-o" aria-hidden="true"></i></td>
+								<td class="text-left">
+									<input type="text" name="product_name" value="" placeholder="{{ entry_product }}" id="input-kit-product-{{ kit_row }}" class="form-control" />
+									<div id="kit-product-{{ kit_row }}" data-kit-row="{{ kit_row }}" class="well well-sm kit-well">
+									{% if (error_products is defined) %}
+										<div class="text-danger error_products_{{ kit_row }}">{{ error_products[kit_row] }}</div>
+									{% endif %}
+									{% if (variant_kit.products is not empty) %}
+									{% for key, product in variant_kit.products %}
+									<div class="item-kit" id="kit-product-{{ kit_row }}-{{ product.product_id }}">
+										<i class="fa fa-hand-grab-o" aria-hidden="true"></i>
+										<i class="fa fa-minus-circle"></i>
+										{% if product.options %}
+											<i data-toggle="modal" title="{{ entry_options }}" data-target="#productOptions-{{ kit_row }}-{{ product.product_id }}" class="text-primary fa fa-pencil-square-o" aria-hidden="true"></i>
+
+											<div class="modal fade" id="productOptions-{{ kit_row }}-{{ product.product_id }}" aria-hidden="true">
+												<div class="modal-dialog" role="document">
+													<div class="modal-content kit-modal">
+														<div class="modal-header">
+															<div class="kits-modal-title">{{ entry_options }}</div>
+															<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+														</div>
+														<div class="modal-body">
+														{% for option in product.options %}
+															{% if option.type == 'select' %}
+															<div class="form-group{% if option.required %} required{% endif %}">
+																<label class="mb-10 control-label" for="input-option-{{ kit_row }}-{{ product.product_id }}-{{ option.product_option_id }}">{{ option.name }}</label>
+																<select name="variant_kit[{{ kit_row }}][products][{{ key }}][options][{{ option.product_option_id }}]" id="input-option-{{ kit_row }}-{{ product.product_id }}-{{ option.product_option_id }}" class="form-control">
+																	<option value="">{{ text_select }}</option>
+																	{% for option_value in option.product_option_value %}
+																		{% set selected = '' %}
+																		{% if product.select_opt.option.product_option_id is not empty and product.select_opt.option.product_option_id == option_value.product_option_value_id%}
+																			{% set selected = 'selected="selected"' %}
+																		{% endif %}
+																		<option {{ selected }} value="{{ option_value.product_option_value_id }}">{{ option_value.name }}
+																		{% if option_value.price %}
+																			({{ option_value.price_prefix }}{{ option_value.price }})
+																		{% endif %}
+																		</option>
+																	{% endfor %}
+																</select>
+															</div>
+															{% endif %}
+															{% if option.type == 'radio' %}
+																<div class="form-group{% if option.required %} required{% endif %}">
+																	<label class="control-label">{{ option.name }}</label>
+																	<div id="input-option-{{ kit_row }}-{{ product.product_id }}-{{ option.product_option_id }}">
+																	{% for option_value in option.product_option_value %}
+																		{% set checked = '' %}
+																		{% if product.select_opt.option.product_option_id is not empty and product.select_opt.option.product_option_id == option_value.product_option_value_id%}
+																			{% set checked = 'checked="checked"' %}
+																		{% endif %}
+																	<div class="radio">
+																		<label>
+																			<input {{ checked }} type="radio" name="variant_kit[{{ kit_row }}][products][{{ key }}][options][{{ option.product_option_id }}]" value="{{ option_value.product_option_value_id }}" />
+																			{{ option_value.name }}
+																			{% if option_value.price %}
+																			({{ option_value.price_prefix }}{{ option_value.price }})
+																			{% endif %}
+																		</label>
+																	</div>
+																	{% endfor %}
+																	</div>
+																</div>
+															{% endif %}
+															{% if option.type == 'checkbox' %}
+																<div class="form-group{% if option.required %} required{% endif %}">
+																	<label class="control-label">{{ option.name }}</label>
+																	<div id="input-option-{{ kit_row }}-{{ product.product_id }}-{{ option.product_option_id }}">
+																	{% for option_value in option.product_option_value %}
+																		{% set checked = '' %}
+																		{% if product.select_opt.option.product_option_id is not empty and product.select_opt.option.product_option_id == option_value.product_option_value_id%}
+																			{% set checked = 'checked="checked"' %}
+																		{% endif %}
+																		<div class="checkbox">
+																		<label>
+																			<input {{ checked }} type="checkbox" name="variant_kit[{{ kit_row }}][products][{{ key }}][options][{{ option.product_option_id }}][]" value="{{ option_value.product_option_value_id }}" />
+																			{{ option_value.name }}
+																			{% if option_value.price %}
+																			({{ option_value.price_prefix }}{{ option_value.price }})
+																			{% endif %}
+																		</label>
+																		</div>
+																	{% endfor %}
+																	</div>
+																</div>
+																{% endif %}
+														{% endfor %}
+														</div>
+														<div class="modal-footer">
+															<button type="button" class="btn btn-primary" data-dismiss="modal">{{ button_save }}</button>
+														</div>
+													</div>
+												</div>
+											</div>
+										{% endif %}
+										{{ product.name }}
+										<input type="hidden" name="variant_kit[{{ kit_row }}][products][{{ key }}][product_id]" value="{{ product.product_id }}" />
+									</div>
+									{% endfor %}
+									{% endif %}
+									</div>
+								</td>
+								<td class="text-left">
+									<select name="variant_kit[{{ kit_row }}][type_discount]" class="form-control">
+										{% if variant_kit.type_discount == '0' %}
+											<option value="0" selected="selected">{{ text_percent_discount }}</option>
+											<option value="1">{{ text_fix_discount }}</option>
+										{% else %}
+											<option value="0">{{ text_percent_discount }}</option>
+											<option value="1" selected="selected">{{ text_fix_discount }}</option>
+										{% endif %}
+									</select>
+								</td>
+								<td class="text-left">
+									<input class="form-control" type="text" name="variant_kit[{{ kit_row }}][discount]" value="{{ variant_kit.discount }}" />
+									{% if error_discount.kit_row %}
+										<div class="text-danger">{{ error_discount['{{ kit_row }}'] }}</div>
+									{% endif %}
+								</td>
+								<td class="text-left"><button type="button" onclick="$('#kit-row-{{ kit_row }}').remove();" data-toggle="tooltip" title="{{ button_remove }}" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button></td>
+							</tr>
+							{% set kit_row = kit_row + 1 %}
+							{% endfor %}
+						{% if not variant_kits %}
+						<tr class="text-center list-empty">
+							<td colspan="5">{{ text_list_empty }}</td>
+						</tr>
+						{% endif %}
+					</tbody>
+					<tfoot>
+						<tr>
+							<td colspan="4"></td>
+							<td class="text-left"><button type="button" onclick="addRowKits();" data-toggle="tooltip" title="{{ button_add }}" class="btn btn-primary"><i class="fa fa-plus-circle"></i></button></td>
+						</tr>
+					</tfoot>
+				</table>
+			</form>
+	  	</div>
+	</div>
+  </div>
+<script>
+var kits_variants = document.getElementById('kits_variants');
+Sortable.create(kits_variants, {
+	handle: '.fa-hand-grab-o',
+	animation: 150
+});
+// Autocomplete */
+(function($) {
+	$.fn.kitAutocomplete = function(option) {
+		return this.each(function() {
+			var $this = $(this);
+			var $dropdown = $('<ul class="dropdown-menu kit-dropdown" />');
+
+			this.timer = null;
+			this.items = [];
+
+			$.extend(this, option);
+
+			$this.attr('autocomplete', 'off');
+
+			// Focus
+			$this.on('focus', function() {
+				this.request();
+			});
+
+			// Blur
+			$this.on('blur', function() {
+				setTimeout(function(object) {
+					object.hide();
+				}, 200, this);
+			});
+
+			// Keydown
+			$this.on('keydown', function(event) {
+				switch(event.keyCode) {
+					case 27: // escape
+						this.hide();
+						break;
+					default:
+						this.request();
+						break;
+				}
+			});
+
+			// Click
+			this.click = function(event) {
+				event.preventDefault();
+
+				var value = $(event.target).parent().attr('data-value');
+
+				if (value && this.items[value]) {
+					this.select(this.items[value]);
+				}
+			}
+
+			// Show
+			this.show = function() {
+				var pos = $this.position();
+
+				$dropdown.css({
+					top: pos.top + $this.outerHeight(),
+					left: pos.left
+				});
+
+				$dropdown.show();
+			}
+
+			// Hide
+			this.hide = function() {
+				$dropdown.hide();
+			}
+
+			// Request
+			this.request = function() {
+				clearTimeout(this.timer);
+
+				this.timer = setTimeout(function(object) {
+					object.source($(object).val(), $.proxy(object.response, object));
+				}, 200, this);
+			}
+
+			// Response
+			this.response = function(json) {
+				var html = '';
+				var name;
+				var i = 0, j = 0;
+
+				if (json.length) {
+					for (i = 0; i < json.length; i++) {
+						// update element items
+						this.items[json[i]['value']] = json[i];
+
+						if(json[i]['status'] == 'disabled'){
+							html += '<li class="disabled" data-value="' + json[i]['value'] + '"><span>' + json[i]['label'] + '<span class="pt-0 d-block">' + json[i]['text_off_status'] + '</span></span></li>';
+						} else {
+							html += '<li data-value="' + json[i]['value'] + '"><a href="#">' + json[i]['label'] + '</a></li>';
+						}
+					}
+
+				}
+
+				if (html) {
+					this.show();
+				} else {
+					this.hide();
+				}
+
+				$dropdown.html(html);
+			}
+
+			$dropdown.on('click', '> li > a', $.proxy(this.click, this));
+			$this.after($dropdown);
+		});
+	}
+})(window.jQuery);
+
+
+{% if (kit_row) %}
+var kit_row = {{ kit_row }}
+{% else %}
+var kit_row = 0;
+{% endif %}
+
+function getMainProdId(){
+	if($('[name="main_product"]').val() == ''){
+		var main_product = 0;
+	} else {
+		var main_product = $('[name="main_product"]').val()
+	}
+	return main_product;
+}
+
+function addRowKits() {
+
+	if(getMainProdId() == ''){
+		$('#input-main-product').before('<div class="alert alert-danger error_main"><i class="fa fa-exclamation-circle"></i> {{ text_error_main_product }} <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+		setTimeout(function () {
+			$('.error_main').remove();
+		}, 2000);
+		return;
+	}
+
+	html  = '<tr id="kit-row-' + kit_row + '">';
+	html += '	<td class="text-center"><i class="fa fa-hand-grab-o" aria-hidden="true"></i></td>';
+	html += '	<td class="text-left">';
+	html += '		<input type="text" name="product_name" value="" placeholder="{{ entry_product }}" id="input-kit-product-'+ kit_row +'" class="form-control" />';
+	html += '		<div id="kit-product-'+ kit_row +'" class="well well-sm kit-well"></div>';
+	html += '	</td>';
+
+	html += '	<td class="text-left">';
+	html += '		<select name="variant_kit['+ kit_row +'][type_discount]" class="form-control">';
+	html += '			<option value="0" selected="selected">{{ text_percent_discount }}</option>';
+	html += '			<option value="1">{{ text_fix_discount }}</option>';
+	html += '		</select>';
+	html += '	</td>';
+
+	html += '	<td class="text-left">';
+	html += '		<input class="form-control" type="text" name="variant_kit['+ kit_row +'][discount]" value="" />';
+	html += '	</td>';
+
+	html += '  <td class="text-left"><button type="button" onclick="$(\'#kit-row-' + kit_row  + '\').remove();" data-toggle="tooltip" title="{{ utton_remove }}" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button></td>';
+	html += '</tr>';
+
+	if($('#kits').find('list-empty')){
+		$('.list-empty').remove();
+	}
+
+	$('#kits').append(html);
+	newRowAutocomplete(kit_row);
+	kit_row++;
+}
+
+function htmlProduct(row_id, item){
+	$('input#input-kit-product-'+ row_id +'[name="product_name"]').val('');
+	var rp_id = document.getElementById('kit-product-'+ row_id).children.length;
+
+	$('#kit-product-'+ row_id +'-' + item['value']).remove();
+	html = '<div class="item-kit" id="kit-product-'+ row_id +'-' + item['value'] + '"><i class="fa fa-hand-grab-o" aria-hidden="true"></i> <i class="fa fa-minus-circle"></i> ';
+	if(item['options'].length){
+	html += '<i data-toggle="modal" title="{{ entry_options }}" data-target="#productOptions-' + row_id + '-'+ item['value'] +'" class="text-primary fa fa-pencil-square-o" aria-hidden="true"></i> ';
+
+	html += '<div class="modal fade" id="productOptions-'+ row_id +'-' + item['value'] + '" aria-hidden="true">';
+	html += '	<div class="modal-dialog" role="document">';
+	html += '	<div class="modal-content kit-modal">';
+	html += '		<div class="modal-header">';
+	html += '			<div class="kits-modal-title">{{ entry_options }}</div>';
+	html += '			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
+	html += '		</div>';
+	html += '		<div class="modal-body">';
+					$.each(item['options'], function (key, option) {
+						if (option.type == 'select') {
+	html += '			<div class="form-group'+ (option.required ? ' required' : '') +'">';
+	html += '				<label class="mb-10 control-label" for="input-option-'+ row_id +'-' + item['value'] + '-'+ option.product_option_id +'">'+ option.name +'</label>';
+	html += '				<select name="variant_kit['+ row_id +'][products]['+ rp_id +'][options]['+ option.product_option_id +']" id="input-option-'+ row_id +'-' + item['value'] + '-'+ option.product_option_id +'" class="form-control">';
+	html += '					<option>{{ text_select }}</option>';
+								$.each(option.product_option_value, function (key, option_value) {
+	html += '					<option value="'+ option_value.product_option_value_id +'">' + option_value['name'];
+									if (option_value.price) {
+	html += 							' (' + option_value.price_prefix + option_value.price + ')';
+									}
+	html += '					</option>';
+								});
+	html += '				</select>';
+	html += '			</div>';
+						}
+						if (option.type == 'radio') {
+	html += '			<div class="form-group'+ (option.required ? ' required' : '') +'">';
+	html += '				<label class="control-label">'+ option.name +'</label>';
+	html += '				<div id="input-option-'+ row_id +'-' + item['value'] + '-'+ option.product_option_id +'">';
+							$.each(option.product_option_value, function (key, option_value) {
+	html += '					<div class="radio"><label>';
+	html += '						<input type="radio" name="variant_kit['+ row_id +'][products]['+ rp_id +'][options]['+ option.product_option_id +']" value="'+ option_value.product_option_value_id +'" /> ' + option_value['name'];
+									if (option_value.price) {
+	html += 							' (' + option_value.price_prefix + option_value.price + ')';
+									}
+	html += '					</label></div>';
+							});
+	html += '				</div>';
+	html += '			</div>';
+						}
+						if (option.type == 'checkbox') {
+	html += '			<div class="form-group'+ (option.required ? ' required' : '') +'">';
+	html += '				<label class="control-label">'+ option.name +'</label>';
+	html += '				<div id="input-option-'+ row_id +'-' + item['value'] + '-'+ option.product_option_id +'">';
+							$.each(option.product_option_value, function (key, option_value) {
+	html += '					<div class="checkbox"><label>';
+	html += '						<input type="checkbox" name="variant_kit['+ row_id +'][products]['+ rp_id +'][options]['+ option.product_option_id +'][]" value="'+ option_value.product_option_value_id +'" /> ' + option_value['name'];
+									if (option_value.price) {
+	html += 							' (' + option_value.price_prefix + option_value.price + ')';
+									}
+	html += '					</label></div>';
+							});
+	html += '				</div>';
+	html += '			</div>';
+						}
+					});
+	html += '		</div>';
+	html += '		<div class="modal-footer">';
+	html += '			<button type="button" class="btn btn-primary" data-dismiss="modal">{{ button_save }}</button>';
+	html += '		</div>';
+	html += '	</div>';
+	html += '	</div>';
+	html += '</div>';
+	}
+	html += item['label'] +'<input type="hidden" name="variant_kit['+ row_id +'][products]['+ rp_id +'][product_id]" value="' + item['value'] + '" /></div>';
+	$('#kit-product-'+ row_id).append(html);
+}
+
+function newRowAutocomplete(row_id){
+	if($('[name="main_product"]').val() == ''){
+		var main_product = 0;
+	} else {
+		var main_product = $('[name="main_product"]').val()
+	}
+
+	$('input#input-kit-product-'+ row_id +'[name="product_name"]').kitAutocomplete({
+		source: function(request, response) {
+			$.ajax({
+				url: 'index.php?route=catalog/product_kits/autocomplete&user_token={{ user_token }}&main_product='+ getMainProdId() +'&filter_name=' +  encodeURIComponent(request),
+				dataType: 'json',
+				success: function(json) {
+					response($.map(json, function(item) {
+						return {
+							label: item['name'],
+							value: item['product_id'],
+							options: item['options'],
+							status: item.status,
+							text_off_status: item.text_off_status,
+						}
+					}));
+				}
+			});
+		},
+		select: function(item) {
+			htmlProduct(row_id, item);
+		}
+	});
+
+	$('#kit-product-'+ row_id).delegate('.fa-minus-circle', 'click', function() {
+		$(this).parent().remove();
+	});
+
+	var kir_prod_id = document.getElementById('kit-product-' + row_id);
+	Sortable.create(kir_prod_id, {
+		handle: '.fa-hand-grab-o',
+		animation: 150
+	});
+};
+
+$('input[name="product_name"]:not([autocomplete])').each(function(){
+	var $self = $(this),
+		id = $self.parent().find('.well').attr('id'),
+		row_id = $self.parent().find('.well').attr('data-kit-row');
+
+	$self.kitAutocomplete({
+	  source: function(request, response) {
+		$.ajax({
+		  url: 'index.php?route=catalog/product_kits/autocomplete&user_token={{ user_token }}&main_product='+ getMainProdId() +'&filter_name=' +  encodeURIComponent(request),
+		  dataType: 'json',
+		  success: function(json) {
+			response($.map(json, function(item) {
+			  return {
+				label: item['name'],
+				value: item['product_id'],
+				options: item['options'],
+				status: item.status,
+				text_off_status: item.text_off_status,
+			  }
+			}));
+		  }
+		});
+	  },
+	select: function(item) {
+		htmlProduct(row_id, item);
+		$('.error_products_' + row_id).remove();
+	}
+	});
+
+	$('#kit-product-'+ row_id).delegate('.fa-minus-circle', 'click', function() {
+		$(this).parent().remove();
+	});
+	var kir_prod_id = document.getElementById('kit-product-' + row_id);
+	Sortable.create(kir_prod_id, {
+		handle: '.fa-hand-grab-o',
+		animation: 150
+	});
+});
+
+$('input[name=\'main_product_name\']').kitAutocomplete({
+	source: function(request, response) {
+	$.ajax({
+		url: 'index.php?route=catalog/product_kits/autocomplete&user_token={{ user_token }}&kit_id={{ kit_id }}&filter_name=' +  encodeURIComponent(request),
+		dataType: 'json',
+		success: function(json) {
+			response($.map(json, function(item) {
+			return {
+				label: item['name'],
+				value: item['product_id'],
+				status: item.status,
+				text_off_status: item.text_off_status,
+			}
+			}));
+		}
+		});
+	},
+	select: function(item) {
+		$("div[id^=kit-product-][id$=-"+ item['value'] +"]").remove();
+		$('input[name=\'main_product_name\']').val(item['label']);
+		$('input[name=\'main_product\']').val(item['value']);
+	}
+});
+
+
+</script>
+<style>
+	.kit-dropdown {
+		min-width: 300px;
+	}
+	.kit-dropdown > li > span {
+		display: block;
+		padding: 3px 20px;
+		clear: both;
+		font-weight: normal;
+		line-height: 1.42857;
+		color: #939bab;
+		white-space: nowrap;
+	}
+	.d-block {
+		display: block;
+	}
+	.pt-0 {
+		padding-top: 0px !important;
+	}
+	.kits-modal-title {
+		font-size: 16px;
+		color:#000;
+	}
+	.item-kit  {
+		display: flex;
+		align-items: center;
+		margin-bottom: 3px;
+		font-size: 14px;
+	}
+	.item-kit > i {
+		margin-right: 6px;
+		font-size: 16px;
+		cursor:pointer;
+	}
+	.item-kit .fa-hand-grab-o {
+		margin-bottom: 3px;
+		cursor:grab;
+	}
+	.item-kit .fa-minus-circle {
+		margin-bottom: 2px;
+	}
+	.mb-10 {
+		margin-bottom: 10px !important;
+	}
+	.kit-well {
+		overflow: auto;
+		min-height: 57px;
+		max-height: 120px;
+	}
+	.kit-modal .modal-header,
+	.kit-modal .modal-footer {
+		padding: 15px 20px;
+	}
+	.kit-modal .modal-body {
+		padding-top: 0;
+		padding-left: 20px;
+		padding-right: 20px;
+	}
+	.kit-modal .close {
+		position: absolute;
+		right: 20px;
+		top:15px;
+		font-size: 24px;
+	}
+	#kits_variants .fa-hand-grab-o {
+		font-size: 18px;
+		cursor: grab;
+	}
+</style>
+</div>
+{{ footer }}

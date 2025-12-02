@@ -1,0 +1,530 @@
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="page-header">
+	<div class="container-fluid">
+	  <div class="pull-right">
+		<button type="submit" form="form-easybanner" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+		<a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a></div>
+	  <h1>{{ heading_title }}</h1>
+	  <ul class="breadcrumb">
+		{% for breadcrumb in breadcrumbs %}
+		<li><a href="{{ breadcrumb['href'] }}">{{ breadcrumb['text'] }}</a></li>
+		{% endfor %}
+	  </ul>
+	</div>
+  </div>
+  <div class="container-fluid">
+	{% if (error_warning) %}
+	<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+	  <button type="button" class="close" data-dismiss="alert">&times;</button>
+	</div>
+	{% endif %}
+	<div class="panel panel-default">
+	  <div class="panel-heading">
+		<h3 class="panel-title"><i class="fa fa-pencil"></i> {{ text_edit }}</h3>
+	  </div>
+	  <div class="panel-body">
+		<form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-easybanner" class="form-horizontal">
+		  <div class="form-group">
+			<label class="col-sm-2 control-label" for="input-status">{{ entry_status }}</label>
+			<div class="col-sm-10">
+			  	<select name="status" id="input-status" class="form-control">
+					{% if (status) %}
+					<option value="1" selected="selected">{{ text_enabled }}</option>
+					<option value="0">{{ text_disabled }}</option>
+					{% else %}
+					<option value="1">{{ text_enabled }}</option>
+					<option value="0" selected="selected">{{ text_disabled }}</option>
+					{% endif %}
+				</select>
+			</div>
+		  </div>
+		  <div class="form-group required">
+			<label class="col-sm-2 control-label" for="input-name">{{ entry_name }}</label>
+			<div class="col-sm-10">
+			  <input type="text" name="name" value="{{ name }}" placeholder="{{ entry_name }}" id="input-name" class="form-control" />
+			  {% if (error_name) %}
+			  <div class="text-danger">{{ error_name }}</div>
+			  {% endif %}
+			</div>
+		  </div>
+
+		  	<div class="form-group required">
+		  		<label class="col-sm-2 control-label" for="input-name">{{ entry_typeb }}</label>
+		  		<div class="col-sm-10">
+		  			<div class="radio-group-infinity">
+						<input id="type_easybanner_1" class="hide-radio-type" type="radio" name="easy_banner_type" value="1" {% if (easy_banner_type == 1) %}checked="checked"{% endif %}>
+						<label for="type_easybanner_1">
+							<svg width="90" height="44" viewBox="0 0 90 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<rect width="90" height="44" rx="2" fill="#F8F9FA"/>
+							<rect x="7.75" y="7.75" width="74.5" height="28.5" rx="1.25" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+							</svg>
+						</label>
+
+
+						<input id="type_easybanner_2" class="hide-radio-type" type="radio" name="easy_banner_type" value="2" {% if (easy_banner_type == 2) %}checked="checked"{% endif %}>
+						<label for="type_easybanner_2">
+							<svg width="90" height="44" viewBox="0 0 90 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<rect width="90" height="44" rx="2" fill="#F8F9FA"/>
+							<rect x="7.75" y="7.75" width="33.5" height="28.5" rx="1.25" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+							<rect x="48.75" y="7.75" width="33.5" height="28.5" rx="1.25" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+							</svg>
+						</label>
+
+						<input id="type_easybanner_3" class="hide-radio-type" type="radio" name="easy_banner_type" value="3" {% if (easy_banner_type == 3) %}checked="checked"{% endif %}>
+						<label for="type_easybanner_3">
+							<svg width="90" height="44" viewBox="0 0 90 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<rect width="90" height="44" rx="2" fill="#F8F9FA"/>
+							<rect x="7.75" y="7.75" width="20.5" height="28.5" rx="1.25" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+							<rect x="34.75" y="7.75" width="20.5" height="28.5" rx="1.25" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+							<rect x="61.75" y="7.75" width="20.5" height="28.5" rx="1.25" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+							</svg>
+						</label>
+
+						<input id="type_easybanner_4" class="hide-radio-type" type="radio" name="easy_banner_type" value="4" {% if (easy_banner_type == 4) %}checked="checked"{% endif %}>
+						<label for="type_easybanner_4">
+							<svg width="90" height="44" viewBox="0 0 90 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<rect width="90" height="44" rx="2" fill="#F8F9FA"/>
+							<rect x="7.75" y="7.75" width="47.5" height="28.5" rx="1.25" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+							<rect x="61.75" y="7.75" width="20.5" height="28.5" rx="1.25" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+							</svg>
+						</label>
+
+						<input id="type_easybanner_5" class="hide-radio-type" type="radio" name="easy_banner_type" value="5" {% if (easy_banner_type == 5) %}checked="checked"{% endif %}>
+						<label for="type_easybanner_5">
+							<svg width="90" height="44" viewBox="0 0 90 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<rect width="90" height="44" rx="2" fill="#F8F9FA"/>
+							<rect x="7.75" y="7.75" width="20.5" height="28.5" rx="1.25" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+							<rect x="34.75" y="7.75" width="47.5" height="28.5" rx="1.25" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+							</svg>
+						</label>
+
+						<input id="type_easybanner_6" class="hide-radio-type" type="radio" name="easy_banner_type" value="6" {% if (easy_banner_type == 6) %}checked="checked"{% endif %}>
+						<label for="type_easybanner_6">
+							<svg width="90" height="44" viewBox="0 0 90 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<rect width="90" height="44" rx="2" fill="#F8F9FA"/>
+							<rect x="7.75" y="7.75" width="20.5" height="11.5" rx="1.25" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+							<rect x="7.75" y="24.75" width="20.5" height="11.5" rx="1.25" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+							<rect x="34.75" y="7.75" width="47.5" height="28.5" rx="1.25" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+							</svg>
+						</label>
+						<input id="type_easybanner_7" class="hide-radio-type" type="radio" name="easy_banner_type" value="7" {% if (easy_banner_type == 7) %}checked="checked"{% endif %}>
+						<label for="type_easybanner_7">
+							<svg width="90" height="44" viewBox="0 0 90 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<rect width="90" height="44" rx="2" fill="#F8F9FA"/>
+							<rect x="7.75" y="7.75" width="47.5" height="28.5" rx="1.25" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+							<rect x="61.75" y="7.75" width="20.5" height="11.5" rx="1.25" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+							<rect x="61.75" y="24.75" width="20.5" height="11.5" rx="1.25" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+							</svg>
+						</label>
+					</div>
+		  		</div>
+			</div>
+			<style>
+				.hide-radio-type {display: none;}
+				.radio-group-infinity label {
+					margin-right: 10px;
+					position: relative;
+				}
+				.hide-radio-type:checked + label::after {
+					content: "\f046";
+					font-family: FontAwesome;
+					position: absolute;
+					left: 36px;
+					top: 10px;
+					color: #00a046;
+					font-size: 18px;
+				}
+			</style>
+
+		  <div class="row">
+			  <div class="col-sm-2">
+				<ul class="nav nav-pills nav-stacked" id="cyber_easybaner">
+				  {% set module_row = 1 %}
+				  {% for easy_banner in easy_banners %}
+				  <li><a href="#tab-module{{ module_row }}" data-toggle="tab"><i class="fa fa-minus-circle" onclick="$('a[href=\'#tab-module{{ module_row }}\']').parent().remove(); $('#tab-module{{ module_row }}').remove(); $('#module a:first').tab('show');activeBtn();"></i> {{ text_banner }}{{ module_row }}</a></li>
+				  {% set module_row = module_row + 1 %}
+				  {% endfor %}
+				<li id="module-add"><a role="button" onclick="addEasyBanner();"><i class="fa fa-plus-circle"></i> {{ button_add }}</a></li>
+				</ul>
+			  </div>
+			  <div class="col-sm-10">
+				  <div class="tab-content">
+					  {% set module_row = 1 %}
+					  {% for easy_banner in easy_banners %}
+						<div class="tab-pane" id="tab-module{{ module_row }}">
+							<ul class="nav nav-tabs" id="language{{ module_row }}">
+								{% for language in languages %}
+									<li><a href="#tab-module{{ module_row }}-language{{ language['language_id'] }}" data-toggle="tab"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /> {{ language['name'] }}</a></li>
+								{% endfor %}
+							</ul>
+							<div class="tab-content">
+								{% for language in languages %}
+									<div class="tab-pane" id="tab-module{{ module_row }}-language{{ language['language_id'] }}">
+										<div class="form-group required">
+											<label class="col-sm-2 control-label" for="input-title-{{ module_row }}-{{ language['language_id'] }}">{{ entry_title }}</label>
+											<div class="col-sm-10">
+												<input id="input-title-{{ module_row }}-{{ language['language_id'] }}" type="text" name="easy_banner[{{ module_row }}][title][{{ language['language_id'] }}]" value="{{ easy_banner['title'][language['language_id']] is defined ? easy_banner['title'][language['language_id']] : '' }}" class="form-control" />
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="col-sm-2 control-label" for="input-color-title-{{ module_row }}-{{ language['language_id'] }}">{{ entry_color_title }}</label>
+											<div class="col-sm-10">
+												<input id="input-color-title-{{ module_row }}-{{ language['language_id'] }}" type="text" name="easy_banner[{{ module_row }}][color_title][{{ language['language_id'] }}]" value="{{ easy_banner['color_title'][language['language_id']] is defined ? easy_banner['color_title'][language['language_id']] : '' }}" class="form-control color" />
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="col-sm-2 control-label" for="input-description-{{ module_row }}-{{ language['language_id'] }}">{{ entry_description }}</label>
+											<div class="col-sm-10">
+												<textarea rows="3" type="text" id="input-description-{{ module_row }}-{{ language['language_id'] }}" name="easy_banner[{{ module_row }}][description][{{ language['language_id'] }}]" class="form-control" >{{ easy_banner['description'][language['language_id']] is defined ? easy_banner['description'][language['language_id']] : '' }}</textarea>
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="col-sm-2 control-label" for="input-color-desc-{{ module_row }}-{{ language['language_id'] }}">{{ entry_color_desc }}</label>
+											<div class="col-sm-10">
+												<input id="input-color-desc-{{ module_row }}-{{ language['language_id'] }}" type="text" name="easy_banner[{{ module_row }}][color_desc][{{ language['language_id'] }}]" value="{{ easy_banner['color_desc'][language['language_id']] is defined ? easy_banner['color_desc'][language['language_id']] : '' }}" class="form-control color" />
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="col-sm-2 control-label" for="input-text-align-{{ module_row }}-{{ language['language_id'] }}">{{ entry_text_align }}</label>
+											<div class="col-sm-10">
+												<select name="easy_banner[{{ module_row }}][text_align][{{ language['language_id'] }}]" id="input-text-align-{{ module_row }}-{{ language['language_id'] }}" class="form-control">
+												{% if (easy_banner['text_align'][language['language_id']] == 'right') %}
+													<option value="left">{{ text_left }}</option>
+													<option value="center">{{ text_center }}</option>
+													<option value="right" selected="selected">{{ text_right }}</option>
+												{% elseif (easy_banner['text_align'][language['language_id']] == 'center') %}
+													<option value="left">{{ text_left }}</option>
+													<option value="center" selected="selected">{{ text_center }}</option>
+													<option value="right">{{ text_right }}</option>
+												{% else %}
+													<option value="left" selected="selected">{{ text_left }}</option>
+													<option value="center">{{ text_center }}</option>
+													<option value="right">{{ text_right }}</option>
+												{% endif %}
+												</select>
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="col-sm-2 control-label" for="input-bgblock-{{ module_row }}-{{ language['language_id'] }}">{{ entry_bg_block }}</label>
+											<div class="col-sm-10">
+												<input class="form-control color" id="input-bgblock-{{ module_row }}-{{ language['language_id'] }}" type="text" name="easy_banner[{{ module_row }}][bg_block][{{ language['language_id'] }}]" value="{{ easy_banner['bg_block'][language['language_id']] is defined ? easy_banner['bg_block'][language['language_id']] : '' }}" />
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="col-sm-2 control-label">{{ entry_image }}</label>
+											<div class="col-sm-10">
+												<a href="" id="thumb-image-{{ module_row }}-{{ language['language_id'] }}" data-toggle="image" class="img-thumbnail">
+													<img src="{{ easy_banner['thumb'][language['language_id']] }}" alt="" title="" data-placeholder="{{ placeholder }}"  />
+												</a>
+												<input type="hidden" name="easy_banner[{{ module_row }}][image][{{ language['language_id'] }}]" value="{{ easy_banner['image'][language['language_id']] }}" id="input-image{{ module_row }}-{{ language['language_id'] }}" />
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="col-sm-2 control-label" for="input-image-align-{{ module_row }}-{{ language['language_id'] }}">{{ entry_image_align }}</label>
+											<div class="col-sm-10">
+												<select name="easy_banner[{{ module_row }}][image_align][{{ language['language_id'] }}]" id="input-image-align-{{ module_row }}-{{ language['language_id'] }}" class="form-control">
+												{% if (easy_banner['image_align'][language['language_id']] == 'right') %}
+													<option value="left">{{ text_left }}</option>
+													<option value="center">{{ text_center }}</option>
+													<option value="right" selected="selected">{{ text_right }}</option>
+												{% elseif (easy_banner['image_align'][language['language_id']] == 'center') %}
+													<option value="left">{{ text_left }}</option>
+													<option value="center" selected="selected">{{ text_center }}</option>
+													<option value="right">{{ text_right }}</option>
+												{% else %}
+													<option value="left" selected="selected">{{ text_left }}</option>
+													<option value="center">{{ text_center }}</option>
+													<option value="right">{{ text_right }}</option>
+												{% endif %}
+												</select>
+											</div>
+										</div>
+										<div class="form-group required">
+											<label class="col-sm-2 control-label">{{ entry_image_wh }}</label>
+											<div class="col-sm-10">
+												<div class="input-group d-flex">
+													<span class="input-group-addon w-auto">{{ entry_width }}</span>
+													<input name="easy_banner[{{ module_row }}][image_width][{{ language['language_id'] }}]" value="{{ easy_banner['image_width'][language['language_id']] is defined ? easy_banner['image_width'][language['language_id']] : '' }}" type="text" class="form-control w-70">
+													<span class="input-group-addon w-auto ml-15">{{ entry_height }}</span>
+													<input name="easy_banner[{{ module_row }}][image_height][{{ language['language_id'] }}]" value="{{ easy_banner['image_height'][language['language_id']] is defined ? easy_banner['image_height'][language['language_id']] : '' }}" type="text" class="form-control w-70">
+												</div>
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="col-sm-2 control-label">{{ entry_logo_brand }}</label>
+											<div class="col-sm-10">
+												<a href="" id="thumb-logo-image-{{ module_row }}-{{ language['language_id'] }}" data-toggle="image" class="img-thumbnail">
+													<img src="{{ easy_banner['logo_thumb'][language['language_id']] }}" alt="" title="" data-placeholder="{{ placeholder }}"  />
+												</a>
+												<input type="hidden" name="easy_banner[{{ module_row }}][logo_image][{{ language['language_id'] }}]" value="{{ easy_banner['logo_image'][language['language_id']] }}" id="input-logo-image{{ module_row }}-{{ language['language_id'] }}" />
+											</div>
+										</div>
+										<div class="form-group required">
+											<label class="col-sm-2 control-label">{{ entry_logo_wh }}</label>
+											<div class="col-sm-10">
+												<div class="input-group d-flex">
+													<span class="input-group-addon w-auto">{{ entry_width }}</span>
+													<input name="easy_banner[{{ module_row }}][logo_image_width][{{ language['language_id'] }}]" value="{{ easy_banner['logo_image_width'][language['language_id']] is defined ? easy_banner['logo_image_width'][language['language_id']] : '' }}" type="text" class="form-control w-70">
+													<span class="input-group-addon w-auto ml-15">{{ entry_height }}</span>
+													<input name="easy_banner[{{ module_row }}][logo_image_height][{{ language['language_id'] }}]" value="{{ easy_banner['logo_image_height'][language['language_id']] is defined ? easy_banner['logo_image_height'][language['language_id']] : '' }}" type="text" class="form-control w-70">
+												</div>
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="col-sm-2 control-label" for="input-link-{{ module_row }}-{{ language['language_id'] }}">{{ entry_link }}</label>
+											<div class="col-sm-10">
+												<input id="input-link-{{ module_row }}-{{ language['language_id'] }}" type="text" name="easy_banner[{{ module_row }}][link][{{ language['language_id'] }}]" value="{{ easy_banner['link'][language['language_id']] is defined ? easy_banner['link'][language['language_id']] : '' }}" class="form-control" />
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="col-sm-2 control-label" for="input-price-from-{{ module_row }}-{{ language['language_id'] }}">{{ entry_price_from }}</label>
+											<div class="col-sm-10">
+												<input id="input-price-from-{{ module_row }}-{{ language['language_id'] }}" type="text" name="easy_banner[{{ module_row }}][price_from][{{ language['language_id'] }}]" value="{{ easy_banner['price_from'][language['language_id']] is defined ? easy_banner['price_from'][language['language_id']] : '' }}" class="form-control" />
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="col-sm-2 control-label" for="input-price-{{ module_row }}-{{ language['language_id'] }}">{{ entry_price }}</label>
+											<div class="col-sm-10">
+												<input id="input-price-{{ module_row }}-{{ language['language_id'] }}" type="text" name="easy_banner[{{ module_row }}][price][{{ language['language_id'] }}]" value="{{ easy_banner['price'][language['language_id']] is defined ? easy_banner['price'][language['language_id']] : '' }}" class="form-control number" />
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="col-sm-2 control-label" for="input-price-color-{{ module_row }}-{{ language['language_id'] }}">{{ entry_price_color }}</label>
+											<div class="col-sm-10">
+												<input id="input-price-color-{{ module_row }}-{{ language['language_id'] }}" type="text" name="easy_banner[{{ module_row }}][price_color][{{ language['language_id'] }}]" value="{{ easy_banner['price_color'][language['language_id']] is defined ? easy_banner['price_color'][language['language_id']] : '' }}" class="form-control color" />
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="col-sm-2 control-label" for="input-price-bg-{{ module_row }}-{{ language['language_id'] }}">{{ entry_price_bg }}</label>
+											<div class="col-sm-10">
+												<input id="input-price-bg-{{ module_row }}-{{ language['language_id'] }}" type="text" name="easy_banner[{{ module_row }}][price_bg][{{ language['language_id'] }}]" value="{{ easy_banner['price_bg'][language['language_id']] is defined ? easy_banner['price_bg'][language['language_id']] : '' }}" class="form-control color" />
+											</div>
+										</div>
+									</div>
+								  {% endfor %}
+							  </div>
+						</div>
+						{% set module_row = module_row + 1 %}
+					  {% endfor %}
+				  </div>
+			  </div>
+		  </div>
+		</form>
+	  </div>
+	</div>
+  </div>
+<script>
+$('#cyber_easybaner li:first-child a').tab('show');
+$('.tab-content ul.nav-tabs li:first-child a').tab('show');
+var module_row = {{ module_row }};
+
+function activeBtn() {
+	if($('#cyber_easybaner li').length >= 4){
+		$('#module-add').addClass('hidden');
+	} else {
+		$('#module-add').removeClass('hidden');
+	}
+}
+activeBtn();
+function addEasyBanner() {
+  html  = '<div class="tab-pane" id="tab-module' + module_row + '">';
+  html += '  <ul class="nav nav-tabs" id="language' + module_row + '">';
+  {% for language in languages %}
+  html += '    <li><a href="#tab-module' + module_row + '-language{{ language['language_id'] }}" data-toggle="tab"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /> {{ language['name'] }}</a></li>';
+  {% endfor %}
+  html += '  </ul>';
+
+	html += '  <div class="tab-content">';
+	{% for language in languages %}
+	html += '    <div class="tab-pane" id="tab-module' + module_row + '-language{{ language['language_id'] }}">';
+
+	html += '<div class="form-group required">';
+	html += '	<label class="col-sm-2 control-label" for="input-title-'+ module_row +'-{{ language['language_id'] }}">{{ entry_title }}</label>';
+	html += '	<div class="col-sm-10">';
+	html += '		<input id="input-title-'+ module_row +'-{{ language['language_id'] }}" type="text" name="easy_banner['+ module_row +'][title][{{ language['language_id'] }}]" value="" class="form-control" />';
+	html += '	</div>';
+	html += '</div>';
+
+	html += '<div class="form-group required">';
+	html += '	<label class="col-sm-2 control-label" for="input-color-title-{{ module_row }}-{{ language['language_id'] }}">{{ entry_color_title }}</label>';
+	html += '	<div class="col-sm-10">';
+	html += '		<input id="input-color-title-'+ module_row +'-{{ language['language_id'] }}" type="text" name="easy_banner['+ module_row +'][color_title][{{ language['language_id'] }}]" value="" class="form-control color" />';
+	html += '	</div>';
+	html += '</div>';
+
+	html += '<div class="form-group">';
+	html += '	<label class="col-sm-2 control-label" for="input-description-'+ module_row +'-{{ language['language_id'] }}">{{ entry_description }}</label>';
+	html += '	<div class="col-sm-10">';
+	html += '		<textarea type="text" rows="3" id="input-description-'+ module_row +'-{{ language['language_id'] }}" name="easy_banner['+ module_row +'][description][{{ language['language_id'] }}]" value="" class="form-control"></textarea>';
+	html += '	</div>';
+	html += '</div>';
+
+	html += '<div class="form-group required">';
+	html += '	<label class="col-sm-2 control-label" for="input-color-desc-{{ module_row }}-{{ language['language_id'] }}">{{ entry_color_desc }}</label>';
+	html += '	<div class="col-sm-10">';
+	html += '		<input id="input-color-desc-'+ module_row +'-{{ language['language_id'] }}" type="text" name="easy_banner['+ module_row +'][color_desc][{{ language['language_id'] }}]" value="" class="form-control color" />';
+	html += '	</div>';
+	html += '</div>';
+	html += '<div class="form-group">';
+	html += '	<label class="col-sm-2 control-label" for="input-text-align-'+ module_row +'-{{ language['language_id'] }}">{{ entry_text_align }}</label>';
+	html += '	<div class="col-sm-10">';
+	html += '		<select name="easy_banner['+ module_row +'][text_align][{{ language['language_id'] }}]" id="input-text-align-'+ module_row +'-{{ language['language_id'] }}" class="form-control">';
+	html += '			<option value="left" selected="selected">{{ text_left }}</option>';
+	html += '			<option value="center">{{ text_center }}</option>';
+	html += '			<option value="right">{{ text_right }}</option>';
+	html += '		</select>';
+	html += '	</div>';
+	html += '</div>';
+	html += '<div class="form-group">';
+	html += '	<label class="col-sm-2 control-label" for="input-bgblock-'+ module_row +'-{{ language['language_id'] }}">{{ entry_bg_block }}</label>';
+	html += '	<div class="col-sm-10">';
+	html += '		<input class="form-control color" id="input-bgblock-'+ module_row +'-{{ language['language_id'] }}" type="text" name="easy_banner['+ module_row +'][bg_block][{{ language['language_id'] }}]" value="" />';
+	html += '	</div>';
+	html += '</div>';
+
+	html += '<div class="form-group">';
+	html += '	<label class="col-sm-2 control-label">{{ entry_image }}</label>';
+	html += '	<div class="col-sm-10">';
+	html += '		<a href="" id="thumb-image-'+ module_row +'-{{ language['language_id'] }}" data-toggle="image" class="img-thumbnail">';
+	html += '			<img src="{{ placeholder }}" alt="" title="" data-placeholder="{{ placeholder }}"  />';
+	html += '		</a>';
+	html += '		<input id="input-image'+ module_row +'-{{ language['language_id'] }}" type="hidden" name="easy_banner['+ module_row +'][image][{{ language['language_id'] }}]" value="" />';
+	html += '	</div>';
+	html += '</div>';
+	html += '<div class="form-group">';
+	html += '	<label class="col-sm-2 control-label" for="input-image-align-'+ module_row +'-{{ language['language_id'] }}">{{ entry_image_align }}</label>';
+	html += '	<div class="col-sm-10">';
+	html += '		<select name="easy_banner['+ module_row +'][image_align][{{ language['language_id'] }}]" id="input-image-align-'+ module_row +'-{{ language['language_id'] }}" class="form-control">';
+	html += '			<option value="left" selected="selected">{{ text_left }}</option>';
+	html += '			<option value="center">{{ text_center }}</option>';
+	html += '			<option value="right">{{ text_right }}</option>';
+	html += '		</select>';
+	html += '	</div>';
+	html += '</div>';
+	html += '<div class="form-group required">';
+	html += '	<label class="col-sm-2 control-label">{{ entry_image_wh }}</label>';
+	html += '	<div class="col-sm-10">';
+	html += '		<div class="input-group d-flex">';
+	html += '			<span class="input-group-addon w-auto">{{ entry_width }}</span>';
+	html += '			<input name="easy_banner['+ module_row +'][image_width][{{ language['language_id'] }}]" type="text" class="form-control w-70">';
+	html += '			<span class="input-group-addon w-auto ml-15">{{ entry_height }}</span>';
+	html += '			<input name="easy_banner['+ module_row +'][image_height][{{ language['language_id'] }}]" type="text" class="form-control w-70">';
+	html += '		</div>';
+	html += '	</div>';
+	html += '</div>';
+
+	html += '<div class="form-group">';
+	html += '	<label class="col-sm-2 control-label">{{ entry_logo_brand }}</label>';
+	html += '	<div class="col-sm-10">';
+	html += '		<a href="" id="thumb-logo-image-'+ module_row +'-{{ language['language_id'] }}" data-toggle="image" class="img-thumbnail">';
+	html += '			<img src="{{ placeholder }}" alt="" title="" data-placeholder="{{ placeholder }}"  />';
+	html += '		</a>';
+	html += '		<input type="hidden" name="easy_banner['+ module_row +'][logo_image][{{ language['language_id'] }}]" id="input-logo-image'+ module_row +'-{{ language['language_id'] }}" />';
+	html += '	</div>';
+	html += '</div>';
+
+	html += '<div class="form-group required">';
+	html += '	<label class="col-sm-2 control-label">{{ entry_logo_wh }}</label>';
+	html += '	<div class="col-sm-10">';
+	html += '		<div class="input-group d-flex">';
+	html += '			<span class="input-group-addon w-auto">{{ entry_width }}</span>';
+	html += '			<input name="easy_banner['+ module_row +'][logo_image_width][{{ language['language_id'] }}]" type="text" class="form-control w-70">';
+	html += '			<span class="input-group-addon w-auto ml-15">{{ entry_height }}</span>';
+	html += '			<input name="easy_banner['+ module_row +'][logo_image_height][{{ language['language_id'] }}]" type="text" class="form-control w-70">';
+	html += '		</div>';
+	html += '	</div>';
+	html += '</div>';
+
+	html += '<div class="form-group">';
+	html += '	<label class="col-sm-2 control-label" for="input-link-'+ module_row +'-{{ language['language_id'] }}">{{ entry_link }}</label>';
+	html += '	<div class="col-sm-10">';
+	html += '		<input id="input-link-'+ module_row +'-{{ language['language_id'] }}" type="text" name="easy_banner['+ module_row +'][link][{{ language['language_id'] }}]" value="" class="form-control" />';
+	html += '	</div>';
+	html += '</div>';
+
+	html += '<div class="form-group">';
+	html += '	<label class="col-sm-2 control-label" for="input-price-from-'+ module_row +'-{{ language['language_id'] }}">{{ entry_price_from }}</label>';
+	html += '	<div class="col-sm-10">';
+	html += '		<input id="input-price-from-'+ module_row +'-{{ language['language_id'] }}" type="text" name="easy_banner['+ module_row +'][price_from][{{ language['language_id'] }}]" value="" class="form-control" />';
+	html += '	</div>';
+	html += '</div>';
+
+	html += '<div class="form-group">';
+	html += '	<label class="col-sm-2 control-label" for="input-price-'+ module_row +'-{{ language['language_id'] }}">{{ entry_price }}</label>';
+	html += '	<div class="col-sm-10">';
+	html += '		<input id="input-price-'+ module_row +'-{{ language['language_id'] }}" type="text" name="easy_banner['+ module_row +'][price][{{ language['language_id'] }}]" value="" class="form-control number" />';
+	html += '	</div>';
+	html += '</div>';
+
+	html += '<div class="form-group">';
+	html += '	<label class="col-sm-2 control-label" for="input-price-color-'+ module_row +'-{{ language['language_id'] }}">{{ entry_price_color }}</label>';
+	html += '	<div class="col-sm-10">';
+	html += '		<input id="input-price-color-'+ module_row +'-{{ language['language_id'] }}" type="text" name="easy_banner['+ module_row +'][price_color][{{ language['language_id'] }}]" value="" class="form-control color" />';
+	html += '	</div>';
+	html += '</div>';
+
+	html += '<div class="form-group">';
+	html += '	<label class="col-sm-2 control-label" for="input-price-bg-'+ module_row +'-{{ language['language_id'] }}">{{ entry_price_bg }}</label>';
+	html += '	<div class="col-sm-10">';
+	html += '		<input id="input-price-bg-'+ module_row +'-{{ language['language_id'] }}" type="text" name="easy_banner['+ module_row +'][price_bg][{{ language['language_id'] }}]" value="" class="form-control color" />';
+	html += '	</div>';
+	html += '</div>';
+
+  html += '    </div>';
+  {% endfor %}
+
+  html += '</div>';
+  html += '</div>';
+
+  $('.tab-content:first-child').append(html);
+
+  jscolor.bind();
+  $('#module-add').before('<li><a href="#tab-module' + module_row + '" data-toggle="tab"><i class="fa fa-minus-circle" onclick="$(\'a[href=\\\'#tab-module' + module_row + '\\\']\').parent().remove(); $(\'#tab-module' + module_row + '\').remove(); $(\'#module a:first\').tab(\'show\');activeBtn();"></i> {{ text_banner }} ' + module_row + '</a></li>');
+
+  $('#cyber_easybaner a[href=\'#tab-module' + module_row + '\']').tab('show');
+
+  $('#language' + module_row + ' li:first-child a').tab('show');
+
+
+  activeBtn();
+
+  module_row++;
+}
+
+
+</script>
+</div>
+<style>
+.form-control.number,
+.form-control.color {
+	width: 85px;
+}
+.d-flex {
+	display: -webkit-flex;
+	display: -moz-flex;
+	display: -ms-flex;
+	display: -o-flex;
+	display: flex;
+}
+.w-auto {
+	width: auto;
+	min-width: 80px;
+	line-height: 17px;
+}
+.w-70 {
+	width: 70px !important;
+	border-radius: 0px 4px 4px 0px !important;
+}
+.ml-15 {
+	margin-left: 15px;
+}
+</style>
+<script>
+$(".form-control.number").keypress(function(event){
+  event = event || window.event;
+  if (event.charCode && event.charCode!=0 && event.charCode!=46 && (event.charCode < 48 || event.charCode > 57) )
+    return false;
+});
+</script>
+{{ footer }}

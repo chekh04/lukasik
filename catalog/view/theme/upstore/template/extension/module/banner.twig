@@ -1,0 +1,39 @@
+<div class="container-banner">
+	<div id="banner{{ module }}" class="swiper swiper-banner image-hover-effect">
+		<div class="swiper-wrapper">
+			{% for banner in banners %}
+				<div class="item swiper-slide">
+					{% if (banner.link) %}
+						<a href="{{ banner.link }}"><img src="{{ banner.image }}" alt="{{ banner.title }}" class="img-responsive" /></a>
+					{% else %}
+						<img src="{{ banner.image }}" alt="{{ banner.title }}" class="img-responsive" />
+					{% endif %}
+				</div>
+			{% endfor %}
+		</div>
+		<div class="swiper-banner-pagination swiper-pagination"></div>
+	</div>
+	<script>
+		document.addEventListener('DOMContentLoaded', function() {
+			var banner_pagination = $('#banner{{ module }}').closest('.container-banner').find('.swiper-banner-pagination')[0];
+			var swiperBanner = new Swiper('#banner{{ module }}', {
+				slidesPerView: 1,
+				effect: 'fade',
+				fadeEffect: {
+					crossFade: true
+				},
+				pagination: {
+					el: banner_pagination,
+					type: 'bullets',
+					clickable: true
+				},
+				loop: true,
+				grabCursor: true,
+				watchSlidesVisibility: true,
+				watchSlidesProgress: true,
+				watchOverflow: true,
+				speed:300,
+			});
+		});
+	</script>
+</div>

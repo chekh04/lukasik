@@ -1,0 +1,2148 @@
+{{ header }}{{ column_left }}
+<div id="content">
+	<div class="page-header">
+		<div class="container-fluid">
+			<div id="buttons-apply" class="pull-right">
+				<a onclick="saveSetting()" id="btn-apply-setting" class="btn btn-success" data-toggle="tooltip" title="" data-placement="bottom" data-original-title="Применить"><i class="fa fa-check"></i></a>
+				<button type="submit" id="btn-save-setting" form="form-seo-tool" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+				<a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a>
+			</div>
+			<h1>{{ heading_title }}</h1>
+			<ul class="breadcrumb">
+				{% for breadcrumb in breadcrumbs %}
+					<li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+				{% endfor %}
+			</ul>
+		</div>
+	</div>
+	<div class="container-fluid">
+		{% if error_warning %}
+			<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+			<button type="button" class="close" data-dismiss="alert">&times;</button>
+		</div>
+	{% endif %}
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h3 class="panel-title"><i class="fa fa-pencil"></i> {{ text_edit }}</h3>
+		</div>
+		<div class="panel-body">
+			<form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-seo-tool" class="form-horizontal">
+				<div class="form-group">
+					<label class="col-sm-2 control-label">{{ entry_lang_prefix }}</label>
+					<div class="col-sm-4 col-md-2 col-auto">
+						{% for language in languages %}
+							<div class="input-group">
+								<span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>
+								<input name="upstore_seo_tool_setting[lang_prefix][{{ language['language_id'] }}]" value="{{ upstore_seo_tool_setting['lang_prefix'][language['language_id']] ?? '' }}" class="form-control"/>
+							</div>
+						{% endfor %}
+					</div>
+				</div>
+				<ul class="nav nav-tabs">
+					<li class="active"><a href="#tab-seo-products" data-toggle="tab">{{ tab_seo_products }}</a></li>
+					<li><a href="#tab-seo-category" data-toggle="tab">{{ tab_seo_category }}</a></li>
+					<li><a href="#tab-seo-brand" data-toggle="tab">{{ tab_seo_brand }}</a></li>
+					<li><a href="#tab-seo-information" data-toggle="tab">{{ tab_seo_information }}</a></li>
+					<li><a href="#tab-seo-news" data-toggle="tab">{{ tab_seo_news }}</a></li>
+				</ul>
+				<div class="tab-content">
+					<div class="tab-pane active" id="tab-seo-products">
+						<div class="form-group">
+							<label class="col-sm-2 control-label">{{ entry_status }}</label>
+							<div class="col-sm-4 col-md-2 col-auto">
+								<div class="btn-group" data-toggle="buttons">
+									<label class="btn btn-default{% if upstore_seo_tool_setting.product.status %} active{% endif %}">
+										<input type="radio" name="upstore_seo_tool_setting[product][status]" value="1" {% if upstore_seo_tool_setting.product.status %}checked="checked"{% endif %}>
+										<span class="on-off">{{ text_on }}</span>
+									</label>
+									<label class="btn btn-default{% if not upstore_seo_tool_setting.product.status %} active{% endif %}">
+										<input type="radio" name="upstore_seo_tool_setting[product][status]" value="0" {% if not upstore_seo_tool_setting.product.status %}checked="checked"{% endif %}>
+										<span class="on-off">{{ text_off }}</span>
+									</label>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">{{ entry_generate_meta_title }}</label>
+							<div class="col-sm-4 col-md-2 col-auto">
+								<div class="btn-group" data-toggle="buttons">
+									<label class="btn btn-default{% if upstore_seo_tool_setting.product.title_status %} active{% endif %}">
+										<input type="radio" name="upstore_seo_tool_setting[product][title_status]" value="1" {% if upstore_seo_tool_setting.product.title_status %}checked="checked"{% endif %}>
+										<span class="on-off">{{ text_yes }}</span>
+									</label>
+									<label class="btn btn-default{% if not upstore_seo_tool_setting.product.title_status %} active{% endif %}">
+										<input type="radio" name="upstore_seo_tool_setting[product][title_status]" value="0" {% if not upstore_seo_tool_setting.product.title_status %}checked="checked"{% endif %}>
+										<span class="on-off">{{ text_no }}</span>
+									</label>
+								</div>
+							</div>
+							<label class="col-sm-2 control-label">{{ entry_only_empty_values }}</label>
+							<div class="col-sm-4 col-md-2 col-auto">
+								<div class="btn-group" data-toggle="buttons">
+									<label class="btn btn-default{% if upstore_seo_tool_setting.product.title_method == 'skip' %} active{% endif %}">
+										<input type="radio" name="upstore_seo_tool_setting[product][title_method]" value="skip" {% if upstore_seo_tool_setting.product.title_method == 'skip' %}checked="checked"{% endif %}>
+										<span class="on-off">{{ text_yes }}</span>
+									</label>
+									<label class="btn btn-default{% if upstore_seo_tool_setting.product.title_method == 'remove' %} active{% endif %}">
+										<input type="radio" name="upstore_seo_tool_setting[product][title_method]" value="remove" {% if upstore_seo_tool_setting.product.title_method == 'remove' %}checked="checked"{% endif %}>
+										<span class="on-off">{{ text_no }}</span>
+									</label>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">{{ entry_meta_title }}</label>
+							<div class="col-sm-10">
+								<ul class="nav nav-tabs" id="seo-title-product-language">
+									{% for language in languages %}
+										<li><a href="#seo-title-product-language-{{ language.language_id }}" data-toggle="tab"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /> {{ language.name }}</a></li>
+									{% endfor %}
+								</ul>
+								<div class="tab-content">
+									{% for language in languages %}
+										<div class="tab-pane" id="seo-title-product-language-{{ language.language_id }}">
+											<input id="seo-title-product-input-{{ language.language_id }}" class="form-control cursor-position" type="text" name="upstore_seo_tool_setting[product][seo_title][{{ language.language_id }}]" value="{{ upstore_seo_tool_setting.product.seo_title[language.language_id] ? upstore_seo_tool_setting.product.seo_title[language.language_id] : '' }}" />
+											<div class="seo-variables-container" data-target="#seo-title-product-input-{{ language.language_id }}">
+												<div class="seo-variables__items">
+													<span class="seo-variable__item" data-code="[n]">[n]</span>
+													<span class="seo-variable__item" data-code="[p]">[p]</span>
+													<span class="seo-variable__item" data-code="[m]">[m]</span>
+													<span class="seo-variable__item" data-code="[sku]">[sku]</span>
+													<span class="seo-variable__item" data-code="[upc]">[upc]</span>
+													<span class="seo-variable__item" data-code="[ean]">[ean]</span>
+													<span class="seo-variable__item" data-code="[jan]">[jan]</span>
+													<span class="seo-variable__item" data-code="[isbn]">[isbn]</span>
+													<span class="seo-variable__item" data-code="[mpn]">[mpn]</span>
+													<span class="seo-variable__item" data-code="[c]">[c]</span>
+													<span class="seo-variable__item" data-code="[b]">[b]</span>
+													<span class="seo-variable__item" data-code="[text|text|text]">[text|text|text|...]</span>
+												</div>
+												<div class="seo-variables__description">
+													<b>{{ text_definitions }}</b>
+													<span><b>[n]</b> - {{ text_seo_n }}</span>
+													<span><b>[p]</b> - {{ text_seo_p }}</span>
+													<span><b>[m]</b> - {{ text_seo_m }}</span>
+													<span><b>[sku]</b> - {{ text_seo_sku }}</span>
+													<span><b>[upc]</b> - {{ text_seo_upc }}</span>
+													<span><b>[ean]</b> - {{ text_seo_ean }}</span>
+													<span><b>[jan]</b> - {{ text_seo_jan }}</span>
+													<span><b>[isbn]</b> - {{ text_seo_isbn }}</span>
+													<span><b>[mpn]</b> - {{ text_seo_mpn }}</span>
+													<span><b>[с]</b> - {{ text_seo_category }}</span>
+													<span><b>[b]</b> - {{ text_seo_brand }}</span>
+													<span><b>[text|text|text|...]</b> - {{ text_seo_random }}</span>
+												</div>
+											</div>
+										</div>
+									{% endfor %}
+									<button type="button" class="btn btn-success" id="seo-tool-gen-prod-mt" data-method="setProductsSeoData" data-seo="title" data-progress="#product-mt-progress-bar" onclick="setSeoData(this);">{{ button_generate_meta_title }}</button>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">{{ entry_generate_meta_h1 }}</label>
+							<div class="col-sm-4 col-md-2 col-auto">
+								<div class="btn-group" data-toggle="buttons">
+									<label class="btn btn-default{% if upstore_seo_tool_setting.product.h1_status %} active{% endif %}">
+										<input type="radio" name="upstore_seo_tool_setting[product][h1_status]" value="1" {% if upstore_seo_tool_setting.product.h1_status %}checked="checked"{% endif %}>
+										<span class="on-off">{{ text_yes }}</span>
+									</label>
+									<label class="btn btn-default{% if not upstore_seo_tool_setting.product.h1_status %} active{% endif %}">
+										<input type="radio" name="upstore_seo_tool_setting[product][h1_status]" value="0" {% if not upstore_seo_tool_setting.product.h1_status %}checked="checked"{% endif %}>
+										<span class="on-off">{{ text_no }}</span>
+									</label>
+								</div>
+							</div>
+							<label class="col-sm-2 control-label">{{ entry_only_empty_values }}</label>
+							<div class="col-sm-4 col-md-2 col-auto">
+								<div class="btn-group" data-toggle="buttons">
+									<label class="btn btn-default{% if upstore_seo_tool_setting.product.h1_method == 'skip' %} active{% endif %}">
+										<input type="radio" name="upstore_seo_tool_setting[product][h1_method]" value="skip" {% if upstore_seo_tool_setting.product.h1_method == 'skip' %}checked="checked"{% endif %}>
+										<span class="on-off">{{ text_yes }}</span>
+									</label>
+									<label class="btn btn-default{% if upstore_seo_tool_setting.product.h1_method == 'remove' %} active{% endif %}">
+										<input type="radio" name="upstore_seo_tool_setting[product][h1_method]" value="remove" {% if upstore_seo_tool_setting.product.h1_method == 'remove' %}checked="checked"{% endif %}>
+										<span class="on-off">{{ text_no }}</span>
+									</label>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">{{ entry_meta_h1 }}</label>
+							<div class="col-sm-10">
+								<ul class="nav nav-tabs" id="seo-h1-product-language">
+									{% for language in languages %}
+										<li><a href="#seo-h1-product-language-{{ language.language_id }}" data-toggle="tab"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /> {{ language.name }}</a></li>
+									{% endfor %}
+								</ul>
+								<div class="tab-content">
+									{% for language in languages %}
+										<div class="tab-pane" id="seo-h1-product-language-{{ language.language_id }}">
+											<input id="seo-h1-product-input-{{ language.language_id }}" class="form-control cursor-position" type="text" name="upstore_seo_tool_setting[product][seo_h1][{{ language.language_id }}]" value="{{ upstore_seo_tool_setting.product.seo_h1[language.language_id] ? upstore_seo_tool_setting.product.seo_h1[language.language_id] : '' }}" />
+											<div class="seo-variables-container" data-target="#seo-h1-product-input-{{ language.language_id }}">
+												<div class="seo-variables__items">
+													<span class="seo-variable__item" data-code="[n]">[n]</span>
+													<span class="seo-variable__item" data-code="[p]">[p]</span>
+													<span class="seo-variable__item" data-code="[m]">[m]</span>
+													<span class="seo-variable__item" data-code="[sku]">[sku]</span>
+													<span class="seo-variable__item" data-code="[upc]">[upc]</span>
+													<span class="seo-variable__item" data-code="[ean]">[ean]</span>
+													<span class="seo-variable__item" data-code="[jan]">[jan]</span>
+													<span class="seo-variable__item" data-code="[isbn]">[isbn]</span>
+													<span class="seo-variable__item" data-code="[mpn]">[mpn]</span>
+													<span class="seo-variable__item" data-code="[c]">[c]</span>
+													<span class="seo-variable__item" data-code="[b]">[b]</span>
+													<span class="seo-variable__item" data-code="[text|text|text]">[text|text|text|...]</span>
+												</div>
+												<div class="seo-variables__description">
+													<b>{{ text_definitions }}</b>
+													<span><b>[n]</b> - {{ text_seo_n }}</span>
+													<span><b>[p]</b> - {{ text_seo_p }}</span>
+													<span><b>[m]</b> - {{ text_seo_m }}</span>
+													<span><b>[sku]</b> - {{ text_seo_sku }}</span>
+													<span><b>[upc]</b> - {{ text_seo_upc }}</span>
+													<span><b>[ean]</b> - {{ text_seo_ean }}</span>
+													<span><b>[jan]</b> - {{ text_seo_jan }}</span>
+													<span><b>[isbn]</b> - {{ text_seo_isbn }}</span>
+													<span><b>[mpn]</b> - {{ text_seo_mpn }}</span>
+													<span><b>[с]</b> - {{ text_seo_category }}</span>
+													<span><b>[b]</b> - {{ text_seo_brand }}</span>
+													<span><b>[text|text|text|...]</b> - {{ text_seo_random }}</span>
+												</div>
+											</div>
+										</div>
+									{% endfor %}
+									<button type="button" class="btn btn-success" id="seo-tool-gen-prod-h1" data-method="setProductsSeoData" data-seo="h1" data-progress="#product-h1-progress-bar" onclick="setSeoData(this);">{{ button_generate_meta_h1 }}</button>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">{{ entry_generate_meta_description }}</label>
+							<div class="col-sm-4 col-md-2 col-auto">
+								<div class="btn-group" data-toggle="buttons">
+									<label class="btn btn-default{% if upstore_seo_tool_setting.product.desc_status %} active{% endif %}">
+										<input type="radio" name="upstore_seo_tool_setting[product][desc_status]" value="1" {% if upstore_seo_tool_setting.product.desc_status %}checked="checked"{% endif %}>
+										<span class="on-off">{{ text_yes }}</span>
+									</label>
+									<label class="btn btn-default{% if not upstore_seo_tool_setting.product.desc_status %} active{% endif %}">
+										<input type="radio" name="upstore_seo_tool_setting[product][desc_status]" value="0" {% if not upstore_seo_tool_setting.product.desc_status %}checked="checked"{% endif %}>
+										<span class="on-off">{{ text_no }}</span>
+									</label>
+								</div>
+							</div>
+							<label class="col-sm-2 control-label">{{ entry_only_empty_values }}</label>
+							<div class="col-sm-4 col-md-2 col-auto">
+								<div class="btn-group" data-toggle="buttons">
+									<label class="btn btn-default{% if upstore_seo_tool_setting.product.desc_method == 'skip' %} active{% endif %}">
+										<input type="radio" name="upstore_seo_tool_setting[product][desc_method]" value="skip" {% if upstore_seo_tool_setting.product.desc_method == 'skip' %}checked="checked"{% endif %}>
+										<span class="on-off">{{ text_yes }}</span>
+									</label>
+									<label class="btn btn-default{% if upstore_seo_tool_setting.product.desc_method == 'remove' %} active{% endif %}">
+										<input type="radio" name="upstore_seo_tool_setting[product][desc_method]" value="remove" {% if upstore_seo_tool_setting.product.desc_method == 'remove' %}checked="checked"{% endif %}>
+										<span class="on-off">{{ text_no }}</span>
+									</label>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">{{ entry_meta_description }}</label>
+							<div class="col-sm-10">
+								<ul class="nav nav-tabs" id="seo-desc-product-language">
+									{% for language in languages %}
+										<li><a href="#seo-desc-product-language-{{ language.language_id }}" data-toggle="tab"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /> {{ language.name }}</a></li>
+									{% endfor %}
+								</ul>
+								<div class="tab-content">
+									{% for language in languages %}
+										<div class="tab-pane" id="seo-desc-product-language-{{ language.language_id }}">
+											<input id="seo-desc-product-input-{{ language.language_id }}" class="form-control cursor-position" type="text" name="upstore_seo_tool_setting[product][seo_desc][{{ language.language_id }}]" value="{{ upstore_seo_tool_setting.product.seo_desc[language.language_id] ? upstore_seo_tool_setting.product.seo_desc[language.language_id] : '' }}" />
+											<div class="seo-variables-container" data-target="#seo-desc-product-input-{{ language.language_id }}">
+												<div class="seo-variables__items">
+													<span class="seo-variable__item" data-code="[n]">[n]</span>
+													<span class="seo-variable__item" data-code="[p]">[p]</span>
+													<span class="seo-variable__item" data-code="[m]">[m]</span>
+													<span class="seo-variable__item" data-code="[sku]">[sku]</span>
+													<span class="seo-variable__item" data-code="[upc]">[upc]</span>
+													<span class="seo-variable__item" data-code="[ean]">[ean]</span>
+													<span class="seo-variable__item" data-code="[jan]">[jan]</span>
+													<span class="seo-variable__item" data-code="[isbn]">[isbn]</span>
+													<span class="seo-variable__item" data-code="[mpn]">[mpn]</span>
+													<span class="seo-variable__item" data-code="[c]">[c]</span>
+													<span class="seo-variable__item" data-code="[b]">[b]</span>
+													<span class="seo-variable__item" data-code="[text|text|text]">[text|text|text|...]</span>
+												</div>
+												<div class="seo-variables__description">
+													<b>{{ text_definitions }}</b>
+													<span><b>[n]</b> - {{ text_seo_n }}</span>
+													<span><b>[p]</b> - {{ text_seo_p }}</span>
+													<span><b>[m]</b> - {{ text_seo_m }}</span>
+													<span><b>[sku]</b> - {{ text_seo_sku }}</span>
+													<span><b>[upc]</b> - {{ text_seo_upc }}</span>
+													<span><b>[ean]</b> - {{ text_seo_ean }}</span>
+													<span><b>[jan]</b> - {{ text_seo_jan }}</span>
+													<span><b>[isbn]</b> - {{ text_seo_isbn }}</span>
+													<span><b>[mpn]</b> - {{ text_seo_mpn }}</span>
+													<span><b>[с]</b> - {{ text_seo_category }}</span>
+													<span><b>[b]</b> - {{ text_seo_brand }}</span>
+													<span><b>[text|text|text|...]</b> - {{ text_seo_random }}</span>
+												</div>
+											</div>
+										</div>
+									{% endfor %}
+									<button type="button" class="btn btn-success" id="seo-tool-gen-prod-md" data-method="setProductsSeoData" data-seo="desc" data-progress="#product-md-progress-bar" onclick="setSeoData(this);">{{ button_generate_meta_description }}</button>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">{{ entry_generate_meta_keyword }}</label>
+							<div class="col-sm-4 col-md-2 col-auto">
+								<div class="btn-group" data-toggle="buttons">
+									<label class="btn btn-default{% if upstore_seo_tool_setting.product.keyword_status %} active{% endif %}">
+										<input type="radio" name="upstore_seo_tool_setting[product][keyword_status]" value="1" {% if upstore_seo_tool_setting.product.keyword_status %}checked="checked"{% endif %}>
+										<span class="on-off">{{ text_yes }}</span>
+									</label>
+									<label class="btn btn-default{% if not upstore_seo_tool_setting.product.keyword_status %} active{% endif %}">
+										<input type="radio" name="upstore_seo_tool_setting[product][keyword_status]" value="0" {% if not upstore_seo_tool_setting.product.keyword_status %}checked="checked"{% endif %}>
+										<span class="on-off">{{ text_no }}</span>
+									</label>
+								</div>
+							</div>
+							<label class="col-sm-2 control-label">{{ entry_only_empty_values }}</label>
+							<div class="col-sm-4 col-md-2 col-auto">
+								<div class="btn-group" data-toggle="buttons">
+									<label class="btn btn-default{% if upstore_seo_tool_setting.product.keyword_method == 'skip' %} active{% endif %}">
+										<input type="radio" name="upstore_seo_tool_setting[product][keyword_method]" value="skip" {% if upstore_seo_tool_setting.product.keyword_method == 'skip' %}checked="checked"{% endif %}>
+										<span class="on-off">{{ text_yes }}</span>
+									</label>
+									<label class="btn btn-default{% if upstore_seo_tool_setting.product.keyword_method == 'remove' %} active{% endif %}">
+										<input type="radio" name="upstore_seo_tool_setting[product][keyword_method]" value="remove" {% if upstore_seo_tool_setting.product.keyword_method == 'remove' %}checked="checked"{% endif %}>
+										<span class="on-off">{{ text_no }}</span>
+									</label>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">{{ entry_meta_keyword }}</label>
+							<div class="col-sm-10">
+								<ul class="nav nav-tabs" id="seo-keyword-product-language">
+									{% for language in languages %}
+										<li><a href="#seo-keyword-product-language-{{ language.language_id }}" data-toggle="tab"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /> {{ language.name }}</a></li>
+									{% endfor %}
+								</ul>
+								<div class="tab-content">
+									{% for language in languages %}
+										<div class="tab-pane" id="seo-keyword-product-language-{{ language.language_id }}">
+											<input id="seo-keyword-product-input-{{ language.language_id }}" class="form-control cursor-position" type="text" name="upstore_seo_tool_setting[product][seo_keyword][{{ language.language_id }}]" value="{{ upstore_seo_tool_setting.product.seo_keyword[language.language_id] ? upstore_seo_tool_setting.product.seo_keyword[language.language_id] : '' }}" />
+											<div class="seo-variables-container" data-target="#seo-keyword-product-input-{{ language.language_id }}">
+												<div class="seo-variables__items">
+													<span class="seo-variable__item" data-code="[n]">[n]</span>
+													<span class="seo-variable__item" data-code="[p]">[p]</span>
+													<span class="seo-variable__item" data-code="[m]">[m]</span>
+													<span class="seo-variable__item" data-code="[sku]">[sku]</span>
+													<span class="seo-variable__item" data-code="[upc]">[upc]</span>
+													<span class="seo-variable__item" data-code="[ean]">[ean]</span>
+													<span class="seo-variable__item" data-code="[jan]">[jan]</span>
+													<span class="seo-variable__item" data-code="[isbn]">[isbn]</span>
+													<span class="seo-variable__item" data-code="[mpn]">[mpn]</span>
+													<span class="seo-variable__item" data-code="[c]">[c]</span>
+													<span class="seo-variable__item" data-code="[b]">[b]</span>
+													<span class="seo-variable__item" data-code="[text|text|text]">[text|text|text|...]</span>
+												</div>
+												<div class="seo-variables__description">
+													<b>{{ text_definitions }}</b>
+													<span><b>[n]</b> - {{ text_seo_n }}</span>
+													<span><b>[p]</b> - {{ text_seo_p }}</span>
+													<span><b>[m]</b> - {{ text_seo_m }}</span>
+													<span><b>[sku]</b> - {{ text_seo_sku }}</span>
+													<span><b>[upc]</b> - {{ text_seo_upc }}</span>
+													<span><b>[ean]</b> - {{ text_seo_ean }}</span>
+													<span><b>[jan]</b> - {{ text_seo_jan }}</span>
+													<span><b>[isbn]</b> - {{ text_seo_isbn }}</span>
+													<span><b>[mpn]</b> - {{ text_seo_mpn }}</span>
+													<span><b>[с]</b> - {{ text_seo_category }}</span>
+													<span><b>[b]</b> - {{ text_seo_brand }}</span>
+													<span><b>[text|text|text|...]</b> - {{ text_seo_random }}</span>
+												</div>
+											</div>
+										</div>
+									{% endfor %}
+									<button type="button" class="btn btn-success" id="seo-tool-gen-prod-mk" data-method="setProductsSeoData" data-seo="keyword" data-progress="#product-mk-progress-bar" onclick="setSeoData(this);">{{ button_generate_meta_keyword }}</button>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">{{ entry_generate_seo_url }}</label>
+							<div class="col-sm-4 col-md-2 col-auto">
+								<div class="btn-group" data-toggle="buttons">
+									<label class="btn btn-default{% if upstore_seo_tool_setting.product.url_status %} active{% endif %}">
+										<input type="radio" name="upstore_seo_tool_setting[product][url_status]" value="1" {% if upstore_seo_tool_setting.product.url_status %}checked="checked"{% endif %}>
+										<span class="on-off">{{ text_yes }}</span>
+									</label>
+									<label class="btn btn-default{% if not upstore_seo_tool_setting.product.url_status %} active{% endif %}">
+										<input type="radio" name="upstore_seo_tool_setting[product][url_status]" value="0" {% if not upstore_seo_tool_setting.product.url_status %}checked="checked"{% endif %}>
+										<span class="on-off">{{ text_no }}</span>
+									</label>
+								</div>
+							</div>
+							<label class="col-sm-2 control-label">{{ entry_only_empty_values }}</label>
+							<div class="col-sm-4 col-md-2 col-auto">
+								<div class="btn-group" data-toggle="buttons">
+									<label class="btn btn-default{% if upstore_seo_tool_setting.product.url_method == 'skip' %} active{% endif %}">
+										<input type="radio" name="upstore_seo_tool_setting[product][url_method]" value="skip" {% if upstore_seo_tool_setting.product.url_method == 'skip' %}checked="checked"{% endif %}>
+										<span class="on-off">{{ text_yes }}</span>
+									</label>
+									<label class="btn btn-default{% if upstore_seo_tool_setting.product.url_method == 'remove' %} active{% endif %}">
+										<input type="radio" name="upstore_seo_tool_setting[product][url_method]" value="remove" {% if upstore_seo_tool_setting.product.url_method == 'remove' %}checked="checked"{% endif %}>
+										<span class="on-off">{{ text_no }}</span>
+									</label>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">{{ entry_seo_url }}</label>
+							<div class="col-sm-10">
+								<input id="seo-url-product-input" class="form-control cursor-position" type="text" name="upstore_seo_tool_setting[product][seo_url]" value="{{ upstore_seo_tool_setting.product.seo_url ? upstore_seo_tool_setting.product.seo_url : '' }}" />
+								<div class="seo-variables-container" data-target="#seo-url-product-input">
+									<div class="seo-variables__items">
+										<span class="seo-url-variable__item" data-code="[n]">[n]</span>
+										<span class="seo-url-variable__item" data-code="[m]">[m]</span>
+										<span class="seo-url-variable__item" data-code="[product_id]">[product_id]</span>
+										<span class="seo-url-variable__item" data-code="[lang_prefix]">[lang_prefix]</span>
+									</div>
+									<div class="seo-variables__description">
+										<b>{{ text_definitions }}</b>
+										<span><b>[n]</b> - {{ text_seo_n }}</span>
+										<span><b>[m]</b> - {{ text_seo_m }}</span>
+										<span><b>[product_id]</b> - {{ text_seo_product_id }}</span>
+										<span><b>[lang_prefix]</b> - {{ entry_lang_prefix }}</span>
+									</div>
+								</div>
+								<button type="button" class="btn btn-success" id="seo-tool-gen-prod-su" data-method="setProductsSeoData" data-seo="url" data-progress="#product-su-progress-bar" onclick="setSeoData(this);">{{ button_generate_seo_url }}</button>
+							</div>
+						</div>
+					</div>
+
+					<div class="tab-pane" id="tab-seo-category">
+						<div class="form-group">
+							<label class="col-sm-2 control-label">{{ entry_status }}</label>
+							<div class="col-sm-4 col-md-2 col-auto">
+								<div class="btn-group" data-toggle="buttons">
+									<label class="btn btn-default{% if upstore_seo_tool_setting.category.status %} active{% endif %}">
+										<input type="radio" name="upstore_seo_tool_setting[category][status]" value="1" {% if upstore_seo_tool_setting.category.status %}checked="checked"{% endif %}>
+										<span class="on-off">{{ text_on }}</span>
+									</label>
+									<label class="btn btn-default{% if not upstore_seo_tool_setting.category.status %} active{% endif %}">
+										<input type="radio" name="upstore_seo_tool_setting[category][status]" value="0" {% if not upstore_seo_tool_setting.category.status %}checked="checked"{% endif %}>
+										<span class="on-off">{{ text_off }}</span>
+									</label>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">{{ entry_generate_meta_title }}</label>
+							<div class="col-sm-4 col-md-2 col-auto">
+								<div class="btn-group" data-toggle="buttons">
+									<label class="btn btn-default{% if upstore_seo_tool_setting.category.title_status %} active{% endif %}">
+										<input type="radio" name="upstore_seo_tool_setting[category][title_status]" value="1" {% if upstore_seo_tool_setting.category.title_status %}checked="checked"{% endif %}>
+										<span class="on-off">{{ text_yes }}</span>
+									</label>
+									<label class="btn btn-default{% if not upstore_seo_tool_setting.category.title_status %} active{% endif %}">
+										<input type="radio" name="upstore_seo_tool_setting[category][title_status]" value="0" {% if not upstore_seo_tool_setting.category.title_status %}checked="checked"{% endif %}>
+										<span class="on-off">{{ text_no }}</span>
+									</label>
+								</div>
+							</div>
+							<label class="col-sm-2 control-label">{{ entry_only_empty_values }}</label>
+							<div class="col-sm-4 col-md-2 col-auto">
+								<div class="btn-group" data-toggle="buttons">
+									<label class="btn btn-default{% if upstore_seo_tool_setting.category.title_method == 'skip' %} active{% endif %}">
+										<input type="radio" name="upstore_seo_tool_setting[category][title_method]" value="skip" {% if upstore_seo_tool_setting.category.title_method == 'skip' %}checked="checked"{% endif %}>
+										<span class="on-off">{{ text_yes }}</span>
+									</label>
+									<label class="btn btn-default{% if upstore_seo_tool_setting.category.title_method == 'remove' %} active{% endif %}">
+										<input type="radio" name="upstore_seo_tool_setting[category][title_method]" value="remove" {% if upstore_seo_tool_setting.category.title_method == 'remove' %}checked="checked"{% endif %}>
+										<span class="on-off">{{ text_no }}</span>
+									</label>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">{{ entry_meta_title }}</label>
+							<div class="col-sm-10">
+								<ul class="nav nav-tabs" id="seo-title-category-language">
+									{% for language in languages %}
+										<li><a href="#seo-title-category-language-{{ language.language_id }}" data-toggle="tab"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /> {{ language.name }}</a></li>
+									{% endfor %}
+								</ul>
+								<div class="tab-content">
+									{% for language in languages %}
+										<div class="tab-pane" id="seo-title-category-language-{{ language.language_id }}">
+											<input id="seo-title-category-input-{{ language.language_id }}" class="form-control cursor-position" type="text" name="upstore_seo_tool_setting[category][seo_title][{{ language.language_id }}]" value="{{ upstore_seo_tool_setting.category.seo_title[language.language_id] ? upstore_seo_tool_setting.category.seo_title[language.language_id] : '' }}" />
+											<div class="seo-variables-container" data-target="#seo-title-category-input-{{ language.language_id }}">
+												<div class="seo-variables__items">
+													<span class="seo-variable__item" data-code="[n]">[n]</span>
+													<span class="seo-variable__item" data-code="[text|text|text]">[text|text|text|...]</span>
+												</div>
+												<div class="seo-variables__description">
+													<b>{{ text_definitions }}</b>
+													<span><b>[n]</b> - {{ text_seo_n }}</span>
+													<span><b>[text|text|text|...]</b> - {{ text_seo_random }}</span>
+												</div>
+											</div>
+										</div>
+									{% endfor %}
+									<button type="button" class="btn btn-success" id="seo-tool-gen-cat-mt" data-method="setCategoriesSeoData" data-seo="title" data-progress="#category-mt-progress-bar" onclick="setSeoData(this);">{{ button_generate_meta_title }}</button>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">{{ entry_generate_meta_h1 }}</label>
+							<div class="col-sm-4 col-md-2 col-auto">
+								<div class="btn-group" data-toggle="buttons">
+									<label class="btn btn-default{% if upstore_seo_tool_setting.category.h1_status %} active{% endif %}">
+										<input type="radio" name="upstore_seo_tool_setting[category][h1_status]" value="1" {% if upstore_seo_tool_setting.category.h1_status %}checked="checked"{% endif %}>
+										<span class="on-off">{{ text_yes }}</span>
+									</label>
+									<label class="btn btn-default{% if not upstore_seo_tool_setting.category.h1_status %} active{% endif %}">
+										<input type="radio" name="upstore_seo_tool_setting[category][h1_status]" value="0" {% if not upstore_seo_tool_setting.category.h1_status %}checked="checked"{% endif %}>
+										<span class="on-off">{{ text_no }}</span>
+									</label>
+								</div>
+							</div>
+							<label class="col-sm-2 control-label">{{ entry_only_empty_values }}</label>
+							<div class="col-sm-4 col-md-2 col-auto">
+								<div class="btn-group" data-toggle="buttons">
+									<label class="btn btn-default{% if upstore_seo_tool_setting.category.h1_method == 'skip' %} active{% endif %}">
+										<input type="radio" name="upstore_seo_tool_setting[category][h1_method]" value="skip" {% if upstore_seo_tool_setting.category.h1_method == 'skip' %}checked="checked"{% endif %}>
+										<span class="on-off">{{ text_yes }}</span>
+									</label>
+									<label class="btn btn-default{% if upstore_seo_tool_setting.category.h1_method == 'remove' %} active{% endif %}">
+										<input type="radio" name="upstore_seo_tool_setting[category][h1_method]" value="remove" {% if upstore_seo_tool_setting.category.h1_method == 'remove' %}checked="checked"{% endif %}>
+										<span class="on-off">{{ text_no }}</span>
+									</label>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">{{ entry_meta_h1 }}</label>
+							<div class="col-sm-10">
+								<ul class="nav nav-tabs" id="seo-h1-category-language">
+									{% for language in languages %}
+										<li><a href="#seo-h1-category-language-{{ language.language_id }}" data-toggle="tab"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /> {{ language.name }}</a></li>
+									{% endfor %}
+								</ul>
+								<div class="tab-content">
+									{% for language in languages %}
+										<div class="tab-pane" id="seo-h1-category-language-{{ language.language_id }}">
+											<input id="seo-h1-category-input-{{ language.language_id }}" class="form-control cursor-position" type="text" name="upstore_seo_tool_setting[category][seo_h1][{{ language.language_id }}]" value="{{ upstore_seo_tool_setting.category.seo_h1[language.language_id] ? upstore_seo_tool_setting.category.seo_h1[language.language_id] : '' }}" />
+											<div class="seo-variables-container" data-target="#seo-h1-category-input-{{ language.language_id }}">
+												<div class="seo-variables__items">
+													<span class="seo-variable__item" data-code="[n]">[n]</span>
+													<span class="seo-variable__item" data-code="[text|text|text]">[text|text|text|...]</span>
+												</div>
+												<div class="seo-variables__description">
+													<b>{{ text_definitions }}</b>
+													<span><b>[n]</b> - {{ text_seo_n }}</span>
+													<span><b>[text|text|text|...]</b> - {{ text_seo_random }}</span>
+												</div>
+											</div>
+										</div>
+									{% endfor %}
+									<button type="button" class="btn btn-success" id="seo-tool-gen-cat-h1" data-method="setCategoriesSeoData" data-seo="h1" data-progress="#category-h1-progress-bar" onclick="setSeoData(this);">{{ button_generate_meta_h1 }}</button>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">{{ entry_generate_meta_description }}</label>
+							<div class="col-sm-4 col-md-2 col-auto">
+								<div class="btn-group" data-toggle="buttons">
+									<label class="btn btn-default{% if upstore_seo_tool_setting.category.desc_status %} active{% endif %}">
+										<input type="radio" name="upstore_seo_tool_setting[category][desc_status]" value="1" {% if upstore_seo_tool_setting.category.desc_status %}checked="checked"{% endif %}>
+										<span class="on-off">{{ text_yes }}</span>
+									</label>
+									<label class="btn btn-default{% if not upstore_seo_tool_setting.category.desc_status %} active{% endif %}">
+										<input type="radio" name="upstore_seo_tool_setting[category][desc_status]" value="0" {% if not upstore_seo_tool_setting.category.desc_status %}checked="checked"{% endif %}>
+										<span class="on-off">{{ text_no }}</span>
+									</label>
+								</div>
+							</div>
+							<label class="col-sm-2 control-label">{{ entry_only_empty_values }}</label>
+							<div class="col-sm-4 col-md-2 col-auto">
+								<div class="btn-group" data-toggle="buttons">
+									<label class="btn btn-default{% if upstore_seo_tool_setting.category.desc_method == 'skip' %} active{% endif %}">
+										<input type="radio" name="upstore_seo_tool_setting[category][desc_method]" value="skip" {% if upstore_seo_tool_setting.category.desc_method == 'skip' %}checked="checked"{% endif %}>
+										<span class="on-off">{{ text_yes }}</span>
+									</label>
+									<label class="btn btn-default{% if upstore_seo_tool_setting.category.desc_method == 'remove' %} active{% endif %}">
+										<input type="radio" name="upstore_seo_tool_setting[category][desc_method]" value="remove" {% if upstore_seo_tool_setting.category.desc_method == 'remove' %}checked="checked"{% endif %}>
+										<span class="on-off">{{ text_no }}</span>
+									</label>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">{{ entry_meta_description }}</label>
+							<div class="col-sm-10">
+								<ul class="nav nav-tabs" id="seo-desc-category-language">
+									{% for language in languages %}
+										<li><a href="#seo-desc-category-language-{{ language.language_id }}" data-toggle="tab"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /> {{ language.name }}</a></li>
+									{% endfor %}
+								</ul>
+								<div class="tab-content">
+									{% for language in languages %}
+										<div class="tab-pane" id="seo-desc-category-language-{{ language.language_id }}">
+											<input id="seo-desc-category-input-{{ language.language_id }}" class="form-control cursor-position" type="text" name="upstore_seo_tool_setting[category][seo_desc][{{ language.language_id }}]" value="{{ upstore_seo_tool_setting.category.seo_desc[language.language_id] ? upstore_seo_tool_setting.category.seo_desc[language.language_id] : '' }}" />
+											<div class="seo-variables-container" data-target="#seo-desc-category-input-{{ language.language_id }}">
+												<div class="seo-variables__items">
+													<span class="seo-variable__item" data-code="[n]">[n]</span>
+													<span class="seo-variable__item" data-code="[text|text|text]">[text|text|text|...]</span>
+												</div>
+												<div class="seo-variables__description">
+													<b>{{ text_definitions }}</b>
+													<span><b>[n]</b> - {{ text_seo_n }}</span>
+													<span><b>[text|text|text|...]</b> - {{ text_seo_random }}</span>
+												</div>
+											</div>
+										</div>
+									{% endfor %}
+									<button type="button" class="btn btn-success" id="seo-tool-gen-cat-md" data-method="setCategoriesSeoData" data-seo="desc" data-progress="#category-md-progress-bar" onclick="setSeoData(this);">{{ button_generate_meta_description }}</button>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">{{ entry_generate_meta_keyword }}</label>
+							<div class="col-sm-4 col-md-2 col-auto">
+								<div class="btn-group" data-toggle="buttons">
+									<label class="btn btn-default{% if upstore_seo_tool_setting.category.keyword_status %} active{% endif %}">
+										<input type="radio" name="upstore_seo_tool_setting[category][keyword_status]" value="1" {% if upstore_seo_tool_setting.category.keyword_status %}checked="checked"{% endif %}>
+										<span class="on-off">{{ text_yes }}</span>
+									</label>
+									<label class="btn btn-default{% if not upstore_seo_tool_setting.category.keyword_status %} active{% endif %}">
+										<input type="radio" name="upstore_seo_tool_setting[category][keyword_status]" value="0" {% if not upstore_seo_tool_setting.category.keyword_status %}checked="checked"{% endif %}>
+										<span class="on-off">{{ text_no }}</span>
+									</label>
+								</div>
+							</div>
+							<label class="col-sm-2 control-label">{{ entry_only_empty_values }}</label>
+							<div class="col-sm-4 col-md-2 col-auto">
+								<div class="btn-group" data-toggle="buttons">
+									<label class="btn btn-default{% if upstore_seo_tool_setting.category.keyword_method == 'skip' %} active{% endif %}">
+										<input type="radio" name="upstore_seo_tool_setting[category][keyword_method]" value="skip" {% if upstore_seo_tool_setting.category.keyword_method == 'skip' %}checked="checked"{% endif %}>
+										<span class="on-off">{{ text_yes }}</span>
+									</label>
+									<label class="btn btn-default{% if upstore_seo_tool_setting.category.keyword_method == 'remove' %} active{% endif %}">
+										<input type="radio" name="upstore_seo_tool_setting[category][keyword_method]" value="remove" {% if upstore_seo_tool_setting.category.keyword_method == 'remove' %}checked="checked"{% endif %}>
+										<span class="on-off">{{ text_no }}</span>
+									</label>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">{{ entry_meta_keyword }}</label>
+							<div class="col-sm-10">
+								<ul class="nav nav-tabs" id="seo-keyword-category-language">
+									{% for language in languages %}
+										<li><a href="#seo-keyword-category-language-{{ language.language_id }}" data-toggle="tab"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /> {{ language.name }}</a></li>
+									{% endfor %}
+								</ul>
+								<div class="tab-content">
+									{% for language in languages %}
+										<div class="tab-pane" id="seo-keyword-category-language-{{ language.language_id }}">
+											<input id="seo-keyword-category-input-{{ language.language_id }}" class="form-control cursor-position" type="text" name="upstore_seo_tool_setting[category][seo_keyword][{{ language.language_id }}]" value="{{ upstore_seo_tool_setting.category.seo_keyword[language.language_id] ? upstore_seo_tool_setting.category.seo_keyword[language.language_id] : '' }}" />
+											<div class="seo-variables-container" data-target="#seo-keyword-category-input-{{ language.language_id }}">
+												<div class="seo-variables__items">
+													<span class="seo-variable__item" data-code="[n]">[n]</span>
+													<span class="seo-variable__item" data-code="[text|text|text]">[text|text|text|...]</span>
+												</div>
+												<div class="seo-variables__description">
+													<b>{{ text_definitions }}</b>
+													<span><b>[n]</b> - {{ text_seo_n }}</span>
+													<span><b>[text|text|text|...]</b> - {{ text_seo_random }}</span>
+												</div>
+											</div>
+										</div>
+									{% endfor %}
+									<button type="button" class="btn btn-success" id="seo-tool-gen-cat-mk" data-method="setCategoriesSeoData" data-seo="keyword" data-progress="#category-mk-progress-bar" onclick="setSeoData(this);">{{ button_generate_meta_keyword }}</button>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">{{ entry_generate_seo_url }}</label>
+							<div class="col-sm-4 col-md-2 col-auto">
+								<div class="btn-group" data-toggle="buttons">
+									<label class="btn btn-default{% if upstore_seo_tool_setting.category.url_status %} active{% endif %}">
+										<input type="radio" name="upstore_seo_tool_setting[category][url_status]" value="1" {% if upstore_seo_tool_setting.category.url_status %}checked="checked"{% endif %}>
+										<span class="on-off">{{ text_yes }}</span>
+									</label>
+									<label class="btn btn-default{% if not upstore_seo_tool_setting.category.url_status %} active{% endif %}">
+										<input type="radio" name="upstore_seo_tool_setting[category][url_status]" value="0" {% if not upstore_seo_tool_setting.category.url_status %}checked="checked"{% endif %}>
+										<span class="on-off">{{ text_no }}</span>
+									</label>
+								</div>
+							</div>
+							<label class="col-sm-2 control-label">{{ entry_only_empty_values }}</label>
+							<div class="col-sm-4 col-md-2 col-auto">
+								<div class="btn-group" data-toggle="buttons">
+									<label class="btn btn-default{% if upstore_seo_tool_setting.category.url_method == 'skip' %} active{% endif %}">
+										<input type="radio" name="upstore_seo_tool_setting[category][url_method]" value="skip" {% if upstore_seo_tool_setting.category.url_method == 'skip' %}checked="checked"{% endif %}>
+										<span class="on-off">{{ text_yes }}</span>
+									</label>
+									<label class="btn btn-default{% if upstore_seo_tool_setting.category.url_method == 'remove' %} active{% endif %}">
+										<input type="radio" name="upstore_seo_tool_setting[category][url_method]" value="remove" {% if upstore_seo_tool_setting.category.url_method == 'remove' %}checked="checked"{% endif %}>
+										<span class="on-off">{{ text_no }}</span>
+									</label>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">{{ entry_seo_url }}</label>
+							<div class="col-sm-10">
+								<input id="seo-url-category-input" class="form-control cursor-position" type="text" name="upstore_seo_tool_setting[category][seo_url]" value="{{ upstore_seo_tool_setting.category.seo_url ? upstore_seo_tool_setting.category.seo_url : '' }}" />
+								<div class="seo-variables-container" data-target="#seo-url-category-input">
+									<div class="seo-variables__items">
+										<span class="seo-url-variable__item" data-code="[n]">[n]</span>
+										<span class="seo-url-variable__item" data-code="[category_id]">[category_id]</span>
+										<span class="seo-url-variable__item" data-code="[lang_prefix]">[lang_prefix]</span>
+									</div>
+									<div class="seo-variables__description">
+										<b>{{ text_definitions }}</b>
+										<span><b>[n]</b> - {{ text_seo_n }}</span>
+										<span><b>[category_id]</b> - {{ text_seo_category_id }}</span>
+										<span><b>[lang_prefix]</b> - {{ entry_lang_prefix }}</span>
+									</div>
+								</div>
+								<button type="button" class="btn btn-success" id="seo-tool-gen-cat-su" data-method="setCategoriesSeoData" data-seo="url" data-progress="#category-su-progress-bar" onclick="setSeoData(this);">{{ button_generate_seo_url }}</button>
+							</div>
+						</div>
+					</div>
+					<div class="tab-pane" id="tab-seo-brand">
+						<div class="form-group">
+							<label class="col-sm-2 control-label">{{ entry_status }}</label>
+							<div class="col-sm-4 col-md-2 col-auto">
+								<div class="btn-group" data-toggle="buttons">
+									<label class="btn btn-default{% if upstore_seo_tool_setting.brand.status %} active{% endif %}">
+										<input type="radio" name="upstore_seo_tool_setting[brand][status]" value="1" {% if upstore_seo_tool_setting.brand.status %}checked="checked"{% endif %}>
+										<span class="on-off">{{ text_on }}</span>
+									</label>
+									<label class="btn btn-default{% if not upstore_seo_tool_setting.brand.status %} active{% endif %}">
+										<input type="radio" name="upstore_seo_tool_setting[brand][status]" value="0" {% if not upstore_seo_tool_setting.brand.status %}checked="checked"{% endif %}>
+										<span class="on-off">{{ text_off }}</span>
+									</label>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">{{ entry_generate_meta_title }}</label>
+							<div class="col-sm-4 col-md-2 col-auto">
+								<div class="btn-group" data-toggle="buttons">
+									<label class="btn btn-default{% if upstore_seo_tool_setting.brand.title_status %} active{% endif %}">
+										<input type="radio" name="upstore_seo_tool_setting[brand][title_status]" value="1" {% if upstore_seo_tool_setting.brand.title_status %}checked="checked"{% endif %}>
+										<span class="on-off">{{ text_yes }}</span>
+									</label>
+									<label class="btn btn-default{% if not upstore_seo_tool_setting.brand.title_status %} active{% endif %}">
+										<input type="radio" name="upstore_seo_tool_setting[brand][title_status]" value="0" {% if not upstore_seo_tool_setting.brand.title_status %}checked="checked"{% endif %}>
+										<span class="on-off">{{ text_no }}</span>
+									</label>
+								</div>
+							</div>
+							<label class="col-sm-2 control-label">{{ entry_only_empty_values }}</label>
+							<div class="col-sm-4 col-md-2 col-auto">
+								<div class="btn-group" data-toggle="buttons">
+									<label class="btn btn-default{% if upstore_seo_tool_setting.brand.title_method == 'skip' %} active{% endif %}">
+										<input type="radio" name="upstore_seo_tool_setting[brand][title_method]" value="skip" {% if upstore_seo_tool_setting.brand.title_method == 'skip' %}checked="checked"{% endif %}>
+										<span class="on-off">{{ text_yes }}</span>
+									</label>
+									<label class="btn btn-default{% if upstore_seo_tool_setting.brand.title_method == 'remove' %} active{% endif %}">
+										<input type="radio" name="upstore_seo_tool_setting[brand][title_method]" value="remove" {% if upstore_seo_tool_setting.brand.title_method == 'remove' %}checked="checked"{% endif %}>
+										<span class="on-off">{{ text_no }}</span>
+									</label>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">{{ entry_meta_title }}</label>
+							<div class="col-sm-10">
+								<ul class="nav nav-tabs" id="seo-title-brand-language">
+									{% for language in languages %}
+										<li><a href="#seo-title-brand-language-{{ language.language_id }}" data-toggle="tab"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /> {{ language.name }}</a></li>
+									{% endfor %}
+								</ul>
+								<div class="tab-content">
+									{% for language in languages %}
+										<div class="tab-pane" id="seo-title-brand-language-{{ language.language_id }}">
+											<input id="seo-title-brand-input-{{ language.language_id }}" class="form-control cursor-position" type="text" name="upstore_seo_tool_setting[brand][seo_title][{{ language.language_id }}]" value="{{ upstore_seo_tool_setting.brand.seo_title[language.language_id] ? upstore_seo_tool_setting.brand.seo_title[language.language_id] : '' }}" />
+											<div class="seo-variables-container" data-target="#seo-title-brand-input-{{ language.language_id }}">
+												<div class="seo-variables__items">
+													<span class="seo-variable__item" data-code="[n]">[n]</span>
+													<span class="seo-variable__item" data-code="[text|text|text]">[text|text|text|...]</span>
+												</div>
+												<div class="seo-variables__description">
+													<b>{{ text_definitions }}</b>
+													<span><b>[n]</b> - {{ text_seo_n }}</span>
+													<span><b>[text|text|text|...]</b> - {{ text_seo_random }}</span>
+												</div>
+											</div>
+										</div>
+									{% endfor %}
+									<button type="button" class="btn btn-success" id="seo-tool-gen-brand-mt" data-method="setManufacturerSeoData" data-seo="title" data-progress="#brand-mt-progress-bar" onclick="setSeoData(this);">{{ button_generate_meta_title }}</button>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">{{ entry_generate_meta_h1 }}</label>
+							<div class="col-sm-4 col-md-2 col-auto">
+								<div class="btn-group" data-toggle="buttons">
+									<label class="btn btn-default{% if upstore_seo_tool_setting.brand.h1_status %} active{% endif %}">
+										<input type="radio" name="upstore_seo_tool_setting[brand][h1_status]" value="1" {% if upstore_seo_tool_setting.brand.h1_status %}checked="checked"{% endif %}>
+										<span class="on-off">{{ text_yes }}</span>
+									</label>
+									<label class="btn btn-default{% if not upstore_seo_tool_setting.brand.h1_status %} active{% endif %}">
+										<input type="radio" name="upstore_seo_tool_setting[brand][h1_status]" value="0" {% if not upstore_seo_tool_setting.brand.h1_status %}checked="checked"{% endif %}>
+										<span class="on-off">{{ text_no }}</span>
+									</label>
+								</div>
+							</div>
+							<label class="col-sm-2 control-label">{{ entry_only_empty_values }}</label>
+							<div class="col-sm-4 col-md-2 col-auto">
+								<div class="btn-group" data-toggle="buttons">
+									<label class="btn btn-default{% if upstore_seo_tool_setting.brand.h1_method == 'skip' %} active{% endif %}">
+										<input type="radio" name="upstore_seo_tool_setting[brand][h1_method]" value="skip" {% if upstore_seo_tool_setting.brand.h1_method == 'skip' %}checked="checked"{% endif %}>
+										<span class="on-off">{{ text_yes }}</span>
+									</label>
+									<label class="btn btn-default{% if upstore_seo_tool_setting.brand.h1_method == 'remove' %} active{% endif %}">
+										<input type="radio" name="upstore_seo_tool_setting[brand][h1_method]" value="remove" {% if upstore_seo_tool_setting.brand.h1_method == 'remove' %}checked="checked"{% endif %}>
+										<span class="on-off">{{ text_no }}</span>
+									</label>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">{{ entry_meta_h1 }}</label>
+							<div class="col-sm-10">
+								<ul class="nav nav-tabs" id="seo-h1-brand-language">
+									{% for language in languages %}
+										<li><a href="#seo-h1-brand-language-{{ language.language_id }}" data-toggle="tab"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /> {{ language.name }}</a></li>
+									{% endfor %}
+								</ul>
+								<div class="tab-content">
+									{% for language in languages %}
+										<div class="tab-pane" id="seo-h1-brand-language-{{ language.language_id }}">
+											<input id="seo-h1-brand-input-{{ language.language_id }}" class="form-control cursor-position" type="text" name="upstore_seo_tool_setting[brand][seo_h1][{{ language.language_id }}]" value="{{ upstore_seo_tool_setting.brand.seo_h1[language.language_id] ? upstore_seo_tool_setting.brand.seo_h1[language.language_id] : '' }}" />
+											<div class="seo-variables-container" data-target="#seo-h1-brand-input-{{ language.language_id }}">
+												<div class="seo-variables__items">
+													<span class="seo-variable__item" data-code="[n]">[n]</span>
+													<span class="seo-variable__item" data-code="[text|text|text]">[text|text|text|...]</span>
+												</div>
+												<div class="seo-variables__description">
+													<b>{{ text_definitions }}</b>
+													<span><b>[n]</b> - {{ text_seo_n }}</span>
+													<span><b>[text|text|text|...]</b> - {{ text_seo_random }}</span>
+												</div>
+											</div>
+										</div>
+									{% endfor %}
+									<button type="button" class="btn btn-success" id="seo-tool-gen-brand-h1" data-method="setManufacturerSeoData" data-seo="h1" data-progress="#brand-h1-progress-bar" onclick="setSeoData(this);">{{ button_generate_meta_h1 }}</button>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">{{ entry_generate_meta_description }}</label>
+							<div class="col-sm-4 col-md-2 col-auto">
+								<div class="btn-group" data-toggle="buttons">
+									<label class="btn btn-default{% if upstore_seo_tool_setting.brand.desc_status %} active{% endif %}">
+										<input type="radio" name="upstore_seo_tool_setting[brand][desc_status]" value="1" {% if upstore_seo_tool_setting.brand.desc_status %}checked="checked"{% endif %}>
+										<span class="on-off">{{ text_yes }}</span>
+									</label>
+									<label class="btn btn-default{% if not upstore_seo_tool_setting.brand.desc_status %} active{% endif %}">
+										<input type="radio" name="upstore_seo_tool_setting[brand][desc_status]" value="0" {% if not upstore_seo_tool_setting.brand.desc_status %}checked="checked"{% endif %}>
+										<span class="on-off">{{ text_no }}</span>
+									</label>
+								</div>
+							</div>
+							<label class="col-sm-2 control-label">{{ entry_only_empty_values }}</label>
+							<div class="col-sm-4 col-md-2 col-auto">
+								<div class="btn-group" data-toggle="buttons">
+									<label class="btn btn-default{% if upstore_seo_tool_setting.brand.desc_method == 'skip' %} active{% endif %}">
+										<input type="radio" name="upstore_seo_tool_setting[brand][desc_method]" value="skip" {% if upstore_seo_tool_setting.brand.desc_method == 'skip' %}checked="checked"{% endif %}>
+										<span class="on-off">{{ text_yes }}</span>
+									</label>
+									<label class="btn btn-default{% if upstore_seo_tool_setting.brand.desc_method == 'remove' %} active{% endif %}">
+										<input type="radio" name="upstore_seo_tool_setting[brand][desc_method]" value="remove" {% if upstore_seo_tool_setting.brand.desc_method == 'remove' %}checked="checked"{% endif %}>
+										<span class="on-off">{{ text_no }}</span>
+									</label>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">{{ entry_meta_description }}</label>
+							<div class="col-sm-10">
+								<ul class="nav nav-tabs" id="seo-desc-brand-language">
+									{% for language in languages %}
+										<li><a href="#seo-desc-brand-language-{{ language.language_id }}" data-toggle="tab"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /> {{ language.name }}</a></li>
+									{% endfor %}
+								</ul>
+								<div class="tab-content">
+									{% for language in languages %}
+										<div class="tab-pane" id="seo-desc-brand-language-{{ language.language_id }}">
+											<input id="seo-desc-brand-input-{{ language.language_id }}" class="form-control cursor-position" type="text" name="upstore_seo_tool_setting[brand][seo_desc][{{ language.language_id }}]" value="{{ upstore_seo_tool_setting.brand.seo_desc[language.language_id] ? upstore_seo_tool_setting.brand.seo_desc[language.language_id] : '' }}" />
+											<div class="seo-variables-container" data-target="#seo-desc-brand-input-{{ language.language_id }}">
+												<div class="seo-variables__items">
+													<span class="seo-variable__item" data-code="[n]">[n]</span>
+													<span class="seo-variable__item" data-code="[text|text|text]">[text|text|text|...]</span>
+												</div>
+												<div class="seo-variables__description">
+													<b>{{ text_definitions }}</b>
+													<span><b>[n]</b> - {{ text_seo_n }}</span>
+													<span><b>[text|text|text|...]</b> - {{ text_seo_random }}</span>
+												</div>
+											</div>
+										</div>
+									{% endfor %}
+									<button type="button" class="btn btn-success" id="seo-tool-gen-brand-md" data-method="setManufacturerSeoData" data-seo="desc" data-progress="#brand-md-progress-bar" onclick="setSeoData(this);">{{ button_generate_meta_description }}</button>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">{{ entry_generate_meta_keyword }}</label>
+							<div class="col-sm-4 col-md-2 col-auto">
+								<div class="btn-group" data-toggle="buttons">
+									<label class="btn btn-default{% if upstore_seo_tool_setting.brand.keyword_status %} active{% endif %}">
+										<input type="radio" name="upstore_seo_tool_setting[brand][keyword_status]" value="1" {% if upstore_seo_tool_setting.brand.keyword_status %}checked="checked"{% endif %}>
+										<span class="on-off">{{ text_yes }}</span>
+									</label>
+									<label class="btn btn-default{% if not upstore_seo_tool_setting.brand.keyword_status %} active{% endif %}">
+										<input type="radio" name="upstore_seo_tool_setting[brand][keyword_status]" value="0" {% if not upstore_seo_tool_setting.brand.keyword_status %}checked="checked"{% endif %}>
+										<span class="on-off">{{ text_no }}</span>
+									</label>
+								</div>
+							</div>
+							<label class="col-sm-2 control-label">{{ entry_only_empty_values }}</label>
+							<div class="col-sm-4 col-md-2 col-auto">
+								<div class="btn-group" data-toggle="buttons">
+									<label class="btn btn-default{% if upstore_seo_tool_setting.brand.keyword_method == 'skip' %} active{% endif %}">
+										<input type="radio" name="upstore_seo_tool_setting[brand][keyword_method]" value="skip" {% if upstore_seo_tool_setting.brand.keyword_method == 'skip' %}checked="checked"{% endif %}>
+										<span class="on-off">{{ text_yes }}</span>
+									</label>
+									<label class="btn btn-default{% if upstore_seo_tool_setting.brand.keyword_method == 'remove' %} active{% endif %}">
+										<input type="radio" name="upstore_seo_tool_setting[brand][keyword_method]" value="remove" {% if upstore_seo_tool_setting.brand.keyword_method == 'remove' %}checked="checked"{% endif %}>
+										<span class="on-off">{{ text_no }}</span>
+									</label>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">{{ entry_meta_keyword }}</label>
+							<div class="col-sm-10">
+								<ul class="nav nav-tabs" id="seo-keyword-brand-language">
+									{% for language in languages %}
+										<li><a href="#seo-keyword-brand-language-{{ language.language_id }}" data-toggle="tab"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /> {{ language.name }}</a></li>
+									{% endfor %}
+								</ul>
+								<div class="tab-content">
+									{% for language in languages %}
+										<div class="tab-pane" id="seo-keyword-brand-language-{{ language.language_id }}">
+											<input id="seo-keyword-brand-input-{{ language.language_id }}" class="form-control cursor-position" type="text" name="upstore_seo_tool_setting[brand][seo_keyword][{{ language.language_id }}]" value="{{ upstore_seo_tool_setting.brand.seo_keyword[language.language_id] ? upstore_seo_tool_setting.brand.seo_keyword[language.language_id] : '' }}" />
+											<div class="seo-variables-container" data-target="#seo-keyword-brand-input-{{ language.language_id }}">
+												<div class="seo-variables__items">
+													<span class="seo-variable__item" data-code="[n]">[n]</span>
+													<span class="seo-variable__item" data-code="[text|text|text]">[text|text|text|...]</span>
+												</div>
+												<div class="seo-variables__description">
+													<b>{{ text_definitions }}</b>
+													<span><b>[n]</b> - {{ text_seo_n }}</span>
+													<span><b>[text|text|text|...]</b> - {{ text_seo_random }}</span>
+												</div>
+											</div>
+										</div>
+									{% endfor %}
+									<button type="button" class="btn btn-success" id="seo-tool-gen-brand-mk" data-method="setManufacturerSeoData" data-seo="keyword" data-progress="#brand-mk-progress-bar" onclick="setSeoData(this);">{{ button_generate_meta_keyword }}</button>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">{{ entry_generate_seo_url }}</label>
+							<div class="col-sm-4 col-md-2 col-auto">
+								<div class="btn-group" data-toggle="buttons">
+									<label class="btn btn-default{% if upstore_seo_tool_setting.brand.url_status %} active{% endif %}">
+										<input type="radio" name="upstore_seo_tool_setting[brand][url_status]" value="1" {% if upstore_seo_tool_setting.brand.url_status %}checked="checked"{% endif %}>
+										<span class="on-off">{{ text_yes }}</span>
+									</label>
+									<label class="btn btn-default{% if not upstore_seo_tool_setting.brand.url_status %} active{% endif %}">
+										<input type="radio" name="upstore_seo_tool_setting[brand][url_status]" value="0" {% if not upstore_seo_tool_setting.brand.url_status %}checked="checked"{% endif %}>
+										<span class="on-off">{{ text_no }}</span>
+									</label>
+								</div>
+							</div>
+							<label class="col-sm-2 control-label">{{ entry_only_empty_values }}</label>
+							<div class="col-sm-4 col-md-2 col-auto">
+								<div class="btn-group" data-toggle="buttons">
+									<label class="btn btn-default{% if upstore_seo_tool_setting.brand.url_method == 'skip' %} active{% endif %}">
+										<input type="radio" name="upstore_seo_tool_setting[brand][url_method]" value="skip" {% if upstore_seo_tool_setting.brand.url_method == 'skip' %}checked="checked"{% endif %}>
+										<span class="on-off">{{ text_yes }}</span>
+									</label>
+									<label class="btn btn-default{% if upstore_seo_tool_setting.brand.url_method == 'remove' %} active{% endif %}">
+										<input type="radio" name="upstore_seo_tool_setting[brand][url_method]" value="remove" {% if upstore_seo_tool_setting.brand.url_method == 'remove' %}checked="checked"{% endif %}>
+										<span class="on-off">{{ text_no }}</span>
+									</label>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">{{ entry_seo_url }}</label>
+							<div class="col-sm-10">
+								<input id="seo-url-brand-input" class="form-control cursor-position" type="text" name="upstore_seo_tool_setting[brand][seo_url]" value="{{ upstore_seo_tool_setting.brand.seo_url ? upstore_seo_tool_setting.brand.seo_url : '' }}" />
+								<div class="seo-variables-container" data-target="#seo-url-brand-input">
+									<div class="seo-variables__items">
+										<span class="seo-url-variable__item" data-code="[n]">[n]</span>
+										<span class="seo-url-variable__item" data-code="[manufacturer_id]">[manufacturer_id]</span>
+										<span class="seo-url-variable__item" data-code="[lang_prefix]">[lang_prefix]</span>
+									</div>
+									<div class="seo-variables__description">
+										<b>{{ text_definitions }}</b>
+										<span><b>[n]</b> - {{ text_seo_n }}</span>
+										<span><b>[manufacturer_id]</b> - {{ text_seo_manufacturer_id }}</span>
+										<span><b>[lang_prefix]</b> - {{ entry_lang_prefix }}</span>
+									</div>
+								</div>
+								<button type="button" class="btn btn-success" id="seo-tool-gen-brand-su" data-method="setManufacturerSeoData" data-seo="url" data-progress="#brand-su-progress-bar" onclick="setSeoData(this);">{{ button_generate_seo_url }}</button>
+							</div>
+						</div>
+					</div>
+					<div class="tab-pane" id="tab-seo-information">
+						<div class="form-group">
+							<label class="col-sm-2 control-label">{{ entry_status }}</label>
+							<div class="col-sm-4 col-md-2 col-auto">
+								<div class="btn-group" data-toggle="buttons">
+									<label class="btn btn-default{% if upstore_seo_tool_setting.information.status %} active{% endif %}">
+										<input type="radio" name="upstore_seo_tool_setting[information][status]" value="1" {% if upstore_seo_tool_setting.information.status %}checked="checked"{% endif %}>
+										<span class="on-off">{{ text_on }}</span>
+									</label>
+									<label class="btn btn-default{% if not upstore_seo_tool_setting.information.status %} active{% endif %}">
+										<input type="radio" name="upstore_seo_tool_setting[information][status]" value="0" {% if not upstore_seo_tool_setting.information.status %}checked="checked"{% endif %}>
+										<span class="on-off">{{ text_off }}</span>
+									</label>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">{{ entry_generate_meta_title }}</label>
+							<div class="col-sm-4 col-md-2 col-auto">
+								<div class="btn-group" data-toggle="buttons">
+									<label class="btn btn-default{% if upstore_seo_tool_setting.information.title_status %} active{% endif %}">
+										<input type="radio" name="upstore_seo_tool_setting[information][title_status]" value="1" {% if upstore_seo_tool_setting.information.title_status %}checked="checked"{% endif %}>
+										<span class="on-off">{{ text_yes }}</span>
+									</label>
+									<label class="btn btn-default{% if not upstore_seo_tool_setting.information.title_status %} active{% endif %}">
+										<input type="radio" name="upstore_seo_tool_setting[information][title_status]" value="0" {% if not upstore_seo_tool_setting.information.title_status %}checked="checked"{% endif %}>
+										<span class="on-off">{{ text_no }}</span>
+									</label>
+								</div>
+							</div>
+							<label class="col-sm-2 control-label">{{ entry_only_empty_values }}</label>
+							<div class="col-sm-4 col-md-2 col-auto">
+								<div class="btn-group" data-toggle="buttons">
+									<label class="btn btn-default{% if upstore_seo_tool_setting.information.title_method == 'skip' %} active{% endif %}">
+										<input type="radio" name="upstore_seo_tool_setting[information][title_method]" value="skip" {% if upstore_seo_tool_setting.information.title_method == 'skip' %}checked="checked"{% endif %}>
+										<span class="on-off">{{ text_yes }}</span>
+									</label>
+									<label class="btn btn-default{% if upstore_seo_tool_setting.information.title_method == 'remove' %} active{% endif %}">
+										<input type="radio" name="upstore_seo_tool_setting[information][title_method]" value="remove" {% if upstore_seo_tool_setting.information.title_method == 'remove' %}checked="checked"{% endif %}>
+										<span class="on-off">{{ text_no }}</span>
+									</label>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">{{ entry_meta_title }}</label>
+							<div class="col-sm-10">
+								<ul class="nav nav-tabs" id="seo-title-information-language">
+									{% for language in languages %}
+										<li><a href="#seo-title-information-language-{{ language.language_id }}" data-toggle="tab"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /> {{ language.name }}</a></li>
+									{% endfor %}
+								</ul>
+								<div class="tab-content">
+									{% for language in languages %}
+										<div class="tab-pane" id="seo-title-information-language-{{ language.language_id }}">
+											<input id="seo-title-information-input-{{ language.language_id }}" class="form-control cursor-position" type="text" name="upstore_seo_tool_setting[information][seo_title][{{ language.language_id }}]" value="{{ upstore_seo_tool_setting.information.seo_title[language.language_id] ? upstore_seo_tool_setting.information.seo_title[language.language_id] : '' }}" />
+											<div class="seo-variables-container" data-target="#seo-title-information-input-{{ language.language_id }}">
+												<div class="seo-variables__items">
+													<span class="seo-variable__item" data-code="[n]">[n]</span>
+													<span class="seo-variable__item" data-code="[text|text|text]">[text|text|text|...]</span>
+												</div>
+												<div class="seo-variables__description">
+													<b>{{ text_definitions }}</b>
+													<span><b>[n]</b> - {{ text_seo_n }}</span>
+													<span><b>[text|text|text|...]</b> - {{ text_seo_random }}</span>
+												</div>
+											</div>
+										</div>
+									{% endfor %}
+									<button type="button" class="btn btn-success" id="seo-tool-gen-information-mt" data-method="setInformationSeoData" data-seo="title" data-progress="#information-mt-progress-bar" onclick="setSeoData(this);">{{ button_generate_meta_title }}</button>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">{{ entry_generate_meta_h1 }}</label>
+							<div class="col-sm-4 col-md-2 col-auto">
+								<div class="btn-group" data-toggle="buttons">
+									<label class="btn btn-default{% if upstore_seo_tool_setting.information.h1_status %} active{% endif %}">
+										<input type="radio" name="upstore_seo_tool_setting[information][h1_status]" value="1" {% if upstore_seo_tool_setting.information.h1_status %}checked="checked"{% endif %}>
+										<span class="on-off">{{ text_yes }}</span>
+									</label>
+									<label class="btn btn-default{% if not upstore_seo_tool_setting.information.h1_status %} active{% endif %}">
+										<input type="radio" name="upstore_seo_tool_setting[information][h1_status]" value="0" {% if not upstore_seo_tool_setting.information.h1_status %}checked="checked"{% endif %}>
+										<span class="on-off">{{ text_no }}</span>
+									</label>
+								</div>
+							</div>
+							<label class="col-sm-2 control-label">{{ entry_only_empty_values }}</label>
+							<div class="col-sm-4 col-md-2 col-auto">
+								<div class="btn-group" data-toggle="buttons">
+									<label class="btn btn-default{% if upstore_seo_tool_setting.information.h1_method == 'skip' %} active{% endif %}">
+										<input type="radio" name="upstore_seo_tool_setting[information][h1_method]" value="skip" {% if upstore_seo_tool_setting.information.h1_method == 'skip' %}checked="checked"{% endif %}>
+										<span class="on-off">{{ text_yes }}</span>
+									</label>
+									<label class="btn btn-default{% if upstore_seo_tool_setting.information.h1_method == 'remove' %} active{% endif %}">
+										<input type="radio" name="upstore_seo_tool_setting[information][h1_method]" value="remove" {% if upstore_seo_tool_setting.information.h1_method == 'remove' %}checked="checked"{% endif %}>
+										<span class="on-off">{{ text_no }}</span>
+									</label>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">{{ entry_meta_h1 }}</label>
+							<div class="col-sm-10">
+								<ul class="nav nav-tabs" id="seo-h1-information-language">
+									{% for language in languages %}
+										<li><a href="#seo-h1-information-language-{{ language.language_id }}" data-toggle="tab"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /> {{ language.name }}</a></li>
+									{% endfor %}
+								</ul>
+								<div class="tab-content">
+									{% for language in languages %}
+										<div class="tab-pane" id="seo-h1-information-language-{{ language.language_id }}">
+											<input id="seo-h1-information-input-{{ language.language_id }}" class="form-control cursor-position" type="text" name="upstore_seo_tool_setting[information][seo_h1][{{ language.language_id }}]" value="{{ upstore_seo_tool_setting.information.seo_h1[language.language_id] ? upstore_seo_tool_setting.information.seo_h1[language.language_id] : '' }}" />
+											<div class="seo-variables-container" data-target="#seo-h1-information-input-{{ language.language_id }}">
+												<div class="seo-variables__items">
+													<span class="seo-variable__item" data-code="[n]">[n]</span>
+													<span class="seo-variable__item" data-code="[text|text|text]">[text|text|text|...]</span>
+												</div>
+												<div class="seo-variables__description">
+													<b>{{ text_definitions }}</b>
+													<span><b>[n]</b> - {{ text_seo_n }}</span>
+													<span><b>[text|text|text|...]</b> - {{ text_seo_random }}</span>
+												</div>
+											</div>
+										</div>
+									{% endfor %}
+									<button type="button" class="btn btn-success" id="seo-tool-gen-information-h1" data-method="setInformationSeoData" data-seo="h1" data-progress="#information-h1-progress-bar" onclick="setSeoData(this);">{{ button_generate_meta_h1 }}</button>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">{{ entry_generate_meta_description }}</label>
+							<div class="col-sm-4 col-md-2 col-auto">
+								<div class="btn-group" data-toggle="buttons">
+									<label class="btn btn-default{% if upstore_seo_tool_setting.information.desc_status %} active{% endif %}">
+										<input type="radio" name="upstore_seo_tool_setting[information][desc_status]" value="1" {% if upstore_seo_tool_setting.information.desc_status %}checked="checked"{% endif %}>
+										<span class="on-off">{{ text_yes }}</span>
+									</label>
+									<label class="btn btn-default{% if not upstore_seo_tool_setting.information.desc_status %} active{% endif %}">
+										<input type="radio" name="upstore_seo_tool_setting[information][desc_status]" value="0" {% if not upstore_seo_tool_setting.information.desc_status %}checked="checked"{% endif %}>
+										<span class="on-off">{{ text_no }}</span>
+									</label>
+								</div>
+							</div>
+							<label class="col-sm-2 control-label">{{ entry_only_empty_values }}</label>
+							<div class="col-sm-4 col-md-2 col-auto">
+								<div class="btn-group" data-toggle="buttons">
+									<label class="btn btn-default{% if upstore_seo_tool_setting.information.desc_method == 'skip' %} active{% endif %}">
+										<input type="radio" name="upstore_seo_tool_setting[information][desc_method]" value="skip" {% if upstore_seo_tool_setting.information.desc_method == 'skip' %}checked="checked"{% endif %}>
+										<span class="on-off">{{ text_yes }}</span>
+									</label>
+									<label class="btn btn-default{% if upstore_seo_tool_setting.information.desc_method == 'remove' %} active{% endif %}">
+										<input type="radio" name="upstore_seo_tool_setting[information][desc_method]" value="remove" {% if upstore_seo_tool_setting.information.desc_method == 'remove' %}checked="checked"{% endif %}>
+										<span class="on-off">{{ text_no }}</span>
+									</label>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">{{ entry_meta_description }}</label>
+							<div class="col-sm-10">
+								<ul class="nav nav-tabs" id="seo-desc-information-language">
+									{% for language in languages %}
+										<li><a href="#seo-desc-information-language-{{ language.language_id }}" data-toggle="tab"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /> {{ language.name }}</a></li>
+									{% endfor %}
+								</ul>
+								<div class="tab-content">
+									{% for language in languages %}
+										<div class="tab-pane" id="seo-desc-information-language-{{ language.language_id }}">
+											<input id="seo-desc-information-input-{{ language.language_id }}" class="form-control cursor-position" type="text" name="upstore_seo_tool_setting[information][seo_desc][{{ language.language_id }}]" value="{{ upstore_seo_tool_setting.information.seo_desc[language.language_id] ? upstore_seo_tool_setting.information.seo_desc[language.language_id] : '' }}" />
+											<div class="seo-variables-container" data-target="#seo-desc-information-input-{{ language.language_id }}">
+												<div class="seo-variables__items">
+													<span class="seo-variable__item" data-code="[n]">[n]</span>
+													<span class="seo-variable__item" data-code="[text|text|text]">[text|text|text|...]</span>
+												</div>
+												<div class="seo-variables__description">
+													<b>{{ text_definitions }}</b>
+													<span><b>[n]</b> - {{ text_seo_n }}</span>
+													<span><b>[text|text|text|...]</b> - {{ text_seo_random }}</span>
+												</div>
+											</div>
+										</div>
+									{% endfor %}
+									<button type="button" class="btn btn-success" id="seo-tool-gen-information-md" data-method="setInformationSeoData" data-seo="desc" data-progress="#information-md-progress-bar" onclick="setSeoData(this);">{{ button_generate_meta_description }}</button>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">{{ entry_generate_meta_keyword }}</label>
+							<div class="col-sm-4 col-md-2 col-auto">
+								<div class="btn-group" data-toggle="buttons">
+									<label class="btn btn-default{% if upstore_seo_tool_setting.information.keyword_status %} active{% endif %}">
+										<input type="radio" name="upstore_seo_tool_setting[information][keyword_status]" value="1" {% if upstore_seo_tool_setting.information.keyword_status %}checked="checked"{% endif %}>
+										<span class="on-off">{{ text_yes }}</span>
+									</label>
+									<label class="btn btn-default{% if not upstore_seo_tool_setting.information.keyword_status %} active{% endif %}">
+										<input type="radio" name="upstore_seo_tool_setting[information][keyword_status]" value="0" {% if not upstore_seo_tool_setting.information.keyword_status %}checked="checked"{% endif %}>
+										<span class="on-off">{{ text_no }}</span>
+									</label>
+								</div>
+							</div>
+							<label class="col-sm-2 control-label">{{ entry_only_empty_values }}</label>
+							<div class="col-sm-4 col-md-2 col-auto">
+								<div class="btn-group" data-toggle="buttons">
+									<label class="btn btn-default{% if upstore_seo_tool_setting.information.keyword_method == 'skip' %} active{% endif %}">
+										<input type="radio" name="upstore_seo_tool_setting[information][keyword_method]" value="skip" {% if upstore_seo_tool_setting.information.keyword_method == 'skip' %}checked="checked"{% endif %}>
+										<span class="on-off">{{ text_yes }}</span>
+									</label>
+									<label class="btn btn-default{% if upstore_seo_tool_setting.information.keyword_method == 'remove' %} active{% endif %}">
+										<input type="radio" name="upstore_seo_tool_setting[information][keyword_method]" value="remove" {% if upstore_seo_tool_setting.information.keyword_method == 'remove' %}checked="checked"{% endif %}>
+										<span class="on-off">{{ text_no }}</span>
+									</label>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">{{ entry_meta_keyword }}</label>
+							<div class="col-sm-10">
+								<ul class="nav nav-tabs" id="seo-keyword-information-language">
+									{% for language in languages %}
+										<li><a href="#seo-keyword-information-language-{{ language.language_id }}" data-toggle="tab"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /> {{ language.name }}</a></li>
+									{% endfor %}
+								</ul>
+								<div class="tab-content">
+									{% for language in languages %}
+										<div class="tab-pane" id="seo-keyword-information-language-{{ language.language_id }}">
+											<input id="seo-keyword-information-input-{{ language.language_id }}" class="form-control cursor-position" type="text" name="upstore_seo_tool_setting[information][seo_keyword][{{ language.language_id }}]" value="{{ upstore_seo_tool_setting.information.seo_keyword[language.language_id] ? upstore_seo_tool_setting.information.seo_keyword[language.language_id] : '' }}" />
+											<div class="seo-variables-container" data-target="#seo-keyword-information-input-{{ language.language_id }}">
+												<div class="seo-variables__items">
+													<span class="seo-variable__item" data-code="[n]">[n]</span>
+													<span class="seo-variable__item" data-code="[text|text|text]">[text|text|text|...]</span>
+												</div>
+												<div class="seo-variables__description">
+													<b>{{ text_definitions }}</b>
+													<span><b>[n]</b> - {{ text_seo_n }}</span>
+													<span><b>[text|text|text|...]</b> - {{ text_seo_random }}</span>
+												</div>
+											</div>
+										</div>
+									{% endfor %}
+									<button type="button" class="btn btn-success" id="seo-tool-gen-information-mk" data-method="setInformationSeoData" data-seo="keyword" data-progress="#information-mk-progress-bar" onclick="setSeoData(this);">{{ button_generate_meta_keyword }}</button>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">{{ entry_generate_seo_url }}</label>
+							<div class="col-sm-4 col-md-2 col-auto">
+								<div class="btn-group" data-toggle="buttons">
+									<label class="btn btn-default{% if upstore_seo_tool_setting.information.url_status %} active{% endif %}">
+										<input type="radio" name="upstore_seo_tool_setting[information][url_status]" value="1" {% if upstore_seo_tool_setting.information.url_status %}checked="checked"{% endif %}>
+										<span class="on-off">{{ text_yes }}</span>
+									</label>
+									<label class="btn btn-default{% if not upstore_seo_tool_setting.information.url_status %} active{% endif %}">
+										<input type="radio" name="upstore_seo_tool_setting[information][url_status]" value="0" {% if not upstore_seo_tool_setting.information.url_status %}checked="checked"{% endif %}>
+										<span class="on-off">{{ text_no }}</span>
+									</label>
+								</div>
+							</div>
+							<label class="col-sm-2 control-label">{{ entry_only_empty_values }}</label>
+							<div class="col-sm-4 col-md-2 col-auto">
+								<div class="btn-group" data-toggle="buttons">
+									<label class="btn btn-default{% if upstore_seo_tool_setting.information.url_method == 'skip' %} active{% endif %}">
+										<input type="radio" name="upstore_seo_tool_setting[information][url_method]" value="skip" {% if upstore_seo_tool_setting.information.url_method == 'skip' %}checked="checked"{% endif %}>
+										<span class="on-off">{{ text_yes }}</span>
+									</label>
+									<label class="btn btn-default{% if upstore_seo_tool_setting.information.url_method == 'remove' %} active{% endif %}">
+										<input type="radio" name="upstore_seo_tool_setting[information][url_method]" value="remove" {% if upstore_seo_tool_setting.information.url_method == 'remove' %}checked="checked"{% endif %}>
+										<span class="on-off">{{ text_no }}</span>
+									</label>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">{{ entry_seo_url }}</label>
+							<div class="col-sm-10">
+								<input id="seo-url-information-input" class="form-control cursor-position" type="text" name="upstore_seo_tool_setting[information][seo_url]" value="{{ upstore_seo_tool_setting.information.seo_url ? upstore_seo_tool_setting.information.seo_url : '' }}" />
+								<div class="seo-variables-container" data-target="#seo-url-information-input">
+									<div class="seo-variables__items">
+										<span class="seo-url-variable__item" data-code="[n]">[n]</span>
+										<span class="seo-url-variable__item" data-code="[information_id]">[information_id]</span>
+										<span class="seo-url-variable__item" data-code="[lang_prefix]">[lang_prefix]</span>
+									</div>
+									<div class="seo-variables__description">
+										<b>{{ text_definitions }}</b>
+										<span><b>[n]</b> - {{ text_seo_n }}</span>
+										<span><b>[information_id]</b> - {{ text_seo_information_id }}</span>
+										<span><b>[lang_prefix]</b> - {{ entry_lang_prefix }}</span>
+									</div>
+								</div>
+								<button type="button" class="btn btn-success" id="seo-tool-gen-information-su" data-method="setInformationSeoData" data-seo="url" data-progress="#information-su-progress-bar" onclick="setSeoData(this);">{{ button_generate_seo_url }}</button>
+							</div>
+						</div>
+					</div>
+					<div class="tab-pane" id="tab-seo-news">
+						<ul class="nav nav-tabs">
+							<li class="active"><a href="#tab-news-category" data-toggle="tab">{{ tab_seo_category }}</a></li>
+							<li><a href="#tab-news-articles" data-toggle="tab">{{ tab_seo_information }}</a></li>
+						</ul>
+						<div class="tab-content">
+							<div class="tab-pane active" id="tab-news-category">
+								<div class="form-group">
+									<label class="col-sm-2 control-label">{{ entry_status }}</label>
+									<div class="col-sm-4 col-md-2 col-auto">
+										<div class="btn-group" data-toggle="buttons">
+											<label class="btn btn-default{% if upstore_seo_tool_setting.news_category.status %} active{% endif %}">
+												<input type="radio" name="upstore_seo_tool_setting[news_category][status]" value="1" {% if upstore_seo_tool_setting.news_category.status %}checked="checked"{% endif %}>
+												<span class="on-off">{{ text_on }}</span>
+											</label>
+											<label class="btn btn-default{% if not upstore_seo_tool_setting.news_category.status %} active{% endif %}">
+												<input type="radio" name="upstore_seo_tool_setting[news_category][status]" value="0" {% if not upstore_seo_tool_setting.news_category.status %}checked="checked"{% endif %}>
+												<span class="on-off">{{ text_off }}</span>
+											</label>
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-2 control-label">{{ entry_generate_meta_title }}</label>
+									<div class="col-sm-4 col-md-2 col-auto">
+										<div class="btn-group" data-toggle="buttons">
+											<label class="btn btn-default{% if upstore_seo_tool_setting.news_category.title_status %} active{% endif %}">
+												<input type="radio" name="upstore_seo_tool_setting[news_category][title_status]" value="1" {% if upstore_seo_tool_setting.news_category.title_status %}checked="checked"{% endif %}>
+												<span class="on-off">{{ text_yes }}</span>
+											</label>
+											<label class="btn btn-default{% if not upstore_seo_tool_setting.news_category.title_status %} active{% endif %}">
+												<input type="radio" name="upstore_seo_tool_setting[news_category][title_status]" value="0" {% if not upstore_seo_tool_setting.news_category.title_status %}checked="checked"{% endif %}>
+												<span class="on-off">{{ text_no }}</span>
+											</label>
+										</div>
+									</div>
+									<label class="col-sm-2 control-label">{{ entry_only_empty_values }}</label>
+									<div class="col-sm-4 col-md-2 col-auto">
+										<div class="btn-group" data-toggle="buttons">
+											<label class="btn btn-default{% if upstore_seo_tool_setting.news_category.title_method == 'skip' %} active{% endif %}">
+												<input type="radio" name="upstore_seo_tool_setting[news_category][title_method]" value="skip" {% if upstore_seo_tool_setting.news_category.title_method == 'skip' %}checked="checked"{% endif %}>
+												<span class="on-off">{{ text_yes }}</span>
+											</label>
+											<label class="btn btn-default{% if upstore_seo_tool_setting.news_category.title_method == 'remove' %} active{% endif %}">
+												<input type="radio" name="upstore_seo_tool_setting[news_category][title_method]" value="remove" {% if upstore_seo_tool_setting.news_category.title_method == 'remove' %}checked="checked"{% endif %}>
+												<span class="on-off">{{ text_no }}</span>
+											</label>
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-2 control-label">{{ entry_meta_title }}</label>
+									<div class="col-sm-10">
+										<ul class="nav nav-tabs" id="seo-title-news_category-language">
+											{% for language in languages %}
+												<li><a href="#seo-title-news_category-language-{{ language.language_id }}" data-toggle="tab"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /> {{ language.name }}</a></li>
+											{% endfor %}
+										</ul>
+										<div class="tab-content">
+											{% for language in languages %}
+												<div class="tab-pane" id="seo-title-news_category-language-{{ language.language_id }}">
+													<input id="seo-title-news_category-input-{{ language.language_id }}" class="form-control cursor-position" type="text" name="upstore_seo_tool_setting[news_category][seo_title][{{ language.language_id }}]" value="{{ upstore_seo_tool_setting.news_category.seo_title[language.language_id] ? upstore_seo_tool_setting.news_category.seo_title[language.language_id] : '' }}" />
+													<div class="seo-variables-container" data-target="#seo-title-news_category-input-{{ language.language_id }}">
+														<div class="seo-variables__items">
+															<span class="seo-variable__item" data-code="[n]">[n]</span>
+															<span class="seo-variable__item" data-code="[text|text|text]">[text|text|text|...]</span>
+														</div>
+														<div class="seo-variables__description">
+															<b>{{ text_definitions }}</b>
+															<span><b>[n]</b> - {{ text_seo_n }}</span>
+															<span><b>[text|text|text|...]</b> - {{ text_seo_random }}</span>
+														</div>
+													</div>
+												</div>
+											{% endfor %}
+											<button type="button" class="btn btn-success" id="seo-tool-gen-news-category-mt" data-method="setNewsCategorySeoData" data-seo="title" data-progress="#news-category-mt-progress-bar" onclick="setSeoData(this);">{{ button_generate_meta_title }}</button>
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-2 control-label">{{ entry_generate_meta_h1 }}</label>
+									<div class="col-sm-4 col-md-2 col-auto">
+										<div class="btn-group" data-toggle="buttons">
+											<label class="btn btn-default{% if upstore_seo_tool_setting.news_category.h1_status %} active{% endif %}">
+												<input type="radio" name="upstore_seo_tool_setting[news_category][h1_status]" value="1" {% if upstore_seo_tool_setting.news_category.h1_status %}checked="checked"{% endif %}>
+												<span class="on-off">{{ text_yes }}</span>
+											</label>
+											<label class="btn btn-default{% if not upstore_seo_tool_setting.news_category.h1_status %} active{% endif %}">
+												<input type="radio" name="upstore_seo_tool_setting[news_category][h1_status]" value="0" {% if not upstore_seo_tool_setting.news_category.h1_status %}checked="checked"{% endif %}>
+												<span class="on-off">{{ text_no }}</span>
+											</label>
+										</div>
+									</div>
+									<label class="col-sm-2 control-label">{{ entry_only_empty_values }}</label>
+									<div class="col-sm-4 col-md-2 col-auto">
+										<div class="btn-group" data-toggle="buttons">
+											<label class="btn btn-default{% if upstore_seo_tool_setting.news_category.h1_method == 'skip' %} active{% endif %}">
+												<input type="radio" name="upstore_seo_tool_setting[news_category][h1_method]" value="skip" {% if upstore_seo_tool_setting.news_category.h1_method == 'skip' %}checked="checked"{% endif %}>
+												<span class="on-off">{{ text_yes }}</span>
+											</label>
+											<label class="btn btn-default{% if upstore_seo_tool_setting.news_category.h1_method == 'remove' %} active{% endif %}">
+												<input type="radio" name="upstore_seo_tool_setting[news_category][h1_method]" value="remove" {% if upstore_seo_tool_setting.news_category.h1_method == 'remove' %}checked="checked"{% endif %}>
+												<span class="on-off">{{ text_no }}</span>
+											</label>
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-2 control-label">{{ entry_meta_h1 }}</label>
+									<div class="col-sm-10">
+										<ul class="nav nav-tabs" id="seo-h1-news_category-language">
+											{% for language in languages %}
+												<li><a href="#seo-h1-news_category-language-{{ language.language_id }}" data-toggle="tab"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /> {{ language.name }}</a></li>
+											{% endfor %}
+										</ul>
+										<div class="tab-content">
+											{% for language in languages %}
+												<div class="tab-pane" id="seo-h1-news_category-language-{{ language.language_id }}">
+													<input id="seo-h1-news_category-input-{{ language.language_id }}" class="form-control cursor-position" type="text" name="upstore_seo_tool_setting[news_category][seo_h1][{{ language.language_id }}]" value="{{ upstore_seo_tool_setting.news_category.seo_h1[language.language_id] ? upstore_seo_tool_setting.news_category.seo_h1[language.language_id] : '' }}" />
+													<div class="seo-variables-container" data-target="#seo-h1-news_category-input-{{ language.language_id }}">
+														<div class="seo-variables__items">
+															<span class="seo-variable__item" data-code="[n]">[n]</span>
+															<span class="seo-variable__item" data-code="[text|text|text]">[text|text|text|...]</span>
+														</div>
+														<div class="seo-variables__description">
+															<b>{{ text_definitions }}</b>
+															<span><b>[n]</b> - {{ text_seo_n }}</span>
+															<span><b>[text|text|text|...]</b> - {{ text_seo_random }}</span>
+														</div>
+													</div>
+												</div>
+											{% endfor %}
+											<button type="button" class="btn btn-success" id="seo-tool-gen-news-category-h1" data-method="setNewsCategorySeoData" data-seo="h1" data-progress="#news-category-h1-progress-bar" onclick="setSeoData(this);">{{ button_generate_meta_h1 }}</button>
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-2 control-label">{{ entry_generate_meta_description }}</label>
+									<div class="col-sm-4 col-md-2 col-auto">
+										<div class="btn-group" data-toggle="buttons">
+											<label class="btn btn-default{% if upstore_seo_tool_setting.news_category.desc_status %} active{% endif %}">
+												<input type="radio" name="upstore_seo_tool_setting[news_category][desc_status]" value="1" {% if upstore_seo_tool_setting.news_category.desc_status %}checked="checked"{% endif %}>
+												<span class="on-off">{{ text_yes }}</span>
+											</label>
+											<label class="btn btn-default{% if not upstore_seo_tool_setting.news_category.desc_status %} active{% endif %}">
+												<input type="radio" name="upstore_seo_tool_setting[news_category][desc_status]" value="0" {% if not upstore_seo_tool_setting.news_category.desc_status %}checked="checked"{% endif %}>
+												<span class="on-off">{{ text_no }}</span>
+											</label>
+										</div>
+									</div>
+									<label class="col-sm-2 control-label">{{ entry_only_empty_values }}</label>
+									<div class="col-sm-4 col-md-2 col-auto">
+										<div class="btn-group" data-toggle="buttons">
+											<label class="btn btn-default{% if upstore_seo_tool_setting.news_category.desc_method == 'skip' %} active{% endif %}">
+												<input type="radio" name="upstore_seo_tool_setting[news_category][desc_method]" value="skip" {% if upstore_seo_tool_setting.news_category.desc_method == 'skip' %}checked="checked"{% endif %}>
+												<span class="on-off">{{ text_yes }}</span>
+											</label>
+											<label class="btn btn-default{% if upstore_seo_tool_setting.news_category.desc_method == 'remove' %} active{% endif %}">
+												<input type="radio" name="upstore_seo_tool_setting[news_category][desc_method]" value="remove" {% if upstore_seo_tool_setting.news_category.desc_method == 'remove' %}checked="checked"{% endif %}>
+												<span class="on-off">{{ text_no }}</span>
+											</label>
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-2 control-label">{{ entry_meta_description }}</label>
+									<div class="col-sm-10">
+										<ul class="nav nav-tabs" id="seo-desc-news_category-language">
+											{% for language in languages %}
+												<li><a href="#seo-desc-news_category-language-{{ language.language_id }}" data-toggle="tab"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /> {{ language.name }}</a></li>
+											{% endfor %}
+										</ul>
+										<div class="tab-content">
+											{% for language in languages %}
+												<div class="tab-pane" id="seo-desc-news_category-language-{{ language.language_id }}">
+													<input id="seo-desc-news_category-input-{{ language.language_id }}" class="form-control cursor-position" type="text" name="upstore_seo_tool_setting[news_category][seo_desc][{{ language.language_id }}]" value="{{ upstore_seo_tool_setting.news_category.seo_desc[language.language_id] ? upstore_seo_tool_setting.news_category.seo_desc[language.language_id] : '' }}" />
+													<div class="seo-variables-container" data-target="#seo-desc-news_category-input-{{ language.language_id }}">
+														<div class="seo-variables__items">
+															<span class="seo-variable__item" data-code="[n]">[n]</span>
+															<span class="seo-variable__item" data-code="[text|text|text]">[text|text|text|...]</span>
+														</div>
+														<div class="seo-variables__description">
+															<b>{{ text_definitions }}</b>
+															<span><b>[n]</b> - {{ text_seo_n }}</span>
+															<span><b>[text|text|text|...]</b> - {{ text_seo_random }}</span>
+														</div>
+													</div>
+												</div>
+											{% endfor %}
+											<button type="button" class="btn btn-success" id="seo-tool-gen-news-category-md" data-method="setNewsCategorySeoData" data-seo="desc" data-progress="#news-category-md-progress-bar" onclick="setSeoData(this);">{{ button_generate_meta_description }}</button>
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-2 control-label">{{ entry_generate_meta_keyword }}</label>
+									<div class="col-sm-4 col-md-2 col-auto">
+										<div class="btn-group" data-toggle="buttons">
+											<label class="btn btn-default{% if upstore_seo_tool_setting.news_category.keyword_status %} active{% endif %}">
+												<input type="radio" name="upstore_seo_tool_setting[news_category][keyword_status]" value="1" {% if upstore_seo_tool_setting.news_category.keyword_status %}checked="checked"{% endif %}>
+												<span class="on-off">{{ text_yes }}</span>
+											</label>
+											<label class="btn btn-default{% if not upstore_seo_tool_setting.news_category.keyword_status %} active{% endif %}">
+												<input type="radio" name="upstore_seo_tool_setting[news_category][keyword_status]" value="0" {% if not upstore_seo_tool_setting.news_category.keyword_status %}checked="checked"{% endif %}>
+												<span class="on-off">{{ text_no }}</span>
+											</label>
+										</div>
+									</div>
+									<label class="col-sm-2 control-label">{{ entry_only_empty_values }}</label>
+									<div class="col-sm-4 col-md-2 col-auto">
+										<div class="btn-group" data-toggle="buttons">
+											<label class="btn btn-default{% if upstore_seo_tool_setting.news_category.keyword_method == 'skip' %} active{% endif %}">
+												<input type="radio" name="upstore_seo_tool_setting[news_category][keyword_method]" value="skip" {% if upstore_seo_tool_setting.news_category.keyword_method == 'skip' %}checked="checked"{% endif %}>
+												<span class="on-off">{{ text_yes }}</span>
+											</label>
+											<label class="btn btn-default{% if upstore_seo_tool_setting.news_category.keyword_method == 'remove' %} active{% endif %}">
+												<input type="radio" name="upstore_seo_tool_setting[news_category][keyword_method]" value="remove" {% if upstore_seo_tool_setting.news_category.keyword_method == 'remove' %}checked="checked"{% endif %}>
+												<span class="on-off">{{ text_no }}</span>
+											</label>
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-2 control-label">{{ entry_meta_keyword }}</label>
+									<div class="col-sm-10">
+										<ul class="nav nav-tabs" id="seo-keyword-news_category-language">
+											{% for language in languages %}
+												<li><a href="#seo-keyword-news_category-language-{{ language.language_id }}" data-toggle="tab"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /> {{ language.name }}</a></li>
+											{% endfor %}
+										</ul>
+										<div class="tab-content">
+											{% for language in languages %}
+												<div class="tab-pane" id="seo-keyword-news_category-language-{{ language.language_id }}">
+													<input id="seo-keyword-news_category-input-{{ language.language_id }}" class="form-control cursor-position" type="text" name="upstore_seo_tool_setting[news_category][seo_keyword][{{ language.language_id }}]" value="{{ upstore_seo_tool_setting.news_category.seo_keyword[language.language_id] ? upstore_seo_tool_setting.news_category.seo_keyword[language.language_id] : '' }}" />
+													<div class="seo-variables-container" data-target="#seo-keyword-news_category-input-{{ language.language_id }}">
+														<div class="seo-variables__items">
+															<span class="seo-variable__item" data-code="[n]">[n]</span>
+															<span class="seo-variable__item" data-code="[text|text|text]">[text|text|text|...]</span>
+														</div>
+														<div class="seo-variables__description">
+															<b>{{ text_definitions }}</b>
+															<span><b>[n]</b> - {{ text_seo_n }}</span>
+															<span><b>[text|text|text|...]</b> - {{ text_seo_random }}</span>
+														</div>
+													</div>
+												</div>
+											{% endfor %}
+											<button type="button" class="btn btn-success" id="seo-tool-gen-news-category-mk" data-method="setNewsCategorySeoData" data-seo="keyword" data-progress="#news-category-mk-progress-bar" onclick="setSeoData(this);">{{ button_generate_meta_keyword }}</button>
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-2 control-label">{{ entry_generate_seo_url }}</label>
+									<div class="col-sm-4 col-md-2 col-auto">
+										<div class="btn-group" data-toggle="buttons">
+											<label class="btn btn-default{% if upstore_seo_tool_setting.news_category.url_status %} active{% endif %}">
+												<input type="radio" name="upstore_seo_tool_setting[news_category][url_status]" value="1" {% if upstore_seo_tool_setting.news_category.url_status %}checked="checked"{% endif %}>
+												<span class="on-off">{{ text_yes }}</span>
+											</label>
+											<label class="btn btn-default{% if not upstore_seo_tool_setting.news_category.url_status %} active{% endif %}">
+												<input type="radio" name="upstore_seo_tool_setting[news_category][url_status]" value="0" {% if not upstore_seo_tool_setting.news_category.url_status %}checked="checked"{% endif %}>
+												<span class="on-off">{{ text_no }}</span>
+											</label>
+										</div>
+									</div>
+									<label class="col-sm-2 control-label">{{ entry_only_empty_values }}</label>
+									<div class="col-sm-4 col-md-2 col-auto">
+										<div class="btn-group" data-toggle="buttons">
+											<label class="btn btn-default{% if upstore_seo_tool_setting.news_category.url_method == 'skip' %} active{% endif %}">
+												<input type="radio" name="upstore_seo_tool_setting[news_category][url_method]" value="skip" {% if upstore_seo_tool_setting.news_category.url_method == 'skip' %}checked="checked"{% endif %}>
+												<span class="on-off">{{ text_yes }}</span>
+											</label>
+											<label class="btn btn-default{% if upstore_seo_tool_setting.news_category.url_method == 'remove' %} active{% endif %}">
+												<input type="radio" name="upstore_seo_tool_setting[news_category][url_method]" value="remove" {% if upstore_seo_tool_setting.news_category.url_method == 'remove' %}checked="checked"{% endif %}>
+												<span class="on-off">{{ text_no }}</span>
+											</label>
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-2 control-label">{{ entry_seo_url }}</label>
+									<div class="col-sm-10">
+										<input id="seo-url-news_category-input" class="form-control cursor-position" type="text" name="upstore_seo_tool_setting[news_category][seo_url]" value="{{ upstore_seo_tool_setting.news_category.seo_url ? upstore_seo_tool_setting.news_category.seo_url : '' }}" />
+										<div class="seo-variables-container" data-target="#seo-url-news_category-input">
+											<div class="seo-variables__items">
+												<span class="seo-url-variable__item" data-code="[n]">[n]</span>
+												<span class="seo-url-variable__item" data-code="[category_id]">[category_id]</span>
+												<span class="seo-url-variable__item" data-code="[lang_prefix]">[lang_prefix]</span>
+											</div>
+											<div class="seo-variables__description">
+												<b>{{ text_definitions }}</b>
+												<span><b>[n]</b> - {{ text_seo_n }}</span>
+												<span><b>[category_id]</b> - {{ text_seo_category_id }}</span>
+												<span><b>[lang_prefix]</b> - {{ entry_lang_prefix }}</span>
+											</div>
+										</div>
+										<button type="button" class="btn btn-success" id="seo-tool-gen-news-category-su" data-method="setNewsCategorySeoData" data-seo="url" data-progress="#news-category-su-progress-bar" onclick="setSeoData(this);">{{ button_generate_seo_url }}</button>
+									</div>
+								</div>
+							</div>
+							<div class="tab-pane" id="tab-news-articles">
+																<div class="form-group">
+									<label class="col-sm-2 control-label">{{ entry_status }}</label>
+									<div class="col-sm-4 col-md-2 col-auto">
+										<div class="btn-group" data-toggle="buttons">
+											<label class="btn btn-default{% if upstore_seo_tool_setting.news_articles.status %} active{% endif %}">
+												<input type="radio" name="upstore_seo_tool_setting[news_articles][status]" value="1" {% if upstore_seo_tool_setting.news_articles.status %}checked="checked"{% endif %}>
+												<span class="on-off">{{ text_on }}</span>
+											</label>
+											<label class="btn btn-default{% if not upstore_seo_tool_setting.news_articles.status %} active{% endif %}">
+												<input type="radio" name="upstore_seo_tool_setting[news_articles][status]" value="0" {% if not upstore_seo_tool_setting.news_articles.status %}checked="checked"{% endif %}>
+												<span class="on-off">{{ text_off }}</span>
+											</label>
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-2 control-label">{{ entry_generate_meta_title }}</label>
+									<div class="col-sm-4 col-md-2 col-auto">
+										<div class="btn-group" data-toggle="buttons">
+											<label class="btn btn-default{% if upstore_seo_tool_setting.news_articles.title_status %} active{% endif %}">
+												<input type="radio" name="upstore_seo_tool_setting[news_articles][title_status]" value="1" {% if upstore_seo_tool_setting.news_articles.title_status %}checked="checked"{% endif %}>
+												<span class="on-off">{{ text_yes }}</span>
+											</label>
+											<label class="btn btn-default{% if not upstore_seo_tool_setting.news_articles.title_status %} active{% endif %}">
+												<input type="radio" name="upstore_seo_tool_setting[news_articles][title_status]" value="0" {% if not upstore_seo_tool_setting.news_articles.title_status %}checked="checked"{% endif %}>
+												<span class="on-off">{{ text_no }}</span>
+											</label>
+										</div>
+									</div>
+									<label class="col-sm-2 control-label">{{ entry_only_empty_values }}</label>
+									<div class="col-sm-4 col-md-2 col-auto">
+										<div class="btn-group" data-toggle="buttons">
+											<label class="btn btn-default{% if upstore_seo_tool_setting.news_articles.title_method == 'skip' %} active{% endif %}">
+												<input type="radio" name="upstore_seo_tool_setting[news_articles][title_method]" value="skip" {% if upstore_seo_tool_setting.news_articles.title_method == 'skip' %}checked="checked"{% endif %}>
+												<span class="on-off">{{ text_yes }}</span>
+											</label>
+											<label class="btn btn-default{% if upstore_seo_tool_setting.news_articles.title_method == 'remove' %} active{% endif %}">
+												<input type="radio" name="upstore_seo_tool_setting[news_articles][title_method]" value="remove" {% if upstore_seo_tool_setting.news_articles.title_method == 'remove' %}checked="checked"{% endif %}>
+												<span class="on-off">{{ text_no }}</span>
+											</label>
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-2 control-label">{{ entry_meta_title }}</label>
+									<div class="col-sm-10">
+										<ul class="nav nav-tabs" id="seo-title-news_articles-language">
+											{% for language in languages %}
+												<li><a href="#seo-title-news_articles-language-{{ language.language_id }}" data-toggle="tab"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /> {{ language.name }}</a></li>
+											{% endfor %}
+										</ul>
+										<div class="tab-content">
+											{% for language in languages %}
+												<div class="tab-pane" id="seo-title-news_articles-language-{{ language.language_id }}">
+													<input id="seo-title-news_articles-input-{{ language.language_id }}" class="form-control cursor-position" type="text" name="upstore_seo_tool_setting[news_articles][seo_title][{{ language.language_id }}]" value="{{ upstore_seo_tool_setting.news_articles.seo_title[language.language_id] ? upstore_seo_tool_setting.news_articles.seo_title[language.language_id] : '' }}" />
+													<div class="seo-variables-container" data-target="#seo-title-news_articles-input-{{ language.language_id }}">
+														<div class="seo-variables__items">
+															<span class="seo-variable__item" data-code="[n]">[n]</span>
+															<span class="seo-variable__item" data-code="[text|text|text]">[text|text|text|...]</span>
+														</div>
+														<div class="seo-variables__description">
+															<b>{{ text_definitions }}</b>
+															<span><b>[n]</b> - {{ text_seo_n }}</span>
+															<span><b>[text|text|text|...]</b> - {{ text_seo_random }}</span>
+														</div>
+													</div>
+												</div>
+											{% endfor %}
+											<button type="button" class="btn btn-success" id="seo-tool-gen-news-articles-mt" data-method="setNewsArticlesSeoData" data-seo="title" data-progress="#news-articles-mt-progress-bar" onclick="setSeoData(this);">{{ button_generate_meta_title }}</button>
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-2 control-label">{{ entry_generate_meta_h1 }}</label>
+									<div class="col-sm-4 col-md-2 col-auto">
+										<div class="btn-group" data-toggle="buttons">
+											<label class="btn btn-default{% if upstore_seo_tool_setting.news_articles.h1_status %} active{% endif %}">
+												<input type="radio" name="upstore_seo_tool_setting[news_articles][h1_status]" value="1" {% if upstore_seo_tool_setting.news_articles.h1_status %}checked="checked"{% endif %}>
+												<span class="on-off">{{ text_yes }}</span>
+											</label>
+											<label class="btn btn-default{% if not upstore_seo_tool_setting.news_articles.h1_status %} active{% endif %}">
+												<input type="radio" name="upstore_seo_tool_setting[news_articles][h1_status]" value="0" {% if not upstore_seo_tool_setting.news_articles.h1_status %}checked="checked"{% endif %}>
+												<span class="on-off">{{ text_no }}</span>
+											</label>
+										</div>
+									</div>
+									<label class="col-sm-2 control-label">{{ entry_only_empty_values }}</label>
+									<div class="col-sm-4 col-md-2 col-auto">
+										<div class="btn-group" data-toggle="buttons">
+											<label class="btn btn-default{% if upstore_seo_tool_setting.news_articles.h1_method == 'skip' %} active{% endif %}">
+												<input type="radio" name="upstore_seo_tool_setting[news_articles][h1_method]" value="skip" {% if upstore_seo_tool_setting.news_articles.h1_method == 'skip' %}checked="checked"{% endif %}>
+												<span class="on-off">{{ text_yes }}</span>
+											</label>
+											<label class="btn btn-default{% if upstore_seo_tool_setting.news_articles.h1_method == 'remove' %} active{% endif %}">
+												<input type="radio" name="upstore_seo_tool_setting[news_articles][h1_method]" value="remove" {% if upstore_seo_tool_setting.news_articles.h1_method == 'remove' %}checked="checked"{% endif %}>
+												<span class="on-off">{{ text_no }}</span>
+											</label>
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-2 control-label">{{ entry_meta_h1 }}</label>
+									<div class="col-sm-10">
+										<ul class="nav nav-tabs" id="seo-h1-news_articles-language">
+											{% for language in languages %}
+												<li><a href="#seo-h1-news_articles-language-{{ language.language_id }}" data-toggle="tab"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /> {{ language.name }}</a></li>
+											{% endfor %}
+										</ul>
+										<div class="tab-content">
+											{% for language in languages %}
+												<div class="tab-pane" id="seo-h1-news_articles-language-{{ language.language_id }}">
+													<input id="seo-h1-news_articles-input-{{ language.language_id }}" class="form-control cursor-position" type="text" name="upstore_seo_tool_setting[news_articles][seo_h1][{{ language.language_id }}]" value="{{ upstore_seo_tool_setting.news_articles.seo_h1[language.language_id] ? upstore_seo_tool_setting.news_articles.seo_h1[language.language_id] : '' }}" />
+													<div class="seo-variables-container" data-target="#seo-h1-news_articles-input-{{ language.language_id }}">
+														<div class="seo-variables__items">
+															<span class="seo-variable__item" data-code="[n]">[n]</span>
+															<span class="seo-variable__item" data-code="[text|text|text]">[text|text|text|...]</span>
+														</div>
+														<div class="seo-variables__description">
+															<b>{{ text_definitions }}</b>
+															<span><b>[n]</b> - {{ text_seo_n }}</span>
+															<span><b>[text|text|text|...]</b> - {{ text_seo_random }}</span>
+														</div>
+													</div>
+												</div>
+											{% endfor %}
+											<button type="button" class="btn btn-success" id="seo-tool-gen-news-articles-h1" data-method="setNewsArticlesSeoData" data-seo="h1" data-progress="#news-articles-h1-progress-bar" onclick="setSeoData(this);">{{ button_generate_meta_h1 }}</button>
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-2 control-label">{{ entry_generate_meta_description }}</label>
+									<div class="col-sm-4 col-md-2 col-auto">
+										<div class="btn-group" data-toggle="buttons">
+											<label class="btn btn-default{% if upstore_seo_tool_setting.news_articles.desc_status %} active{% endif %}">
+												<input type="radio" name="upstore_seo_tool_setting[news_articles][desc_status]" value="1" {% if upstore_seo_tool_setting.news_articles.desc_status %}checked="checked"{% endif %}>
+												<span class="on-off">{{ text_yes }}</span>
+											</label>
+											<label class="btn btn-default{% if not upstore_seo_tool_setting.news_articles.desc_status %} active{% endif %}">
+												<input type="radio" name="upstore_seo_tool_setting[news_articles][desc_status]" value="0" {% if not upstore_seo_tool_setting.news_articles.desc_status %}checked="checked"{% endif %}>
+												<span class="on-off">{{ text_no }}</span>
+											</label>
+										</div>
+									</div>
+									<label class="col-sm-2 control-label">{{ entry_only_empty_values }}</label>
+									<div class="col-sm-4 col-md-2 col-auto">
+										<div class="btn-group" data-toggle="buttons">
+											<label class="btn btn-default{% if upstore_seo_tool_setting.news_articles.desc_method == 'skip' %} active{% endif %}">
+												<input type="radio" name="upstore_seo_tool_setting[news_articles][desc_method]" value="skip" {% if upstore_seo_tool_setting.news_articles.desc_method == 'skip' %}checked="checked"{% endif %}>
+												<span class="on-off">{{ text_yes }}</span>
+											</label>
+											<label class="btn btn-default{% if upstore_seo_tool_setting.news_articles.desc_method == 'remove' %} active{% endif %}">
+												<input type="radio" name="upstore_seo_tool_setting[news_articles][desc_method]" value="remove" {% if upstore_seo_tool_setting.news_articles.desc_method == 'remove' %}checked="checked"{% endif %}>
+												<span class="on-off">{{ text_no }}</span>
+											</label>
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-2 control-label">{{ entry_meta_description }}</label>
+									<div class="col-sm-10">
+										<ul class="nav nav-tabs" id="seo-desc-news_articles-language">
+											{% for language in languages %}
+												<li><a href="#seo-desc-news_articles-language-{{ language.language_id }}" data-toggle="tab"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /> {{ language.name }}</a></li>
+											{% endfor %}
+										</ul>
+										<div class="tab-content">
+											{% for language in languages %}
+												<div class="tab-pane" id="seo-desc-news_articles-language-{{ language.language_id }}">
+													<input id="seo-desc-news_articles-input-{{ language.language_id }}" class="form-control cursor-position" type="text" name="upstore_seo_tool_setting[news_articles][seo_desc][{{ language.language_id }}]" value="{{ upstore_seo_tool_setting.news_articles.seo_desc[language.language_id] ? upstore_seo_tool_setting.news_articles.seo_desc[language.language_id] : '' }}" />
+													<div class="seo-variables-container" data-target="#seo-desc-news_articles-input-{{ language.language_id }}">
+														<div class="seo-variables__items">
+															<span class="seo-variable__item" data-code="[n]">[n]</span>
+															<span class="seo-variable__item" data-code="[text|text|text]">[text|text|text|...]</span>
+														</div>
+														<div class="seo-variables__description">
+															<b>{{ text_definitions }}</b>
+															<span><b>[n]</b> - {{ text_seo_n }}</span>
+															<span><b>[text|text|text|...]</b> - {{ text_seo_random }}</span>
+														</div>
+													</div>
+												</div>
+											{% endfor %}
+											<button type="button" class="btn btn-success" id="seo-tool-gen-news-articles-md" data-method="setNewsArticlesSeoData" data-seo="desc" data-progress="#news-articles-md-progress-bar" onclick="setSeoData(this);">{{ button_generate_meta_description }}</button>
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-2 control-label">{{ entry_generate_meta_keyword }}</label>
+									<div class="col-sm-4 col-md-2 col-auto">
+										<div class="btn-group" data-toggle="buttons">
+											<label class="btn btn-default{% if upstore_seo_tool_setting.news_articles.keyword_status %} active{% endif %}">
+												<input type="radio" name="upstore_seo_tool_setting[news_articles][keyword_status]" value="1" {% if upstore_seo_tool_setting.news_articles.keyword_status %}checked="checked"{% endif %}>
+												<span class="on-off">{{ text_yes }}</span>
+											</label>
+											<label class="btn btn-default{% if not upstore_seo_tool_setting.news_articles.keyword_status %} active{% endif %}">
+												<input type="radio" name="upstore_seo_tool_setting[news_articles][keyword_status]" value="0" {% if not upstore_seo_tool_setting.news_articles.keyword_status %}checked="checked"{% endif %}>
+												<span class="on-off">{{ text_no }}</span>
+											</label>
+										</div>
+									</div>
+									<label class="col-sm-2 control-label">{{ entry_only_empty_values }}</label>
+									<div class="col-sm-4 col-md-2 col-auto">
+										<div class="btn-group" data-toggle="buttons">
+											<label class="btn btn-default{% if upstore_seo_tool_setting.news_articles.keyword_method == 'skip' %} active{% endif %}">
+												<input type="radio" name="upstore_seo_tool_setting[news_articles][keyword_method]" value="skip" {% if upstore_seo_tool_setting.news_articles.keyword_method == 'skip' %}checked="checked"{% endif %}>
+												<span class="on-off">{{ text_yes }}</span>
+											</label>
+											<label class="btn btn-default{% if upstore_seo_tool_setting.news_articles.keyword_method == 'remove' %} active{% endif %}">
+												<input type="radio" name="upstore_seo_tool_setting[news_articles][keyword_method]" value="remove" {% if upstore_seo_tool_setting.news_articles.keyword_method == 'remove' %}checked="checked"{% endif %}>
+												<span class="on-off">{{ text_no }}</span>
+											</label>
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-2 control-label">{{ entry_meta_keyword }}</label>
+									<div class="col-sm-10">
+										<ul class="nav nav-tabs" id="seo-keyword-news_articles-language">
+											{% for language in languages %}
+												<li><a href="#seo-keyword-news_articles-language-{{ language.language_id }}" data-toggle="tab"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /> {{ language.name }}</a></li>
+											{% endfor %}
+										</ul>
+										<div class="tab-content">
+											{% for language in languages %}
+												<div class="tab-pane" id="seo-keyword-news_articles-language-{{ language.language_id }}">
+													<input id="seo-keyword-news_articles-input-{{ language.language_id }}" class="form-control cursor-position" type="text" name="upstore_seo_tool_setting[news_articles][seo_keyword][{{ language.language_id }}]" value="{{ upstore_seo_tool_setting.news_articles.seo_keyword[language.language_id] ? upstore_seo_tool_setting.news_articles.seo_keyword[language.language_id] : '' }}" />
+													<div class="seo-variables-container" data-target="#seo-keyword-news_articles-input-{{ language.language_id }}">
+														<div class="seo-variables__items">
+															<span class="seo-variable__item" data-code="[n]">[n]</span>
+															<span class="seo-variable__item" data-code="[text|text|text]">[text|text|text|...]</span>
+														</div>
+														<div class="seo-variables__description">
+															<b>{{ text_definitions }}</b>
+															<span><b>[n]</b> - {{ text_seo_n }}</span>
+															<span><b>[text|text|text|...]</b> - {{ text_seo_random }}</span>
+														</div>
+													</div>
+												</div>
+											{% endfor %}
+											<button type="button" class="btn btn-success" id="seo-tool-gen-news-articles-mk" data-method="setNewsArticlesSeoData" data-seo="keyword" data-progress="#news-articles-mk-progress-bar" onclick="setSeoData(this);">{{ button_generate_meta_keyword }}</button>
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-2 control-label">{{ entry_generate_seo_url }}</label>
+									<div class="col-sm-4 col-md-2 col-auto">
+										<div class="btn-group" data-toggle="buttons">
+											<label class="btn btn-default{% if upstore_seo_tool_setting.news_articles.url_status %} active{% endif %}">
+												<input type="radio" name="upstore_seo_tool_setting[news_articles][url_status]" value="1" {% if upstore_seo_tool_setting.news_articles.url_status %}checked="checked"{% endif %}>
+												<span class="on-off">{{ text_yes }}</span>
+											</label>
+											<label class="btn btn-default{% if not upstore_seo_tool_setting.news_articles.url_status %} active{% endif %}">
+												<input type="radio" name="upstore_seo_tool_setting[news_articles][url_status]" value="0" {% if not upstore_seo_tool_setting.news_articles.url_status %}checked="checked"{% endif %}>
+												<span class="on-off">{{ text_no }}</span>
+											</label>
+										</div>
+									</div>
+									<label class="col-sm-2 control-label">{{ entry_only_empty_values }}</label>
+									<div class="col-sm-4 col-md-2 col-auto">
+										<div class="btn-group" data-toggle="buttons">
+											<label class="btn btn-default{% if upstore_seo_tool_setting.news_articles.url_method == 'skip' %} active{% endif %}">
+												<input type="radio" name="upstore_seo_tool_setting[news_articles][url_method]" value="skip" {% if upstore_seo_tool_setting.news_articles.url_method == 'skip' %}checked="checked"{% endif %}>
+												<span class="on-off">{{ text_yes }}</span>
+											</label>
+											<label class="btn btn-default{% if upstore_seo_tool_setting.news_articles.url_method == 'remove' %} active{% endif %}">
+												<input type="radio" name="upstore_seo_tool_setting[news_articles][url_method]" value="remove" {% if upstore_seo_tool_setting.news_articles.url_method == 'remove' %}checked="checked"{% endif %}>
+												<span class="on-off">{{ text_no }}</span>
+											</label>
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-2 control-label">{{ entry_seo_url }}</label>
+									<div class="col-sm-10">
+										<input id="seo-url-news_articles-input" class="form-control cursor-position" type="text" name="upstore_seo_tool_setting[news_articles][seo_url]" value="{{ upstore_seo_tool_setting.news_articles.seo_url ? upstore_seo_tool_setting.news_articles.seo_url : '' }}" />
+										<div class="seo-variables-container" data-target="#seo-url-news_articles-input">
+											<div class="seo-variables__items">
+												<span class="seo-url-variable__item" data-code="[n]">[n]</span>
+												<span class="seo-url-variable__item" data-code="[article_id]">[article_id]</span>
+												<span class="seo-url-variable__item" data-code="[lang_prefix]">[lang_prefix]</span>
+											</div>
+											<div class="seo-variables__description">
+												<b>{{ text_definitions }}</b>
+												<span><b>[n]</b> - {{ text_seo_n }}</span>
+												<span><b>[article_id]</b> - {{ text_seo_information_id }}</span>
+												<span><b>[lang_prefix]</b> - {{ entry_lang_prefix }}</span>
+											</div>
+										</div>
+										<button type="button" class="btn btn-success" id="seo-tool-gen-news-articles-su" data-method="setNewsArticlesSeoData" data-seo="url" data-progress="#news-articles-su-progress-bar" onclick="setSeoData(this);">{{ button_generate_seo_url }}</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+</div>
+<script>
+
+var total_execution_time = 0;
+var startTime = new Date().getTime();
+var buttonOriginalText = '';
+
+function setSeoData(button) {
+	var $button = $(button);
+	var seoType = $button.data('seo');
+	var progressBarId = $button.data('progress');
+	var methodType = $button.data('method');
+
+	total_execution_time = 0;
+	startTime = new Date().getTime();
+
+	updateSeoData($button.attr('id'), progressBarId, methodType, seoType);
+}
+
+function updateSeoData(buttonId, progressBarId, methodType, seoType, start = 0, totals = 0) {
+	var limit = 100;
+	var $button = $('#' + buttonId);
+
+	if (start === 0) {
+		buttonOriginalText = $button.html();
+	}
+
+	$.ajax({
+		type: 'get',
+		url: 'index.php?route=extension/module/upstore_seo_tool/' + methodType + '&user_token={{ user_token }}&start=' + start + '&limit=' + limit + '&totals=' + totals + '&seo_type=' + seoType,
+		dataType: 'json',
+		beforeSend: function() {
+			$('.alert, .text-danger').remove();
+			$button.html('<i class="fa fa-spinner fa-spin"></i> ' + buttonOriginalText).prop('disabled', true);
+		},
+		success: function(json) {
+			$('.alert, .text-danger').remove();
+			if (json['error']) {
+				$button.before('<div class="alert alert-danger">' + json['error'] + '</div>');
+			}
+
+			if (!json['error'] && !$(progressBarId).length) {
+				$button.before('<div class="progress"><div id="' + progressBarId.replace('#', '') + '" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"><span class="sr-only">0% Complete</span></div></div>');
+			}
+
+			var progress = json['progress'];
+			var start = json['start'];
+			var totals = json['totals'];
+			var currentTime = new Date().getTime();
+			var execution_time = (currentTime - startTime) / 1000;
+			total_execution_time += execution_time;
+
+			$(progressBarId).css('width', progress + '%').attr('aria-valuenow', progress).find('.sr-only').text(progress + '% Complete');
+
+			if (start < totals) {
+				startTime = new Date().getTime();
+				updateSeoData(buttonId, progressBarId, methodType, seoType, start, totals);
+			} else {
+				console.log('Time: ' + total_execution_time.toFixed(2) + ' sec');
+				setTimeout(function () {
+					$button.html(buttonOriginalText).prop('disabled', false);
+				}, 300);
+
+				if(!json['error']){
+					$button.before('<div class="alert alert-success">' + json['success'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+				}
+			}
+		}
+	});
+}
+
+$(document).ready(function () {
+	let cursorPosition = false;
+	let lastFocusedInput = null;
+
+	$(document).on('focus', '.cursor-position', function () {
+		lastFocusedInput = $(this);
+		cursorPosition = getCaretPosition(this);
+	});
+
+	$(document).on('keyup click', '.cursor-position', function () {
+		cursorPosition = getCaretPosition(this);
+	});
+
+	$(document).on('click', '.seo-variable__item', function () {
+		const variable = $(this).data('code');
+		const targetSelector = $(this).closest('.seo-variables-container').data('target');
+		const inputField = $(targetSelector);
+
+		if (!inputField.length) return;
+
+		let value = inputField.val();
+		let newValue;
+
+		if (cursorPosition === false) {
+			newValue = value.trim() + ' ' + variable;
+		} else {
+			const beforeCursor = value.slice(0, cursorPosition).trimEnd();
+			const afterCursor = value.slice(cursorPosition).trimStart();
+			newValue = `${beforeCursor} ${variable} ${afterCursor}`;
+			cursorPosition = beforeCursor.length + variable.length + 2;
+		}
+
+		inputField.val(newValue.trim());
+		setTimeout(() => {
+			setCaretPosition(inputField[0], cursorPosition);
+			inputField.focus();
+		}, 0);
+	});
+
+	$(document).on('click', '.seo-url-variable__item', function () {
+		const variable = $(this).data('code');
+		const targetSelector = $(this).closest('.seo-variables-container').data('target');
+		const inputField = $(targetSelector);
+
+		if (!inputField.length) return;
+
+		let value = inputField.val();
+		let newValue;
+
+		if (cursorPosition === false) {
+			newValue = value.trim() + variable;
+		} else {
+			const beforeCursor = value.slice(0, cursorPosition).trimEnd();
+			const afterCursor = value.slice(cursorPosition).trimStart();
+			newValue = `${beforeCursor}${variable}${afterCursor}`;
+			cursorPosition = beforeCursor.length + variable.length + 1;
+		}
+
+		inputField.val(newValue.trim());
+		setTimeout(() => {
+			setCaretPosition(inputField[0], cursorPosition);
+			inputField.focus();
+		}, 0);
+	});
+
+	function getCaretPosition(input) {
+		if (!input) return false;
+		return input.selectionStart || 0;
+	}
+
+	function setCaretPosition(input, pos) {
+		if (!input.setSelectionRange) return;
+		input.setSelectionRange(pos, pos);
+	}
+});
+
+$(window).scroll(function(){
+	if ($(window).scrollTop() > 100){
+		$("#buttons-apply").addClass("fixed-btn-top");
+	} else {
+		$("#buttons-apply").removeClass("fixed-btn-top");
+	}
+});
+
+$(document).ready(function () {
+  $('ul.nav-tabs[id$="-language"]').each(function () {
+    $(this).find('a:first').tab('show');
+  });
+});
+
+function saveSetting(){
+	$.ajax({
+		url: 'index.php?route=extension/module/upstore_seo_tool/saveSetting&user_token={{ user_token }}',
+		type: 'post',
+		dataType: 'json',
+		data: $("#form-seo-tool").serialize(),
+		beforeSend: function() {
+			$('#btn-apply-setting').attr("disabled", true);
+			$('#btn-save-setting').attr("disabled", true);
+		},
+		complete: function() {
+			$('#btn-apply-setting').attr("disabled", false);
+			$('#btn-save-setting').attr("disabled", false);
+		},
+		success: function(json) {
+			$('.alert.alert-danger, .alert.alert-success').remove();
+			if (json['error']) {
+				$('#form-seo-tool').before('<div class="alert alert-danger"><i class="fa fa-check-circle"></i> ' + json['error'] + '</div>');
+			}
+			if (json['success']) {
+				$('#form-seo-tool').before('<div class="alert alert-success"><i class="fa fa-check-circle"></i> ' + json['success'] + '</div>');
+				setTimeout(function(){
+					$('.alert.alert-danger, .alert.alert-success').remove();
+				}, 2000)
+			}
+		}
+	});
+}
+</script>
+
+<style>
+.fixed-btn-top {
+	background: #fff none repeat scroll 0 0;
+	border-bottom: 1px solid #ccc;
+	border-left: 1px solid #ccc;
+	box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+	overflow: auto;
+	padding: 10px 12px;
+	position: fixed;
+	right: 0;
+	top: 0;
+	z-index: 999;
+}
+.seo-variables-container {
+	background: #f8f8f8;
+	padding: 10px 12px;
+	border-radius: 6px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	color:#000;
+	padding-bottom: 15px;
+}
+.seo-variables__items {
+	display: flex;
+	gap: 10px;
+	flex-wrap: wrap;
+}
+.seo-variable__item,
+.seo-url-variable__item {
+	padding: 6px 9px;
+	background: #26a0db;
+	border-radius: 4px;
+	color: #fff;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 28px;
+	cursor: pointer;
+}
+.seo-variables__description {
+	padding-top: 12px;
+	border-top:1px solid #e4e4e4;
+	margin-top: 15px;
+}
+.on-off {
+	min-width: 30px;
+	display: inline-block;
+}
+.col-auto {
+	min-width: 150px;
+	width: auto;
+}
+</style>
+{{ footer }}

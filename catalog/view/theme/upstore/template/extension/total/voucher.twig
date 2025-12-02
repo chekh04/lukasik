@@ -1,0 +1,44 @@
+<div class="cart-voucher">
+	<div class="form-group">
+		<label class="control-label" for="input-reward">{{ text_voucher }}</label>
+		<div class="input-group">
+			<input type="text" name="voucher" value="{{ voucher }}" placeholder="{{ entry_voucher }}" id="input-voucher" class="form-control" />
+			<span class="input-group-btn">
+				<input type="submit" value="ok" id="button-voucher" data-loading-text="{{ text_loading }}"  class="btn btn-primary" />
+			</span>
+		</div>
+	</div>
+	<script>
+	$('#button-voucher').on('click', function() {
+		$.ajax({
+			url: 'index.php?route=extension/total/voucher/voucher',
+			type: 'post',
+			data: 'voucher=' + encodeURIComponent($('input[name=\'voucher\']').val()),
+			dataType: 'json',
+			beforeSend: function() {
+				$('input[name=\'voucher\']').attr('disabled', 'disabled');
+			},
+			complete: function() {
+				$('input[name=\'voucher\']').removeAttr('disabled');
+			},
+			success: function(json) {
+				$('.ch-alert-danger').remove();
+
+				if (json['error']) {
+					$('body').append('<div class="alert ch-alert-danger"><img class="warning-icon" alt="warning-icon" src="catalog/view/theme/upstore/image/warning-icon.svg"><div class="text-modal-block">' + json['error'] + '</div><button type="button" class="close" data-dismiss="alert"><i class="up-icon-close" aria-hidden="true"></i></button></div>');
+					setTimeout(function () {
+						$('.ch-alert-danger').remove();
+					}, 7000);
+				}
+
+				if (json['redirect']) {
+					location = json['redirect'];
+				}
+			},
+			error: function(xhr, ajaxOptions, thrownError) {
+				alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+			}
+		});
+	});
+	</script>
+</div>

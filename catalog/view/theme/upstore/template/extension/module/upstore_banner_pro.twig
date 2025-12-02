@@ -1,0 +1,47 @@
+<div class="banner-pro">
+    <div class="row-flex">
+        {% for key, result in banners_pro %}
+        <div class="banner-pro__column banner-pro__column--col-{{ col }} mb-10 mt-10">
+            <div class="banner-pro__item banner-pro__item--{{ module ~ key }} dflex flex-column flex-grow-1"
+                {% if result.bg_block is not empty %}style="background-color: {{ result.bg_block }}"{% endif %}>
+                <div class="banner-pro__content">
+                    <div class="banner-pro__title"
+                        {% if result.color_title is not empty %}style="color: {{ result.color_title }}"{% endif %}>
+                        {{ result.title }}
+                    </div>
+                    <div class="banner-pro__description"
+                        {% if result.color_desc is not empty %}style="color: {{ result.color_desc }}"{% endif %}>
+                        {{ result.description }}
+                    </div>
+                </div>
+                <div class="banner-pro__image">
+                    <img class="banner-pro__img_{{ result.mode }} img-responsive" loading="lazy" width="{{ result.image_width }}" height="{{ result.image_height }}" src="{{ result.image }}" alt="{{ result.title }}"/>
+                </div>
+                {% if result.price is not empty %}
+                <div class="banner-pro__content-price">
+                    {% if result.price_from is not empty %}
+                        <div class="banner-pro__from"
+                            {% if result.color_price_from is not empty %}style="color: {{ result.color_price_from }}"{% endif %}>
+                            {{ result.price_from }}
+                        </div>
+                    {% endif %}
+                    {% if result.price is not empty %}
+                        <div class="banner-pro__price"
+                            {% if result.price_color is not empty %}style="color: {{ result.price_color }}"{% endif %}>
+                            {{ result.price }}
+                        </div>
+                    {% endif %}
+                </div>
+                {% endif %}
+                {% if result.link is not empty %}
+                <a class="banner-pro__link dflex align-items-center justify-content-center" href="{{ result.link }}">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="19" height="10" fill="none" viewBox="0 0 19 10">
+                        <path fill="#000" fill-rule="evenodd" d="M12.971.468a.75.75 0 0 1 1.06.003l4 4.024a.75.75 0 0 1-.002 1.06l-4 3.977a.75.75 0 0 1-1.058-1.064l2.71-2.694H1a.75.75 0 0 1 0-1.5h14.697l-2.729-2.745a.75.75 0 0 1 .003-1.06Z" clip-rule="evenodd"/>
+                    </svg>
+                </a>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>

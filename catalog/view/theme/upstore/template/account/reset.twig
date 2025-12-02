@@ -1,0 +1,52 @@
+{{ header }}
+<div id="account-reset" class="container">
+	<ul class="breadcrumb">
+		{% for i,breadcrumb in breadcrumbs %}
+			{% if (i+1 < breadcrumbs|length) %}
+				<li><a href="{{ breadcrumb.href }}"><span>{{ breadcrumb.text }}</span></a></li>
+			{% else %}
+				<li><span>{{ breadcrumb.text }}</span></li>
+			{% endif %}
+		{% endfor %}
+	</ul>
+	<h1>{{ heading_title }}</h1>
+  <div class="row-flex">{{ column_left }}
+	{% if column_left and column_right %}
+	{% set class = 'col-sm-6' %}
+	{% elseif column_left or column_right %}
+	{% set class = 'col-sm-9' %}
+	{% else %}
+	{% set class = 'col-sm-12' %}
+	{% endif %}
+	 <div id="content" class="{{ class }}">{{ content_top }}
+		<div class="chm-account-content h-100">
+		<form action="{{ action }}" method="post" enctype="multipart/form-data" class="form-horizontal">
+		  <fieldset>
+			 <legend>{{ text_password }}</legend>
+			 <div class="form-group">
+				<label class="control-label" for="input-password">{{ entry_password }}</label>
+				  <input type="password" name="password" value="{{ password }}" id="input-password" class="form-control" />
+				  {% if error_password %}
+				  <div class="text-danger">{{ error_password }}</div>
+				  {% endif %}
+			 </div>
+			 <div class="form-group">
+				<label class="control-label" for="input-confirm">{{ entry_confirm }}</label>
+				  <input type="password" name="confirm" value="{{ confirm }}" id="input-confirm" class="form-control" />
+				  {% if error_confirm %}
+				  <div class="text-danger">{{ error_confirm }}</div>
+				  {% endif %}
+			 </div>
+		  </fieldset>
+		  <div class="buttons clearfix">
+			 <div class="pull-left"><a href="{{ back }}" class="btn btn-default">{{ button_back }}</a></div>
+			 <div class="pull-right">
+				<button type="submit" class="btn btn-primary">{{ button_continue }}</button>
+			 </div>
+		  </div>
+		</form>
+	</div>
+		{{ content_bottom }}</div>
+	 {{ column_right }}</div>
+</div>
+{{ footer }}

@@ -1,0 +1,104 @@
+<div class="modal-header">
+	<div class="modal-title">{{ text_modal_title }}</div>
+	<button type="button" class="close-modal" data-dismiss="modal">
+		<svg id="icon-close" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 16">
+			<path fill="currentColor" fill-rule="evenodd" d="M1.293 1.293a1 1 0 0 1 1.414 0L8 6.586l5.293-5.293a1 1 0 1 1 1.414 1.414L9.414 8l5.293 5.293a1 1 0 0 1-1.414 1.414L8 9.414l-5.293 5.293a1 1 0 0 1-1.414-1.414L6.586 8 1.293 2.707a1 1 0 0 1 0-1.414z" clip-rule="evenodd"/>
+		</svg>
+	</button>
+</div>
+<div class="modal-body">
+	<div class="row">
+		<div class="col-xs-12 col-sm-12">
+			<div class="legend">{{ text_customer_info }}</div>
+			<div class="customer-info">
+				<div class="table-responsive">
+					<table class="table table-bordered">
+						<thead>
+							<td class="text-left">{{ column_customer }}</td>
+							<td class="text-left">{{ column_email }}</td>
+							<td class="text-left">{{ column_telephone }}</td>
+							<td class="text-right">{{ column_date_added }}</td>
+						</thead>
+						<tbody>
+							<tr>
+								<td class="text-left">{{ customer_info.customer }}</td>
+								<td class="text-left">{{ customer_info.email }}</td>
+								<td class="text-left">{{ customer_info.telephone }}</td>
+								<td class="text-right">{{ customer_info.date_added }}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div class="col-xs-12 col-sm-12">
+			<div class="products">
+				<div class="legend">{{ text_products }}</div>
+				<div class="table-responsive">
+					<table class="table table-bordered">
+						<thead>
+							<td class="text-left">{{ column_product_name }}</td>
+							<td class="text-right">{{ column_product_quantity }}</td>
+							<td class="text-right">{{ column_product_price }}</td>
+							<td class="text-right">{{ column_total }}</td>
+						</thead>
+						<tbody>
+							{% for product in products %}
+								<tr>
+									<td class="text-left">
+										<div class="prod-name"><a target="_blank" href="{{ product.href }}">{{ product.name }}</a></div>
+										<div class="prod-model">{{ text_model }}{{ product.model }}</div>
+										{% if product.option %}
+											<div class="prod-options">
+												{% for option in product.option %}
+													<div class="item-option">
+														<div class="item-option-name">{{ option['name'] }}:</div>
+														<div class="item-option-value">{{ option.value }}</div>
+													</div>
+												{% endfor %}
+											</div>
+										{% endif %}
+									</td>
+									<td class="text-right">{{ product.quantity }}</td>
+									<td class="text-right">{{ product.price }}</td>
+									<td class="text-right totals">{{ product.total }}</td>
+								</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		{% if orders is not empty %}
+		<div class="col-xs-12 col-sm-12">
+			<div class="products">
+				<div class="legend">{{ text_orders }}</div>
+				<div class="table-responsive">
+					<table class="table table-bordered">
+						<thead>
+							<td class="text-left">№</td>
+							<td class="text-left">{{ column_customer }}</td>
+							<td class="text-left">{{ column_email }}</td>
+							<td class="text-left">{{ column_telephone }}</td>
+							<td class="text-right">{{ column_total }}</td>
+							<td class="text-right">{{ column_date_added }}</td>
+						</thead>
+						<tbody>
+							{% for order in orders %}
+								<tr>
+									<td class="text-left">{{ order.order_id }}</td>
+									<td class="text-left">{{ order.customer }}</td>
+									<td class="text-left">{{ order.email }}</td>
+									<td class="text-left">{{ order.telephone }}</td>
+									<td class="text-left">{{ order.total }}</td>
+									<td class="text-right">{{ order.date_added }}</td>
+								</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		{% endif %}
+	</div>
+</div>

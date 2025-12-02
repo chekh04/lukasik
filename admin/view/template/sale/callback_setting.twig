@@ -1,0 +1,501 @@
+{{header}}{{column_left}}
+<div id="content">
+ <div class="page-header">
+    <div class="container-fluid">
+       <div class="pull-right">
+      <div class="buttons">
+		  <a class="btn btn-primary" onclick="$('#form').submit();" class="button"><span  data-toggle="tooltip" title="{{ button_save }}" ><i class="fa fa-save"></i></span></a>
+		  <a class="btn btn-default" onclick="location = '{{ cancel }}';" class="button"><span  data-toggle="tooltip" title="{{ button_cancel }}" ><i class="fa fa-reply"></i></span></a>
+	  </div>
+    </div>
+      <h1>{{heading_title_callback}}</h1>
+      <ul class="breadcrumb">
+		{% for breadcrumb in breadcrumbs %}
+			<li><a href="{{breadcrumb.href}}">{{breadcrumb.text}}</a></li>
+		{% endfor %}
+      </ul>
+    </div>
+  </div>
+ {% if  error_warning %}
+  <div class="alert alert-danger">{{error_warning}}</div>
+	  {% endif %}
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h3 class="panel-title"><i class="fa fa-pencil"></i> {{ text_setting_module }}</h3>
+		</div>
+	</div>
+	<div class="panel-body">
+		<form action="{{ action }}" method="post" enctype="multipart/form-data" id="form" class="form-horizontal">
+			<ul class="nav nav-tabs">
+				<li class="active"><a href="#tab-fields-setting" data-toggle="tab">{{ tab_fields_setting }}</a></li>
+				<li><a href="#tab-general-setting" data-toggle="tab">{{ tab_general_setting }}</a></li>
+				<li><a href="#tab-contact-setting" data-toggle="tab">{{ tab_contact_setting }}</a></li>
+				<li><a href="#tab-design-setting" data-toggle="tab">{{ tab_design_setting }}</a></li>
+				<li><a href="#tab-email-setting" data-toggle="tab">{{ tab_email_setting }}</a></li>
+			</ul>
+
+		<div class="tab-content">
+			<div class="tab-pane active" id="tab-fields-setting">
+				<div class="form-group">
+					<div class="col-sm-2 title-fields-callback">{{ text_on_off_fields_firstname }}</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2 control-label">{{text_status_fields}}</label>
+					<div class="col-sm-10">
+						<div class="toggle-switch">
+							<label><input type="checkbox" name="callbackpro[config_on_off_fields_firstname_cb]" value="1" {{ callbackpro.config_on_off_fields_firstname_cb ? 'checked="checked"' : '' }} /><span></span></label>
+						</div>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-sm-2 control-label">{{ text_requared_fields }}</label>
+					<div class="col-sm-10">
+						<div class="toggle-switch">
+							<label><input type="checkbox" name="callbackpro[config_fields_firstname_requared_cb]" value="1" {{ callbackpro.config_fields_firstname_requared_cb ? 'checked="checked"' : '' }} /><span></span></label>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2 control-label">{{ text_placeholder_fields }}</label>
+					<div class="col-sm-3">
+
+						{% for language in languages%}
+							<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+								<input name="callbackpro[config_placeholder_fields_firstname_cb][{{language.language_id }}][config_placeholder_fields_firstname_cb]" rows="5" class="form-control" value="{% if callbackpro.config_placeholder_fields_firstname_cb[language.language_id].config_placeholder_fields_firstname_cb %}{{  callbackpro.config_placeholder_fields_firstname_cb[language.language_id].config_placeholder_fields_firstname_cb }}{% endif %}"></input>
+							</div>
+						{% endfor %}
+					</div>
+				</div>
+
+				<!--ПОЛЕ TELEPHONE-->
+				<div class="form-group">
+					<div class="col-sm-2 title-fields-callback">{{ text_on_off_fields_phone }}</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2 control-label">{{ text_status_fields }}</label>
+					<div class="col-sm-10">
+						<div class="toggle-switch">
+							<label><input type="checkbox" name="callbackpro[config_on_off_fields_phone_cb]" value="1" {{ callbackpro.config_on_off_fields_phone_cb ? 'checked="checked"' : '' }} /><span></span></label>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2 control-label">{{ text_requared_fields }}</label>
+						<div class="col-sm-10">
+						<div class="toggle-switch">
+							<label><input type="checkbox" name="callbackpro[config_fields_phone_requared_cb]" value="1" {{ callbackpro.config_fields_phone_requared_cb ? 'checked="checked"' : '' }} /><span></span></label>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2 control-label">{{ text_placeholder_fields }}</label>
+					<div class="col-sm-3">
+
+							{% for language in languages %}
+							<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+								<input name="callbackpro[config_placeholder_fields_phone_cb][{{ language.language_id}}][config_placeholder_fields_phone_cb]" rows="5" class="form-control" value="{% if callbackpro.config_placeholder_fields_phone_cb[language.language_id].config_placeholder_fields_phone_cb %}{{ callbackpro.config_placeholder_fields_phone_cb[language.language_id].config_placeholder_fields_phone_cb }}{% endif %}"></input>
+							</div>
+							{% endfor %}
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2 control-label">{{ entry_mask_phone_number }}</label>
+					<div class="col-sm-10">
+						<input class="form-control" type="text" name="callbackpro[config_mask_phone_number_cb]" value="{% if callbackpro.config_mask_phone_number_cb%}{{ callbackpro.config_mask_phone_number_cb }}{% endif %}" />
+					</div>
+				</div>
+				<!--ПОЛЕ COMMENT-->
+				<div class="form-group">
+					<div class="col-sm-2 title-fields-callback">{{ text_on_off_fields_comment }}</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2 control-label">{{ text_status_fields }}</label>
+						<div class="col-sm-10">
+						<div class="toggle-switch">
+							<label><input type="checkbox" name="callbackpro[config_on_off_fields_comment_cb]" value="1" {{ callbackpro.config_on_off_fields_comment_cb ? 'checked="checked"' : '' }} /><span></span></label>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2 control-label">{{ text_requared_fields }}</label>
+					<div class="col-sm-10">
+						<div class="toggle-switch">
+							<label><input type="checkbox" name="callbackpro[config_fields_comment_requared_cb]" value="1" {{ callbackpro.config_fields_comment_requared_cb ? 'checked="checked"' : '' }} /><span></span></label>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2 control-label">{{ text_placeholder_fields }}</label>
+					<div class="col-sm-3">
+							{% for language in languages %}
+							<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+								<input name="callbackpro[config_placeholder_fields_comment_cb][{{language.language_id}}][config_placeholder_fields_comment_cb]" rows="5" class="form-control" value="{% if callbackpro.config_placeholder_fields_comment_cb[language.language_id].config_placeholder_fields_comment_cb %}{{ callbackpro.config_placeholder_fields_comment_cb[language.language_id].config_placeholder_fields_comment_cb }}{% endif %}"></input>
+							</div>
+							{% endfor %}
+					</div>
+				</div>
+				<div class="clearfix"></div>
+				<!--ПОЛЕ EMAIL-->
+				<div class="form-group">
+					<div class="col-sm-2 title-fields-callback">{{ text_on_off_fields_email }}</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2 control-label">{{ text_status_fields }}</label>
+					<div class="col-sm-10">
+						<div class="toggle-switch">
+							<label><input type="checkbox" name="callbackpro[config_on_off_fields_email_cb]" value="1" {{ callbackpro.config_on_off_fields_email_cb ? 'checked="checked"' : '' }} /><span></span></label>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2 control-label">{{ text_requared_fields }}</label>
+					<div class="col-sm-10">
+						<div class="toggle-switch">
+							<label><input type="checkbox" name="callbackpro[config_fields_email_requared_cb]" value="1" {{ callbackpro.config_fields_email_requared_cb ? 'checked="checked"' : '' }} /><span></span></label>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2 control-label">{{ text_placeholder_fields }}</label>
+					<div class="col-sm-3">
+						{% for language in languages %}
+							<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+								<input name="callbackpro[config_placeholder_fields_email_cb][{{ language.language_id }}][config_placeholder_fields_email_cb]" rows="5" class="form-control" value="{% if callbackpro.config_placeholder_fields_email_cb[language.language_id].config_placeholder_fields_email_cb %}{{ callbackpro.config_placeholder_fields_email_cb[language.language_id].config_placeholder_fields_email_cb }}{% endif %}"></input>
+							</div>
+						{% endfor %}
+					</div>
+				</div>
+			</div>
+
+
+			<div class="tab-pane" id="tab-general-setting">
+				<div class="form-group">
+					<label class="col-sm-2 control-label">{{ entry_background_callback }}</label>
+					<div class="col-sm-10">
+						<input class="form-control color" type="text" name="callbackpro[csscallback][config_background_callback]" value="{% if callbackpro.csscallback.config_background_callback %}{{ callbackpro.csscallback.config_background_callback }}{% endif %}"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2 control-label">{{ entry_background_callback_hover }}</label>
+					<div class="col-sm-10">
+						<input class="form-control color" type="text" name="callbackpro[csscallback][config_background_callback_hover]" value="{% if callbackpro.csscallback.config_background_callback_hover %}{{ callbackpro.csscallback.config_background_callback_hover }}{% endif %}"/>
+					</div>
+				</div>
+			</div>
+
+			<div class="tab-pane" id="tab-contact-setting">
+				<div class="form-group">
+					<label class="col-sm-2 control-label">{{ text_on_off_date_time }}</label>
+					<div class="col-sm-3">
+						<div class="toggle-switch">
+							<label><input type="checkbox" name="callbackpro[config_on_off_date_time]" value="1" {{ callbackpro.config_on_off_date_time ? 'checked="checked"' : '' }} /><span></span></label>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2 control-label">{{ entry_title_callback_sendthis }}</label>
+					<div class="col-sm-3">
+					{% for language in languages %}
+							<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+								<input name="callbackpro[title_callback][{{ language.language_id }}][text]" rows="5" class="form-control" value="{% if callbackpro.title_callback[language.language_id].text %}{{ callbackpro.title_callback[language.language_id].text }}{% endif %}"></input>
+							</div>
+					{% endfor %}
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2 control-label">{{ entry_any_text_bottom_before_button }}</label>
+					<div class="col-sm-3">
+					{% for language in languages %}
+							<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+								<input name="callbackpro[config_any_text_bottom_before_button][{{ language.language_id }}][config_any_text_bottom_before_button]" rows="5" class="form-control" value="{% if callbackpro.config_any_text_bottom_before_button[language.language_id].config_any_text_bottom_before_button %}{{ callbackpro.config_any_text_bottom_before_button[language.language_id].config_any_text_bottom_before_button }}{% endif %}"></input>
+							</div>
+						{% endfor %}
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2 control-label">{{ entry_img_left_callback }}</label>
+					<div class="col-sm-3">
+						<a href="" id="thumb-imgleft" data-toggle="image" class="img-thumbnail">
+						<img src="{{ main_thumb_callback }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a>
+						<input type="hidden" name="callbackpro[main_image_callback]" value="{{ main_image_callback }}" id="input-imgleft" />
+					</div>
+				</div>
+
+				{% set call_topic = 0 %}
+				{% for result in call_topic_data %}
+					<div class="form-group" id="call_topic{{ call_topic }}">
+					<label class="col-sm-2 control-label">№ - {{ call_topic }}</label>
+						<div class="col-sm-2">
+							<input class="form-control" type="text" name="callbackpro[call_topic][{{ call_topic }}][name]" value="{{result.name}}"></input>
+						</div>
+						<div class="col-sm-2">
+							<a class="btn btn-danger" onclick="$('#call_topic{{ call_topic }}').remove();" class="button">{{ text_delete }}</a>
+						</div>
+					</div>
+				  {% set call_topic = call_topic + 1 %}
+				{% endfor %}
+
+				<div class="form-group" id="call_topic">
+					<label class="col-sm-2 control-label">{{ text_theme_callback }}</label>
+					<div class="col-sm-2">
+						<button type="button" onclick="addCalltopic();" data-toggle="tooltip" title="{{ button_image_add }}" class="btn btn-primary"><i class="fa fa-plus-circle fa-fw"></i>{{text_add }}</button>
+					</div>
+				</div>
+			</div>
+
+			<div class="tab-pane" id="tab-design-setting">
+				<div class="form-group">
+					<label class="col-sm-2 control-label">{{ entry_animate_btn }}1</label>
+					<div class="col-sm-1">
+						<div class="toggle-switch">
+							<label><input type="checkbox" name="callbackpro[status_animate_btn_1]" value="1" {{ callbackpro.status_animate_btn_1 ? 'checked="checked"' : '' }} /><span></span></label>
+						</div>
+					</div>
+					<div class="col-sm-3">
+						<select class="form-control" name="callbackpro[position_animate_btn_1]">
+								<option value="">{{ entry_position_callback }}</option>
+								{% if callbackpro.position_animate_btn_1 =='1' %}
+									<option value="1" selected="selected">{{ text_position_top_left }}</option>
+								{% else %}
+									<option value="1">{{ text_position_top_left }}</option>
+								 {% endif %}
+								{% if callbackpro.position_animate_btn_1 =='2' %}
+									<option value="2" selected="selected">{{ text_position_center_left }}</option>
+								{% else %}
+									<option value="2">{{ text_position_center_left }}</option>
+								 {% endif %}
+								{% if callbackpro.position_animate_btn_1 =='3' %}
+									<option value="3" selected="selected">{{ text_position_bottom_left }}</option>
+								{% else %}
+									<option value="3">{{ text_position_bottom_left }}</option>
+								 {% endif %}
+								{% if callbackpro.position_animate_btn_1 =='4' %}
+									<option value="4" selected="selected">{{ text_position_top_right }}</option>
+								{% else %}
+									<option value="4">{{ text_position_top_right }}</option>
+								 {% endif %}
+								{% if callbackpro.position_animate_btn_1 =='5' %}
+									<option value="5" selected="selected">{{ text_position_center_right }}</option>
+								{% else %}
+									<option value="5">{{ text_position_center_right }}</option>
+								 {% endif %}
+								{% if callbackpro.position_animate_btn_1 =='6' %}
+									<option value="6" selected="selected">{{ text_position_bottom_right }}</option>
+								{% else %}
+									<option value="6">{{ text_position_bottom_right }}</option>
+								{% endif %}
+						</select>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2 control-label">{{ entry_animate_btn }}2</label>
+					<div class="col-sm-1">
+						<div class="toggle-switch">
+							<label><input type="checkbox" name="callbackpro[status_animate_btn_2]" value="1" {{ callbackpro.status_animate_btn_2 ? 'checked="checked"' : '' }} /><span></span></label>
+						</div>
+					</div>
+					<div class="col-sm-3">
+						<select class="form-control" name="callbackpro[position_animate_btn_2]">
+								<option value="">{{ entry_position_callback }}</option>
+								{% if callbackpro.position_animate_btn_2 =='1' %}
+									<option value="1" selected="selected">{{ text_position_top_left }}</option>
+								{% else %}
+									<option value="1">{{ text_position_top_left }}</option>
+								{% endif %}
+								{% if callbackpro.position_animate_btn_2 =='2' %}
+									<option value="2" selected="selected">{{ text_position_center_left }}</option>
+								{% else %}
+									<option value="2">{{ text_position_center_left }}</option>
+								{% endif %}
+								{% if callbackpro.position_animate_btn_2 =='3' %}
+									<option value="3" selected="selected">{{ text_position_bottom_left }}</option>
+								{% else %}
+									<option value="3">{{ text_position_bottom_left }}</option>
+								{% endif %}
+								{% if callbackpro.position_animate_btn_2 =='4' %}
+									<option value="4" selected="selected">{{ text_position_top_right }}</option>
+								{% else %}
+									<option value="4">{{ text_position_top_right }}</option>
+								{% endif %}
+								{% if callbackpro.position_animate_btn_2 =='5' %}
+									<option value="5" selected="selected">{{ text_position_center_right }}</option>
+								{% else %}
+									<option value="5">{{ text_position_center_right }}</option>
+								{% endif %}
+								{% if callbackpro.position_animate_btn_2 =='6' %}
+									<option value="6" selected="selected">{{ text_position_bottom_right }}</option>
+								{% else %}
+									<option value="6">{{ text_position_bottom_right }}</option>
+								{% endif %}
+						</select>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2 control-label">{{ entry_animate_btn}}3</label>
+					<div class="col-sm-1">
+						<div class="toggle-switch">
+							<label><input type="checkbox" name="callbackpro[status_animate_btn_3]" value="1" {{ callbackpro.status_animate_btn_3 ? 'checked="checked"' : '' }} /><span></span></label>
+						</div>
+					</div>
+					<div class="col-sm-3">
+						<select class="form-control" name="callbackpro[position_animate_btn_3]">
+								<option value="">{{ entry_position_callback }}</option>
+								{% if callbackpro.position_animate_btn_3 =='1' %}
+									<option value="1" selected="selected">{{ text_position_top_left }}</option>
+								{% else %}
+									<option value="1">{{ text_position_top_left }}</option>
+								{% endif %}
+								{% if callbackpro.position_animate_btn_3 =='2' %}
+									<option value="2" selected="selected">{{ text_position_center_left }}</option>
+								{% else %}
+									<option value="2">{{ text_position_center_left }}</option>
+								{% endif %}
+								{% if callbackpro.position_animate_btn_3 =='3' %}
+									<option value="3" selected="selected">{{ text_position_bottom_left }}</option>
+								{% else %}
+									<option value="3">{{ text_position_bottom_left }}</option>
+								{% endif %}
+								{% if callbackpro.position_animate_btn_3 =='4' %}
+									<option value="4" selected="selected">{{ text_position_top_right }}</option>
+								{% else %}
+									<option value="4">{{ text_position_top_right }}</option>
+								{% endif %}
+								{% if callbackpro.position_animate_btn_3 =='5' %}
+									<option value="5" selected="selected">{{ text_position_center_right }}</option>
+								{% else %}
+									<option value="5">{{ text_position_center_right }}</option>
+								{% endif %}
+								{% if callbackpro.position_animate_btn_3 =='6' %}
+									<option value="6" selected="selected">{{ text_position_bottom_right }}</option>
+								{% else %}
+									<option value="6">{{ text_position_bottom_right }}</option>
+								{% endif %}
+						</select>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2 control-label">{{ entry_animate_btn}}4</label>
+					<div class="col-sm-1">
+						<div class="toggle-switch">
+							<label><input type="checkbox" name="callbackpro[status_animate_btn_4]" value="1" {{ callbackpro.status_animate_btn_4 ? 'checked="checked"' : '' }} /><span></span></label>
+						</div>
+					</div>
+					<div class="col-sm-3">
+						<select class="form-control" name="callbackpro[position_animate_btn_4]">
+								<option value="">{{ entry_position_callback }}</option>
+								{% if callbackpro.position_animate_btn_4 == '1' %}
+									<option value="1" selected="selected">{{text_position_top_left }}</option>
+								{% else %}
+									<option value="1">{{text_position_top_left }}</option>
+								{% endif %}
+								{% if callbackpro.position_animate_btn_4 == '2' %}
+									<option value="2" selected="selected">{{text_position_center_left }}</option>
+								{% else %}
+									<option value="2">{{text_position_center_left }}</option>
+								{% endif %}
+								{% if callbackpro.position_animate_btn_4 == '3' %}
+									<option value="3" selected="selected">{{text_position_bottom_left }}</option>
+								{% else %}
+									<option value="3">{{text_position_bottom_left }}</option>
+								{% endif %}
+								{% if callbackpro.position_animate_btn_4 == '4' %}
+									<option value="4" selected="selected">{{text_position_top_right }}</option>
+								{% else %}
+									<option value="4">{{text_position_top_right }}</option>
+								{% endif %}
+								{% if callbackpro.position_animate_btn_4 == '5' %}
+									<option value="5" selected="selected">{{text_position_center_right }}</option>
+								{% else %}
+									<option value="5">{{text_position_center_right }}</option>
+								{% endif %}
+								{% if callbackpro.position_animate_btn_4 == '6' %}
+									<option value="6" selected="selected">{{text_position_bottom_right }}</option>
+								{% else %}
+									<option value="6">{{text_position_bottom_right }}</option>
+								{% endif %}
+						</select>
+					</div>
+				</div>
+			</div>
+
+			<div class="tab-pane" id="tab-email-setting">
+				<div>
+						<div class="form-group">
+								<div class="col-sm-5 title-fields-callback">{{ form_latter_from_me_callback }}</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">{{ text_on_off_send_me_mail_callback }}</label>
+							<div class="col-sm-10">
+								<div class="toggle-switch">
+									<label><input type="checkbox" name="callbackpro[config_on_off_send_me_mail_callback]" value="1" {{ callbackpro.config_on_off_send_me_mail_callback ? 'checked="checked"' : '' }} /><span></span></label>
+								</div>
+							</div>
+						</div>
+						<ul class="nav nav-tabs" id="language_me">
+							{% for language in languages %}
+							<li><a href="#language_me{{ language.language_id }}" data-toggle="tab"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /> {{ language.name }}</a></li>
+							{% endfor %}
+						</ul>
+							<div class="tab-content">
+								{% for language in languages %}
+									<div class="tab-pane" id="language_me{{ language.language_id }}">
+										<div class="form-group">
+											<label class="col-sm-2 control-label" for="quickorder_subject_me_callback{{ language.language_id }}">{{ callback_subject }}<br />{{ subject_text_variables }}</label>
+											<div class="col-sm-10">
+												<textarea name="callbackpro[quickorder_subject_me_callback][{{language.language_id }}]" id="quickorder_subject_me_callback{{ language.language_id }}" cols="50" rows="3">{{ callbackpro.quickorder_subject_me_callback[language.language_id] }}</textarea>
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="col-sm-2 control-label" for="quickorder_description_me_callback{{ language.language_id }}">{{ quickorder_description_me }}<br />{{ subject_text_variables }}<br />{{ list_of_variables_entry }}</label>
+											<div class="col-sm-10">
+												<textarea name="callbackpro[quickorder_description_me_callback][{{ language.language_id }}]" id="quickorder_description_me_callback{{ language.language_id }}" cols="50" rows="3">{{ callbackpro.quickorder_description_me_callback[language.language_id] }}</textarea>
+											</div>
+										</div>
+									</div>
+								{% endfor %}
+							</div>
+						<div class="form-group">
+						<label class="col-sm-2 control-label">{{ entry_you_email_callback }}</label>
+						<div class="col-sm-10">
+							<input class="form-control" type="text" name="callbackpro[config_you_email_callback]" value="{% if callbackpro.config_you_email_callback %}{{callbackpro.config_you_email_callback}}{% endif %}"/>
+						</div>
+					</div>
+					</div>
+			</div>
+		</div>
+		</form>
+	</div>
+</div>
+<script type="text/javascript" src="view/javascript/summernote/summernote.js"></script>
+<link href="view/javascript/summernote/summernote.css" rel="stylesheet" />
+<script type="text/javascript" src="view/javascript/summernote/summernote-image-attributes.js"></script>
+<script type="text/javascript" src="view/javascript/summernote/opencart.js"></script>
+<script type="text/javascript">
+{% for language in languages %}
+$('#quickorder_description_me_callback{{language.language_id}}').summernote({height: 300});
+{% endfor %}
+$('#language_me a:first').tab('show');
+
+var call_topic = {{ call_topic }};
+function addCalltopic() {
+	html  = '<div class="form-group" id="call_topic'+ call_topic +'">';
+	html += '  <label class="col-sm-2 control-label">Тема звонка № - '+ call_topic +'</label>';
+	html += '  <div class="col-sm-2">';
+	html += '     <input class="form-control" type="text" name="callbackpro[call_topic]['+ call_topic +'][name]" value="" />';
+	html += '  </div>';
+	html += '  <div class="col-sm-2">';
+	html += '  		<button type="button" onclick="$(\'#call_topic' + call_topic + '\').remove();" data-toggle="tooltip" title="{{ text_delete }}" class="btn btn-danger">{{ text_delete }}</button>';
+	html += '  </div>';
+	html += '</div>';
+
+	$('#call_topic').before(html);
+
+	call_topic++;
+}
+
+	$('.time').datetimepicker({
+	pickDate: false
+});
+</script>
+{{ footer }}

@@ -1,0 +1,68 @@
+{{ header }}
+<div id="account-login" class="container">
+	<ul class="breadcrumb">
+		{% for i,breadcrumb in breadcrumbs %}
+			{% if (i+1 < breadcrumbs|length) %}
+				<li><a href="{{ breadcrumb.href }}"><span>{{ breadcrumb.text }}</span></a></li>
+			{% else %}
+				<li><span>{{ breadcrumb.text }}</span></li>
+			{% endif %}
+		{% endfor %}
+	</ul>
+  <h1>{{ text_login }}</h1>
+  {% if success %}
+  <div class="alert ch-alert-success">
+		<img class="success-icon" alt="success-icon" src="catalog/view/theme/upstore/image/success-icon.svg">
+		<div class="text-modal-block">{{ success }}</div>
+		<button type="button" class="close" data-dismiss="alert"><i class="up-icon-close" aria-hidden="true"></i></button>
+	</div>
+  {% endif %}
+  {% if error_warning %}
+	 <div class="alert ch-alert-danger">
+		<img class="warning-icon" alt="warning-icon" src="catalog/view/theme/upstore/image/warning-icon.svg">
+		<div class="text-modal-block">{{ error_warning }}</div>
+		<button type="button" class="close" data-dismiss="alert"><i class="up-icon-close" aria-hidden="true"></i></button>
+	 </div>
+  {% endif %}
+  <div class="row">{{ column_left }}
+	 {% if column_left and column_right %}
+	 {% set class = 'col-md-6' %}
+	 {% elseif column_left or column_right %}
+	 {% set class = 'col-md-9' %}
+	 {% else %}
+	 {% set class = 'col-md-12' %}
+	 {% endif %}
+	 <div id="content" class="{{ class }}">{{ content_top }}
+		<div class="row-flex chm-auth">
+			<div class="col-xs-12 col-sm-6 xs-mb-20 sm-mb-0">
+				<div class="chm-well">
+					<div class="chm-title-auth">{{ text_returning_customer }}</div>
+					<form action="{{ action }}" method="post" enctype="multipart/form-data">
+						<div class="form-group required">
+							<label class="control-label" for="input-email">{{ entry_email }}</label>
+							<input type="text" name="email" value="{{ email }}" placeholder="{{ entry_email }}" id="input-email" class="form-control" />
+						</div>
+						<div class="form-group required">
+							<label class="control-label" for="input-password">{{ entry_password }}</label>
+							<input type="password" name="password" value="{{ password }}" placeholder="{{ entry_password }}" id="input-password" class="form-control" />
+							<div class="mt-20"><a href="{{ forgotten }}">{{ text_forgotten }}</a></div>
+						</div>
+						<input type="submit" value="{{ button_login }}" class="btn btn-primary" />
+						{% if redirect %}
+							<input type="hidden" name="redirect" value="{{ redirect }}" />
+						{% endif %}
+					</form>
+				</div>
+			</div>
+			<div class="col-xs-12 col-sm-6 xs-mb-20 sm-mb-0">
+				<div class="chm-well dflex flex-column">
+					<div class="chm-title-auth">{{ text_new_customer }}</div>
+					<p>{{ text_register_account }}</p>
+					<a href="{{ register }}" class="btn btn-primary">{{ button_continue }}</a>
+				</div>
+			</div>
+		</div>
+		{{ content_bottom }}</div>
+	 {{ column_right }}</div>
+</div>
+{{ footer }}

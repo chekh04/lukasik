@@ -1,0 +1,55 @@
+<div class="sidebar-viewed__header">
+    <div class="sidebar-viewed__title">{{ text_viewed }}</div>
+    <button type="button" class="btn-close-viewed"><i class="up-icon-close" aria-hidden="true"></i></button>
+</div>
+<div class="sidebar-viewed__content">
+    <div class="container-module-viewed">
+        {% for product in products %}
+            <div class="product-thumb-viewed dflex flex-wrap">
+                <div class="image col-xs-5 pl-0 pr-0 dflex flex-column">
+                    <a href="{{ product.href }}"><img width="80" height="80" src="{{ product.thumb }}" alt="{{ product.name }}" title="{{ product.name }}" class="img-responsive"/></a>
+                </div>
+                <div class="caption col-xs-7 dflex flex-column flex-grow-1">
+                    <div class="product-name"><a href="{{ product.href }}">{{ product.name }}</a></div>
+                    <div class="price-actions-box dflex flex-wrap mt-auto">
+                        {% if product.price %}
+                            <div class="price">
+                                {% if not product.special %}
+                                    <span class="price_value">{{ product.price }}</span>
+                                {% else %}
+                                    <span class="price-old"><span class="price_value">{{ product.price }}</span></span>
+                                    <span class="price-new"><span class="special_value">{{ product.special }}</span></span>
+                                {% endif %}
+                                {% if product.tax %}
+                                    <span class="price-tax">{{ text_tax }} {{ product.tax }}</span>
+                                {% endif %}
+                            </div>
+                        {% endif %}
+                        <div class="actions">
+                            <div class="cart">
+                                {% if (product.show_buy_button) %}
+                                <button aria-label="Add to cart" class="btn btn-general {% if product.in_cart %} is-active{% endif %}" type="button" {% if (product.product_quantity <= 0) and disable_cart_button %}disabled{% else %}onclick="cart.add('{{ product.product_id }}',this); $('.sidebar-viewed .btn-close-viewed').trigger('click');"{% endif %}>
+                                    <i class="up-icon-22 up-icon-cart" aria-hidden="true"></i>
+                                    <span class="text-cart-add">
+                                        {% if change_text_cart_button_out_of_stock == 1 and product.product_quantity <= 0 %}
+                                            {{ disable_cart_button_text }}
+                                        {% else %}
+                                            {% if product.in_cart %}
+                                                {{ text_in_cart }}
+                                            {% else %}
+                                                {{ button_cart }}
+                                            {% endif %}
+                                        {% endif %}
+                                    </span>
+                                </button>
+                                {% else %}
+                                    <button aria-label="notify stock" class="btn btn-general {% if product.in_waitlist %} is-active{% endif %}" type="button" onclick="$('.sidebar-viewed .btn-close-viewed').trigger('click');setTimeout(function () {upstoreNotifyStock('{{ product['product_id'] }}')}, 600);"><i class="up-icon-22 up-icon-notify" aria-hidden="true"></i><span class="text-cart-add">{{ button_notify_stock }}</span></button>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>

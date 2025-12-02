@@ -1,0 +1,558 @@
+{{ header }}{{ column_left }}
+<div id="content">
+	<div class="page-header">
+		<div class="container-fluid">
+			<div class="pull-right">
+				<button type="submit" form="form-product-size-chart" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary">
+					<i class="fa fa-save"></i>
+				</button>
+				<a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default">
+					<i class="fa fa-reply"></i>
+				</a>
+			</div>
+			<h1>{{ heading_title }}</h1>
+			<ul class="breadcrumb">
+				{% for breadcrumb in breadcrumbs %}
+					<li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+				{% endfor %}
+			</ul>
+		</div>
+	</div>
+	<div class="container-fluid">
+		{% if error_warning %}
+			<div class="alert alert-danger">
+				<i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+				<button type="button" class="close" data-dismiss="alert">&times;</button>
+			</div>
+		{% endif %}
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title"><i class="fa fa-pencil"></i> {{ text_form }}</h3>
+			</div>
+
+			<div class="panel-body">
+				<form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-product-size-chart" class="form-horizontal">
+					<ul class="nav nav-tabs">
+						<li class="active"><a href="#tab-general" data-toggle="tab">{{ tab_general }}</a></li>
+						<li><a href="#tab-links" data-toggle="tab">{{ tab_links }}</a></li>
+					</ul>
+					<div class="tab-content">
+						<div class="tab-pane active" id="tab-general">
+							<div class="form-group required">
+								<label class="col-sm-2 control-label">{{ entry_title }}</label>
+								<div class="col-sm-10">
+									{% for language in languages %}
+										<div class="input-group">
+											<span class="input-group-addon">
+												<img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" />
+											</span>
+											<input type="text" name="size_chart_description[{{ language.language_id }}][name]" value="{{ size_chart_description[language.language_id].name is defined ? size_chart_description[language.language_id].name : '' }}" placeholder="{{ entry_title }}" id="input-title{{ language.language_id }}" class="form-control" />
+										</div>
+										{% if error_title[language.language_id] is defined %}
+											<div class="text-danger">{{ error_title[language.language_id] }}</div>
+										{% endif %}
+									{% endfor %}
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="input-status">{{ entry_status }}</label>
+								<div class="col-sm-10">
+									<select name="status" id="input-status" class="form-control">
+										<option value="1" {{ status ? 'selected="selected"' : '' }}>{{ text_enabled }}</option>
+										<option value="0" {{ not status ? 'selected="selected"' : '' }}>{{ text_disabled }}</option>
+									</select>
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="input-content-type">{{ entry_content_type }}</label>
+								<div class="col-sm-10">
+									<select autocomplete="off" name="content_type" id="input-content-type" class="form-control">
+										<option value="html" {{ content_type == 'html' ? 'selected="selected"' : '' }}>{{ text_html }}</option>
+										<option value="table" {{ content_type == 'table' ? 'selected="selected"' : '' }}>{{ text_table }}</option>
+									</select>
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="input-sort-order">{{ entry_sort_order }}</label>
+								<div class="col-sm-10">
+									<input type="text" name="sort_order" value="{{ sort_order }}" placeholder="{{ entry_sort_order }}" id="input-sort-order" class="form-control" />
+								</div>
+							</div>
+
+							<div id="content_type_table" class="collapse fade {% if content_type == 'table' %} in{% endif %}">
+							    <div class="form-group">
+							        <label class="col-sm-2 control-label" for="input-use-header">{{ entry_use_header }}</label>
+							        <div class="col-sm-10">
+							            <div class="toggle-switch">
+							                <label>
+							                    <input type="hidden" name="use_header" value="0" />
+							                    <input type="checkbox" class="use-header" name="use_header" value="1" onchange="toggleHeader()" {% if use_header is defined and use_header == 1 %}checked="checked"{% endif %} />
+							                    <span></span>
+							                </label>
+							            </div>
+							        </div>
+							    </div>
+							    <ul class="nav nav-tabs" id="language-size-chart">
+							        {% for language in languages %}
+							            <li><a href="#language-size-chart{{ language.language_id }}" data-toggle="tab"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /> {{ language.name }}</a></li>
+							        {% endfor %}
+							    </ul>
+							    <div class="tab-content">
+							        {% for language in languages %}
+							            <div class="tab-pane" id="language-size-chart{{ language.language_id }}">
+							                {% set headers = size_charts[language.language_id].header %}
+							                {% set cells = size_charts[language.language_id].cell %}
+							                {% set rows = size_charts[language.language_id].rows %}
+							                <div class="table-responsive">
+							                    <table class="table table-bordered" id="table-{{ language.language_id }}">
+							                        <thead id="thead-{{ language.language_id }}">
+							                        	{% if rows > 0 %}
+							                            <tr id="header-row-{{ language.language_id }}">
+							                                {% for index, header in headers %}
+							                                    <th data-column="{{ index }}">
+							                                        <input type="text" name="size_chart[{{ language.language_id }}][header][]" class="form-control" placeholder="{{ text_title }}" value="{{ header }}" />
+							                                    </th>
+							                                {% endfor %}
+							                                <th></th>
+							                            </tr>
+							                         {% endif %}
+							                        </thead>
+							                        <tbody id="tbody-{{ language.language_id }}">
+							                        	{% if rows > 0 %}
+							                            {% for i in 0 ..rows - 1 %}
+							                                <tr>
+							                                    {% for j in 0..headers|length - 1 %}
+							                                        {% set cell_index = i * headers|length + j %}
+							                                        {% set cell_value = cells[cell_index] ?? '' %}
+							                                        <td>
+							                                            <input type="text" name="size_chart[{{ language.language_id }}][cell][]" class="form-control" value="{{ cell_value }}" placeholder="{{ text_value }}" />
+							                                        </td>
+							                                    {% endfor %}
+							                                    <td class="text-center">
+							                                        <button class="btn btn-danger" type="button" onclick="removeRow(this)"><i class="fa fa-trash-o"></i></button>
+							                                    </td>
+							                                </tr>
+							                            {% endfor %}
+							                            {% endif %}
+							                        </tbody>
+							                        <tfoot id="tfoot-{{ language.language_id }}">
+							                        	{% if rows > 0 %}
+							                            <tr id="footer-{{ language.language_id }}">
+							                                {% for j in 0..headers|length - 1 %}
+							                                    <td class="text-center">
+							                                        <button class="btn btn-danger" type="button" onclick="removeColumn('{{ language.language_id }}', {{ j }})">
+							                                            <i class="fa fa-trash-o"></i>
+							                                        </button>
+							                                    </td>
+							                                {% endfor %}
+							                                <td></td>
+							                            </tr>
+							                            {% endif %}
+							                        </tfoot>
+							                    </table>
+							                </div>
+
+							                <button type="button" id="add_row" class="btn btn-success" onclick="addRow('{{ language.language_id }}')">{{ button_add_row }}</button>
+							                <button type="button" id="add_column" class="btn btn-primary {% if rows == 0 %}hidden{% endif %}" onclick="addColumn('{{ language.language_id }}')">{{ button_add_column }}</button>
+							            </div>
+							        {% endfor %}
+							    </div>
+							</div>
+
+
+							<div id="content_type_html" class="collapse fade {{ content_type == 'html' ? 'in' }}">
+								<ul class="nav nav-tabs" id="language">
+									{% for language in languages %}
+										<li><a href="#language{{ language.language_id }}" data-toggle="tab">
+											<img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /> {{ language.name }}
+										</a></li>
+									{% endfor %}
+								</ul>
+
+								<div class="tab-content">
+									{% for language in languages %}
+										<div class="tab-pane" id="language{{ language.language_id }}">
+											<div class="form-group">
+												<label class="col-sm-2 control-label" for="input-content{{ language.language_id }}">{{ entry_desccription }}</label>
+												<div class="col-sm-10">
+													<textarea data-toggle="summernote" data-lang="{{ summernote }}" name="size_chart_description[{{ language.language_id }}][content]" placeholder="{{ entry_desccription }}" id="input-content{{ language.language_id }}" class="form-control">
+														{{ size_chart_description[language.language_id].content | default('') }}
+													</textarea>
+												</div>
+											</div>
+										</div>
+									{% endfor %}
+								</div>
+							</div>
+						</div>
+
+						<div class="tab-pane" id="tab-links">
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="input-status-view-all">{{ entry_status_view_all }}</label>
+								<div class="col-sm-10">
+									<select name="status_view_all" id="input-status-view-all" class="form-control">
+										<option value="1" {{ status_view_all ? 'selected' : '' }}>{{ text_enabled }}</option>
+										<option value="0" {{ not status_view_all ? 'selected' : '' }}>{{ text_disabled }}</option>
+									</select>
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="input-product-ignore">{{ entry_product_ignore }}</label>
+								<div class="col-sm-10">
+									<input type="text" name="product_name_ignore" value="" placeholder="{{ entry_product_ignore }}" id="input-product-ignore" class="form-control" />
+									<div id="product-ignore" class="well well-sm" style="height: 150px; overflow: auto;">
+										{% for product_ignore in products_ignore %}
+											<div id="product-ignore{{ product_ignore.product_id }}">
+												<i class="fa fa-minus-circle"></i> {{ product_ignore.name }}
+												<input type="hidden" name="products_ignore[]" value="{{ product_ignore.product_id }}" />
+											</div>
+										{% endfor %}
+									</div>
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="input-show-category">{{ entry_show_category }}</label>
+								<div class="col-sm-10">
+									<input type="text" name="category_name" value="" placeholder="{{ entry_show_category }}" id="input-show-category" class="form-control" />
+									<div id="show-categories" class="well well-sm" style="height: 150px; overflow: auto;">
+										{% for category in show_categories %}
+											<div id="show-categories{{ category.category_id }}">
+												<i class="fa fa-minus-circle"></i> {{ category.name }}
+												<input type="hidden" name="show_categories[]" value="{{ category.category_id }}" />
+											</div>
+										{% endfor %}
+									</div>
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="input-show-manufacturer">{{ entry_show_manufacturer }}</label>
+								<div class="col-sm-10">
+									<input type="text" name="manufacturer_name" value="" placeholder="{{ entry_show_manufacturer }}" id="input-show-manufacturer" class="form-control" />
+									<div id="show-manufacturer" class="well well-sm" style="height: 150px; overflow: auto;">
+										{% for manufacturer in show_manufacturers %}
+											<div id="show-manufacturer{{ manufacturer.manufacturer_id }}">
+												<i class="fa fa-minus-circle"></i> {{ manufacturer.name }}
+												<input type="hidden" name="show_manufacturers[]" value="{{ manufacturer.manufacturer_id }}" />
+											</div>
+										{% endfor %}
+									</div>
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="input-show-attribute">{{ entry_show_attribute }}</label>
+								<div class="col-sm-10">
+									<input type="text" name="attribute_name" value="" placeholder="{{ entry_show_attribute }}" id="input-show-attribute" class="form-control" />
+									<div id="show-attribute" class="well well-sm" style="height: 150px; overflow: auto;">
+										{% for attribute in show_attributes %}
+											<div id="show-attribute{{ attribute.attribute_id }}">
+												<i class="fa fa-minus-circle"></i> {{ attribute.name }}
+												<input type="hidden" name="show_attributes[]" value="{{ attribute.attribute_id }}" />
+											</div>
+										{% endfor %}
+									</div>
+								</div>
+							</div>
+
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+<link href="view/javascript/codemirror/lib/codemirror.css" rel="stylesheet"/>
+<link href="view/javascript/codemirror/theme/monokai.css" rel="stylesheet"/>
+<script type="text/javascript" src="view/javascript/codemirror/lib/codemirror.js"></script>
+<script type="text/javascript" src="view/javascript/codemirror/lib/xml.js"></script>
+<script type="text/javascript" src="view/javascript/codemirror/lib/formatting.js"></script>
+<script type="text/javascript" src="view/javascript/summernote/summernote.js"></script>
+<link href="view/javascript/summernote/summernote.css" rel="stylesheet"/>
+<script type="text/javascript" src="view/javascript/summernote/summernote-image-attributes.js"></script>
+<script type="text/javascript" src="view/javascript/summernote/opencart.js"></script>
+<script>
+	$(document).on('change', '[name=content_type]', function(){
+		if ($(this).val() == 'table') {
+			$('#content_type_html').collapse('hide');
+			$('#content_type_table').collapse('show');
+		} else {
+			$('#content_type_table').collapse('hide');
+			$('#content_type_html').collapse('show');
+		}
+	});
+
+
+	function toggleHeader() {
+		const show = $('.use-header').is(':checked');
+
+		$('[id^="thead-"]').each(function () {
+			if (show) {
+				$(this).show();
+			} else {
+				$(this).hide();
+			}
+		});
+	}
+
+	$(document).ready(function () {
+		toggleHeader();
+	});
+
+	function addRow(lang) {
+		const $thead = $('#thead-' + lang);
+		const $tbody = $('#tbody-' + lang);
+		const $tfoot = $('#tfoot-' + lang);
+		const $theadRow = $('#header-row-' + lang);
+		let colCount = $theadRow.find('input').length;
+
+		if (colCount === 0) {
+			addColumn(lang);
+			colCount = 1;
+			const th = $(`
+				<tr id="header-row-${lang}">
+				<th>
+				<input type="text" name="size_chart[${lang}][header][]" class="form-control" placeholder="{{ text_title }}" />
+				</th>
+				<th></th>
+				</tr>
+				`);
+
+			th.appendTo($thead);
+
+			const tf = $(`
+				<tr id="footer-${lang}">
+				<td class="text-center">
+				<button type="button" class="btn btn-danger" onclick="removeColumn('${lang}', 0)"><i class="fa fa-trash-o"></i></button>
+				</td>
+				<td></td>
+				</tr>
+				`);
+
+			tf.appendTo($tfoot);
+
+			$('#add_column').removeClass('hidden');
+		}
+
+		const $newRow = $('<tr></tr>');
+
+		for (let i = 0; i < colCount; i++) {
+			$newRow.append(
+				`<td data-column="${i}">
+				<input type="text" name="size_chart[${lang}][cell][]" class="form-control" placeholder="{{ text_value }}" />
+				</td>`
+				);
+		}
+
+		$newRow.append(`
+			<td class="text-center">
+			<button type="button" class="btn btn-danger" onclick="removeRow(this)"><i class="fa fa-trash-o"></i></button>
+			</td>
+			`);
+
+		$tbody.append($newRow);
+	}
+
+	function addColumn(lang) {
+		const $theadRow = $('#header-row-' + lang);
+		const $footerRow = $('#footer-' + lang);
+		const $tbody = $('#tbody-' + lang);
+
+		const th = $(`
+			<th>
+			<input type="text" name="size_chart[${lang}][header][]" class="form-control" placeholder="{{ text_title }}" />
+			</th>
+			`);
+		th.insertBefore($theadRow.children('th:last'));
+
+		const colIndex = $theadRow.find('input').length - 1;
+
+		const tf = $(`
+			<td class="text-center">
+			<button type="button" class="btn btn-danger" onclick="removeColumn('${lang}', ${colIndex})"><i class="fa fa-trash-o"></i></button>
+			</td>
+			`);
+		tf.insertBefore($footerRow.children('td:last'));
+
+		$tbody.find('tr').each(function () {
+			const td = $(`
+				<td data-column="${colIndex}">
+				<input type="text" name="size_chart[${lang}][cell][]" class="form-control" placeholder="{{ text_value }}" />
+				</td>
+				`);
+			$(this).children('td:last').before(td);
+		});
+	}
+
+	function removeRow(el) {
+		const $row = $(el).closest('tr');
+		const $tbody = $row.closest('tbody');
+		const lang = $tbody.attr('id').split('-')[1];
+		const $thead = $('#thead-' + lang);
+		const $tfoot = $('#tfoot-' + lang);
+
+		$row.remove();
+
+		if ($tbody.find('tr').length === 0) {
+			$thead.empty();
+			$tbody.empty();
+			$tfoot.empty();
+			$('#add_column').addClass('hidden');
+		}
+	}
+
+	function removeColumn(lang, index) {
+		const $headerRow = $('#header-row-' + lang);
+		const $footerRow = $('#footer-' + lang);
+		const $thead = $('#thead-' + lang);
+		const $tbody = $('#tbody-' + lang);
+		const $tfoot = $('#tfoot-' + lang);
+
+		$headerRow.find('th').eq(index).remove();
+		$footerRow.find('td').eq(index).remove();
+
+		$tbody.find('tr').each(function () {
+			$(this).find('td').eq(index).remove();
+		});
+
+		const totalColumns = $headerRow.find('input').length;
+
+		if (totalColumns === 0) {
+			$thead.empty();
+			$tbody.empty();
+			$tfoot.empty();
+			$('#add_column').addClass('hidden');
+		} else {
+			$tbody.find('tr').each(function () {
+				$(this).children('td').each(function (colIndex) {
+					$(this).attr('data-column', colIndex);
+				});
+			});
+			$footerRow.find('td').each(function (colIndex) {
+				$(this).find('button').attr('onclick', `removeColumn('${lang}', ${colIndex})`);
+			});
+		}
+	}
+
+	$('input[name=\'product_name_ignore\']').autocomplete({
+		source: function(request, response) {
+			$.ajax({
+				url: 'index.php?route=catalog/product/autocomplete&user_token={{ user_token }}&filter_name=' +  encodeURIComponent(request),
+				dataType: 'json',
+				success: function(json) {
+					response($.map(json, function(item) {
+						return {
+							label: item['name'],
+							value: item['product_id']
+						}
+					}));
+				}
+			});
+		},
+		select: function(item) {
+			$('input[name=\'product_name_ignore\']').val('');
+
+			$('#product-ignore' + item['value']).remove();
+
+			$('#product-ignore').append('<div id="product-ignore' + item['value'] + '"><i class="fa fa-minus-circle"></i> ' + item['label'] + '<input type="hidden" name="products_ignore[]" value="' + item['value'] + '" /></div>');
+		}
+	});
+
+	$('#product-ignore').delegate('.fa-minus-circle', 'click', function() {
+		$(this).parent().remove();
+	});
+
+	$('input[name=\'category_name\']').autocomplete({
+		source: function(request, response) {
+			$.ajax({
+				url: 'index.php?route=catalog/category/autocomplete&user_token={{ user_token }}&filter_name=' +  encodeURIComponent(request),
+				dataType: 'json',
+				success: function(json) {
+					response($.map(json, function(item) {
+						return {
+							label: item['name'],
+							value: item['category_id']
+						}
+					}));
+				}
+			});
+		},
+		select: function(item) {
+			$('input[name=\'category_name\']').val('');
+
+			$('#show-categories' + item['value']).remove();
+
+			$('#show-categories').append('<div id="show-categories' + item['value'] + '"><i class="fa fa-minus-circle"></i> ' + item['label'] + '<input type="hidden" name="show_categories[]" value="' + item['value'] + '" /></div>');
+		}
+	});
+
+	$('#show-categories').delegate('.fa-minus-circle', 'click', function() {
+		$(this).parent().remove();
+	});
+
+	$('input[name=\'manufacturer_name\']').autocomplete({
+		source: function(request, response) {
+			$.ajax({
+				url: 'index.php?route=catalog/manufacturer/autocomplete&user_token={{ user_token }}&filter_name=' +  encodeURIComponent(request),
+				dataType: 'json',
+				success: function(json) {
+					response($.map(json, function(item) {
+						return {
+							label: item['name'],
+							value: item['manufacturer_id']
+						}
+					}));
+				}
+			});
+		},
+		select: function(item) {
+			$('input[name=\'manufacturer_name\']').val('');
+
+			$('#show-manufacturer' + item['value']).remove();
+
+			$('#show-manufacturer').append('<div id="show-manufacturer' + item['value'] + '"><i class="fa fa-minus-circle"></i> ' + item['label'] + '<input type="hidden" name="show_manufacturers[]" value="' + item['value'] + '" /></div>');
+		}
+	});
+
+	$('#show-manufacturer').delegate('.fa-minus-circle', 'click', function() {
+		$(this).parent().remove();
+	});
+
+	$('input[name=\'attribute_name\']').autocomplete({
+		source: function(request, response) {
+			$.ajax({
+				url: 'index.php?route=catalog/attribute/autocomplete&user_token={{ user_token }}&filter_name=' +  encodeURIComponent(request),
+				dataType: 'json',
+				success: function(json) {
+					response($.map(json, function(item) {
+						return {
+							label: item['name'],
+							value: item['attribute_id']
+						}
+					}));
+				}
+			});
+		},
+		select: function(item) {
+			$('input[name=\'attribute_name\']').val('');
+
+			$('#show-attribute' + item['value']).remove();
+
+			$('#show-attribute').append('<div id="show-attribute' + item['value'] + '"><i class="fa fa-minus-circle"></i> ' + item['label'] + '<input type="hidden" name="show_attributes[]" value="' + item['value'] + '" /></div>');
+		}
+	});
+
+	$('#show-attribute').delegate('.fa-minus-circle', 'click', function() {
+		$(this).parent().remove();
+	});
+
+	$('#language a:first').tab('show');
+	$('#language-size-chart a:first').tab('show');
+</script>
+</div>
+{{ footer }}

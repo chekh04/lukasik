@@ -1,0 +1,325 @@
+<div class="checkout-address h-100{% if shipping_methods_fields is empty %} hidden{% endif %}">
+	<div class="checkout-heading">{{ title_shipping_address }}</div>
+	<div class="checkout-address-info">
+		{% if shipping_methods_fields is not empty %}
+			<div id="opc-shipping-address" class="row">
+				{% for field_name,shipping_field in shipping_methods_fields %}
+					{% if field_name == 'country' %}
+						<div class="form-group col-xs-12 col-sm-6 {% if shipping_field['status'] == 'required' %}required{% endif %}">
+							<label for="input-payment-country" class="control-label opc-label">{{ entry_country }}</label>
+							<select {{ shipping_field['type'] }} {% if (shipping_field['type'] == 'select2') %}data-type="select2"{% endif %} id="input-payment-country" name="country_id" class="form-control">
+								<option value="">{{ text_select }}</option>
+								{% for country in countries %}
+									{% if country['country_id'] == country_id %}
+										<option value="{{ country['country_id'] }}" selected="selected">{{ country['name'] }}</option>
+									{% else %}
+										<option value="{{ country['country_id'] }}">{{ country['name'] }}</option>
+									{% endif %}
+								{% endfor %}
+							</select>
+						</div>
+					{% endif %}
+					{% if field_name == 'zone_id' %}
+						<div class="form-group col-xs-12 col-sm-6{% if shipping_field['status'] == 'required' %} required{% endif %}{% if country_id == '' %} hidden{% endif %}">
+							<label for="input-payment-zone" class="control-label opc-label">{{ entry_zone }}</label>
+							<select {% if (shipping_field['type'] == 'select2') %}data-type="select2"{% endif %} id="input-payment-zone" name="zone_id" class="form-control">
+								{% if zones is not empty  %}
+									<option value="">{{ text_select }}</option>
+									{% for zone in zones %}
+										{% if zone['zone_id'] == zone_id %}
+											<option value="{{ zone['zone_id'] }}" selected="selected">{{ zone['name'] }}</option>
+										{% else %}
+											<option value="{{ zone['zone_id'] }}">{{ zone['name'] }}</option>
+										{% endif %}
+									{% endfor %}
+								{% endif %}
+							</select>
+						</div>
+					{% endif %}
+					{% if field_name == 'city' %}
+						{% if shipping_field['type'] == 'input' %}
+							<div class="form-group col-xs-12 col-sm-6{% if shipping_field['status'] == 'required' %} required{% endif %}">
+								<label for="input-payment-city" class="control-label opc-label">{{ entry_city }}</label>
+								<input autocomplete="off" id="input-payment-city" type="text" name="city" value="{% if city is defined %}{{ city }}{% endif %}" placeholder="{{ entry_ph_city }}" class="form-control" />
+							</div>
+						{% endif %}
+						{% if shipping_field['type'] == 'select2' %}
+							<div class="form-group col-xs-12 col-sm-6{% if shipping_field['status'] == 'required' %} required{% endif %}">
+								<label for="input-payment-city" class="control-label opc-label">{{ entry_city }}</label>
+								<select data-type="select2" name="city" id="input-payment-city" class="form-control">
+									<option value="">{{ text_select }}</option>
+									{% if city is not empty %}
+										<option value="{{ city }}" selected="selected">{{ city }}</option>
+									{% endif %}
+								</select>
+							</div>
+						{% endif %}
+						{% if shipping_field['type'] == 'select' %}
+							<div class="form-group col-xs-12 col-sm-6{% if shipping_field['status'] == 'required' %} required{% endif %}">
+								<label for="input-payment-city" class="control-label opc-label">{{ entry_city }}</label>
+								<select name="city" id="input-payment-city" class="form-control">
+									<option value="">{{ text_select }}</option>
+									{% for custom_field in shipping_field['custom_fields'] %}
+										<option {% if city == custom_field['value'] %}selected="selected"{% endif %} value="{{ custom_field['value'] }}">{{ custom_field['name'] }}</option>
+									{% endfor %}
+								</select>
+							</div>
+						{% endif %}
+						{% if shipping_field['type'] == 'radio' %}
+							<div class="form-group col-xs-12 col-sm-6{% if shipping_field['status'] == 'required' %} required{% endif %}">
+								<label for="input-payment-city" class="control-label opc-label">{{ entry_city }}</label>
+								<div id="input-payment-city">
+									{% for custom_field in shipping_field['custom_fields'] %}
+										<div class="radio chm-radio">
+											<label>
+												<input {% if city == custom_field['value'] %}checked="checked"{% endif %} type="radio" name="city" value="{{ custom_field['value'] }}" />
+												{{ custom_field['name'] }}
+											</label>
+										</div>
+									{% endfor %}
+								</div>
+							</div>
+						{% endif %}
+					{% endif %}
+					{% if field_name == 'address_1' %}
+						{% if shipping_field['type'] == 'input' %}
+							<div class="form-group col-xs-12 col-sm-6{% if shipping_field['status'] == 'required' %} required{% endif %}">
+								<label for="input-payment-address-1" class="control-label opc-label">{{ entry_address_1 }}</label>
+								<input autocomplete="off" id="input-payment-address-1" type="text" name="address_1" value="{% if address_1 is defined %}{{ address_1 }}{% endif %}" placeholder="{{ entry_ph_address_1 }}" class="form-control" />
+							</div>
+						{% endif %}
+						{% if shipping_field['type'] == 'select2' %}
+							<div class="form-group col-xs-12 col-sm-6{% if shipping_field['status'] == 'required' %} required{% endif %}">
+								<label for="input-payment-address-1" class="control-label opc-label">{{ entry_address_1 }}</label>
+								<select data-type="select2" name="address_1" id="input-payment-address-1" class="form-control">
+									<option value="">{{ text_select }}</option>
+								</select>
+							</div>
+						{% endif %}
+						{% if shipping_field['type'] == 'select' %}
+							<div class="form-group col-xs-12 col-sm-6{% if shipping_field['status'] == 'required' %} required{% endif %}">
+								<label for="input-payment-address-1" class="control-label opc-label">{{ entry_address_1 }}</label>
+								<select name="address_1" id="input-payment-address-1" class="form-control">
+									<option value="">{{ text_select }}</option>
+									{% for custom_field in shipping_field['custom_fields'] %}
+										<option {% if address_1 == custom_field['value'] %}selected="selected"{% endif %} value="{{ custom_field['value'] }}">{{ custom_field['name'] }}</option>
+									{% endfor %}
+								</select>
+							</div>
+						{% endif %}
+						{% if shipping_field['type'] == 'radio' %}
+							<div class="form-group col-xs-12 col-sm-6{% if shipping_field['status'] == 'required' %} required{% endif %}">
+								<label for="input-payment-address-1" class="control-label opc-label">{{ entry_address_1 }}</label>
+								<div id="input-payment-address-1">
+									{% for custom_field in shipping_field['custom_fields'] %}
+										<div class="radio chm-radio">
+											<label>
+												<input {% if address_1 == custom_field['value'] %}checked="checked"{% endif %} type="radio" name="address_1" value="{{ custom_field['value'] }}" />
+												{{ custom_field['name'] }}
+											</label>
+										</div>
+									{% endfor %}
+								</div>
+							</div>
+						{% endif %}
+					{% endif %}
+					{% if field_name == 'address_2' %}
+						{% if shipping_field['type'] == 'input' %}
+							<div class="form-group col-xs-12 col-sm-6{% if shipping_field['status'] == 'required' %} required{% endif %}">
+								<label for="input-payment-address-2" class="control-label opc-label">{{ entry_address_2 }}</label>
+								<input autocomplete="off" id="input-payment-address-2" type="text" name="address_2" value="{% if address_2 is defined %}{{ address_2 }}{% endif %}" placeholder="{{ entry_ph_address_2 }}" class="form-control" />
+							</div>
+						{% endif %}
+						{% if shipping_field['type'] == 'select' %}
+							<div class="form-group col-xs-12 col-sm-6{% if shipping_field['status'] == 'required' %} required{% endif %}">
+								<label for="input-payment-address-2" class="control-label opc-label">{{ entry_address_2 }}</label>
+								<select name="address_2" id="input-payment-address-2" class="form-control">
+									<option value="">{{ text_select }}</option>
+									{% for custom_field in shipping_field['custom_fields'] %}
+										<option {% if address_2 == custom_field['value'] %}selected="selected"{% endif %} value="{{ custom_field['value'] }}">{{ custom_field['name'] }}</option>
+									{% endfor %}
+								</select>
+							</div>
+						{% endif %}
+						{% if shipping_field['type'] == 'radio' %}
+							<div class="form-group col-xs-12 col-sm-6{% if shipping_field['status'] == 'required' %} required{% endif %}">
+								<label for="input-payment-address-2" class="control-label opc-label">{{ entry_address_2 }}</label>
+								<div id="input-payment-address-2">
+									{% for custom_field in shipping_field['custom_fields'] %}
+										<div class="radio chm-radio">
+											<label>
+												<input {% if address_2 == custom_field['value'] %}checked="checked"{% endif %} type="radio" name="address_2" value="{{ custom_field['value'] }}" />
+												{{ custom_field['name'] }}
+											</label>
+										</div>
+									{% endfor %}
+								</div>
+							</div>
+						{% endif %}
+					{% endif %}
+					{% if field_name == 'postcode' %}
+						{% if shipping_field['type'] == 'input' %}
+							<div class="form-group col-xs-12 col-sm-6{% if shipping_field['status'] == 'required' %} required{% endif %}">
+								<label for="input-payment-postcode" class="control-label opc-label">{{ entry_postcode }}</label>
+								<input autocomplete="off" id="input-payment-postcode" type="text" name="postcode" value="{% if postcode is defined %}{{ postcode }}{% endif %}" placeholder="{{ entry_ph_postcode }}" class="form-control" />
+							</div>
+						{% endif %}
+						{% if shipping_field['type'] == 'select' %}
+							<div class="form-group col-xs-12 col-sm-6{% if shipping_field['status'] == 'required' %} required{% endif %}">
+								<label for="input-payment-postcode" class="control-label opc-label">{{ entry_postcode }}</label>
+								<select name="postcode" id="input-payment-postcode" class="form-control">
+									<option value="">{{ text_select }}</option>
+									{% for custom_field in shipping_field['custom_fields'] %}
+										<option {% if postcode == custom_field['value'] %}selected="selected"{% endif %} value="{{ custom_field['value'] }}">{{ custom_field['name'] }}</option>
+									{% endfor %}
+								</select>
+							</div>
+						{% endif %}
+						{% if shipping_field['type'] == 'radio' %}
+							<div class="form-group col-xs-12 col-sm-6{% if shipping_field['status'] == 'required' %} required{% endif %}">
+								<label for="input-payment-postcode" class="control-label opc-label">{{ entry_postcode }}</label>
+								<div id="input-payment-postcode">
+									{% for custom_field in shipping_field['custom_fields'] %}
+										<div class="radio chm-radio">
+											<label>
+												<input {% if city == custom_field['value'] %}checked="checked"{% endif %} type="radio" name="postcode" value="{{ custom_field['value'] }}" />
+												{{ custom_field['name'] }}
+											</label>
+										</div>
+									{% endfor %}
+								</div>
+							</div>
+						{% endif %}
+					{% endif %}
+					{% if field_name == 'company' %}
+						{% if shipping_field['type'] == 'input' %}
+							<div class="form-group col-xs-12 col-sm-6{% if shipping_field['status'] == 'required' %} required{% endif %}">
+								<label for="input-payment-company" class="control-label opc-label">{{ entry_company }}</label>
+								<input autocomplete="off" id="input-payment-company" type="text" name="company" value="{% if company is defined %}{{ company }}{% endif %}" placeholder="{{ entry_ph_company }}" class="form-control" />
+							</div>
+						{% endif %}
+						{% if shipping_field['type'] == 'select' %}
+							<div class="form-group col-xs-12 col-sm-6{% if shipping_field['status'] == 'required' %} required{% endif %}">
+								<label for="input-payment-company" class="control-label opc-label">{{ entry_company }}</label>
+								<select name="company" id="input-payment-company" class="form-control">
+									<option value="">{{ text_select }}</option>
+									{% for custom_field in shipping_field['custom_fields'] %}
+										<option {% if company == custom_field['value'] %}selected="selected"{% endif %} value="{{ custom_field['value'] }}">{{ custom_field['name'] }}</option>
+									{% endfor %}
+								</select>
+							</div>
+						{% endif %}
+						{% if shipping_field['type'] == 'radio' %}
+							<div class="form-group col-xs-12 col-sm-6{% if shipping_field['status'] == 'required' %} required{% endif %}">
+								<label for="input-payment-company" class="control-label opc-label">{{ entry_company }}</label>
+								<div id="input-payment-company">
+									{% for custom_field in shipping_field['custom_fields'] %}
+										<div class="radio chm-radio">
+											<label>
+												<input {% if company == custom_field['value'] %}checked="checked"{% endif %} type="radio" name="company" value="{{ custom_field['value'] }}" />
+												{{ custom_field['name'] }}
+											</label>
+										</div>
+									{% endfor %}
+								</div>
+							</div>
+						{% endif %}
+					{% endif %}
+					{% if shipping_field['location'] is defined and shipping_field['location'] == 'opc_address' %}
+						{% if shipping_field['type'] == 'select' %}
+							<div class="form-group col-xs-12 col-sm-6 custom-field{{ shipping_field['required'] ? ' required' : '' }}" id="address-custom-field{{ shipping_field['custom_field_id'] }}">
+								<label class="control-label opc-label" for="input-address-custom-field{{ shipping_field['custom_field_id'] }}">{{ shipping_field['name'] }}</label>
+								<select name="custom_field[{{ shipping_field['location'] }}][{{ shipping_field['custom_field_id'] }}]" id="input-address-custom-field{{ shipping_field['custom_field_id'] }}" class="form-control">
+									<option value="">{{ text_select }}</option>
+									{% for custom_field_value in shipping_field['custom_field_value'] %}
+										<option value="{{ custom_field_value['custom_field_value_id'] }}" {% if address_custom_field[shipping_field.custom_field_id] is defined and custom_field_value.custom_field_value_id == address_custom_field[shipping_field.custom_field_id] %}selected="selected"{% endif %}>{{ custom_field_value['name'] }}</option>
+									{% endfor %}
+								</select>
+							</div>
+						{% endif %}
+						{% if shipping_field['type'] == 'radio' %}
+							<div class="form-group col-xs-12 col-sm-6 custom-field{{ shipping_field['required'] ? ' required' : '' }}" id="address-custom-field{{ shipping_field['custom_field_id'] }}">
+								<label class="control-label opc-label">{{ shipping_field['name'] }}</label>
+								<div id="input-address-custom-field{{ shipping_field['custom_field_id'] }}">
+									{% for custom_field_value in shipping_field['custom_field_value'] %}
+										<div class="radio">
+											<label class="chm-radio">
+												<input class="checkbox-input" type="radio" name="custom_field[{{ shipping_field['location'] }}][{{ shipping_field['custom_field_id'] }}]" value="{{ custom_field_value['custom_field_value_id'] }}" {% if address_custom_field[shipping_field.custom_field_id] is defined and custom_field_value.custom_field_value_id == address_custom_field[shipping_field.custom_field_id] %}checked="checked"{% endif %} />
+												<span class="checkbox-radio"></span>
+												{{ custom_field_value['name'] }}
+											</label>
+										</div>
+									{% endfor %}
+								</div>
+							</div>
+						{% endif %}
+						{% if shipping_field['type'] == 'checkbox' %}
+							<div class="form-group col-xs-12 col-sm-6 custom-field{{ shipping_field['required'] ? ' required' : '' }}" id="address-custom-field{{ shipping_field['custom_field_id'] }}">
+								<label class="control-label opc-label">{{ shipping_field['name'] }}</label>
+								<div id="input-address-custom-field{{ shipping_field['custom_field_id'] }}">
+									{% for custom_field_value in shipping_field['custom_field_value'] %}
+										<div class="checkbox">
+											<label class="chm-checkbox">
+												<input class="checkbox-input" type="checkbox" name="custom_field[{{ shipping_field['location'] }}][{{ shipping_field['custom_field_id'] }}][]" value="{{ custom_field_value['custom_field_value_id'] }}" {% if address_custom_field[shipping_field.custom_field_id] is defined and custom_field_value.custom_field_value_id in address_custom_field[shipping_field.custom_field_id] %}checked="checked"{% endif %} />
+												<span class="checkbox-check"></span>
+												{{ custom_field_value['name'] }}
+											</label>
+										</div>
+									{% endfor %}
+								</div>
+							</div>
+						{% endif %}
+						{% if shipping_field['type'] == 'text' %}
+							<div class="form-group col-xs-12 col-sm-6 custom-field{{ shipping_field['required'] ? ' required' : '' }}" id="address-custom-field{{ shipping_field['custom_field_id'] }}">
+								<label class="control-label opc-label" for="input-address-custom-field{{ shipping_field['custom_field_id'] }}">{{ shipping_field['name'] }}</label>
+								<input type="text" name="custom_field[{{ shipping_field['location'] }}][{{ shipping_field['custom_field_id'] }}]" value="{{ guest_custom_field[shipping_field['custom_field_id']] ?? shipping_field['value'] }}" placeholder="{{ shipping_field['name'] }}" id="input-address-custom-field{{ shipping_field['custom_field_id'] }}" class="form-control" />
+							</div>
+						{% endif %}
+
+						{% if shipping_field['type'] == 'textarea' %}
+							<div class="form-group col-xs-12 col-sm-6 custom-field{{ shipping_field['required'] ? ' required' : '' }}" id="address-custom-field{{ shipping_field['custom_field_id'] }}">
+								<label class="control-label opc-label" for="input-address-custom-field{{ shipping_field['custom_field_id'] }}">{{ shipping_field['name'] }}</label>
+								<textarea name="custom_field[{{ shipping_field['location'] }}][{{ shipping_field['custom_field_id'] }}]" rows="1" placeholder="{{ shipping_field['name'] }}" id="input-address-custom-field{{ shipping_field['custom_field_id'] }}" class="form-control">{{ guest_custom_field[shipping_field['custom_field_id']] ?? shipping_field['value'] }}</textarea>
+							</div>
+						{% endif %}
+
+						{% if shipping_field['type'] == 'date' %}
+							<div class="form-group col-xs-12 col-sm-6 custom-field{{ shipping_field['required'] ? ' required' : '' }}" id="address-custom-field{{ shipping_field['custom_field_id'] }}">
+								<label class="control-label opc-label" for="input-address-custom-field{{ shipping_field['custom_field_id'] }}">{{ shipping_field['name'] }}</label>
+								<div class="input-group date">
+									<input type="text" name="custom_field[{{ shipping_field['location'] }}][{{ shipping_field['custom_field_id'] }}]" value="{{ guest_custom_field[shipping_field['custom_field_id']] ?? shipping_field['value'] }}" placeholder="{{ shipping_field['name'] }}" data-date-format="YYYY-MM-DD" id="input-address-custom-field{{ shipping_field['custom_field_id'] }}" class="form-control" />
+									<span class="input-group-btn">
+										<button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
+									</span>
+								</div>
+							</div>
+						{% endif %}
+						{% if shipping_field['type'] == 'time' %}
+							<div class="form-group col-xs-12 col-sm-6 custom-field{{ shipping_field['required'] ? ' required' : '' }}" id="address-custom-field{{ shipping_field['custom_field_id'] }}">
+								<label class="control-label opc-label" for="input-address-custom-field{{ shipping_field['custom_field_id'] }}">{{ shipping_field['name'] }}</label>
+								<div class="input-group time">
+									<input type="text" name="custom_field[{{ shipping_field['location'] }}][{{ shipping_field['custom_field_id'] }}]" value="{{ guest_custom_field[shipping_field['custom_field_id']] ?? shipping_field['value'] }}" placeholder="{{ shipping_field['name'] }}" data-date-format="HH:mm" id="input-address-custom-field{{ shipping_field['custom_field_id'] }}" class="form-control" />
+									<span class="input-group-btn">
+										<button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
+									</span>
+								</div>
+							</div>
+						{% endif %}
+
+						{% if shipping_field['type'] == 'datetime' %}
+							<div class="form-group col-xs-12 col-sm-6 custom-field{{ shipping_field['required'] ? ' required' : '' }}" id="address-custom-field{{ shipping_field['custom_field_id'] }}">
+								<label class="control-label opc-label" for="input-address-custom-field{{ shipping_field['custom_field_id'] }}">{{ shipping_field['name'] }}</label>
+								<div class="input-group datetime">
+									<input type="text" name="custom_field[{{ shipping_field['location'] }}][{{ shipping_field['custom_field_id'] }}]" value="{{ guest_custom_field[shipping_field['custom_field_id']] ?? shipping_field['value'] }}" placeholder="{{ shipping_field['name'] }}" data-date-format="YYYY-MM-DD HH:mm" id="input-address-custom-field{{ shipping_field['custom_field_id'] }}" class="form-control" />
+									<span class="input-group-btn">
+										<button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
+									</span>
+								</div>
+							</div>
+						{% endif %}
+					{% endif %}
+				{% endfor %}
+			</div>
+		{% endif %}
+	</div>
+</div>

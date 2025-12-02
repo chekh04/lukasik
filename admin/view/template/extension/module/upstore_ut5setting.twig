@@ -1,0 +1,282 @@
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right">
+        <button type="submit" form="form-ut5setting" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+        <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a></div>
+      <h1>{{ heading_title }}</h1>
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+        <li><a href="{{ breadcrumb['href'] }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div class="container-fluid">
+    {% if (error_warning) %}
+    <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %}
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-pencil"></i> {{ text_edit }}</h3>
+      </div>
+      <div class="panel-body">
+        <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-ut5setting" class="form-horizontal">
+        <ul class="nav nav-tabs" id="language">
+                {% for language in languages %}
+                <li><a href="#language{{ language['language_id'] }}" data-toggle="tab"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /> {{ language['name'] }}</a></li>
+                {% endfor %}
+        </ul>
+      <div class="tab-content">
+      {% for language in languages %}
+                <div class="tab-pane" id="language{{ language.language_id }}">
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="ttn_subject{{ language.language_id }}"><b>{{ ttn_subject_text }}</b><br />{{ ttn_subject_text_variables }}</label>
+            <div class="col-sm-10">
+              <textarea name="ttn_subject_ut[{{ language.language_id }}][text]" id="ttn_subject{{ language.language_id }}" cols="50" rows="3">{{ ttn_subject_ut[language.language_id].text is defined ? ttn_subject_ut[language.language_id].text : '' }}</textarea>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="ttn_description{{ language.language_id }}"><b>{{ entry_description_send_email_ttn }}</b><br />{{ ttn_subject_text_variables }}
+            <div class="container{{ language.language_id }}">
+                <a href="javascript:PopUpShow{{ language.language_id }}()">{{ list_of_variables_text }}</a>
+            </div>
+            <div class="popup_variables list_of_variables{{ language.language_id }} close_variable">{{ list_of_variables_entry }}</div>
+            </label>
+            <div class="col-sm-10">
+              <textarea class="form-control" data-toggle="summernote" name="ttn_description_ut[{{ language.language_id }}][text]" id="ttn_description{{ language.language_id }}">{{ ttn_description_ut[language.language_id].text is defined ? ttn_description_ut[language.language_id].text : '' }}</textarea>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+      </div>
+    <div class="form-group">
+            <label class="col-sm-2 control-label" for="config_on_off_order_payment_method">{{ entry_on_off_payment_method }}</label>
+            <div class="col-sm-10">
+              <select name="config_on_off_order_payment_method" id="config_on_off_order_payment_method" class="form-control">
+                {% if (config_on_off_order_payment_method) %}
+                <option value="1" selected="selected">{{ text_enabled }}</option>
+                <option value="0">{{ text_disabled }}</option>
+                {% else %}
+                <option value="1">{{ text_enabled }}</option>
+                <option value="0" selected="selected">{{ text_disabled }}</option>
+                {% endif %}
+              </select>
+            </div>
+          </div>
+      <div class="form-group">
+            <label class="col-sm-2 control-label" for="config_on_off_order_shipping_method">{{ entry_on_off_shipping_method }}</label>
+            <div class="col-sm-10">
+              <select name="config_on_off_order_shipping_method" id="config_on_off_order_shipping_method" class="form-control">
+                {% if (config_on_off_order_shipping_method) %}
+                <option value="1" selected="selected">{{ text_enabled }}</option>
+                <option value="0">{{ text_disabled }}</option>
+                {% else %}
+                <option value="1">{{ text_enabled }}</option>
+                <option value="0" selected="selected">{{ text_disabled }}</option>
+                {% endif %}
+              </select>
+            </div>
+          </div>
+     <div class="form-group">
+            <label class="col-sm-2 control-label" for="config_on_off_model_product">{{ entry_on_off_model_product }}</label>
+            <div class="col-sm-10">
+              <select name="config_on_off_model_product" id="config_on_off_model_product" class="form-control">
+                {% if (config_on_off_model_product) %}
+                <option value="1" selected="selected">{{ text_enabled }}</option>
+                <option value="0">{{ text_disabled }}</option>
+                {% else %}
+                <option value="1">{{ text_enabled }}</option>
+                <option value="0" selected="selected">{{ text_disabled }}</option>
+                {% endif %}
+              </select>
+            </div>
+          </div>
+      <div class="form-group">
+            <label class="col-sm-2 control-label" for="config_on_off_sku_product">{{ entry_on_off_sku_product }}</label>
+            <div class="col-sm-10">
+              <select name="config_on_off_sku_product" id="config_on_off_sku_product" class="form-control">
+                {% if (config_on_off_sku_product) %}
+                <option value="1" selected="selected">{{ text_enabled }}</option>
+                <option value="0">{{ text_disabled }}</option>
+                {% else %}
+                <option value="1">{{ text_enabled }}</option>
+                <option value="0" selected="selected">{{ text_disabled }}</option>
+                {% endif %}
+              </select>
+            </div>
+          </div>
+      <div class="form-group">
+            <label class="col-sm-2 control-label" for="config_on_off_upc_product">{{ entry_on_off_upc_product }}</label>
+            <div class="col-sm-10">
+              <select name="config_on_off_upc_product" id="config_on_off_upc_product" class="form-control">
+                {% if (config_on_off_upc_product) %}
+                <option value="1" selected="selected">{{ text_enabled }}</option>
+                <option value="0">{{ text_disabled }}</option>
+                {% else %}
+                <option value="1">{{ text_enabled }}</option>
+                <option value="0" selected="selected">{{ text_disabled }}</option>
+                {% endif %}
+              </select>
+            </div>
+          </div>
+
+      <div class="form-group">
+            <label class="col-sm-2 control-label" for="config_on_off_column_product">{{ entry_on_off_column_product }}</label>
+            <div class="col-sm-10">
+              <select name="config_on_off_column_product" id="config_on_off_column_product" class="form-control">
+                {% if (config_on_off_column_product) %}
+                <option value="1" selected="selected">{{ text_enabled }}</option>
+                <option value="0">{{ text_disabled }}</option>
+                {% else %}
+                <option value="1">{{ text_enabled }}</option>
+                <option value="0" selected="selected">{{ text_disabled }}</option>
+                {% endif %}
+              </select>
+            </div>
+          </div>
+      <div class="form-group">
+            <label class="col-sm-2 control-label" for="config_on_off_column_comment_manager">{{ entry_on_off_column_comment_manager }}</label>
+            <div class="col-sm-10">
+              <select name="config_on_off_column_comment_manager" id="config_on_off_column_comment_manager" class="form-control">
+                {% if (config_on_off_column_comment_manager) %}
+                <option value="1" selected="selected">{{ text_enabled }}</option>
+                <option value="0">{{ text_disabled }}</option>
+                {% else %}
+                <option value="1">{{ text_enabled }}</option>
+                <option value="0" selected="selected">{{ text_disabled }}</option>
+                {% endif %}
+              </select>
+            </div>
+          </div>
+      <div class="form-group">
+            <label class="col-sm-2 control-label" for="config_on_off_column_send_ttn_email">{{ entry_on_off_column_send_ttn_email }}</label>
+            <div class="col-sm-10">
+              <select name="config_on_off_column_send_ttn_email" id="config_on_off_column_send_ttn_email" class="form-control">
+                {% if (config_on_off_column_send_ttn_email) %}
+                <option value="1" selected="selected">{{ text_enabled }}</option>
+                <option value="0">{{ text_disabled }}</option>
+                {% else %}
+                <option value="1">{{ text_enabled }}</option>
+                <option value="0" selected="selected">{{ text_disabled }}</option>
+                {% endif %}
+              </select>
+            </div>
+          </div>
+      <div class="form-group">
+            <label class="col-sm-2 control-label" for="config_on_off_column_price_purchase">{{ entry_on_off_column_price_purchase }}</label>
+            <div class="col-sm-10">
+              <select name="config_on_off_column_price_purchase" id="config_on_off_column_price_purchase" class="form-control">
+                {% if (config_on_off_column_price_purchase) %}
+                <option value="1" selected="selected">{{ text_enabled }}</option>
+                <option value="0">{{ text_disabled }}</option>
+                {% else %}
+                <option value="1">{{ text_enabled }}</option>
+                <option value="0" selected="selected">{{ text_disabled }}</option>
+                {% endif %}
+              </select>
+            </div>
+          </div>
+      <div class="form-group">
+            <label class="col-sm-2 control-label" for="config_on_off_column_total_profit">{{ entry_on_off_column_total_profit }}</label>
+            <div class="col-sm-10">
+              <select name="config_on_off_column_total_profit" id="config_on_off_column_total_profit" class="form-control">
+                {% if (config_on_off_column_total_profit) %}
+                <option value="1" selected="selected">{{ text_enabled }}</option>
+                <option value="0">{{ text_disabled }}</option>
+                {% else %}
+                <option value="1">{{ text_enabled }}</option>
+                <option value="0" selected="selected">{{ text_disabled }}</option>
+                {% endif %}
+              </select>
+            </div>
+          </div>
+      <div class="form-group">
+            <label class="col-sm-2 control-label" for="config_on_off_column_manager_process_orders">{{ entry_on_off_column_manager_process_orders }}</label>
+            <div class="col-sm-10">
+              <select name="config_on_off_column_manager_process_orders" id="config_on_off_column_manager_process_orders" class="form-control">
+                {% if (config_on_off_column_manager_process_orders) %}
+                <option value="1" selected="selected">{{ text_enabled }}</option>
+                <option value="0">{{ text_disabled }}</option>
+                {% else %}
+                <option value="1">{{ text_enabled }}</option>
+                <option value="0" selected="selected">{{ text_disabled }}</option>
+                {% endif %}
+              </select>
+            </div>
+          </div>
+      <div class="form-group">
+            <label class="col-sm-2 control-label" for="config_on_off_column_delivery_price">{{ entry_on_off_column_delivery_price }}</label>
+            <div class="col-sm-10">
+              <select name="config_on_off_column_delivery_price" id="config_on_off_column_delivery_price" class="form-control">
+                {% if (config_on_off_column_delivery_price) %}
+                <option value="1" selected="selected">{{ text_enabled }}</option>
+                <option value="0">{{ text_disabled }}</option>
+                {% else %}
+                <option value="1">{{ text_enabled }}</option>
+                <option value="0" selected="selected">{{ text_disabled }}</option>
+                {% endif %}
+              </select>
+            </div>
+          </div>
+      <div class="form-group">
+            <label class="col-sm-2 control-label" for="config_on_off_column_build">{{ entry_on_off_column_build }}</label>
+            <div class="col-sm-10">
+              <select name="config_on_off_column_build" id="config_on_off_column_build" class="form-control">
+                {% if (config_on_off_column_build) %}
+                <option value="1" selected="selected">{{ text_enabled }}</option>
+                <option value="0">{{ text_disabled }}</option>
+                {% else %}
+                <option value="1">{{ text_enabled }}</option>
+                <option value="0" selected="selected">{{ text_disabled }}</option>
+                {% endif %}
+              </select>
+            </div>
+          </div>
+      <div class="form-group">
+            <label class="col-sm-2 control-label" for="config_on_off_column_rise_product">{{ entry_on_off_column_rise_product }}</label>
+            <div class="col-sm-10">
+              <select name="config_on_off_column_rise_product" id="config_on_off_column_rise_product" class="form-control">
+                {% if (config_on_off_column_rise_product) %}
+                <option value="1" selected="selected">{{ text_enabled }}</option>
+                <option value="0">{{ text_disabled }}</option>
+                {% else %}
+                <option value="1">{{ text_enabled }}</option>
+                <option value="0" selected="selected">{{ text_disabled }}</option>
+                {% endif %}
+              </select>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+  <script type="text/javascript" src="view/javascript/summernote/summernote.js"></script>
+  <link href="view/javascript/summernote/summernote.css" rel="stylesheet" />
+  <script type="text/javascript" src="view/javascript/summernote/summernote-image-attributes.js"></script>
+  <script type="text/javascript" src="view/javascript/summernote/opencart.js"></script>
+<script src="view/javascript/upstore/popup.js"></script>
+<script>
+  {% for language in languages %}
+    function PopUpShow{{ language.language_id }}(){
+      $('.list_of_variables{{ language.language_id }}').popup('show');
+    };
+  {% endfor %}
+</script>
+<style>
+.popup_variables {width:700px;max-width:90%;background:#ffffff;border-radius:4px;padding:10px;}
+.close_variable {
+  display:none;
+}
+.close {
+  display:none;
+}
+</style>
+  <script type="text/javascript"><!--
+$('#language a:first').tab('show');
+//--></script></div>
+{{ footer }}

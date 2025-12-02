@@ -1,0 +1,63 @@
+{% if (question_answer_data) %}
+  <div class="row" style="margin-bottom:10px">
+    <div class="col-sm-12 text-right">
+       <a class="btn btn-primary" href="javascript:void(0);" onclick="update_status();">{{ btn_change_status }}</a>
+       <a class="btn btn-danger" href="javascript:void(0);" onclick="del_selected();">{{ btn_del }}</a>
+    </div>
+  </div>
+{% endif %}
+<div class="table-responsive">
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <td width="1" style="text-align: center;"><input type="checkbox" onclick="$('input[name*=\'selected_qa_id\']').attr('checked', this.checked);" /></td>
+        <td class="text-left" >{{ column_buyer }}</td>
+        <td class="text-left" >{{ column_product }}</td>
+        <td class="text-left">{{ column_comment_buyer }}</td>
+        <td class="text-left">{{ column_comment_manager }}</td>
+        <td class="text-left">{{ column_status }}</td>
+        <td class="text-left">{{ column_date_added }}</td>
+        <td class="text-left">{{ column_date_modified }}</td>
+
+      </tr>
+    </thead>
+    <tbody>
+    {% if (question_answer_data) %}
+      {% for result in question_answer_data %}
+      <tr>
+        <td style="text-align: center;"><input class="checkbox_question_answer_selected" type="checkbox" name="selected_qa_id[]" value="{{ result['qa_id'] }}" /></td>
+        <td class="text-left">
+      {% if (result['name_field'] != '') %}<div class="name_field"><i class="fa fa-user fa-fw"></i> {{ result['name_field'] }}</div>{% endif %}
+      {% if (result['telephone_field'] != '') %}<div class="telephone_field"><i class="fa fa-phone-square fa-fw"></i> {{ result['telephone_field'] }}</div>{% endif %}
+      {% if (result['email_field'] != '') %}<div class="email_field"><i class="fa fa-envelope-o fa-fw"></i> {{ result['email_field'] }}</div>{% endif %}
+        </td>
+    <td><a target="_blank" href="{{ result['product_href'] }}">{{ result['product_name'] }}</a></td>
+    <td class="text-left">
+    {{ result['comment_field'] }}
+    </td>
+    <td class="text-left">
+    <textarea class="form-control" id="comment_manager_{{ result['qa_id'] }}" name="{{ result['comment_manager'] }}">{{ result['comment_manager'] }}</textarea>
+    <a class="btn btn-info martb" onclick="saveCommentManager('{{ result['qa_id'] }}');">{{ btn_change_comment_manager }}</a>
+    </td>
+        {% if (result['status_id'] == '1') %}
+            <td class="right" style="background:#0BED0B !important;">{{ result['status'] }}</td>
+        {% else %}
+      <td class="right" style="background:#EDB40B !important;">{{ result['status'] }}</td>
+        {% endif %}
+
+        <td class="text-left">{{ result['date_added'] }}</td>
+        <td class="text-left">{{ result['date_modified'] }}</td>
+      </tr>
+      {% endfor %}
+      {% else %}
+        <tr>
+          <td class="text-center" colspan="5">{{ text_no_results }}</td>
+        </tr>
+      {% endif %}
+    </tbody>
+  </table>
+</div>
+<div class="row">
+  <div class="col-sm-6 text-left">{{ pagination }}</div>
+  <div class="col-sm-6 text-right">{{ results }}</div>
+</div>

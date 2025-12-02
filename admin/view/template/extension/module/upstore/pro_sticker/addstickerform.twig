@@ -1,0 +1,323 @@
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+		<div class="pull-right">
+			<a onclick="$('#form').submit();" class="btn btn-primary"><span>{{ button_save }}</span></a>
+			<a onclick="location = '{{ cancel }}';" class="btn btn-primary"><span>{{ button_cancel }}</span></a>
+		</div>
+      <h1>{{ heading_title }}</h1>
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+        <li><a href="{{ breadcrumb['href'] }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div class="container-fluid">
+   {% if (error_warning) %}
+    <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %}
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-pencil"></i> {{ heading_title }}</h3>
+      </div>
+      <div class="panel-body">
+       <form class="form-horizontal" id="form" action="{{ action }}" method="post" enctype="multipart/form-data">
+			<div class="form-group">
+				<label class="col-sm-2 control-label" for="input-name">{{ entry_name }}</label>
+				<div class="col-sm-10">
+					<input type="text" name="name" value="{{ name }}" placeholder="{{ entry_name }}" id="input-name" class="form-control" />
+					{% if (error_name) %}
+						<div class="text-danger">{{ error_name }}</div>
+					{% endif %}
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label" for="input-name">{{ entry_image }}</label>
+				<ul class="nav nav-tabs" id="language">
+					{% for language in languages %}
+					<li><a href="#language{{ language.language_id }}" data-toggle="tab"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /> {{ language.name }}</a></li>
+					{% endfor %}
+				</ul>
+				<div class="tab-content">{% for language in languages %}
+					<div class="tab-pane" id="language{{ language.language_id }}">
+						<div class="col-sm-4">
+							<table class="table table-striped table-bordered table-hover" style="width:auto;">
+								<tr>
+								{% set i = 0 %}
+								{% for position,value in positions %}
+									<td class="center">
+										<input type="hidden" name="images[{{language.language_id}}][{{ position }}]" value="{{ images[language.language_id][position] }}" id="image_{{ language.language_id }}{{ position }}" />
+										<a href="" id="thumb_{{language.language_id }}{{ position }}" data-toggle="image" class="img-thumbnail">
+											<img style="width:100px; height:100px;" src="{{ images[language.language_id]['thumb_'~position]}}" alt="" title="" data-placeholder="{{ no_image }}" />
+										</a>
+										<div class="btn-group setting-custom-images">
+											<button type="button" class="btn btn-default" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+												WxH
+											</button>
+											<div class="dropdown-menu ddm-size">
+												<div class='input-group'>
+													<span class='input-group-addon'>W</span>
+													<input name='images_size[{{ language.language_id }}][{{ position }}][width]' value='{{ images_size[language.language_id][position].width ?? 30 }}' type='number' class='form-control w-80'>
+													<span class='input-group-addon'>H</span>
+													<input name='images_size[{{ language.language_id }}][{{ position }}][height]' value='{{ images_size[language.language_id][position].height ?? 30 }}' type='number' class='form-control w-80'>
+												</div>
+											</div>
+											<div data-toggle='popover_sticker' class="btn btn-info add-popover">{{ text_description_html|raw }}
+												<textarea style="display:none;" type="text" name="popover_text[{{ language.language_id }}][{{ position }}]" id="popover_text{{ language.language_id }}{{ position }}">{{ popover_text[language.language_id][position] ?? '' }}</textarea>
+											</div>
+										</div>
+									</td>
+								{% set i = i + 1 %}
+									{% if (i % 3 == 0) %}
+										</tr><tr>
+									{% endif %}
+								{% endfor %}
+								</tr>
+							</table>
+						</div>
+						<style>
+						.ddm-size {
+							padding: 15px 20px;
+						}
+						.popover-footer {
+							padding: 5px 10px;
+							text-align: right;
+						}
+						.setting-custom-images {
+							display: flex;
+							align-items: center;
+							margin-top: 10px;
+							max-width: 100px;
+						}
+						.setting-custom-images .btn {
+							padding-right: 12px;
+							padding-left: 12px;
+						}
+						.popover-sticker{
+							max-width:100%;
+							min-width:450px;
+						}
+						.popover-sticker .popover-textarea {
+							width:100%;
+							height:70px;
+						}
+						.w-80 {
+							min-width: 80px;
+						}
+						</style>
+						<script type="text/javascript" src="view/javascript/summernote/summernote.js"></script>
+						<link href="view/javascript/summernote/summernote.css" rel="stylesheet" />
+						<script type="text/javascript" src="view/javascript/summernote/summernote-image-attributes.js"></script>
+						<script type="text/javascript" src="view/javascript/summernote/opencart.js"></script>
+						<script>
+						$(document).on('click', '[data-toggle=\'popover_sticker\']', function(e) {
+							var $element = $(this);
+								var $popover = $element.data('bs.popover');
+
+								e.preventDefault();
+
+								$('[data-toggle="popover_sticker"]').not(this).popover('destroy');
+								$element.popover({
+									trigger : 'click',
+									html: true,
+									placement : 'top',
+									content : '<textarea class="popover-textarea">'+  $element.parent().find('textarea').val() +'</textarea>',
+									template: '<div class="popover">'+
+									'<div class="popover-content">'+
+									'</div><div class="popover-footer"><button type="button" class="btn btn-primary btn-xs popover-submit">'+
+									'<i class="fa fa-check" aria-hidden="true"></i></button>&nbsp;'+
+									'<button type="button" class="btn btn-default btn-xs popover-cancel">'+
+									'<i class="fa fa-times" aria-hidden="true"></i></button></div></div>'
+								});
+
+								$element.popover('show');
+								$element.popover()
+								.data('bs.popover')
+								.tip()
+								.addClass('popover-sticker');
+
+								$('.popover-textarea').summernote({focus: true,height: 300,
+									toolbar: [
+								    // [groupName, [list of button]]
+								    ['style', ['bold', 'italic', 'underline', 'clear']],
+								    ['fontsize', ['fontsize']],
+								    ['color', ['color']],
+								    ['para', ['ul', 'ol', 'paragraph']],
+								    ['height', ['height']],
+								    ['view', ['fullscreen', 'codeview']]
+								    ]
+								 });
+								$('.popover-cancel').click(function() {
+									$element.popover('destroy');
+								});
+
+								$('.popover-submit').click(function() {
+									$element.parent().find('textarea').text($('.popover-textarea').val());
+									$element.popover('destroy');
+								});
+							});
+							</script>
+						<div class="col-sm-8">
+								<table id="items{{ language['language_id'] }}" class="table table-striped table-bordered table-hover">
+									<thead>
+										<tr>
+											<td class="text-left">{{ column_position }}</td>
+											<td class="text-left">{{ column_text }}</td>
+											<td class="text-left">{{ column_text_color }}</td>
+											<td class="text-left">{{ column_text_bg }}</td>
+											<td class="text-left">{{ column_action }}</td>
+										</tr>
+									</thead>
+									<tbody>
+										{% set item_row = 0 %}
+										{% if text_label[language.language_id] is defined %}
+										{% for result in text_label[language.language_id] %}
+										<tr id="item-row{{ language.language_id }}{{ item_row }}">
+											<td class="text-left">
+												<select name="text_label[{{ language['language_id'] }}][{{ item_row }}][position]" class="form-control">
+													{% for position_label,value in positions_labels %}
+														{% if (position_label == result['position']) %}
+															<option selected="selected" value="{{ position_label }}">{{attribute(_context, 'text_'~position_label)}}</option>
+														{% else %}
+															<option value="{{ position_label }}">{{attribute(_context, 'text_'~position_label)}}</option>
+														{% endif %}
+													{% endfor %}
+												</select>
+											</td>
+											<td class="text-center"><input class="form-control" type="text" name="text_label[{{ language['language_id'] }}][{{ item_row }}][text]" value="{{ result['text'] is defined ? result['text']: '' }}" /></td>
+											<td class="text-center"><input class="form-control color" type="text" name="text_label[{{ language['language_id'] }}][{{ item_row }}][text_color]" value="{{ result['text_color'] is defined ? result['text_color'] : '' }}" /></td>
+											<td class="text-center"><input class="form-control color" type="text" name="text_label[{{ language['language_id'] }}][{{ item_row }}][bg_color]" value="{{ result['bg_color'] is defined ? result['bg_color'] : '' }}" /></td>
+											<td class="text-right"><a class="btn btn-danger" onclick="$('#item-row{{ language['language_id'] }}{{ item_row }}').remove();" data-toggle="tooltip" title="{{ button_delete }}"><i class="fa fa-trash-o"></i></a></td>
+
+										</tr>
+										{% set item_row = item_row + 1 %}
+										{% endfor %}
+										{% endif %}
+										<input type="hidden" id="item-row-number-{{ language['language_id'] }}" value="{{ item_row }}">
+									</tbody>
+									<tfoot>
+										<tr>
+											<td colspan="4"></td>
+											<td class="text-right"><a class="btn btn-primary" onclick="addItem({{ language['language_id'] }});" data-toggle="tooltip" title="{{ button_add }}"><i class="fa fa-plus-circle"></i></a></td>
+										</tr>
+									</tfoot>
+								</table>
+								<script type="text/javascript">
+									function addItem(language_id) {
+										var item_row = $('#item-row-number-'+ language_id).val();
+										$('#item-row-number-'+ language_id).val(parseInt(item_row) + 1);
+										html  = '<tr id="item-row'+ language_id + item_row + '">';
+										html += '<td class="text-left">';
+										html += '	<select name="text_label['+ language_id +']['+ item_row +'][position]" class="form-control">';
+										html += '		{% for position_label,value in positions_labels %}';
+										html += '			<option value="{{ position_label }}">{{attribute(_context, 'text_'~position_label)}}</option>';
+										html += '		{% endfor %}';
+										html += '	</select>';
+										html += '</td>';
+										html += '<td class="text-left"><input class="form-control" type="text" name="text_label['+ language_id +'][' + item_row + '][text]" value="" /></td>';
+										html += '<td class="text-left"><input class="form-control color" type="text" name="text_label['+ language_id +'][' + item_row + '][text_color]" value="" /></td>';
+										html += '<td class="text-left"><input class="form-control color" type="text" name="text_label['+ language_id +'][' + item_row + '][bg_color]" value="" /></td>';
+										html += '<td class="text-right"><a class="btn btn-danger" onclick="$(\'#item-row'+ language_id + item_row  + '\').remove();" data-toggle="tooltip" title="{{ button_delete }}"><i class="fa fa-trash-o"></i></a></td>';
+										html += '</tr>';
+
+										$('#items'+ language_id +' tbody').append(html);;
+										jscolor.installByClassName("color");
+										item_row++;
+									}
+								</script>
+							</div>
+					</div>
+					{% endfor %}
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label" for="input-sort-order">{{ entry_sort_order }}</label>
+				<div class="col-sm-10">
+					<input type="text" name="sort_order" value="{{ sort_order }}" placeholder="{{ entry_sort_order }}" id="input-sort-order" class="form-control" />
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label">{{ entry_product_page_status }}</label>
+				<div class="col-sm-10">
+					<div class="btn-group" data-toggle="buttons">
+						<label class="btn btn-default{% if product_page_status %} active{% endif %}">
+							<input type="radio" name="product_page_status" value="1" {% if product_page_status %}checked="checked"{% endif %}>
+							<span class="on-off">{{ text_on }}</span>
+						</label>
+						<label class="btn btn-default{% if not product_page_status %} active{% endif %}">
+							<input type="radio" name="product_page_status" value="0" {% if not product_page_status %}checked="checked"{% endif %}>
+							<span class="on-off">{{ text_off }}</span>
+						</label>
+					</div>
+				</div>
+			</div>
+			<div id="product_page_view" class="collapse fade {% if product_page_status %} in{% endif %}">
+				<div class="form-group">
+					<label class="col-sm-2 control-label" for="input-product-page-view">{{ text_product_page_view }}</label>
+					<div class="col-sm-10">
+						<select name="product_page_view" id="input-product-page-view" class="form-control">
+							<option value="image" {% if product_page_view == 'image' %}selected="selected"{% endif %}>{{ text_on_image }}</option>
+							<option value="block" {% if product_page_view == 'block' %}selected="selected"{% endif %}>{{ text_right_block }}</option>
+						</select>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label">{{ entry_module_page_status }}</label>
+				<div class="col-sm-10">
+					<div class="btn-group" data-toggle="buttons">
+						<label class="btn btn-default{% if module_page_status %} active{% endif %}">
+							<input type="radio" name="module_page_status" value="1" {% if module_page_status %}checked="checked"{% endif %}>
+							<span class="on-off">{{ text_on }}</span>
+						</label>
+						<label class="btn btn-default{% if not module_page_status %} active{% endif %}">
+							<input type="radio" name="module_page_status" value="0" {% if not module_page_status %}checked="checked"{% endif %}>
+							<span class="on-off">{{ text_off }}</span>
+						</label>
+					</div>
+				</div>
+			</div>
+			<div id="module_page_view" class="collapse fade {% if module_page_status %} in{% endif %}">
+				<div class="form-group">
+					<label class="col-sm-2 control-label" for="input-module-page-view">{{ text_module_page_view }}</label>
+					<div class="col-sm-10">
+						<select name="module_page_view" id="input-module-page-view" class="form-control">
+							<option value="image" {% if module_page_view == 'image' %}selected="selected"{% endif %}>{{ text_on_image }}</option>
+							<option value="block" {% if module_page_view == 'block' %}selected="selected"{% endif %}>{{ text_after_product_name }}</option>
+						</select>
+					</div>
+				</div>
+			</div>
+        </form>
+     </div>
+  </div>
+</div>
+</div>
+<script>
+$('#language a:first').tab('show');
+
+$(document).on('change', '[name=product_page_status]', function(){
+	setTimeout(function () {
+		if ($('[name=product_page_status][value=1]').prop('checked')) {
+			$('#product_page_view').collapse('show');
+		} else {
+			$('#product_page_view').collapse('hide');
+		}
+	}, 50);
+});
+
+$(document).on('change', '[name=module_page_status]', function(){
+	setTimeout(function () {
+		if ($('[name=module_page_status][value=1]').prop('checked')) {
+			$('#module_page_view').collapse('show');
+		} else {
+			$('#module_page_view').collapse('hide');
+		}
+	}, 50);
+});
+</script>
+{{ footer }}

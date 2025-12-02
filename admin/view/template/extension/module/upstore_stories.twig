@@ -1,0 +1,342 @@
+{{ header }}{{ column_left }}
+<div id="content">
+	<div class="page-header">
+		<div class="container-fluid">
+			<div class="pull-right">
+				<button type="submit" form="form-upstore-stories" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+				<a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a></div>
+				<h1>{{ heading_title }}</h1>
+				<ul class="breadcrumb">
+					{% for breadcrumb in breadcrumbs %}
+						<li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+					{% endfor %}
+				</ul>
+			</div>
+		</div>
+		<div class="container-fluid">
+			{% if error_warning %}
+				<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+				<button type="button" class="close" data-dismiss="alert">&times;</button>
+			</div>
+		{% endif %}
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title"><i class="fa fa-pencil"></i> {{ text_edit }}</h3>
+			</div>
+			<div class="panel-body">
+				<form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-upstore-stories" class="form-horizontal">
+					<div class="form-group">
+						<label class="col-sm-2 control-label" for="input-status">{{ entry_status }}</label>
+						<div class="col-sm-10">
+							<select name="status" id="input-status" class="form-control">
+								{% if status %}
+									<option value="1" selected="selected">{{ text_enabled }}</option>
+									<option value="0">{{ text_disabled }}</option>
+								{% else %}
+									<option value="1">{{ text_enabled }}</option>
+									<option value="0" selected="selected">{{ text_disabled }}</option>
+								{% endif %}
+							</select>
+						</div>
+					</div>
+					<div class="form-group required">
+						<label class="col-sm-2 control-label" for="input-name">{{ entry_name }}</label>
+						<div class="col-sm-10">
+							<input type="text" name="name" value="{{ name }}" placeholder="{{ entry_name }}" id="input-name" class="form-control" />
+							{% if error_name %}
+								<div class="text-danger">{{ error_name }}</div>
+							{% endif %}
+						</div>
+					</div>
+					<div class="form-group required">
+						<label class="col-sm-2 control-label">{{ entry_image_wh }}</label>
+						<div class="col-sm-10">
+							<div class="input-group d-flex">
+								<span class="input-group-addon w-auto">{{ entry_width }}</span>
+								<input name="width" value="{{ width }}" type="text" class="form-control w-70">
+								<span class="input-group-addon w-auto ml-15">{{ entry_height }}</span>
+								<input name="height" value="{{ height }}" type="text" class="form-control w-70">
+							</div>
+						</div>
+					</div>
+					<div id="upstore_stories" class="table-responsive">
+						{% set row_stories = 0 %}
+						{% set row_item = 0 %}
+
+						{% for stories in chm_stories %}
+							<div class="d-flex" id="row-stories-{{ row_stories }}">
+								<div class="align-self-center mr-15 d-flex flex-column">
+									<button class="btn btn-success sortable-stories" type="button"><i class="fa fa-arrows" aria-hidden="true"></i></button>
+									<a class="btn btn-danger mt-15" onclick="$('#row-stories-{{ row_stories }}').remove();" data-toggle="tooltip" title="{{ button_delete_story }}"><i class="fa fa-trash-o"></i></a>
+								</div>
+								<div class="w100p">
+									<ul class="nav nav-tabs language-stories">
+										{% for language in languages %}
+										<li><a href="#language_{{ row_stories }}_{{ language.language_id }}" data-toggle="tab"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /> {{ language.name }}</a></li>
+										{% endfor %}
+									</ul>
+
+									<div class="tab-content">
+										{% for language in languages %}
+											<div class="tab-pane" id="language_{{ row_stories }}_{{ language.language_id }}">
+												<table class="table table-bordered table-hover">
+													<thead>
+														<td></td>
+														<td class="text-center">{{ entry_image }}</td>
+														<td>{{ entry_btn_text }}</td>
+														<td>{{ entry_btn_location }}</td>
+														<td>{{ entry_btn_type }}</td>
+														<td>{{ entry_link }}</td>
+														<td></td>
+													</thead>
+													<tbody id="tb-{{ row_stories }}-{{ language.language_id }}">
+														{% set row_item = 0 %}
+														{% for result in stories[language.language_id] %}
+														<tr id="row-item-{{ row_stories }}-{{ language.language_id }}-{{ row_item }}">
+															<td class="text-center"><button class="btn btn-success sortable-story" type="button"><i class="fa fa-arrows" aria-hidden="true"></i></button></td>
+															<td class="text-center">
+																<a href="" id="thumb-image-{{ row_stories }}-{{ language.language_id }}-{{ row_item }}" data-toggle="image" class="img-thumbnail">
+																<img src="{{ result.thumb }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a>
+																<input type="hidden" name="chm_stories[{{ row_stories }}][{{ language.language_id }}][{{ row_item }}][image]" value="{{ result.image }}" id="input-image-{{ row_stories }}-{{ language.language_id }}-{{ row_item }}" />
+															</td>
+															<td class="text-left">
+																<input class="form-control" type="text" name="chm_stories[{{ row_stories }}][{{ language.language_id }}][{{ row_item }}][btn_text]" value="{{ result.btn_text }}" />
+															</td>
+															<td class="text-left">
+																<div class="btn-group" data-toggle="buttons">
+																	{% if result.location %}
+																		<label class="btn btn-default active"><input autocomplete="off" type="radio" name="chm_stories[{{ row_stories }}][{{ language.language_id }}][{{ row_item }}][location]" value="1" checked="checked" />{{ text_bottom }}</label>
+																		<label class="btn btn-default"><input autocomplete="off" type="radio" name="chm_stories[{{ row_stories }}][{{ language.language_id }}][{{ row_item }}][location]" value="0" />{{ text_top }}</label>
+																	{% else %}
+																		<label class="btn btn-default"><input autocomplete="off" type="radio" name="chm_stories[{{ row_stories }}][{{ language.language_id }}][{{ row_item }}][location]" value="1" />{{ text_bottom }}</label>
+																		<label class="btn btn-default active"><input autocomplete="off" type="radio" name="chm_stories[{{ row_stories }}][{{ language.language_id }}][{{ row_item }}][location]" checked="checked" value="0" />{{ text_top }}</label>
+																	{% endif %}
+																</div>
+															</td>
+															<td class="text-left">
+																<div class="btn-group" data-toggle="buttons">
+																	{% if result.type_btn %}
+																		<label class="btn btn-default active"><input autocomplete="off" type="radio" name="chm_stories[{{ row_stories }}][{{ language.language_id }}][{{ row_item }}][type_btn]" value="1" checked="checked" />{{ text_type_light }}</label>
+																		<label class="btn btn-default"><input autocomplete="off" type="radio" name="chm_stories[{{ row_stories }}][{{ language.language_id }}][{{ row_item }}][type_btn]" value="0" />{{ text_type_dark }}</label>
+																	{% else %}
+																		<label class="btn btn-default"><input autocomplete="off" type="radio" name="chm_stories[{{ row_stories }}][{{ language.language_id }}][{{ row_item }}][type_btn]" value="1" />{{ text_type_light }}</label>
+																		<label class="btn btn-default active"><input autocomplete="off" type="radio" name="chm_stories[{{ row_stories }}][{{ language.language_id }}][{{ row_item }}][type_btn]" value="0" checked="checked" />{{ text_type_dark }}</label>
+																	{% endif %}
+																</div>
+															</td>
+															<td class="text-left">
+																<input class="form-control" type="text" name="chm_stories[{{ row_stories }}][{{ language.language_id }}][{{ row_item }}][link]" value="{{ result.link }}" />
+															</td>
+															<td class="text-center"><a class="btn btn-danger" onclick="$('#row-item-{{ row_stories }}-{{ language.language_id }}-{{ row_item }}').remove();" data-toggle="tooltip" title="{{ button_delete }}"><i class="fa fa-trash-o"></i></a></td>
+														</tr>
+														{% set row_item = row_item + 1 %}
+														{% endfor %}
+													</tbody>
+													<tfoot>
+														<tr>
+															<td class="text-right" colspan="3"><a class="btn btn-primary" onclick="addMoreStories({{ row_stories }},{{ language.language_id }});" data-toggle="tooltip" title="{{ button_add }}"><i class="fa fa-plus-circle"></i></a></td>
+															<td colspan="5"></td>
+														</tr>
+													</tfoot>
+												</table>
+											</div>
+										{% endfor %}
+									</div>
+								</div>
+							</div>
+							{% set row_stories = row_stories + 1 %}
+						{% endfor %}
+					</div>
+					<div class="form-group">
+						<div class="col-xs-12 text-right">
+							<button type="button" class="btn btn-primary" onclick="addStories();">{{ button_add_story }}</button>
+						</div>
+					</div>
+
+				</form>
+			</div>
+		</div>
+	</div>
+	<script>
+
+		Sortable.create(upstore_stories, {
+			handle: '.sortable-stories',
+			animation: 150
+		});
+
+		$('.tab-pane tbody').each(function () {
+			var sort_story = document.getElementById($(this).attr('id'));
+			Sortable.create(sort_story, {
+				handle: '.sortable-story',
+				animation: 150
+			});
+		});
+
+		$('#upstore_stories ul.nav-tabs li:first-child a').tab('show');
+
+		var row_stories = {{ row_stories }};
+
+		function addStories() {
+			var row_item = 0;
+
+			html = '<div class="d-flex" id="row-stories-'+ row_stories +'">';
+			html += ' 	<div class="align-self-center mr-15 d-flex flex-column"><button class="btn btn-success sortable-stories" type="button"><i class="fa fa-arrows" aria-hidden="true"></i></button><a class="btn btn-danger mt-15" onclick="$(\'#row-stories-'+ row_stories +'\').remove();" data-toggle="tooltip" title="{{ button_delete_story }}"><i class="fa fa-trash-o"></i></a></div>';
+			html += '	<div class="w100p"><ul class="nav nav-tabs language-stories">';
+				{% for language in languages %}
+			html += '		<li><a href="#language_'+ row_stories +'_{{ language.language_id }}" data-toggle="tab"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /> {{ language.name }}</a></li>';
+				{% endfor %}
+			html += '	</ul>';
+			html += '	<div class="tab-content">';
+				{% for language in languages %}
+			html += '		<div class="tab-pane" id="language_'+ row_stories +'_{{ language.language_id }}">';
+			html += '			<table class="table table-bordered table-hover">';
+			html += '				<thead>';
+			html += '					<tr>';
+			html += '						<td></td>';
+			html += '						<td class="text-center">{{ entry_image }}</td>';
+			html += '						<td>{{ entry_btn_text }}</td>';
+			html += '						<td>{{ entry_btn_location }}</td>';
+			html += '						<td>{{ entry_btn_type }}</td>';
+			html += '						<td>{{ entry_link }}</td>';
+			html += '						<td></td>';
+			html += '					</tr>';
+			html += '				</thead>';
+			html += '				<tbody id="tb-'+ row_stories +'-{{ language.language_id }}">';
+			html += '					<tr id="row-item-'+ row_stories +'-{{ language.language_id }}-'+ row_item +'">';
+			html += '						<td class="text-center"><button class="btn btn-success sortable-story" type="button"><i class="fa fa-arrows" aria-hidden="true"></i></button></td>';
+			html += '						<td class="text-center">';
+			html += '							<a href="" id="thumb-image-'+ row_stories +'-{{ language.language_id }}-'+ row_item +'" data-toggle="image" class="img-thumbnail">';
+			html += '							<img src="{{ placeholder }}" alt="" title="" /></a>';
+			html += '							<input type="hidden" name="chm_stories['+ row_stories +'][{{ language.language_id }}]['+ row_item +'][image]" value="" id="input-image-'+ row_stories +'-{{ language.language_id }}-'+ row_item +'" />';
+			html += '						</td>';
+			html += '						<td class="text-left">';
+			html += '							<input class="form-control" type="text" name="chm_stories['+ row_stories +'][{{ language.language_id }}]['+ row_item +'][btn_text]" value="" />';
+			html += '						</td>';
+			html += '						<td class="text-left">';
+			html += '							<div class="btn-group" data-toggle="buttons">';
+			html += '								<label class="btn btn-default active"><input autocomplete="off" type="radio" name="chm_stories['+ row_stories +'][{{ language.language_id }}]['+ row_item +'][location]" value="1" checked="checked" />{{ text_bottom }}</label>';
+			html += '								<label class="btn btn-default"><input autocomplete="off" type="radio" name="chm_stories['+ row_stories +'][{{ language.language_id }}]['+ row_item +'][location]" value="0" />{{ text_top }}</label>';
+			html += '							</div>';
+			html += '						</td>';
+			html += '						<td class="text-left">';
+			html += '							<div class="btn-group" data-toggle="buttons">';
+			html += '								<label class="btn btn-default active"><input autocomplete="off" type="radio" name="chm_stories['+ row_stories +'][{{ language.language_id }}]['+ row_item +'][type_btn]" value="1" checked="checked" />{{ text_type_light }}</label>';
+			html += '								<label class="btn btn-default"><input autocomplete="off" type="radio" name="chm_stories['+ row_stories +'][{{ language.language_id }}]['+ row_item +'][type_btn]" value="0" />{{ text_type_dark }}</label>';
+			html += '							</div>';
+			html += '						</td>';
+			html += '						<td class="text-left">';
+			html += '							<input class="form-control" type="text" name="chm_stories['+ row_stories +'][{{ language.language_id }}]['+ row_item +'][link]" value="" />';
+			html += '						</td>';
+			html += '						<td class="text-center"><a class="btn btn-danger" onclick="$(\'#row-item-'+ row_stories +'-{{ language.language_id }}-'+ row_item + '\').remove();" data-toggle="tooltip" title="{{ button_delete }}"><i class="fa fa-trash-o"></i></a></td>';
+			html += '					</tr>';
+			html += '				</tbody>';
+			html += '				<tfoot>';
+			html += '					<tr>';
+			html += '						<td class="text-right" colspan="3"><a class="btn btn-primary" onclick="addMoreStories('+ row_stories +',{{ language.language_id }});" data-toggle="tooltip" title="{{ button_add }}"><i class="fa fa-plus-circle"></i></a></td>';
+			html += '						<td colspan="5"></td>';
+			html += '					</tr>';
+			html += '				</tfoot>';
+			html += '			</table>';
+			html += '		</div>';
+				{% endfor %}
+			html += '	</div>';
+			html += '</div></div>';
+
+			$('#upstore_stories').append(html);
+			$('#upstore_stories ul.nav-tabs li:first-child a').tab('show');
+
+			Sortable.create(upstore_stories, {
+				handle: '.sortable-stories',
+				animation: 150
+			});
+
+			row_stories++;
+		}
+
+function addMoreStories(row_stories,lang_id){
+
+	var tbody = document.getElementById('tb-'+ row_stories +'-'+ lang_id);
+	var row_item = tbody.rows.length;
+
+	html = '	<tr id="row-item-'+ row_stories +'-'+ lang_id +'-'+ row_item +'">';
+	html += '		<td class="text-center"><button class="btn btn-success sortable-story" type="button"><i class="fa fa-arrows" aria-hidden="true"></i></button></td>';
+	html += '		<td class="text-center">';
+	html += '			<a href="" id="thumb-image-'+ row_stories +'-'+ lang_id +'-'+ row_item +'" data-toggle="image" class="img-thumbnail">';
+	html += '			<img src="{{ placeholder }}" alt="" title="" /></a>';
+	html += '			<input type="hidden" name="chm_stories['+ row_stories +']['+ lang_id +']['+ row_item +'][image]" value="" id="input-image-'+ row_stories +'-'+ lang_id +'-'+ row_item +'" />';
+	html += '		</td>';
+	html += '		<td class="text-left">';
+	html += '			<input class="form-control" type="text" name="chm_stories['+ row_stories +']['+ lang_id +']['+ row_item +'][btn_text]" value="" />';
+	html += '		</td>';
+	html += '		<td class="text-left">';
+	html += '			<div class="btn-group" data-toggle="buttons">';
+	html += '				<label class="btn btn-default active"><input autocomplete="off" type="radio" name="chm_stories['+ row_stories +']['+ lang_id +']['+ row_item +'][location]" value="1" checked="checked" />{{ text_bottom }}</label>';
+	html += '				<label class="btn btn-default"><input autocomplete="off" type="radio" name="chm_stories['+ row_stories +']['+ lang_id +']['+ row_item +'][location]" value="0" />{{ text_top }}</label>';
+	html += '			</div>';
+	html += '		</td>';
+	html += '		<td class="text-left">';
+	html += '			<div class="btn-group" data-toggle="buttons">';
+	html += '				<label class="btn btn-default active"><input autocomplete="off" type="radio" name="chm_stories['+ row_stories +']['+ lang_id +']['+ row_item +'][type_btn]" value="1" checked="checked" />{{ text_type_light }}</label>';
+	html += '				<label class="btn btn-default"><input autocomplete="off" type="radio" name="chm_stories['+ row_stories +']['+ lang_id +']['+ row_item +'][type_btn]" value="0" />{{ text_type_dark }}</label>';
+	html += '			</div>';
+	html += '		</td>';
+	html += '		<td class="text-left">';
+	html += '			<input class="form-control" type="text" name="chm_stories['+ row_stories +']['+ lang_id +']['+ row_item +'][link]" value="" />';
+	html += '		</td>';
+	html += '		<td class="text-center"><a class="btn btn-danger" onclick="$(\'#row-item-'+ row_stories +'-'+ lang_id +'-'+ row_item + '\').remove();" data-toggle="tooltip" title="{{ button_delete }}"><i class="fa fa-trash-o"></i></a></td>';
+	html += '	</tr>';
+
+	$('#tb-'+ row_stories +'-'+ lang_id).append(html);
+
+	var sort_story = document.getElementById('tb-' + row_stories +'-'+ lang_id);
+
+	Sortable.create(sort_story, {
+		handle: '.sortable-story',
+		animation: 150
+	});
+}
+
+</script>
+</div>
+<style>
+	.form-control.number,
+	.form-control.color {
+		width: 85px;
+	}
+	.d-flex {
+		display: -webkit-flex;
+		display: -moz-flex;
+		display: -ms-flex;
+		display: -o-flex;
+		display: flex;
+	}
+	.align-self-center {
+		align-self: center;
+	}
+	.flex-column {
+		flex-direction: column;
+	}
+	.mt-15 {
+		margin-top: 15px;
+	}
+	.mr-15 {
+		margin-right: 15px;
+	}
+	.w100p {
+		width: 100%;
+		flex-grow: 1;
+	}
+	.w-auto {
+		width: auto;
+		min-width: 80px;
+		line-height: 17px;
+	}
+	.w-70 {
+		width: 70px !important;
+		border-radius: 0px 4px 4px 0px !important;
+	}
+	.ml-15 {
+		margin-left: 15px;
+	}
+</style>
+{{ footer }}

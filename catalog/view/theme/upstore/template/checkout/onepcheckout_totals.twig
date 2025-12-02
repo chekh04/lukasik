@@ -1,0 +1,117 @@
+<div class="totals-inner">
+	<div class="title-text-next">
+		<span class="opc-cart-title">{{ text_you_order }}</span>
+		{% if opc_show_weight is defined and opc_show_weight == 1 %}
+			<span class="opc-cart-weight">{{ weight }}</span>
+		{% endif %}
+	</div>
+	{% if  coupon_status  or  voucher_status  or  reward_status %}
+	<div class="checkout-cart-accordion" id="accordion">
+		<a href="#collapse-dop-module" class="text-checkout-modules accordion-toggle" data-toggle="collapse" data-parent="#accordion">{{ text_next }}
+			<i class="up-icon-angle-down" aria-hidden="true"></i>
+		</a>
+		<div id="collapse-dop-module" class="panel-collapse collapse pb-10">
+		{% if coupon_status %}
+			<div class="cart-coupon">
+				<div class="form-group">
+					<label class="control-label" for="input-coupon">{{ text_coupon }}</label>
+					<div class="input-group">
+						<input type="text" name="coupon" value="{{ coupon }}" placeholder="{{ entry_coupon }}" id="input-coupon" class="form-control" />
+						<span class="input-group-btn">
+							<input type="button" value="ok" id="button-coupon" class="btn btn-primary" />
+						</span>
+					</div>
+				</div>
+			</div>
+		{% endif %}
+		{% if voucher_status %}
+			<div class="cart-voucher">
+				<div class="form-group">
+					<label class="control-label" for="input-voucher">{{ text_voucher }}</label>
+					<div class="input-group">
+						<input type="text" name="voucher" value="{{ voucher }}" placeholder="{{ entry_voucher }}" id="input-voucher" class="form-control" />
+						<span class="input-group-btn">
+							<input type="submit" value="ok" id="button-voucher" class="btn btn-primary" />
+						</span>
+					</div>
+				</div>
+			</div>
+		{% endif %}
+		{% if reward_status %}
+			<div class="cart-reward">
+				<div class="form-group">
+					<label class="control-label" for="input-reward">{{ text_reward }}</label>
+					<div class="input-group">
+						<input type="text" name="reward" value="{{ reward }}" placeholder="{{ entry_reward }}" id="input-reward" class="form-control" />
+						<span class="input-group-btn">
+							<input type="submit" value="ok" id="button-reward" class="btn btn-primary" />
+						</span>
+					</div>
+				</div>
+			</div>
+		{% endif %}
+		</div>
+	</div>
+	{% endif %}
+	<div class="checkout-totals">
+		{% if free_shipping_status %}
+			<div class="free-shipping-left">
+				<div class="free-shipping-inner" data-fsl-width="{{ fs_percentage }}">
+					<div class="free-ship-progress-bar{% if fs_percentage == 100 %} hidden{% endif %}">
+						<div class="free-ship-bar-fill" style="width: {{ fs_percentage }}%"></div>
+					</div>
+					{% if fs_percentage < 100 %}
+						<div class="free-ship-info">
+							{{ text_free_shipping_left }}
+						</div>
+					{% else %}
+						<div class="free-ship-info active-free-ship">{{ text_free_shipping }}</div>
+					{% endif %}
+				</div>
+			</div>
+		{% endif %}
+		<table class="table table_total table-cart">
+			{% for key,total in totals %}
+				<tr>
+					{% if total['value'] != 0 %}
+						<td class="text-left total-title{% if (key + 1 == totals|length) %} total-last{% endif %}">{{ total['title'] }}:</td>
+						<td class="text-right total-text">{{ total['text'] }}</td>
+					{% endif %}
+				</tr>
+			{% endfor %}
+		</table>
+		{% if opc_show_not_call_me is defined and opc_show_not_call_me == 1 %}
+			<div class="group-checkbox checkout-agree">
+				<label class="chm-checkbox mb-0">
+					<input class="checkbox-input" type="checkbox" name="opc_not_call_me" value="1" {% if opc_not_call_me %}checked="checked"{% endif %} />
+					<span class="checkbox-check"></span>{{ text_not_call_me }}
+				</label>
+			</div>
+		{% endif %}
+		{% if opc_show_contact_telegram_viber is defined and opc_show_contact_telegram_viber == 1 %}
+			<div class="group-checkbox checkout-agree">
+				<label class="chm-checkbox mb-0">
+					<input class="checkbox-input" type="checkbox" name="opc_contact_telegram_viber" value="1" {% if opc_contact_telegram_viber %}checked="checked"{% endif %} />
+					<span class="checkbox-check"></span>{{ text_contact_telegram_viber }}
+				</label>
+			</div>
+		{% endif %}
+		{% if text_agree %}
+			<div class="group-checkbox checkout-agree">
+				<label class="chm-checkbox mb-0">
+					{% if agree %}
+						<input class="checkbox-input" type="checkbox" name="agree" value="1" checked="checked" />
+					{% else %}
+						<input class="checkbox-input" type="checkbox" name="agree" value="1" />
+					{% endif %}
+					<span class="checkbox-check"></span>{{ text_agree }}
+				</label>
+			</div>
+		{% endif %}
+		<div class="confirm-block">
+		{% if  not payment %}
+			<input type="button" class="btn btn-primary w-100" data-loading-text="{{ text_loading }}" id="button-register" value="{{ button_checkout }} ">
+		{% endif %}
+		</div>
+	</div>
+</div>

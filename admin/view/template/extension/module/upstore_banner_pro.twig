@@ -1,0 +1,436 @@
+{{ header }}{{ column_left }}
+<div id="content">
+	<div class="page-header">
+		<div class="container-fluid">
+			<div class="pull-right">
+				<button type="submit" form="form-banner-pro" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+				<a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a>
+			</div>
+			<h1>{{ heading_title }}</h1>
+			<ul class="breadcrumb">
+				{% for breadcrumb in breadcrumbs %}
+					<li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+				{% endfor %}
+			</ul>
+		</div>
+	</div>
+	<div class="container-fluid">
+		{% if (error_warning) %}
+			<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+				<button type="button" class="close" data-dismiss="alert">&times;</button>
+			</div>
+		{% endif %}
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title"><i class="fa fa-pencil"></i> {{ text_edit }}</h3>
+			</div>
+			<div class="panel-body">
+				<form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-banner-pro" class="form-horizontal">
+					<div class="info-header">
+						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="butt" stroke-linejoin="bevel"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></svg>
+						{{ text_main_setting }}
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">{{ entry_status }}</label>
+						<div class="col-sm-10">
+							<div class="btn-group" data-toggle="buttons">
+								<label class="btn btn-default{% if status %} active{% endif %}">
+									<input type="radio" name="status" value="1" {% if status %}checked="checked"{% endif %}>
+									<span class="on-off">{{ text_on }}</span>
+								</label>
+								<label class="btn btn-default{% if not status %} active{% endif %}">
+									<input type="radio" name="status" value="0" {% if not status %}checked="checked"{% endif %}>
+									<span class="on-off">{{ text_off }}</span>
+								</label>
+							</div>
+						</div>
+					</div>
+					<div class="form-group required">
+						<label class="col-sm-2 control-label" for="input-name">{{ entry_name }}</label>
+						<div class="col-sm-10">
+							<input type="text" name="name" value="{{ name }}" placeholder="{{ entry_name }}" id="input-name" class="form-control" />
+							{% if (error_name) %}
+								<div class="text-danger">{{ error_name }}</div>
+							{% endif %}
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">{{ entry_typeb }}</label>
+						<div class="col-sm-10">
+							<div class="btn-group" data-toggle="buttons">
+								<label class="btn btn-default{% if quantity_column == 2 %} active{% endif %}">
+									<input type="radio" name="quantity_column" value="2" {% if quantity_column == 2 %}checked="checked"{% endif %}>
+									<span class="on-off">2</span>
+								</label>
+								<label class="btn btn-default{% if quantity_column == 3 %} active{% endif %}">
+									<input type="radio" name="quantity_column" value="3" {% if quantity_column == 3 %}checked="checked"{% endif %}>
+									<span class="on-off">3</span>
+								</label>
+								<label class="btn btn-default{% if quantity_column == 4 %} active{% endif %}">
+									<input type="radio" name="quantity_column" value="4" {% if quantity_column == 4 %}checked="checked"{% endif %}>
+									<span class="on-off">4</span>
+								</label>
+								<label class="btn btn-default{% if quantity_column == 6 %} active{% endif %}">
+									<input type="radio" name="quantity_column" value="6" {% if quantity_column == 6 %}checked="checked"{% endif %}>
+									<span class="on-off">6</span>
+								</label>
+							</div>
+						</div>
+					</div>
+					<div class="info-header">
+						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="butt" stroke-linejoin="bevel"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M20.4 14.5L16 10 4 20"/></svg>
+						{{ text_sliders }}
+					</div>
+					<div class="row">
+						<div class="col-sm-2">
+							<ul class="nav nav-pills nav-stacked" id="banner_pro">
+								{% set module_row = 1 %}
+									{% for result in banners_pro %}
+										<li><a href="#tab-module{{ module_row }}" data-toggle="tab"><i class="fa fa-minus-circle" onclick="$('a[href=\'#tab-module{{ module_row }}\']').parent().remove(); $('#tab-module{{ module_row }}').remove(); $('#module a:first').tab('show');activeBtn();"></i> {{ text_banner }}{{ module_row }}</a></li>
+										{% set module_row = module_row + 1 %}
+										{% endfor %}
+										<li id="module-add"><a role="button" onclick="addEasyBanner();"><i class="fa fa-plus-circle"></i> {{ button_add }}</a></li>
+									</ul>
+								</div>
+								<div class="col-sm-10">
+									<div class="tab-content">
+										{% set module_row = 1 %}
+											{% for result in banners_pro %}
+												<div class="tab-pane" id="tab-module{{ module_row }}">
+													<ul class="nav nav-tabs" id="language{{ module_row }}">
+														{% for language in languages %}
+															<li><a href="#tab-module{{ module_row }}-language{{ language['language_id'] }}" data-toggle="tab"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /> {{ language['name'] }}</a></li>
+														{% endfor %}
+													</ul>
+													<div class="tab-content">
+														{% for language in languages %}
+															<div class="tab-pane" id="tab-module{{ module_row }}-language{{ language['language_id'] }}">
+
+																<div class="form-group">
+																	<label class="col-sm-2 control-label" for="input-title-{{ module_row }}-{{ language.language_id }}">{{ entry_title }}</label>
+																	<div class="col-sm-10">
+																		<div class="input-group">
+																			<span class="input-group-addon input-group-color">
+																				<input type="text" placeholder="#000000" name="banner_pro[{{ module_row }}][color_title][{{ language.language_id }}]" value="{{ result.color_title[language.language_id] | default('') }}" class="form-control color" />
+																			</span>
+																			<textarea rows="2" id="input-title-{{ module_row }}-{{ language.language_id }}" type="text" name="banner_pro[{{ module_row }}][title][{{ language.language_id }}]" class="form-control">{{ result.title[language.language_id] | default('') }}</textarea>
+																		</div>
+																	</div>
+																</div>
+
+																<div class="form-group">
+																	<label class="col-sm-2 control-label" for="input-description-{{ module_row }}-{{ language.language_id }}">{{ entry_description }}</label>
+																	<div class="col-sm-10">
+																		<div class="input-group">
+																			<span class="input-group-addon input-group-color">
+																				<input type="text" placeholder="#000000" name="banner_pro[{{ module_row }}][color_desc][{{ language.language_id }}]" value="{{ result.color_desc[language.language_id] | default('') }}" class="form-control color" />
+																			</span>
+																			<textarea rows="2" id="input-description-{{ module_row }}-{{ language.language_id }}" type="text" name="banner_pro[{{ module_row }}][description][{{ language.language_id }}]" class="form-control">{{ result.description[language.language_id] | default('') }}</textarea>
+																		</div>
+																	</div>
+																</div>
+
+																<div class="form-group">
+																	<label class="col-sm-2 control-label" for="input-bgblock-{{ module_row }}-{{ language['language_id'] }}">{{ entry_bg_block }}</label>
+																	<div class="col-sm-10">
+																		<input class="form-control color" id="input-bgblock-{{ module_row }}-{{ language['language_id'] }}" type="text" name="banner_pro[{{ module_row }}][bg_block][{{ language['language_id'] }}]" value="{{ result['bg_block'][language['language_id']] is defined ? result['bg_block'][language['language_id']] : '' }}" />
+																	</div>
+																</div>
+																<div class="form-group">
+																	<label class="col-sm-2 control-label">{{ entry_image }}</label>
+																	<div class="col-sm-10">
+																		<a href="" id="thumb-image-{{ module_row }}-{{ language['language_id'] }}" data-toggle="image" class="img-thumbnail">
+																			<img src="{{ result['thumb'][language['language_id']] }}" alt="" title="" data-placeholder="{{ placeholder }}"  />
+																		</a>
+																		<input type="hidden" name="banner_pro[{{ module_row }}][image][{{ language['language_id'] }}]" value="{{ result['image'][language['language_id']] }}" id="input-image{{ module_row }}-{{ language['language_id'] }}" />
+																	</div>
+																</div>
+
+																<div class="form-group">
+																	<label class="col-sm-2 control-label">{{ entry_image_display_mode }}</label>
+																	<div class="col-sm-10">
+																		<div class="btn-group" data-toggle="buttons">
+																			<label class="btn btn-default{% if result.image_display_mode[language.language_id] == 'cover' %} active{% endif %}">
+																				<input type="radio" name="banner_pro[{{ module_row }}][image_display_mode][{{ language.language_id }}]" value="cover" {% if result.image_display_mode[language.language_id] == 'cover' %}checked="checked"{% endif %}>
+																				<span class="on-off">cover</span>
+																			</label>
+																			<label class="btn btn-default{% if result.image_display_mode[language.language_id] == 'contain' %} active{% endif %}">
+																				<input type="radio" name="banner_pro[{{ module_row }}][image_display_mode][{{ language.language_id }}]" value="contain" {% if result.image_display_mode[language.language_id] == 'contain' %}checked="checked"{% endif %}>
+																				<span class="on-off">contain</span>
+																			</label>
+																		</div>
+																	</div>
+																</div>
+
+																<div class="form-group required">
+																	<label class="col-sm-2 control-label">{{ entry_image_wh }}</label>
+																	<div class="col-sm-10">
+																		<div class="input-group d-flex">
+																			<span class="input-group-addon w-auto">{{ entry_width }}</span>
+																			<input name="banner_pro[{{ module_row }}][image_width][{{ language['language_id'] }}]" value="{{ result['image_width'][language['language_id']] is defined ? result['image_width'][language['language_id']] : '' }}" type="text" class="form-control w-70">
+																			<span class="input-group-addon w-auto ml-15">{{ entry_height }}</span>
+																			<input name="banner_pro[{{ module_row }}][image_height][{{ language['language_id'] }}]" value="{{ result['image_height'][language['language_id']] is defined ? result['image_height'][language['language_id']] : '' }}" type="text" class="form-control w-70">
+																		</div>
+																	</div>
+																</div>
+																<div class="form-group">
+																	<label class="col-sm-2 control-label" for="input-link-{{ module_row }}-{{ language['language_id'] }}">{{ entry_link }}</label>
+																	<div class="col-sm-10">
+																		<input id="input-link-{{ module_row }}-{{ language['language_id'] }}" type="text" name="banner_pro[{{ module_row }}][link][{{ language['language_id'] }}]" value="{{ result['link'][language['language_id']] is defined ? result['link'][language['language_id']] : '' }}" class="form-control" />
+																	</div>
+																</div>
+
+																<div class="form-group">
+																	<label class="col-sm-2 control-label" for="input-price-from-{{ module_row }}-{{ language.language_id }}">{{ entry_price_from }}</label>
+																	<div class="col-sm-10">
+																		<div class="input-group">
+																			<span class="input-group-addon input-group-color">
+																				<input type="text" placeholder="#000000" name="banner_pro[{{ module_row }}][color_price_from][{{ language.language_id }}]" value="{{ result.color_price_from[language.language_id] | default('') }}" class="form-control color" />
+																			</span>
+																			<input class="form-control" id="input-price-from-{{ module_row }}-{{ language.language_id }}" type="text" name="banner_pro[{{ module_row }}][price_from][{{ language.language_id }}]" value="{{ result.price_from[language.language_id] | default('') }}" />
+																		</div>
+																	</div>
+																</div>
+
+																<div class="form-group">
+																	<label class="col-sm-2 control-label" for="input-price-{{ module_row }}-{{ language.language_id }}">{{ entry_price }}</label>
+																	<div class="col-sm-10">
+																		<div class="input-group">
+																			<span class="input-group-addon input-group-color">
+																				<input type="text" placeholder="#000000" name="banner_pro[{{ module_row }}][price_color][{{ language.language_id }}]" value="{{ result.price_color[language.language_id] | default('') }}" class="form-control color" />
+																			</span>
+																			<input class="form-control" id="input-price-{{ module_row }}-{{ language.language_id }}" type="text" name="banner_pro[{{ module_row }}][price][{{ language.language_id }}]" value="{{ result.price[language.language_id] | default('') }}" />
+																		</div>
+																	</div>
+																</div>
+
+															</div>
+														{% endfor %}
+													</div>
+												</div>
+												{% set module_row = module_row + 1 %}
+												{% endfor %}
+											</div>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+<script>
+$('#banner_pro li:first-child a').tab('show');
+$('.tab-content ul.nav-tabs li:first-child a').tab('show');
+var module_row = '{{ module_row }}';
+
+function activeBtn() {
+	if($('#banner_pro li').length >= 7){
+		$('#module-add').addClass('hidden');
+	} else {
+		$('#module-add').removeClass('hidden');
+	}
+}
+activeBtn();
+function addEasyBanner() {
+	html  = '<div class="tab-pane" id="tab-module' + module_row + '">';
+	html += '  <ul class="nav nav-tabs" id="language' + module_row + '">';
+	{% for language in languages %}
+	html += '    <li><a href="#tab-module' + module_row + '-language{{ language['language_id'] }}" data-toggle="tab"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /> {{ language['name'] }}</a></li>';
+	{% endfor %}
+	html += '  </ul>';
+
+	html += '  <div class="tab-content">';
+	{% for language in languages %}
+	html += '    <div class="tab-pane" id="tab-module' + module_row + '-language{{ language['language_id'] }}">';
+
+	html += '<div class="form-group">';
+	html += '	<label class="col-sm-2 control-label" for="input-title-'+ module_row +'-{{ language['language_id'] }}">{{ entry_title }}</label>';
+	html += '	<div class="col-sm-10">';
+	html += '		<div class="input-group">';
+	html += '			<span class="input-group-addon input-group-color">';
+	html += '				<input type="text" placeholder="#000000" name="banner_pro['+ module_row +'][color_title][{{ language['language_id'] }}]" value="" class="form-control color" />';
+	html += '			</span>';
+	html += '			<textarea rows="2" id="input-title-'+ module_row +'-{{ language['language_id'] }}" type="text" name="banner_pro['+ module_row +'][title][{{ language['language_id'] }}]" class="form-control"></textarea>';
+	html += '		</div>';
+	html += '	</div>';
+	html += '</div>';
+
+	html += '<div class="form-group">';
+	html += '	<label class="col-sm-2 control-label" for="input-description-'+ module_row +'-{{ language['language_id'] }}">{{ entry_description }}</label>';
+	html += '	<div class="col-sm-10">';
+	html += '		<div class="input-group">';
+	html += '			<span class="input-group-addon input-group-color">';
+	html += '				<input type="text" placeholder="#000000" name="banner_pro['+ module_row +'][color_desc][{{ language['language_id'] }}]" value="" class="form-control color" />';
+	html += '			</span>';
+	html += '			<textarea rows="2" id="input-description-'+ module_row +'-{{ language['language_id'] }}" type="text" name="banner_pro['+ module_row +'][description][{{ language['language_id'] }}]" class="form-control"></textarea>';
+	html += '		</div>';
+	html += '	</div>';
+	html += '</div>';
+
+	html += '<div class="form-group">';
+	html += '	<label class="col-sm-2 control-label" for="input-bgblock-'+ module_row +'-{{ language['language_id'] }}">{{ entry_bg_block }}</label>';
+	html += '	<div class="col-sm-10">';
+	html += '		<input class="form-control color" id="input-bgblock-'+ module_row +'-{{ language['language_id'] }}" type="text" name="banner_pro['+ module_row +'][bg_block][{{ language['language_id'] }}]" value="" />';
+	html += '	</div>';
+	html += '</div>';
+
+	html += '<div class="form-group required">';
+	html += '	<label class="col-sm-2 control-label">{{ entry_image }}</label>';
+	html += '	<div class="col-sm-10">';
+	html += '		<a href="" id="thumb-image-'+ module_row +'-{{ language['language_id'] }}" data-toggle="image" class="img-thumbnail">';
+	html += '			<img src="{{ placeholder }}" alt="" title="" data-placeholder="{{ placeholder }}"  />';
+	html += '		</a>';
+	html += '		<input id="input-image'+ module_row +'-{{ language['language_id'] }}" type="hidden" name="banner_pro['+ module_row +'][image][{{ language['language_id'] }}]" value="" />';
+	html += '	</div>';
+	html += '</div>';
+
+	html += '<div class="form-group">';
+	html += '	<label class="col-sm-2 control-label">{{ entry_image_display_mode }}</label>';
+	html += '	<div class="col-sm-10">';
+	html += '		<div class="btn-group" data-toggle="buttons">';
+	html += '			<label class="btn btn-default active">';
+	html += '				<input type="radio" name="banner_pro['+ module_row +'][image_display_mode][{{ language['language_id'] }}]" value="cover" checked="checked">';
+	html += '				<span class="on-off">cover</span>';
+	html += '			</label>';
+	html += '			<label class="btn btn-default">';
+	html += '				<input type="radio" name="banner_pro['+ module_row +'][image_display_mode][{{ language['language_id'] }}]" value="contain" >';
+	html += '				<span class="on-off">contain</span>';
+	html += '			</label>';
+	html += '		</div>';
+	html += '	</div>';
+	html += '</div>';
+
+	html += '<div class="form-group required">';
+	html += '	<label class="col-sm-2 control-label">{{ entry_image_wh }}</label>';
+	html += '	<div class="col-sm-10">';
+	html += '		<div class="input-group d-flex">';
+	html += '			<span class="input-group-addon w-auto">{{ entry_width }}</span>';
+	html += '			<input name="banner_pro['+ module_row +'][image_width][{{ language['language_id'] }}]" type="text" class="form-control w-70">';
+	html += '			<span class="input-group-addon w-auto ml-15">{{ entry_height }}</span>';
+	html += '			<input name="banner_pro['+ module_row +'][image_height][{{ language['language_id'] }}]" type="text" class="form-control w-70">';
+	html += '		</div>';
+	html += '	</div>';
+	html += '</div>';
+
+	html += '<div class="form-group">';
+	html += '	<label class="col-sm-2 control-label" for="input-link-'+ module_row +'-{{ language['language_id'] }}">{{ entry_link }}</label>';
+	html += '	<div class="col-sm-10">';
+	html += '		<input id="input-link-'+ module_row +'-{{ language['language_id'] }}" type="text" name="banner_pro['+ module_row +'][link][{{ language['language_id'] }}]" value="" class="form-control" />';
+	html += '	</div>';
+	html += '</div>';
+
+	html += '<div class="form-group">';
+	html += '	<label class="col-sm-2 control-label" for="input-price-from-'+ module_row +'-{{ language['language_id'] }}">{{ entry_price_from }}</label>';
+	html += '	<div class="col-sm-10">';
+	html += '		<div class="input-group">';
+	html += '			<span class="input-group-addon input-group-color">';
+	html += '				<input type="text" placeholder="#000000" name="banner_pro['+ module_row +'][color_price_from][{{ language['language_id'] }}]" value="" class="form-control color" />';
+	html += '			</span>';
+	html += '			<input class="form-control" id="input-price-from-'+ module_row +'-{{ language['language_id'] }}" type="text" name="banner_pro['+ module_row +'][price_from][{{ language['language_id'] }}]" value="" />';
+	html += '		</div>';
+	html += '	</div>';
+	html += '</div>';
+
+	html += '<div class="form-group">';
+	html += '	<label class="col-sm-2 control-label" for="input-price-'+ module_row +'-{{ language['language_id'] }}">{{ entry_price }}</label>';
+	html += '	<div class="col-sm-10">';
+	html += '		<div class="input-group">';
+	html += '			<span class="input-group-addon input-group-color">';
+	html += '				<input type="text" placeholder="#000000" name="banner_pro['+ module_row +'][price_color][{{ language['language_id'] }}]" value="" class="form-control color" />';
+	html += '			</span>';
+	html += '			<input class="form-control" id="input-price-'+ module_row +'-{{ language['language_id'] }}" type="text" name="banner_pro['+ module_row +'][price][{{ language['language_id'] }}]" value="" />';
+	html += '		</div>';
+	html += '	</div>';
+	html += '</div>';
+
+	html += '    </div>';
+	{% endfor %}
+
+	html += '</div>';
+	html += '</div>';
+
+	$('.tab-content:first-child').append(html);
+
+	jscolor.bind();
+	$('#module-add').before('<li><a href="#tab-module' + module_row + '" data-toggle="tab"><i class="fa fa-minus-circle" onclick="$(\'a[href=\\\'#tab-module' + module_row + '\\\']\').parent().remove(); $(\'#tab-module' + module_row + '\').remove(); $(\'#module a:first\').tab(\'show\');activeBtn();"></i> {{ text_banner }} ' + module_row + '</a></li>');
+
+	$('#banner_pro a[href=\'#tab-module' + module_row + '\']').tab('show');
+
+	$('#language' + module_row + ' li:first-child a').tab('show');
+	activeBtn();
+	module_row++;
+}
+
+
+</script>
+</div>
+<style>
+	.info-header {
+		padding: 10px 15px;
+		background: #f8f8f8;
+		color: #333;
+		font-size: 14px;
+		line-height: 22px;
+		font-weight: 600;
+		border-radius: 4px;
+		margin-bottom: 15px;
+	}
+	.info-header svg {
+		height: 20px;
+		width: 20px;
+		color: #6F6F6F;
+		vertical-align: middle;
+		display: block;
+		float: left;
+		margin-right: 10px;
+	}
+	.form-control.number,
+	.form-control.color {
+		width: 85px;
+	}
+	.d-flex {
+		display: -webkit-flex;
+		display: -moz-flex;
+		display: -ms-flex;
+		display: -o-flex;
+		display: flex;
+	}
+	.w-auto {
+		width: auto;
+		min-width: 80px;
+		line-height: 17px;
+	}
+	.w-70 {
+		width: 70px !important;
+		border-radius: 0px 4px 4px 0px !important;
+	}
+	.ml-15 {
+		margin-left: 15px;
+	}
+	.pt-0 {
+		padding-top: 0;
+	}
+	.color {
+		width: 80px !important;
+	}
+	.input-group-color .color {
+		height: 22px !important;
+		padding: 2px 8px;
+	}
+	.input-group-color {
+		padding-top: 3px;
+		padding-bottom: 3px;
+	}
+	.on-off {
+		min-width: 42px;
+		text-align: center;
+		display: block;
+	}
+</style>
+<script>
+$(".form-control.number").keypress(function(event){
+	event = event || window.event;
+	if (event.charCode && event.charCode!=0 && event.charCode!=46 && (event.charCode < 48 || event.charCode > 57) )
+		return false;
+});
+</script>
+{{ footer }}

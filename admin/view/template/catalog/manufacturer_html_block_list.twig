@@ -1,0 +1,202 @@
+{{ header }}{{ column_left }}
+<div id="content">
+	<div class="page-header">
+		<div class="container-fluid">
+			<div class="pull-right"><a href="{{ add }}" data-toggle="tooltip" title="{{ button_add }}" class="btn btn-primary"><i class="fa fa-plus"></i></a>
+				<button type="button" data-toggle="tooltip" title="{{ button_delete }}" class="btn btn-danger" onclick="confirm('{{ text_confirm }}') ? $('#form-manufacturer-html-block').submit() : false;"><i class="fa fa-trash-o"></i></button>
+			</div>
+			<h1>{{ heading_title }}</h1>
+			<ul class="breadcrumb">
+				{% for breadcrumb in breadcrumbs %}
+					<li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+				{% endfor %}
+			</ul>
+		</div>
+	</div>
+	<div class="container-fluid">
+		{% if error_warning %}
+			<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+				<button type="button" class="close" data-dismiss="alert">&times;</button>
+			</div>
+		{% endif %}
+		{% if success %}
+			<div class="alert alert-success"><i class="fa fa-check-circle"></i> {{ success }}
+				<button type="button" class="close" data-dismiss="alert">&times;</button>
+			</div>
+		{% endif %}
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title"><i class="fa fa-list"></i> {{ text_list }}</h3>
+			</div>
+			<div class="panel-body">
+				<div class="well">
+					<div class="row">
+						<div class="col-sm-6">
+							<div class="form-group">
+								<label class="control-label" for="input-status">{{ entry_filter_name }}</label>
+								<input type="text" name="filter_name" value="{{ filter_name }}" placeholder="{{ entry_filter_name }}" id="input-name" class="form-control" />
+							</div>
+						</div>
+						<div class="col-sm-6">
+							<div class="form-group">
+								<label class="control-label" for="input-status">{{ entry_filter_status }}</label>
+								<select name="filter_status" id="input-status" class="form-control">
+									<option value="*"></option>
+									<option value="1" {% if filter_status == '1' %}selected="selected"{% endif %}>{{ text_enabled }}</option>
+									<option value="0" {% if filter_status == '0' %}selected="selected"{% endif %}>{{ text_disabled }}</option>
+								</select>
+							</div>
+							<button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-search"></i> {{ button_filter }}</button>
+						</div>
+					</div>
+				</div>
+				<form action="{{ delete }}" method="post" enctype="multipart/form-data" id="form-manufacturer-html-block">
+					<div class="table-responsive">
+						<table class="table table-bordered table-hover">
+							<thead>
+								<tr>
+									<td style="width: 1px;" class="text-center"><input type="checkbox" onclick="$('input[name*=\\'selected\\']').prop('checked', this.checked);" /></td>
+									<td class="text-left">
+										<a href="{{ sort_name }}" class="{{ sort == 'id.title' ? order|lower : '' }}">{{ column_title }}</a>
+									</td>
+									<td class="text-center">{{ column_manufacturers }}</td>
+									<td class="text-center">{{ column_show_for_all }}</td>
+									<td class="text-center">{{ column_status }}</td>
+									<td class="text-right">{{ column_action }}</td>
+								</tr>
+							</thead>
+							<tbody>
+								{% if html_blocks %}
+									{% for html_block in html_blocks %}
+										<tr>
+											<td class="text-center">
+												<input type="checkbox" name="selected[]" value="{{ html_block.block_id }}" {% if html_block.block_id in selected %}checked="checked"{% endif %} />
+											</td>
+											<td class="text-left">{{ html_block.title }}</td>
+											<td class="text-center">
+												{% if html_block.manufacturers is not empty %}
+													<div class="manufacturer-list">
+														{% for manufacturer in html_block.manufacturers %}
+															<div class="manufacturer-item">{{ manufacturer.name }}</div>
+														{% endfor %}
+													</div>
+												{% endif %}
+											</td>
+											<td class="text-center">
+												<a class="status_show_for_all" data-block-id="{{ html_block.block_id }}" id="status-show-for-all-{{ html_block.block_id }}">{{ html_block.show_for_all }}</a>
+											</td>
+											<td class="text-center">
+												<a class="column_status" data-block-id="{{ html_block.block_id }}" id="status-{{ html_block.block_id }}">{{ html_block.status }}</a>
+											</td>
+											<td class="text-right">
+												<a href="{{ html_block.edit }}" data-toggle="tooltip" title="{{ button_edit }}" class="btn btn-primary">
+													<i class="fa fa-pencil"></i>
+												</a>
+											</td>
+										</tr>
+									{% endfor %}
+								{% else %}
+									<tr>
+										<td class="text-center" colspan="4">{{ text_no_results }}</td>
+									</tr>
+								{% endif %}
+							</tbody>
+						</table>
+					</div>
+				</form>
+				<div class="row">
+					<div class="col-sm-6 text-left">{{ pagination }}</div>
+					<div class="col-sm-6 text-right">{{ results }}</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<style>
+.manufacturer-list {
+	display: flex;
+	gap:5px;
+}
+.manufacturer-item {
+	display: inline-block;
+	padding: 4px 8px;
+	border: 1px solid #c5e6f7;
+	background: #d9edf7;
+	font-size: 12px;
+	border-radius: 6px;
+	color: #31708f;
+}
+</style>
+<script>
+$('.column_status').click(function() {
+	var block_id = $(this).data('block-id');
+
+	$.ajax({
+		url: 'index.php?route=catalog/manufacturer_html_block/changeStatus&user_token={{ user_token }}',
+		type: 'get',
+		data: { block_id: block_id },
+		dataType: 'html',
+		success: function(html) {
+			if (html !== '') {
+				$('#status-' + block_id).html(html)
+			}
+		}
+	});
+});
+
+$('.status_show_for_all').click(function() {
+	var block_id = $(this).data('block-id');
+
+	$.ajax({
+		url: 'index.php?route=catalog/manufacturer_html_block/changeStatusShowForAll&user_token={{ user_token }}',
+		type: 'get',
+		data: { block_id: block_id },
+		dataType: 'html',
+		success: function(html) {
+			if (html !== '') {
+				$('#status-show-for-all-' + block_id).html(html)
+			}
+		}
+	});
+});
+
+
+$('input[name=\'filter_name\']').autocomplete({
+	'source': function(request, response) {
+		$.ajax({
+			url: 'index.php?route=catalog/manufacturer_html_block/autocomplete&user_token={{ user_token }}&filter_name=' +  encodeURIComponent(request),
+			dataType: 'json',
+			success: function(json) {
+				response($.map(json, function(item) {
+					return {
+						label: item['name'],
+						value: item['block_id']
+					}
+				}));
+			}
+		});
+	},
+	'select': function(item) {
+		$('input[name=\'filter_name\']').val(item['label']);
+	}
+});
+
+$('#button-filter').on('click', function() {
+	var url = 'index.php?route=catalog/manufacturer_html_block&user_token={{ user_token }}';
+
+	var filter_name = $('input[name=\'filter_name\']').val();
+
+	if (filter_name) {
+		url += '&filter_name=' + encodeURIComponent(filter_name);
+	}
+
+	var filter_status = $('select[name=\'filter_status\']').val();
+
+	if (filter_status != '*') {
+		url += '&filter_status=' + encodeURIComponent(filter_status);
+	}
+
+	location = url;
+});
+</script>
+{{ footer }}

@@ -1,0 +1,347 @@
+<div class="modal-dialog opc-modal modal-dialog-centered modal-custom-field">
+	<div class="modal-content">
+		<div class="modal-header">
+			<div class="modal-title">{{ text_form }}</div>
+			<button type="button" class="close-modal" data-dismiss="modal" aria-hidden="true"><svg id="icon-close" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 16"><path fill="#000" fill-rule="evenodd" d="M1.293 1.293a1 1 0 0 1 1.414 0L8 6.586l5.293-5.293a1 1 0 1 1 1.414 1.414L9.414 8l5.293 5.293a1 1 0 0 1-1.414 1.414L8 9.414l-5.293 5.293a1 1 0 0 1-1.414-1.414L6.586 8 1.293 2.707a1 1 0 0 1 0-1.414z" clip-rule="evenodd"/></svg></button>
+		</div>
+		<div class="modal-body">
+			<form method="post" enctype="multipart/form-data" id="form-custom-field" class="form-horizontal">
+				<div class="form-group required">
+					<label class="col-sm-3 control-label">{{ entry_name }}</label>
+					<div class="col-sm-9">
+						{% for language in languages %}
+							<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+								<input type="text" name="custom_field_description[{{ language.language_id }}][name]" value="{{ custom_field_description[language.language_id].name ? custom_field_description[language.language_id].name : '' }}" placeholder="{{ entry_name }}" class="form-control" />
+							</div>
+						{% endfor %}
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">{{ entry_text_error }}</label>
+					<div class="col-sm-9">
+						{% for language in languages %}
+							<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+								<input type="text" name="custom_field_description[{{ language.language_id }}][text_error]" value="{{ custom_field_description[language.language_id].text_error ? custom_field_description[language.language_id].text_error : '' }}" placeholder="{{ entry_text_error }}" class="form-control" />
+							</div>
+						{% endfor %}
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label" for="input-location">{{ entry_location }}</label>
+					<div class="col-sm-9">
+						<select name="location" id="input-location" class="form-control">
+							{% if location == 'opc_customer' %}
+								<option value="opc_customer" selected="selected">{{ text_customer }}</option>
+							{% else %}
+								<option value="opc_customer">{{ text_customer }}</option>
+							{% endif %}
+							{% if location == 'opc_address' %}
+								<option value="opc_address" selected="selected">{{ text_address }}</option>
+							{% else %}
+								<option value="opc_address">{{ text_address }}</option>
+							{% endif %}
+							{% if location == 'opc_payment' %}
+								<option value="opc_payment" selected="selected">{{ text_payment }}</option>
+							{% else %}
+								<option value="opc_payment">{{ text_payment }}</option>
+							{% endif %}
+						</select>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label" for="input-type">{{ entry_type }}</label>
+					<div class="col-sm-9">
+						<select name="type" id="input-type" class="form-control">
+							<optgroup label="{{ text_choose }}">
+								{% if type == 'select' %}
+									<option value="select" selected="selected">{{ text_select }}</option>
+								{% else %}
+									<option value="select">{{ text_select }}</option>
+								{% endif %}
+								{% if type == 'radio' %}
+									<option value="radio" selected="selected">{{ text_radio }}</option>
+								{% else %}
+									<option value="radio">{{ text_radio }}</option>
+								{% endif %}
+								{% if type == 'checkbox' %}
+									<option value="checkbox" selected="selected">{{ text_checkbox }}</option>
+								{% else %}
+									<option value="checkbox">{{ text_checkbox }}</option>
+								{% endif %}
+							</optgroup>
+							<optgroup label="{{ text_input }}">
+								{% if type == 'text' %}
+									<option value="text" selected="selected">{{ text_text }}</option>
+								{% else %}
+									<option value="text">{{ text_text }}</option>
+								{% endif %}
+								{% if type == 'textarea' %}
+									<option value="textarea" selected="selected">{{ text_textarea }}</option>
+								{% else %}
+									<option value="textarea">{{ text_textarea }}</option>
+								{% endif %}
+							</optgroup>
+							<optgroup label="{{ text_date }}">
+								{% if type == 'date' %}
+									<option value="date" selected="selected">{{ text_date }}</option>
+								{% else %}
+									<option value="date">{{ text_date }}</option>
+								{% endif %}
+								{% if type == 'time' %}
+									<option value="time" selected="selected">{{ text_time }}</option>
+								{% else %}
+									<option value="time">{{ text_time }}</option>
+								{% endif %}
+								{% if type == 'datetime' %}
+									<option value="datetime" selected="selected">{{ text_datetime }}</option>
+								{% else %}
+									<option value="datetime">{{ text_datetime }}</option>
+								{% endif %}
+							</optgroup>
+						</select>
+					</div>
+				</div>
+				<div class="form-group" id="display-value">
+					<label class="col-sm-3 control-label" for="input-value">{{ entry_value }}</label>
+					<div class="col-sm-9">
+						<input type="text" name="value" value="{{ value }}" placeholder="{{ entry_value }}" id="input-value" class="form-control" />
+					</div>
+				</div>
+				<div class="form-group" id="display-validation">
+					<label class="col-sm-3 control-label" for="input-validation"><span data-toggle="tooltip" title="{{ help_regex }}">{{ entry_validation }}</span></label>
+					<div class="col-sm-9">
+						<input type="text" name="validation" id="input-validation" value="{{ validation }}" placeholder="{{ text_regex }}"  class="form-control"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">{{ entry_customer_group }}</label>
+					<div class="col-sm-9">
+						{% set customer_group_row = 0 %}
+						{% for customer_group in customer_groups %}
+							<div class="checkbox">
+								<label>
+									{% if customer_group.customer_group_id in custom_field_customer_group %}
+										<input type="checkbox" name="custom_field_customer_group[{{ customer_group_row }}][customer_group_id]" value="{{ customer_group.customer_group_id }}" checked="checked" />
+										 {{ customer_group.name }}
+									{% else %}
+										<input type="checkbox" name="custom_field_customer_group[{{ customer_group_row }}][customer_group_id]" value="{{ customer_group.customer_group_id }}" />
+										{{ customer_group.name }}
+									{% endif %}
+								</label>
+							</div>
+							{% set customer_group_row = customer_group_row + 1 %}
+						{% endfor %}
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">{{ entry_required }}</label>
+					<div class="col-sm-9">
+						{% set customer_group_row = 0 %}
+						{% for customer_group in customer_groups %}
+							<div class="checkbox">
+								<label>
+									{% if customer_group.customer_group_id in custom_field_customer_group %}
+										<input type="checkbox" name="custom_field_customer_group[{{ customer_group_row }}][required]" value="{{ customer_group.customer_group_id }}" checked="checked" />
+										{{ customer_group.name }}
+									{% else %}
+										<input type="checkbox" name="custom_field_customer_group[{{ customer_group_row }}][required]" value="{{ customer_group.customer_group_id }}" />
+										{{ customer_group.name }}
+									{% endif %}
+								</label>
+							</div>
+							{% set customer_group_row = customer_group_row + 1 %}
+						{% endfor %}
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label" for="input-save-to-commnet">{{ text_field_save_to_comment }}</label>
+					<div class="col-sm-9">
+						<select name="action_field" id="input-save-to-commnet" class="form-control">
+							{% if action_field %}
+								<option value="1" selected="selected">{{ text_enabled }}</option>
+								<option value="0">{{ text_disabled }}</option>
+							{% else %}
+								<option value="1">{{ text_enabled }}</option>
+								<option value="0" selected="selected">{{ text_disabled }}</option>
+							{% endif %}
+						</select>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label" for="input-status">{{ entry_status }}</label>
+					<div class="col-sm-9">
+						<select name="status" id="input-status" class="form-control">
+							{% if status %}
+								<option value="1" selected="selected">{{ text_enabled }}</option>
+								<option value="0">{{ text_disabled }}</option>
+							{% else %}
+								<option value="1">{{ text_enabled }}</option>
+								<option value="0" selected="selected">{{ text_disabled }}</option>
+							{% endif %}
+						</select>
+					</div>
+				</div>
+				<table id="custom-field-value" class="table table-striped table-bordered table-hover">
+					<thead>
+						<tr>
+							<td class="text-left required">{{ entry_custom_value }}</td>
+							<td class="text-right">{{ entry_sort_order }}</td>
+							<td></td>
+						</tr>
+					</thead>
+					<tbody>
+						{% set custom_field_value_row = 0 %}
+						{% for custom_field_value in custom_field_values %}
+							<tr id="custom-field-value-row{{ custom_field_value_row }}">
+								<td class="text-left" style="width: 70%;"><input type="hidden" name="custom_field_value[{{ custom_field_value_row }}][custom_field_value_id]" value="{{ custom_field_value.custom_field_value_id }}" />
+									{% for language in languages %}
+										<div class="input-group"> <span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+											<input type="text" name="custom_field_value[{{ custom_field_value_row }}][custom_field_value_description][{{ language.language_id }}][name]" value="{{ custom_field_value.custom_field_value_description[language.language_id] ? custom_field_value.custom_field_value_description[language.language_id].name }}" placeholder="{{ entry_custom_value }}" class="form-control" />
+										</div>
+									{% endfor %}
+								</td>
+								<td class="text-right"><input type="text" name="custom_field_value[{{ custom_field_value_row }}][sort_order]" value="{{ custom_field_value.sort_order }}" placeholder="{{ entry_sort_order }}" class="form-control" /></td>
+								<td class="text-left"><button onclick="$('#custom-field-value-row{{ custom_field_value_row }}').remove();" data-toggle="tooltip" title="{{ button_remove }}" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button></td>
+							</tr>
+							 {% set custom_field_value_row = custom_field_value_row + 1 %}
+						{% endfor %}
+					</tbody>
+					<tfoot>
+						<tr>
+							<td colspan="2"></td>
+							<td class="text-left"><button type="button" onclick="addCustomFieldValue();" data-toggle="tooltip" title="{{ button_custom_field_value_add }}" class="btn btn-primary"><i class="fa fa-plus-circle"></i></button></td>
+						</tr>
+					</tfoot>
+				</table>
+			</form>
+			<div class="text-center">
+				<button onclick="saveCustomField();" id="button-save-custom-field" data-loading-text="{{ text_saving }}" class="btn btn-primary"><i class="fa fa-save"></i> {{ button_save }}</button>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+
+function saveCustomField(){
+
+	$.ajax({
+		type: 'post',
+		url: '{{ action|raw|replace({"&amp;": "&", "&lt;": "<", "&gt;": ">"}) }}',
+		data: $('#form-custom-field').serialize(),
+		dataType: 'json',
+		beforeSend: function() {
+			$('#button-save-custom-field').button('loading');
+		},
+		complete: function() {
+			$('#button-save-custom-field').button('reset');
+		},
+		success:function (json) {
+			$('#form-custom-field .text-danger').remove();
+			$('#form-custom-field .alert.alert-danger').remove();
+			$('#tab-custom-field .alert.alert-success').remove();
+
+			if (json['error']) {
+				if (json['error']['name']) {
+					var nameWarnings = json['error']['name'];
+					var $inputGroups = $('.input-group');
+					$.each(nameWarnings, function(languageId, errorMessage) {
+						var $currentInputGroup = $inputGroups.find('input[name^="custom_field_description[' + languageId + ']"]').closest('.input-group');
+						$currentInputGroup.after('<div class="text-danger">' + errorMessage + '</div>');
+					});
+				}
+
+				if (json['error']['custom_field_value']) {
+					var customFieldValueErrors = json['error']['custom_field_value'];
+
+					$.each(customFieldValueErrors, function(custom_field_value_id, languageErrors) {
+						$.each(languageErrors, function(language_id, errorMessage) {
+							var $row = $('#custom-field-value-row' + custom_field_value_id);
+							var $inputGroup = $row.find('input[name="custom_field_value[' + custom_field_value_id + '][custom_field_value_description][' + language_id + '][name]"]').closest('.input-group');
+
+							$inputGroup.after('<div class="text-danger">' + errorMessage + '</div>');
+						});
+					});
+				}
+
+				if (json['error']['warning']){
+					$('#form-custom-field').prepend('<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> '+ json['error']['warning'] +'<button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+				}
+			}
+
+			if (json['success']) {
+				$('#modal-add-custom-field').modal('hide');
+				$('#modal-add-custom-field').remove();
+
+				var alert_success = $('<div class="alert alert-success"><i class="fa fa-exclamation-circle"></i> ' + json['success'] + '<button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+				$('#tab-custom-field').before(alert_success);
+
+				setTimeout(function() {
+					alert_success.animate({ opacity: 0 }, 500, function() {
+						alert_success.remove();
+					});
+				}, 4000);
+
+				updateTable(json['custom_fields']);
+				updateCustomFieldsDropDown(json['custom_fields']);
+			}
+		}
+	});
+}
+
+$('select[name=\'type\']').on('change', function() {
+	if (this.value == 'select' || this.value == 'radio' || this.value == 'checkbox') {
+		$('#custom-field-value').show();
+		$('#display-value, #display-validation').hide();
+	} else {
+		$('#custom-field-value').hide();
+		$('#display-value, #display-validation').show();
+	}
+
+	if (this.value == 'date') {
+		$('#display-value > div').html('<div class="input-group date"><input type="text" name="value" value="' + $('#input-value').val() + '" placeholder="{{ entry_value }}" data-date-format="YYYY-MM-DD" id="input-value" class="form-control" /><span class="input-group-btn"><button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button></span></div>');
+	} else if (this.value == 'time') {
+		$('#display-value > div').html('<div class="input-group time"><input type="text" name="value" value="' + $('#input-value').val() + '" placeholder="{{ entry_value }}" data-date-format="HH:mm" id="input-value" class="form-control" /><span class="input-group-btn"><button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button></span></div>');
+	} else if (this.value == 'datetime') {
+		$('#display-value > div').html('<div class="input-group datetime"><input type="text" name="value" value="' + $('#input-value').val() + '" placeholder="{{ entry_value }}" data-date-format="YYYY-MM-DD HH:mm" id="input-value" class="form-control" /><span class="input-group-btn"><button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button></span></div>');
+	} else if (this.value == 'textarea') {
+		$('#display-value > div').html('<textarea name="value" placeholder="{{ entry_value }}" id="input-value" class="form-control">' + $('#input-value').val() + '</textarea>');
+	} else {
+		$('#display-value > div').html('<input type="text" name="value" value="' + $('#input-value').val() + '" placeholder="{{ entry_value }}" id="input-value" class="form-control" />');
+	}
+
+	$('.date').datetimepicker({
+		pickTime: false
+	});
+
+	$('.time').datetimepicker({
+		pickDate: false
+	});
+
+	$('.datetime').datetimepicker({
+		pickDate: true,
+		pickTime: true
+	});
+});
+
+$('select[name=\'type\']').trigger('change');
+
+var custom_field_value_row = {{ custom_field_value_row }};
+
+function addCustomFieldValue() {
+	html  = '<tr id="custom-field-value-row' + custom_field_value_row + '">';
+    html += '  <td class="text-left" style="width: 70%;"><input type="hidden" name="custom_field_value[' + custom_field_value_row + '][custom_field_value_id]" value="" />';
+	{% for language in languages %}
+	html += '    <div class="input-group">';
+	html += '      <span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span><input type="text" name="custom_field_value[' + custom_field_value_row + '][custom_field_value_description][{{ language.language_id }}][name]" value="" placeholder="{{ entry_custom_value }}" class="form-control" />';
+    html += '    </div>';
+	{% endfor %}
+	html += '  </td>';
+	html += '  <td class="text-right"><input type="text" name="custom_field_value[' + custom_field_value_row + '][sort_order]" value="" placeholder="{{ entry_sort_order }}" class="form-control" /></td>';
+	html += '  <td class="text-left"><button type="button" onclick="$(\'#custom-field-value-row' + custom_field_value_row + '\').remove();" data-toggle="tooltip" title="{{ button_remove }}" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button></td>';
+	html += '</tr>';
+
+	$('#custom-field-value tbody').append(html);
+
+	custom_field_value_row++;
+}
+</script>

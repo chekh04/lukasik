@@ -1,0 +1,197 @@
+.filter-wishlist {
+	border-radius: 20px;
+	border: 1px solid var(--up-border-color);
+	padding: 20px;
+	margin-top: 0px;
+	background: var(--up-bg-wd);
+}
+.mt-0 {
+	margin-top: 0 !important;
+}
+.fw-title {
+	font-size: 16px;
+	color: var(--up-text-wd-color);
+	font-weight: 600;
+	margin-bottom: 15px;
+}
+.fw-stock-status {
+	margin-top: 20px;
+}
+.fw-arrow {
+	background: var(--up-bg-gray);
+	height: 20px;
+	width: 20px;
+	border-radius: 100px;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	position: relative;
+	min-width: 20px;
+	cursor: pointer;
+}
+.fw-stock-item .fw-radio,
+.fw-cat-item {
+	padding: 4px 0px 4px 0px;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+	-webkit-box-pack: justify;
+	-ms-flex-pack: justify;
+	justify-content: space-between;
+	height: 38px;
+	margin-bottom: 0;
+}
+.fw-name,
+.fw-categoty-name {
+	font-size: 14px;
+	color: var(--up-text-wd-color);
+}
+.fw-stock-item + div.fw-stock-item,
+.fw-cat-group.fw-level-0 + div.fw-cat-group.fw-level-0 {
+	border-top: 1px dashed var(--up-border-color);
+}
+.fw-cat-list.fw-level-1,
+.fw-cat-list.fw-level-2 {
+	border-top: 1px dashed var(--up-border-color);
+}
+.fw-cat-group.fw-level-1 + div.fw-cat-group.fw-level-1,
+.fw-cat-group.fw-level-2 + div.fw-cat-group.fw-level-2 {
+	border-top: 1px dashed var(--up-border-color);
+}
+.fw-cat-item sup{
+	font-size: 11px;
+	left: 3px;
+}
+.fw-cat-item .off-opt sup {
+	display: none;
+}
+.fw-cat-item .fw-cat {
+	margin-bottom: 0;
+	cursor: pointer;
+	flex: 1;
+}
+.fw-cat-item input {
+	display: none;
+}
+.fw-cat-list.fw-level-1 .fw-cat-item {
+	padding-left: 7px;
+}
+.fw-cat-list.fw-level-2 .fw-cat-item {
+	padding-left: 14px;
+}
+.fw-cat-item:last-child {
+	margin-bottom: 0;
+}
+.fw-checkbox .c-radio > input:checked + span, .fw-cat-item .fw-cat > input:checked + span, .fw-checkbox .fw-cat > input:checked + span {
+	color: #075ec0;
+}
+.fw-checkbox label input[type="checkbox"], .fw-checkbox label input[type="radio"] {
+	margin-top: 0px;
+}
+.fw-radio label {
+	min-height: 22px;
+	margin-bottom: 0;
+	font-weight: 400;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	line-height: 20px;
+	position: relative;
+}
+.fw-checkbox .fw-cat > input,.fw-stock-item .fw-radio > input {
+	position: absolute;
+	z-index: -1;
+	opacity: 0;
+	display: none;
+}
+.fw-stock-item .fw-radio > span::before {
+	content: '';
+	display: inline-block;
+	width: 16px;
+	height: 16px;
+	border: 1px solid #adb5bd;
+	margin-right: 10px;
+	background: #fff;
+	flex-shrink: 0;
+	flex-grow: 0;
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-size: 50% 50%;
+	border-radius: 50px;
+}
+.fw-stock-item .fw-radio > span {
+	display: flex;
+	align-items: center;
+	user-select: none;
+	flex: 1;
+	padding-left: 1px;
+}
+.fw-cat-item .c-bc > input:checked+span{
+	color: #075ec0;
+}
+.fw-radio > input:checked + span:before {
+	border-color: #0A56DF;
+	background-color: #0A56DF;
+	box-shadow: 0 0 0 0.2rem rgba(10, 86, 223, 0.28);
+	background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23fff'/%3e%3c/svg%3e");
+}
+.fw-active-cat {
+	display: inline-flex;
+	margin-bottom: 8px;
+	margin-right: 8px;
+}
+
+.btn-active-fw,
+.btn-active-fw:focus,
+.btn-fw-clearall,
+.btn-fw-clearall:focus {
+	font-size: 14px;
+	border-radius: 16px;
+	height: 32px;
+	display: flex;
+	align-items: center;
+	border: 0px;
+	font-weight: 400;
+	box-shadow: none;
+	text-align: center;
+	padding: 4px 8px 4px 14px;
+	-webkit-transition: background .2s ease;
+	transition: background .2s ease;
+}
+.btn-active-fw,
+.btn-active-fw:focus {
+	background:#0A56DF;
+	color: #fff;
+}
+.btn-active-fw:hover,
+.btn-active-fw:active{
+	background-color: #0045C0;
+	border: 0px;
+	color: #ffffff;
+}
+.btn-fw-clearall,
+.btn-fw-clearall:focus {
+	background:#F7F8FB;
+	color: #000;
+}
+.btn-fw-clearall:hover,
+.btn-fw-clearall:active{
+	background-color: #E8EAF3;
+	border: 0px;
+	color: #000;
+}
+.btn-active-fw svg, .btn-fw-clearall svg {
+	position: relative;
+	right: 0px;
+	margin-left: 6px;
+	margin-right: 0px;
+	top: 0px;
+}
+.btn-fw-clearall svg {
+	color: #707f8d;
+}

@@ -1,0 +1,73 @@
+<ul id="mm-mobile" class="m-mm-list">
+	{% for item in items %}
+		{% if item.mobile_status is defined and item.mobile_status == 1 %}
+		<li class="m-mm-list-item dflex align-items-center justify-content-between">
+			<a class="mm-a dflex align-items-center" href="{{ item.href ?: 'javascript:void(0)' }}">
+				{% if item.thumb %}
+					<img width="24" height="24" decoding="async" loading="lazy" alt="{{ item.name }}" class="mobile-menu-icon {{ item.thumb_hover ? 'pitem-icon' : '' }}" src="{{ item.thumb }}" />
+				{% endif %}
+				{% if item.thumb_hover %}
+					<img width="24" height="24" decoding="async" loading="lazy" alt="{{ item.name }}" class="mobile-menu-icon hitem-icon" src="{{ item.thumb_hover }}" />
+				{% endif %}
+				<span>{{ item.name }}</span>
+				{% if item.sticker_parent is not empty %}
+					<span style="color:#{{ item.spctext }}; background-color:#{{ item.spbg }}" class="cat-label cat-label-label">{{ item.sticker_parent }}</span>
+				{% endif %}
+			</a>
+			{% if item.children %}
+				<button class="show-sc-mobile go-2level" type="button"><i class="up-icon-angle-right" aria-hidden="true"></i></button>
+			{% endif %}
+			{% if item.children is not empty and item.type != 'html' %}
+				<div class="d-none mob-second-level">
+					<div class="mobm-top back-2level">
+						<span class="mm-icon-come-back"><i class="up-icon-arrow-left" aria-hidden="true"></i></span>
+						<div class="mobm-title">{{ item.name }}</div>
+						<button type="button" class="mobm-close-menu" aria-label="Close" onclick="close_mob_menu();"><i class="up-icon-close" aria-hidden="true"></i></button>
+					</div>
+					<ul class="m-mm-list">
+						{% for child in item.children %}
+							<li class="m-mm-list-item dflex align-items-center justify-content-between">
+								<a class="mm-a dflex align-items-center" href="{{ child.href }}">{{ child.name }}</a>
+								{% if child.children is not empty %}
+									<button class="show-sc-mobile go-3level" type="button"><i class="up-icon-angle-right" aria-hidden="true"></i></button>
+									<div class="d-none mob-third-level">
+										<div class="mobm-top back-3level">
+											<span class="mm-icon-come-back"><i class="up-icon-arrow-left" aria-hidden="true"></i></span>
+											<div class="mobm-title">{{ child.name }}</div>
+											<button type="button" class="mobm-close-menu" aria-label="Close" onclick="close_mob_menu();"><i class="up-icon-close" aria-hidden="true"></i></button>
+										</div>
+										<ul class="m-mm-list">
+											{% for subchild in child.children %}
+												{% if item.type == "freelink" %}
+													<li class="m-mm-list-item dflex align-items-center justify-content-between"><a class="mm-a dflex align-items-center" href="{{ subchild.link }}">{{ subchild.title }}</a></li>
+												{% else %}
+													<li class="m-mm-list-item dflex align-items-center justify-content-between"><a class="mm-a dflex align-items-center" href="{{ subchild.href }}">{{ subchild.name }}</a></li>
+												{% endif %}
+											{% endfor %}
+										</ul>
+									</div>
+								{% endif %}
+							</li>
+						{% endfor %}
+						{% if item.add_html is not empty %}
+							<li class="m-mm-html"><div class="mob-html-block">{{ item.add_html }}</div></li>
+						{% endif %}
+					</ul>
+				</div>
+			{% endif %}
+			{% if item.type == "html" %}
+				<div class="d-none mob-second-level">
+					<div class="mobm-top back-2level">
+						<span class="mm-icon-come-back"><i class="up-icon-arrow-left" aria-hidden="true"></i></span>
+						<div class="mobm-title">{{ item.name }}</div>
+						<button type="button" class="mobm-close-menu" aria-label="Close" onclick="close_mob_menu();"><i class="up-icon-close" aria-hidden="true"></i></button>
+					</div>
+					<div class="mob-html-block">
+						{{ item.html }}
+					</div>
+				</div>
+			{% endif %}
+		</li>
+		{% endif %}
+	{% endfor %}
+</ul>

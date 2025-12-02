@@ -1,0 +1,43 @@
+<div class="dflex flex-column kit-item h-100">
+    <div class="image">
+        <a href="{{ product.href }}">
+            <img class="img-responsive"
+                 decoding="async"
+                 width="{{ product.width }}"
+                 height="{{ product.height }}"
+                 loading="lazy"
+                 src="{{ product.thumb }}"
+                 alt="{{ product.name }}" />
+        </a>
+    </div>
+    <div class="caption dflex flex-column h-100">
+        <div class="product-name">
+            <a href="{{ product.href }}">{{ product.name }}</a>
+        </div>
+        <div class="price">
+            {% if not product.special %}
+                <span>{{ product.price }}</span>
+            {% else %}
+                <span class="price-old">{{ product.price }}</span>
+                <span class="price-new">{{ product.special }}</span>
+            {% endif %}
+            {% if product.tax %}
+                <span class="price-tax">{{ text_tax }} {{ product.tax }}</span>
+            {% endif %}
+        </div>
+        {% if product.total_prod > 1 %}
+            <div class="change-kit">
+                <button class="btn btn-change-kit"
+                        onclick="getVariantProducts('{{ product.kit_id }}', '{{ product.vk_id }}', '{{ product.product_id }}')"
+                        type="button">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 20 20">
+                        <path stroke="#00509D" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M14.167 1.75 17.5 5.083l-3.333 3.334"/>
+                        <path stroke="#00509D" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M2.5 10.166V8.5a3.333 3.333 0 0 1 3.333-3.333H16.5M5.833 18.25 2.5 14.916l3.333-3.333"/>
+                        <path stroke="#00509D" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.5 9.834V11.5a3.333 3.333 0 0 1-3.333 3.334H3.5"/>
+                    </svg>
+                    <span class="text-chenge-product">{{ button_change_kit }}</span>
+                </button>
+            </div>
+        {% endif %}
+    </div>
+</div>

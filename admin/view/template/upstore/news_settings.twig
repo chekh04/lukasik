@@ -1,0 +1,170 @@
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="page-header">
+	<div class="container-fluid">
+	  	<div class="pull-right">
+			<button type="submit" form="form-settings" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+		</div>
+	  <h1>{{ heading_title }}</h1>
+	  <ul class="breadcrumb">
+		{% for breadcrumb in breadcrumbs %}
+		<li><a href="{{ breadcrumb['href'] }}">{{ breadcrumb['text'] }}</a></li>
+		{% endfor %}
+	  </ul>
+	</div>
+  </div>
+  <div class="container-fluid">
+	{% if (error_warning) %}
+	<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+	  <button type="button" class="close" data-dismiss="alert">&times;</button>
+	</div>
+	{% endif %}
+	{% if (success) %}
+    <div class="alert alert-success"><i class="fa fa-check-circle"></i> {{ success }}
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %}
+	<div class="panel panel-default">
+	  <div class="panel-heading">
+		<h3 class="panel-title"><i class="fa fa-pencil"></i> {{ text_edit }}</h3>
+	  </div>
+	  <div class="panel-body">
+		<form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-settings" class="form-horizontal">
+		  <div class="form-group">
+			<label class="col-sm-3 control-label">{{ entry_status }}</label>
+			<div class="col-sm-9">
+			  <div class="toggle-switch">
+				<label><input type="checkbox" name="upstore_news_status" value="1" {{ upstore_news_status is not empty ? 'checked="checked"' : '' }} /><span></span></label>
+			  </div>
+			</div>
+		  </div>
+		  <ul class="nav nav-tabs">
+			<li class="active"><a href="#tab-category" data-toggle="tab">{{ tab_category }}</a></li>
+			<li><a href="#tab-articles" data-toggle="tab">{{ tab_atricles }}</a></li>
+		  </ul>
+		  <div class="tab-content">
+			<div class="tab-pane active" id="tab-category">
+				<div class="form-group">
+					<label class="col-sm-3 control-label">{{ entry_show_subcategories }}</label>
+					<div class="col-sm-9">
+						<div class="toggle-switch">
+							<label><input type="checkbox" name="news_show_subcategories" value="1" {{ news_show_subcategories is not empty ? 'checked="checked"' : '' }} /><span></span></label>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">{{ entry_show_subcategories_image }}</label>
+					<div class="col-sm-9">
+						<div class="toggle-switch">
+							<label><input type="checkbox" name="news_show_subcategories_image" value="1" {{ news_show_subcategories_image is not empty ? 'checked="checked"' : '' }} /><span></span></label>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">{{ entry_articles_count }}</label>
+					<div class="col-sm-9">
+						<div class="toggle-switch">
+							<label><input type="checkbox" name="articles_count" value="1" {{ articles_count is not empty ? 'checked="checked"' : '' }} /><span></span></label>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">{{ entry_description_status }}</label>
+					<div class="col-sm-9">
+						<div class="toggle-switch">
+							<label><input type="checkbox" name="news_show_description" value="1" {{ news_show_description is not empty ? 'checked="checked"' : '' }} /><span></span></label>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">{{ entry_subcat_image_wh }}</label>
+					<div class="col-sm-3">
+						<input class="form-control" type="text" name="news_subcat_width" placeholder="{{ entry_width }}" value="{{ news_subcat_width }}" />
+					</div>
+					<div class="col-sm-3">
+						<input class="form-control" type="text" name="news_subcat_height" placeholder="{{ entry_height }}" value="{{ news_subcat_height }}" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">{{ entry_article_description_length }}</label>
+					<div class="col-sm-3">
+						<input class="form-control" type="text" name="article_description_length" value="{{ article_description_length }}" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">{{ entry_article_limit }}</label>
+					<div class="col-sm-3">
+						<input class="form-control" type="text" name="ch_article_limit" value="{{ ch_article_limit }}" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">{{ entry_article_image_wh_list }}</label>
+					<div class="col-sm-3">
+						<input class="form-control" type="text" name="article_list_width" placeholder="{{ entry_width }}" value="{{ article_list_width }}" />
+					</div>
+					<div class="col-sm-3">
+						<input class="form-control" type="text" name="article_list_height" placeholder="{{ entry_height }}" value="{{ article_list_height }}" />
+					</div>
+				</div>
+
+			</div>
+			<div class="tab-pane" id="tab-articles">
+				<div class="form-group">
+					<label class="col-sm-3 control-label">{{ entry_article_image_wh }}</label>
+					<div class="col-sm-3">
+						<input class="form-control" type="text" name="ch_article_width" placeholder="{{ entry_width }}" value="{{ ch_article_width }}" />
+					</div>
+					<div class="col-sm-3">
+						<input class="form-control" type="text" name="ch_article_height" placeholder="{{ entry_height }}" value="{{ ch_article_height }}" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">{{ entry_article_image_wh_fp }}</label>
+					<div class="col-sm-3">
+						<input class="form-control" type="text" name="ch_article_fp_width" placeholder="{{ entry_width }}" value="{{ ch_article_fp_width }}" />
+					</div>
+					<div class="col-sm-3">
+						<input class="form-control" type="text" name="ch_article_fp_height" placeholder="{{ entry_height }}" value="{{ ch_article_fp_height }}" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">{{ entry_article_comment_status }}</label>
+					<div class="col-sm-9">
+						<div class="toggle-switch">
+							<label><input type="checkbox" name="article_comment_status" value="1" {{ article_comment_status is not empty ? 'checked="checked"' : '' }} /><span></span></label>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">{{ entry_article_captcha_status }}</label>
+					<div class="col-sm-9">
+						<div class="toggle-switch">
+							<label><input type="checkbox" name="article_captcha_status" value="1" {{ article_captcha_status is not empty ? 'checked="checked"' : '' }} /><span></span></label>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">{{ entry_article_comment_guest }}</label>
+					<div class="col-sm-9">
+						<div class="toggle-switch">
+							<label><input type="checkbox" name="article_comment_guest" value="1" {{ article_comment_guest is not empty ? 'checked="checked"' : '' }} /><span></span></label>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">{{ entry_article_show_like_dislike }}</label>
+					<div class="col-sm-9">
+						<div class="toggle-switch">
+							<label><input type="checkbox" name="article_show_like_dislike" value="1" {{ article_show_like_dislike is not empty ? 'checked="checked"' : '' }} /><span></span></label>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		  </div>
+		</form>
+	  </div>
+	</div>
+  </div>
+</div>
+{{ footer }}

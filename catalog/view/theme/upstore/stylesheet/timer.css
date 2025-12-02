@@ -1,0 +1,107 @@
+@media (max-width: 992px) {
+	.product-thumb .action-timer {display: none !important;}
+}
+.special-countdown.action-timer {
+	left: auto;
+	margin: 0;
+	position: absolute;
+	right: 0px;
+	z-index: 9;
+	justify-content: flex-start;
+	top: 15px;
+	height: auto;
+	flex-direction: column;
+	font-size: 14px;
+	text-align: center;
+	color:#000;
+	opacity:1;
+	display: flex;
+}
+.product-thumb .action-timer {
+	margin: 0;
+	position: absolute;
+	z-index: 9;
+	transition: all 0.15s ease 0s;
+}
+.light-theme .product-thumb .action-timer {
+	right: 15px;
+	left: auto;
+	top: auto;
+	bottom: 15px;
+}
+.dark-theme .product-thumb:not(.bg_image) .action-timer {
+	right: 20px;
+	left: auto;
+	top: auto;
+	bottom: 5px;
+}
+.dark-theme .product-thumb.bg_image .action-timer {
+	right: 15px;
+	left: auto;
+	top: auto;
+	bottom: 15px;
+}
+.dark-theme .product-list .product-thumb:not(.bg_image) .action-timer {
+	bottom: 20px;
+}
+.product-thumb .countdownHolder {
+	font-size: 12px;
+	font-weight: 500;
+	text-align: center;
+	color: var(--up-text-wd-color);
+	opacity:1;
+	display: flex;
+	border-radius: var(--up-border-radius-large);
+	overflow: hidden;
+	padding-left: 3px;
+	padding-right: 3px;
+}
+.product-thumb:not(.bg_image) .countdownHolder {
+	background:var(--up-bg-main);
+}
+.product-thumb.bg_image .countdownHolder {
+	background: var(--up-bg-wd);
+}
+.countdownHolder .num-time {
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	display: flex;
+	justify-content: center;
+	line-height: 14px;
+}
+.special-countdown .countDays, .special-countdown .countHours, .special-countdown .countMinutes, .special-countdown .countSec {
+	display: block;
+	float: left;
+	position: relative;
+	width: 40px;
+	padding: 5px;
+	margin-bottom: 5px;
+	border-radius: 12px;
+	color: #000;
+}
+.product-thumb .countDays, .product-thumb .countHours, .product-thumb .countMinutes, .product-thumb .countSec {
+	display: block;
+	float: left;
+	position: relative;
+	width: 32px;
+	padding: 2px;
+	margin-bottom: 2px;
+}
+.product-thumb .countSec {
+	color:#C2C2C2;
+}
+.time_productany {
+  display: block;
+  font-size: 8px;
+  line-height: 1;
+  margin-top:3px;
+  font-weight: 400;
+}
+.action-timer {
+	opacity: 1;
+}
+.product-thumb:hover .action-timer {
+	opacity:0;
+	transition: all 0.15s  ease 0s;
+	z-index:-1;
+}

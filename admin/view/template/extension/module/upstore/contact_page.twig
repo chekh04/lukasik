@@ -1,0 +1,497 @@
+<ul class="nav nav-tabs">
+	<li class="active"><a data-toggle="tab" href="#tab-contact">{{ tab_contact }}</a></li>
+	<li><a data-toggle="tab" href="#tab-store-location">{{ tab_store_location }}</a></li>
+</ul>
+<div class="tab-content">
+	<div class="tab-pane active" id="tab-contact">
+		<ul class="nav nav-tabs" id="contact-language">
+			{% for language in languages %}
+				<li><a href="#contact-language{{ language['language_id'] }}" data-toggle="tab"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /> {{ language['name'] }}</a></li>
+			{% endfor %}
+		</ul>
+		<div class="tab-content">
+		{% for language in languages %}
+			<div class="tab-pane" id="contact-language{{ language['language_id'] }}">
+				<div class="form-group">
+					<label class="col-sm-3 control-label" for="input-contact-address{{ language['language_id'] }}">{{ text_contact_address }}</label>
+					<div class="col-sm-6">
+						<textarea class="form-control" name="ch_contacts[{{ language['language_id'] }}][address]" id="input-contact-address{{ language['language_id'] }}">{{ ch_contacts[language['language_id']]['address'] is defined ? ch_contacts[language['language_id']]['address'] : '' }}</textarea>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label" for="input-contact-email{{ language['language_id'] }}">{{ text_contact_email }}</label>
+					<div class="col-sm-6">
+						<textarea class="form-control" name="ch_contacts[{{ language['language_id'] }}][email]" id="input-contact-email{{ language['language_id'] }}">{{ ch_contacts[language['language_id']]['email'] is defined ? ch_contacts[language['language_id']]['email'] : '' }}</textarea>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label" for="input-contact-phone{{ language['language_id'] }}">{{ text_contact_phone }}</label>
+					<div class="col-sm-6">
+						<textarea class="form-control" name="ch_contacts[{{ language['language_id'] }}][phone]" id="input-contact-phone{{ language['language_id'] }}">{{ ch_contacts[language['language_id']]['phone'] is defined ? ch_contacts[language['language_id']]['phone'] : '' }}</textarea>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-sm-3 control-label" for="input-contact-viber{{ language['language_id'] }}">{{ entry_contact_viber }}</label>
+					<div class="col-sm-6">
+						<input class="form-control" autocomplete="off" placeholder="{{ entry_contact_viber }}" name="ch_contacts[{{ language['language_id'] }}][viber]" id="input-contact-viber{{ language['language_id'] }}" value="{{ ch_contacts[language['language_id']]['viber'] is defined ? ch_contacts[language['language_id']]['viber'] : '' }}" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label" for="input-contact-whatsapp{{ language['language_id'] }}">{{ entry_contact_whatsapp }}</label>
+					<div class="col-sm-6">
+						<input class="form-control" autocomplete="off" placeholder="{{ entry_contact_whatsapp }}" name="ch_contacts[{{ language['language_id'] }}][whatsapp]" id="input-contact-whatsapp{{ language['language_id'] }}" value="{{ ch_contacts[language['language_id']]['whatsapp'] is defined ? ch_contacts[language['language_id']]['whatsapp'] : '' }}" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label" for="input-contact-telegram{{ language['language_id'] }}">{{ entry_contact_telegram }}</label>
+					<div class="col-sm-6">
+						<input class="form-control" autocomplete="off" placeholder="{{ entry_contact_telegram }}" name="ch_contacts[{{ language['language_id'] }}][telegram]" id="input-contact-telegram{{ language['language_id'] }}" value="{{ ch_contacts[language['language_id']]['telegram'] is defined ? ch_contacts[language['language_id']]['telegram'] : '' }}" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label" for="input-contact-messenger{{ language['language_id'] }}">{{ entry_contact_messenger }}</label>
+					<div class="col-sm-6">
+						<input class="form-control" autocomplete="off" placeholder="{{ entry_contact_messenger }}" name="ch_contacts[{{ language['language_id'] }}][messenger]" id="input-contact-messenger{{ language['language_id'] }}" value="{{ ch_contacts[language['language_id']]['messenger'] is defined ? ch_contacts[language['language_id']]['messenger'] : '' }}" />
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-sm-3 control-label" for="input-contact-working-time{{ language['language_id'] }}">{{ text_contact_working_time }}</label>
+					<div class="col-sm-6">
+						<textarea class="form-control" name="ch_contacts[{{ language['language_id'] }}][working_time]" id="input-contact-working-time{{ language['language_id'] }}">{{ ch_contacts[language['language_id']]['working_time'] is defined ? ch_contacts[language['language_id']]['working_time'] : '' }}</textarea>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label" for="input-contact-map-code{{ language['language_id'] }}">{{ text_contact_map_code }}</label>
+					<div class="col-sm-6">
+						<textarea class="form-control" name="ch_contacts[{{ language['language_id'] }}][map_code]" id="input-contact-map-code{{ language['language_id'] }}">{{ ch_contacts[language['language_id']]['map_code'] is defined ? ch_contacts[language['language_id']]['map_code'] : '' }}</textarea>
+					</div>
+				</div>
+				<div class="form-group">
+		            <label class="col-sm-3 control-label" for="input-contact-image{{ language['language_id'] }}">{{ text_contact_image }}</label>
+		            <div class="col-sm-6"><a href="" id="thumb-contact-image{{ language['language_id'] }}" data-toggle="image" class="img-thumbnail"><img src="{{ ch_contacts[language['language_id']]['thumb'] }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a>
+		              <input type="hidden" name="ch_contacts[{{ language['language_id'] }}][image]" value="{{ ch_contacts[language['language_id']]['image'] }}" id="input-contact-image{{ language['language_id'] }}" />
+		            </div>
+		        </div>
+			</div>
+		{% endfor %}
+		</div>
+	</div>
+
+	<div class="tab-pane" id="tab-store-location">
+		<div class="col-sm-5 col-md-4 pl-0">
+			<div class="nav nav-pills nav-stacked">
+				<ul id="store_locations_items" class="list-unstyled content-left">
+					{% set sl_row = 0 %}
+					{% if store_locations is not empty %}
+						{% for key_sl, sl_item_left in store_locations %}
+							<li id="sl-left-row-{{ sl_row }}" class="sl-group {% if sl_row == 0 %}active{% endif %}">
+								<div class="store-location-item">
+									<a data-toggle="tab" href="#tab-sl-{{ sl_row }}" class="store-location-tab">
+										<span class="sl-title-store">
+											{{ sl_item_left[lang_id].title is not empty ? sl_item_left[lang_id].title : entry_sl_title }}
+										</span>
+										<div class="sl-action">
+											<div class="sl-group-radio">
+												<input id="sl-status-on-{{ sl_row }}" class="hide-input" type="radio" name="store_locations[{{ sl_row }}][status]" value="on" {% if sl_item_left.status == 'on' %}checked="checked"{% endif %}>
+												<label class="btn btn-xs btn-link sl-status sl-off" for="sl-status-on-{{ sl_row }}"><i class="fa fa-power-off"></i></label>
+
+												<input id="sl-status-off-{{ sl_row }}" class="hide-input" type="radio" name="store_locations[{{ sl_row }}][status]" value="off" {% if sl_item_left.status == 'off' %}checked="checked"{% endif %}>
+												<label class="btn btn-xs btn-link sl-status sl-on" for="sl-status-off-{{ sl_row }}"><i class="fa fa-power-off"></i></label>
+											</div>
+											<button class="btn btn-xs btn-link sl-remove" type="button"><i class="fa fa-trash-o"></i></button>
+										</div>
+									</a>
+								</div>
+							</li>
+						{% set sl_row = sl_row + 1 %}
+						{% endfor %}
+					{% endif %}
+				</ul>
+				<button class="btn btn-success w-100 btn-add-store" type="button" onclick="createStoreLocation();">{{ button_add_store }}</button>
+			</div>
+		</div>
+		<div class="col-sm-7 col-md-8">
+			<div class="tab-content store-location-setting">
+				{% set sl_row_right = 0 %}
+				{% if store_locations is not empty %}
+					{% for key_slr, slr_item_right in store_locations %}
+						<div id="tab-sl-{{ sl_row_right }}" class="tab-pane {% if sl_row_right == 0 %}active{% endif %}">
+							<ul class="nav nav-tabs" id="slr-language-{{ sl_row_right }}">
+								{% for language in languages %}
+									<li>
+										<a href="#slr-language-{{ sl_row_right }}-{{ language.language_id }}" data-toggle="tab">
+											<img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" />
+											{{ language.name }}
+										</a>
+									</li>
+								{% endfor %}
+							</ul>
+
+							<div class="tab-content">
+							{% for language in languages %}
+								<div class="tab-pane" id="slr-language-{{ sl_row_right }}-{{ language.language_id }}">
+									<div class="form-group">
+										<label class="col-sm-3 control-label" for="input-store-location-title{{ sl_row_right }}-{{ language.language_id }}">{{ entry_sl_title }}</label>
+										<div class="col-sm-9">
+											<input class="form-control{% if language.language_id == lang_id %} sl-title{% endif %}" data-sl-row="{{ sl_row_right }}" name="store_locations[{{ sl_row_right }}][{{ language.language_id }}][title]" value="{{ slr_item_right[language.language_id].title is defined ? slr_item_right[language.language_id].title : '' }}" id="input-store-location-title{{ sl_row_right }}-{{ language.language_id }}" />
+										</div>
+									</div>
+
+									<div class="form-group">
+										<label class="col-sm-3 control-label" for="input-store-location-address{{ sl_row_right }}-{{ language.language_id }}">{{ text_contact_address }}</label>
+										<div class="col-sm-9">
+											<textarea class="form-control" name="store_locations[{{ sl_row_right }}][{{ language.language_id }}][address]" id="input-store-location-address{{ sl_row_right }}-{{ language.language_id }}">{{ slr_item_right[language.language_id].address is defined ? slr_item_right[language.language_id].address : '' }}</textarea>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label" for="input-store-location-email{{ sl_row_right }}-{{ language.language_id }}">{{ text_contact_email }}</label>
+										<div class="col-sm-9">
+											<input class="form-control" name="store_locations[{{ sl_row_right }}][{{ language.language_id }}][email]" value="{{ slr_item_right[language.language_id].email is defined ? slr_item_right[language.language_id].email : '' }}" id="input-store-location-email{{ sl_row_right }}-{{ language.language_id }}" />
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label" for="input-store-location-phone{{ sl_row_right }}-{{ language.language_id }}">{{ text_contact_phone }}</label>
+										<div class="col-sm-9">
+											<textarea class="form-control" name="store_locations[{{ sl_row_right }}][{{ language.language_id }}][phone]" id="input-store-location-phone{{ sl_row_right }}-{{ language.language_id }}">{{ slr_item_right[language.language_id].phone is defined ? slr_item_right[language.language_id].phone : '' }}</textarea>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label" for="input-store-location-viber{{ sl_row_right }}-{{ language.language_id }}">{{ entry_contact_viber }}</label>
+										<div class="col-sm-9">
+											<input class="form-control" name="store_locations[{{ sl_row_right }}][{{ language.language_id }}][viber]" value="{{ slr_item_right[language.language_id].viber is defined ? slr_item_right[language.language_id].viber : '' }}" id="input-store-location-viber{{ sl_row_right }}-{{ language.language_id }}" />
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label" for="input-store-location-whatsapp{{ sl_row_right }}-{{ language.language_id }}">{{ entry_contact_whatsapp }}</label>
+										<div class="col-sm-9">
+											<input class="form-control" name="store_locations[{{ sl_row_right }}][{{ language.language_id }}][whatsapp]" value="{{ slr_item_right[language.language_id].whatsapp is defined ? slr_item_right[language.language_id].whatsapp : '' }}" id="input-store-location-whatsapp{{ sl_row_right }}-{{ language.language_id }}" />
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label" for="input-store-location-telegram{{ sl_row_right }}-{{ language.language_id }}">{{ entry_contact_telegram }}</label>
+										<div class="col-sm-9">
+											<input class="form-control" name="store_locations[{{ sl_row_right }}][{{ language.language_id }}][telegram]" value="{{ slr_item_right[language.language_id].telegram is defined ? slr_item_right[language.language_id].telegram : '' }}" id="input-store-location-telegram{{ sl_row_right }}-{{ language.language_id }}" />
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label" for="input-store-location-messenger{{ sl_row_right }}-{{ language.language_id }}">{{ entry_contact_messenger }}</label>
+										<div class="col-sm-9">
+											<input class="form-control" name="store_locations[{{ sl_row_right }}][{{ language.language_id }}][messenger]" value="{{ slr_item_right[language.language_id].messenger is defined ? slr_item_right[language.language_id].messenger : '' }}" id="input-store-location-messenger{{ sl_row_right }}-{{ language.language_id }}" />
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label" for="input-store-location-working-time{{ sl_row_right }}-{{ language.language_id }}">{{ text_contact_working_time }}</label>
+										<div class="col-sm-9">
+											<textarea class="form-control" name="store_locations[{{ sl_row_right }}][{{ language.language_id }}][working_time]" id="input-store-location-working-time{{ sl_row_right }}-{{ language.language_id }}">{{ slr_item_right[language.language_id].working_time is defined ? slr_item_right[language.language_id].working_time : '' }}</textarea>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label" for="input-store-location-map-code{{ sl_row_right }}-{{ language.language_id }}">{{ text_contact_map_code }}</label>
+										<div class="col-sm-9">
+											<textarea class="form-control" name="store_locations[{{ sl_row_right }}][{{ language.language_id }}][map_code]" id="input-store-location-map-code{{ sl_row_right }}-{{ language.language_id }}">{{ slr_item_right[language.language_id].map_code is defined ? slr_item_right[language.language_id].map_code : '' }}</textarea>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label" for="input-store-location-geocode{{ sl_row_right }}-{{ language.language_id }}"><span data-toggle="tooltip" data-container="#content" title="{{ help_geocode }}">{{ entry_geocode }}</span></label>
+										<div class="col-sm-9">
+											<input type="text" name="store_locations[{{ sl_row_right }}][{{ language.language_id }}][geocode]" value="{{ slr_item_right[language.language_id].geocode is defined ? slr_item_right[language.language_id].geocode : '' }}" id="input-store-location-geocode{{ sl_row_right }}-{{ language.language_id }}" class="form-control" />
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label" for="input-store-location-image{{ sl_row_right }}-{{ language.language_id }}">{{ text_contact_image }}</label>
+										<div class="col-sm-9">
+											<a href="" id="thumb-store-location-image{{ sl_row_right }}-{{ language.language_id }}" data-toggle="image" class="img-thumbnail"><img src="{{ slr_item_right[language.language_id].thumb is defined ? slr_item_right[language.language_id].thumb : placeholder }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a>
+											<input type="hidden" name="store_locations[{{ sl_row_right }}][{{ language.language_id }}][image]" value="{{ slr_item_right[language.language_id].image is defined ? slr_item_right[language.language_id].image : '' }}" id="input-store-location-image{{ sl_row_right }}-{{ language.language_id }}" />
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-3 control-label">{{ entry_additional_image }}</label>
+										<div class="col-sm-9">
+											<div class="table-responsive">
+												<table id="images-{{ sl_row_right }}-{{ language.language_id }}" class="table table-striped table-bordered table-hover">
+													<thead>
+														<tr>
+															<td class="text-left">{{ entry_additional_image }}</td>
+															<td class="text-right">{{ entry_sort_order }}</td>
+															<td></td>
+														</tr>
+													</thead>
+													<tbody>
+														{% set image_row = 0 %}
+														{% if slr_item_right[language.language_id].location_images is defined and slr_item_right[language.language_id].location_images is not empty %}
+															{% for location_image in slr_item_right[language.language_id].location_images %}
+																<tr id="image-row-{{ sl_row_right }}-{{ language.language_id }}-{{ image_row }}">
+																	<td class="text-left">
+																		<a href="" id="thumb-image-{{ sl_row_right }}-{{ language.language_id }}-{{ image_row }}" data-toggle="image" class="img-thumbnail"><img src="{{ location_image.thumb }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a>
+																		<input type="hidden" name="store_locations[{{ sl_row_right }}][{{ language.language_id }}][location_images][{{ image_row }}][image]" value="{{ location_image.image }}" id="input-image-{{ sl_row_right }}-{{ language.language_id }}-{{ image_row }}" />
+																	</td>
+																	<td class="text-right">
+																		<input type="text" name="store_locations[{{ sl_row_right }}][{{ language.language_id }}][location_images][{{ image_row }}][sort_order]" value="{{ location_image.sort_order }}" placeholder="{{ entry_sort_order }}" class="form-control" />
+																	</td>
+																	<td class="text-left">
+																		<button type="button" onclick="document.getElementById('image-row-{{ sl_row_right }}-{{ language.language_id }}-{{ image_row }}').remove();" data-toggle="tooltip" title="{{ button_remove }}" class="btn btn-danger"> <i class="fa fa-minus-circle"></i>
+																	</button>
+																</td>
+															</tr>
+															{% set image_row = image_row + 1 %}
+															{% endfor %}
+														{% endif %}
+													</tbody>
+													<tfoot>
+														<tr>
+															<td colspan="2"></td>
+															<td class="text-right">
+																<button type="button" onclick="addImage('{{ sl_row_right }}', '{{ language.language_id }}');" data-toggle="tooltip" title="{{ button_add }}" class="btn btn-primary"> <i class="fa fa-plus-circle"></i></button>
+															</td>
+														</tr>
+													</tfoot>
+												</table>
+											</div>
+										</div>
+									</div>
+								</div>
+							{% endfor %}
+						</div>
+					</div>
+					{% set sl_row_right = sl_row_right + 1 %}
+					{% endfor %}
+				{% endif %}
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+$('#contact-language a:first').tab('show');
+
+
+$(document).on("change", "input.sl-title", function() {
+	var row = $(this).attr('data-sl-row');
+	$('#sl-left-row-' + row).find('.sl-title-store').html(this.value);
+});
+$(document).on("click", ".sl-group-radio label", function(e) {
+	e.stopPropagation();
+	e.preventDefault();
+	var input_id = $(this).attr('for');
+	$('#' + input_id).prop('checked', true);
+});
+
+$(document).on("click", ".sl-remove", function(e) {
+	e.stopPropagation();
+	e.preventDefault();
+
+	var row_id = $(this).closest('li').attr('id');
+
+	var row = row_id.replace('sl-left-row-', '');
+	$('#tab-sl-' + row).remove();
+
+	$(this).closest('li').remove();
+});
+
+function createStoreLocation() {
+	var sl_row = 0;
+
+	if ($('.content-left > li').length) {
+		for (var i = 0; i < $('.content-left > li').length + 1; i++) {
+			if ($('.content-left > #sl-left-row-' + i).length === 0) {
+				sl_row = i;
+				break;
+			}
+		}
+	}
+
+	var html_left = '';
+	html_left += '<li id="sl-left-row-' + sl_row + '" class="sl-group">';
+	html_left += '	<div class="store-location-item">';
+	html_left += '		<a data-toggle="tab" href="#tab-sl-' + sl_row + '" class="store-location-tab">';
+	html_left += '			<span class="sl-title-store">{{ entry_sl_title }}</span>';
+	html_left += '			<div class="sl-action">';
+	html_left += '				<div class="sl-group-radio">';
+	html_left += '					<input id="sl-status-on-' + sl_row + '" class="hide-input" type="radio" name="store_locations[' + sl_row + '][status]" value="on" checked="checked">';
+	html_left += '					<label class="btn btn-xs btn-link sl-status sl-off" for="sl-status-on-' + sl_row + '"><i class="fa fa-power-off"></i></label>';
+	html_left += '					<input id="sl-status-off-' + sl_row + '" class="hide-input" type="radio" name="store_locations[' + sl_row + '][status]" value="off">';
+	html_left += '					<label class="btn btn-xs btn-link sl-status sl-on" for="sl-status-off-' + sl_row + '"><i class="fa fa-power-off"></i></label>';
+	html_left += '				</div>';
+	html_left += '				<button class="btn btn-xs btn-link sl-remove"><i class="fa fa-trash-o"></i></button>';
+	html_left += '			</div>';
+	html_left += '		</a>';
+	html_left += '	</div>';
+	html_left += '</li>';
+
+	$('#store_locations_items').append(html_left);
+
+	var html_right = '';
+	html_right += '<div id="tab-sl-' + sl_row + '" class="tab-pane">';
+	html_right += '	<ul class="nav nav-tabs" id="slr-language-' + sl_row + '">';
+	{% for language in languages %}
+	html_right += '		<li><a href="#slr-language-' + sl_row + '-{{ language.language_id }}" data-toggle="tab"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /> {{ language.name }}</a></li>';
+	{% endfor %}
+	html_right += '	</ul>';
+	html_right += '	<div class="tab-content">';
+	{% for language in languages %}
+	html_right += '		<div class="tab-pane" id="slr-language-' + sl_row + '-{{ language.language_id }}">';
+
+	html_right += '			<div class="form-group">';
+	html_right += '				<label class="col-sm-3 control-label" for="input-store-location-title' + sl_row + '-{{ language.language_id }}">{{ entry_sl_title }}</label>';
+	html_right += '				<div class="col-sm-9">';
+	html_right += '					<input class="form-control{% if language.language_id == lang_id %} sl-title{% endif %}" data-sl-row="' + sl_row + '" name="store_locations[' + sl_row + '][{{ language.language_id }}][title]" value="" id="input-store-location-title' + sl_row + '-{{ language.language_id }}" />';
+	html_right += '				</div>';
+	html_right += '			</div>';
+	html_right += '			<div class="form-group">';
+	html_right += '				<label class="col-sm-3 control-label" for="input-store-location-address' + sl_row + '-{{ language.language_id }}">{{ text_contact_address }}</label>';
+	html_right += '				<div class="col-sm-9">';
+	html_right += '					<textarea class="form-control" name="store_locations[' + sl_row + '][{{ language.language_id }}][address]" id="input-store-location-address' + sl_row + '-{{ language.language_id }}"></textarea>';
+	html_right += '				</div>';
+	html_right += '			</div>';
+	html_right += '			<div class="form-group">';
+	html_right += '				<label class="col-sm-3 control-label" for="input-store-location-email' + sl_row + '-{{ language.language_id }}">{{ text_contact_email }}</label>';
+	html_right += '				<div class="col-sm-9">';
+	html_right += '					<input class="form-control" name="store_locations[' + sl_row + '][{{ language.language_id }}][email]" value="" id="input-store-location-email' + sl_row + '-{{ language.language_id }}" />';
+	html_right += '				</div>';
+	html_right += '			</div>';
+	html_right += '			<div class="form-group">';
+	html_right += '				<label class="col-sm-3 control-label" for="input-store-location-phone' + sl_row + '-{{ language.language_id }}">{{ text_contact_phone }}</label>';
+	html_right += '				<div class="col-sm-9">';
+	html_right += '					<textarea class="form-control" name="store_locations[' + sl_row + '][{{ language.language_id }}][phone]" id="input-store-location-phone' + sl_row + '-{{ language.language_id }}"></textarea>';
+	html_right += '				</div>';
+	html_right += '			</div>';
+	html_right += '			<div class="form-group">';
+	html_right += '				<label class="col-sm-3 control-label" for="input-store-location-viber' + sl_row + '-{{ language.language_id }}">{{ entry_contact_viber }}</label>';
+	html_right += '				<div class="col-sm-9">';
+	html_right += '					<input class="form-control" name="store_locations[' + sl_row + '][{{ language.language_id }}][viber]" value="" id="input-store-location-viber' + sl_row + '-{{ language.language_id }}" />';
+	html_right += '				</div>';
+	html_right += '			</div>';
+	html_right += '			<div class="form-group">';
+	html_right += '				<label class="col-sm-3 control-label" for="input-store-location-whatsapp' + sl_row + '-{{ language.language_id }}">{{ entry_contact_whatsapp }}</label>';
+	html_right += '				<div class="col-sm-9">';
+	html_right += '					<input class="form-control" name="store_locations[' + sl_row + '][{{ language.language_id }}][whatsapp]" value="" id="input-store-location-whatsapp' + sl_row + '-{{ language.language_id }}" />';
+	html_right += '				</div>';
+	html_right += '			</div>';
+	html_right += '			<div class="form-group">';
+	html_right += '				<label class="col-sm-3 control-label" for="input-store-location-telegram' + sl_row + '-{{ language.language_id }}">{{ entry_contact_telegram }}</label>';
+	html_right += '				<div class="col-sm-9">';
+	html_right += '					<input class="form-control" name="store_locations[' + sl_row + '][{{ language.language_id }}][telegram]" value="" id="input-store-location-telegram' + sl_row + '-{{ language.language_id }}" />';
+	html_right += '				</div>';
+	html_right += '			</div>';
+	html_right += '			<div class="form-group">';
+	html_right += '				<label class="col-sm-3 control-label" for="input-store-location-messenger' + sl_row + '-{{ language.language_id }}">{{ entry_contact_messenger }}</label>';
+	html_right += '				<div class="col-sm-9">';
+	html_right += '					<input class="form-control" name="store_locations[' + sl_row + '][{{ language.language_id }}][messenger]" value="" id="input-store-location-messenger' + sl_row + '-{{ language.language_id }}" />';
+	html_right += '				</div>';
+	html_right += '			</div>';
+	html_right += '			<div class="form-group">';
+	html_right += '				<label class="col-sm-3 control-label" for="input-store-location-working-time' + sl_row + '-{{ language.language_id }}">{{ text_contact_working_time }}</label>';
+	html_right += '				<div class="col-sm-9">';
+	html_right += '					<textarea class="form-control" name="store_locations[' + sl_row + '][{{ language.language_id }}][working_time]" id="input-store-location-working-time' + sl_row + '-{{ language.language_id }}"></textarea>';
+	html_right += '				</div>';
+	html_right += '			</div>';
+	html_right += '			<div class="form-group">';
+	html_right += '				<label class="col-sm-3 control-label" for="input-store-location-map-code' + sl_row + '-{{ language.language_id }}">{{ text_contact_map_code }}</label>';
+	html_right += '				<div class="col-sm-9">';
+	html_right += '					<textarea class="form-control" name="store_locations[' + sl_row + '][{{ language.language_id }}][map_code]" id="input-store-location-map-code' + sl_row + '-{{ language.language_id }}"></textarea>';
+	html_right += '				</div>';
+	html_right += '			</div>';
+	html_right += '			<div class="form-group">';
+	html_right += '				<label class="col-sm-3 control-label" for="input-store-location-geocode' + sl_row + '-{{ language.language_id }}"><span data-toggle="tooltip" data-container="#content" title="{{ help_geocode }}">{{ entry_geocode }}</span></label>';
+	html_right += '				<div class="col-sm-9">';
+	html_right += '					<input type="text" name="store_locations[' + sl_row + '][{{ language.language_id }}][geocode]" value="" id="input-store-location-geocode' + sl_row + '-{{ language.language_id }}" class="form-control" />';
+	html_right += '				</div>';
+	html_right += '			</div>';
+	html_right += '			<div class="form-group">';
+	html_right += '				<label class="col-sm-3 control-label" for="input-store-location-image' + sl_row + '-{{ language.language_id }}">{{ text_contact_image }}</label>';
+	html_right += '				<div class="col-sm-9"><a href="" id="thumb-store-location-image' + sl_row + '-{{ language.language_id }}" data-toggle="image" class="img-thumbnail"><img src="{{ placeholder }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a>';
+	html_right += '					<input type="hidden" name="store_locations[' + sl_row + '][{{ language.language_id }}][image]" value="" id="input-store-location-image' + sl_row + '-{{ language.language_id }}" />';
+	html_right += '				</div>';
+	html_right += '			</div>';
+
+	html_right += '			<div class="form-group">';
+	html_right += '				<label class="col-sm-3 control-label">{{ entry_additional_image }}</label>';
+	html_right += '				<div class="col-sm-9">';
+	html_right += '					<div class="table-responsive">';
+	html_right += '						<table id="images-' + sl_row + '-{{ language.language_id }}" class="table table-striped table-bordered table-hover">';
+	html_right += '							<thead>';
+	html_right += '								<tr>';
+	html_right += '									<td class="text-left">{{ entry_additional_image }}</td>';
+	html_right += '									<td class="text-right">{{ entry_sort_order }}</td>';
+	html_right += '									<td></td>';
+	html_right += '								</tr>';
+	html_right += '							</thead>';
+	html_right += '							<tbody></tbody>';
+	html_right += '							<tfoot>';
+	html_right += '								<tr>';
+	html_right += '									<td colspan="2"></td>';
+	html_right += '									<td class="text-right">';
+	html_right += '										<button type="button" onclick="addImage(' + sl_row + ', {{ language.language_id }});" data-toggle="tooltip" title="{{ button_add }}" class="btn btn-primary"><i class="fa fa-plus-circle"></i></button>';
+	html_right += '									</td>';
+	html_right += '								</tr>';
+	html_right += '							</tfoot>';
+	html_right += '						</table>';
+	html_right += '					</div>';
+	html_right += '				</div>';
+	html_right += '			</div>';
+
+	html_right += '		</div>';
+	{% endfor %}
+	html_right += '	</div>';
+	html_right += '</div>';
+
+	// Вставляем в контейнер табов
+	$('.tab-content.store-location-setting').append(html_right);
+
+	// Активируем вкладку
+	$('#sl-left-row-' + sl_row + ' a.store-location-tab').trigger('click');
+	$('#tab-sl-' + sl_row + ' .nav-tabs li:first-child a').tab('show');
+}
+
+
+
+function addImage(sl_row, lang_id) {
+	var image_row = 0;
+
+	var rows = $('#images-' + sl_row + '-' + lang_id + ' tbody tr');
+	var usedIndexes = [];
+
+	rows.each(function () {
+		var id = $(this).attr('id');
+		var match = id.match(/image-row-\d+-\d+-(\d+)/);
+		if (match) {
+			usedIndexes.push(parseInt(match[1]));
+		}
+	});
+
+	for (var i = 0; i <= usedIndexes.length; i++) {
+		if (!usedIndexes.includes(i)) {
+			image_row = i;
+			break;
+		}
+	}
+
+	var html  = '<tr id="image-row-' + sl_row + '-' + lang_id + '-' + image_row + '">';
+	html += '  <td class="text-left">';
+	html += '    <a href="" id="thumb-image-' + sl_row + '-' + lang_id + '-' + image_row + '" data-toggle="image" class="img-thumbnail">';
+	html += '      <img src="{{ placeholder }}" alt="" title="" data-placeholder="{{ placeholder }}" />';
+	html += '    </a>';
+	html += '    <input type="hidden" name="store_locations[' + sl_row + '][' + lang_id + '][location_images][' + image_row + '][image]" value="" id="input-image-' + sl_row + '-' + lang_id + '-' + image_row + '" />';
+	html += '  </td>';
+	html += '  <td class="text-right">';
+	html += '    <input type="text" name="store_locations[' + sl_row + '][' + lang_id + '][location_images][' + image_row + '][sort_order]" value="0" placeholder="{{ entry_sort_order }}" class="form-control" />';
+	html += '  </td>';
+	html += '  <td class="text-left">';
+	html += '    <button type="button" onclick="$(\'#image-row-' + sl_row + '-' + lang_id + '-' + image_row + '\').remove();" data-toggle="tooltip" title="{{ button_remove }}" class="btn btn-danger">';
+	html += '      <i class="fa fa-minus-circle"></i>';
+	html += '    </button>';
+	html += '  </td>';
+	html += '</tr>';
+
+	$('#images-' + sl_row + '-' + lang_id + ' tbody').append(html);
+}
+
+$(document).ready(function() {
+	$('[id^="tab-sl-"]').each(function() {
+		$(this).find('.nav-tabs li:first-child a').tab('show');
+	});
+});
+
+</script>

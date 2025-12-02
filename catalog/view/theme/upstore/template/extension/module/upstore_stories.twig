@@ -1,0 +1,70 @@
+{% if chm_stories %}
+<div class="container-module chm-stories">
+	<div class="swiper swiper-module stories_{{ module }}">
+		<div class="swiper-wrapper">
+			{% for key, result in chm_stories %}
+				<div class="sl-item swiper-slide text-center">
+					<div class="story-item" data-story-id="{{ key }}"><img width="{{ width }}" height="{{ height }}" src="{{ result.image }}" decoding="async" loading="lazy" alt="" class="img-responsive" /></div>
+				</div>
+			{% endfor %}
+		</div>
+		<div class="swiper-scrollbar stories-scrollbar"></div>
+	</div>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+	const swiperStories = new Swiper('.stories_{{ module }}', {
+		slidesPerView: 'auto',
+		watchSlidesVisibility: true,
+		watchSlidesProgress: true,
+		watchOverflow: true,
+		observer: true,
+		observeParents: true,
+		spaceBetween: 0,
+		nested: false,
+		speed: 400,
+		breakpointsBase: 'container',
+		grabCursor: true,
+		navigation: {
+			enabled: false,
+		},
+		scrollbar: {
+		  el: '.stories-scrollbar',
+		  draggable: true,
+		},
+		on: {
+			afterInit: function () {
+				setTimeout(function () {
+					$('.stories_{{ module }}').addClass('swiper-visible');
+				}, 500);
+			},
+			init: function () {
+				this.slides.forEach(function (slide, index) {
+					slide.setAttribute('data-swiper-slide-index', index);
+				});
+			},
+		},
+		breakpoints: {
+		  600: {slidesPerView: 4},
+		  900: {slidesPerView: 5},
+		  1100: {slidesPerView: 6},
+		  1280: {slidesPerView: 7},
+		  1400: {slidesPerView: 8},
+		},
+	});
+});
+
+$(document).on('click','.story-item', function(e){
+	e.preventDefault();
+	var story_id = $(this).parent().attr('data-swiper-slide-index');
+	$.get('index.php?route=extension/module/upstore_stories/getAllStories&module_id={{ module_id }}&story_id='+story_id, function(data) {
+		$('<div id="modal-stories" class="modal" role="dialog">' + data + '</div>').modal('show');
+		$(document).on('hide.bs.modal', '#modal-stories.modal', function () {
+			$('#modal-stories').remove();
+		});
+		initializeStoriesSwiper();
+	});
+
+});
+</script>
+{% endif %}

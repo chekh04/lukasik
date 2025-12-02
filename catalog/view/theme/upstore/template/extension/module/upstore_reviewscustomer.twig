@@ -1,0 +1,78 @@
+<div class="container-module">
+    {% if module_header %}
+        <div class="title-module rc-mod">
+            <span>{{ module_header }}</span>
+            <a class="see-all-reviews" href="{{ link_all_reviews }}">{{ text_all_reviews }}
+                <svg xmlns="http://www.w3.org/2000/svg" width="19" height="10" fill="none" viewBox="0 0 19 10">
+                    <path fill="currentColor" fill-rule="evenodd" d="M12.971.468a.75.75 0 0 1 1.06.003l4 4.024a.75.75 0 0 1-.002 1.06l-4 3.977a.75.75 0 0 1-1.058-1.064l2.71-2.694H1a.75.75 0 0 1 0-1.5h14.697l-2.729-2.745a.75.75 0 0 1 .003-1.06Z" clip-rule="evenodd"></path>
+                </svg>
+            </a>
+        </div>
+    {% endif %}
+    <div class="row-flex customer-reviews customer-reviews--module-{{ module }}">
+        {% for review in reviews %}
+            <div class="customer-reviews__item d-flex col-xs-12 col-sm-6 col-md-6 col-lg-3">
+                <div class="customer-reviews__content d-flex flex-column">
+                    <div class="customer-reviews__header d-flex">
+                        <div class="customer-reviews__image">
+                            <a href="{{ review.href }}"><img decoding="async" width="{{ review.width }}" height="{{ review.height }}" loading="lazy" src="{{ review.prod_thumb }}" alt="{{ review.prod_name }}" class="img-responsive" /></a>
+                        </div>
+                        <div class="customer-reviews__name"><a href="{{ review.href }}">{{ review.prod_name }}</a></div>
+                    </div>
+                    <div class="customer-reviews__description">{{ review.description }}</div>
+                    <div class="customer-reviews__footer d-flex">
+                        <div class="customer-reviews__letter">{{ review.first_letter }}</div>
+                        <div class="d-flex flex-column">
+                            <div class="customer-reviews__author">{{ review.author }}</div>
+                            <div class="customer-reviews__rating">
+                                {% for i in 1..5 %}
+                                    {% if review.rating < i %}
+                                        <i class="up-icon-16 up-icon-star" aria-hidden="true"></i>
+                                    {% else %}
+                                        <i class="up-icon-16 up-icon-star active" aria-hidden="true"></i>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    {% if status_showmore is defined and status_showmore != 0 %}
+        {% if nextPage %}
+            <div class="showmore-review{{ module }} box-showmore">
+                <button class="chm-btn chm-btn-grey chm-px-lg chm-lg chm-lg-rounded review-ajax-load{{ module }}" type="button" data-nextpage="{{ nextPage }}">
+                    <svg class="chm-icon-showmore" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21.5 2v6h-6m5.84 7.57a10 10 0 1 1-.57-8.38"/>
+                    </svg>
+                    <span class="chm-btn-text">{{ text_showmore }}</span>
+                </button>
+            </div>
+        {% endif %}
+    {% endif %}
+    {% if status_showmore is defined and status_showmore != 0 %}
+        <script>
+            $(document).on('click', '.review-ajax-load{{ module }}', function () {
+                $.ajax({
+                    url: 'index.php?route=extension/module/upstore_reviewscustomer/getNextPage',
+                    type: 'post',
+                    data: 'page=' + $(this).attr('data-nextpage') + '&module={{ module }}&module_id={{ module_id }}&category_id={{ category_id }}',
+                    dataType: 'html',
+                    beforeSend: function() {
+                        $('.review-ajax-load{{ module }}').addClass('active-load');
+                    },
+                    complete: function() {
+                        $('.review-ajax-load{{ module }}').removeClass('active-load');
+                    },
+                    success: function(data) {
+                        $data = $(data);
+                        var review_customer = $data.find('.customer-reviews--module-{{ module }} > div.col-xs-12');
+                        $('.customer-reviews--module-{{ module }}').append(review_customer);
+                        $('.showmore-review{{ module }}').replaceWith($data.find('.showmore-review{{ module }}'));
+                    }
+                });
+            });
+        </script>
+    {% endif %}
+</div>

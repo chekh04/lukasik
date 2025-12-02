@@ -1,0 +1,42 @@
+<?php
+// HTTP
+define('HTTP_SERVER', 'https://lukasik.ua/admin/');
+define('HTTP_CATALOG', 'https://lukasik.ua/');
+
+// HTTPS
+define('HTTPS_SERVER', 'https://lukasik.ua/admin/');
+define('HTTPS_CATALOG', 'https://lukasik.ua/');
+
+// DIR
+define('DIR_APPLICATION', '/home/lukasik/lukasik.ua/www/admin/');
+define('DIR_SYSTEM', '/home/lukasik/lukasik.ua/www/system/');
+define('DIR_IMAGE', '/home/lukasik/lukasik.ua/www/image/');
+define('DIR_STORAGE', '/home/lukasik/lukasik.ua/storage/');
+define('DIR_CATALOG', '/home/lukasik/lukasik.ua/www/catalog/');
+define('DIR_LANGUAGE', DIR_APPLICATION . 'language/');
+define('DIR_TEMPLATE', DIR_APPLICATION . 'view/template/');
+define('DIR_CONFIG', DIR_SYSTEM . 'config/');
+define('DIR_CACHE', DIR_STORAGE . 'cache/');
+define('DIR_DOWNLOAD', DIR_STORAGE . 'download/');
+define('DIR_LOGS', DIR_STORAGE . 'logs/');
+define('DIR_MODIFICATION', DIR_STORAGE . 'modification/');
+define('DIR_SESSION', DIR_STORAGE . 'session/');
+define('DIR_UPLOAD', DIR_STORAGE . 'upload/');
+
+// DB
+define('DB_DRIVER', 'mysqli');
+define('DB_HOSTNAME', 'lukasik.mysql.tools');
+define('DB_USERNAME', 'lukasik_ua');
+define('DB_PASSWORD', 'Fx456-*uNh');
+define('DB_DATABASE', 'lukasik_ua');
+define('DB_PORT', '3306');
+define('DB_PREFIX', 'oc_');
+
+// CACHE
+define('CACHE_HOSTNAME', '/home/lukasik/.system/redis.sock');
+define('CACHE_PORT', 0);
+define('CACHE_PREFIX', 'oc_');
+
+// OpenCart API
+define('OPENCART_SERVER', 'https://www.opencart.com/');
+define('OPENCARTFORUM_SERVER', 'https://opencartforum.com/');

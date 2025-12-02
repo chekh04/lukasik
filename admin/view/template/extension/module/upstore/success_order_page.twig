@@ -1,0 +1,120 @@
+<ul class="nav nav-tabs">
+	<li class="active"><a data-toggle="tab" href="#tab-customer-authorized">{{ tab_customer_authorized }}</a></li>
+	<li><a data-toggle="tab" href="#tab-customer-guest">{{ tab_customer_guest }}</a></li>
+</ul>
+<div class="tab-content">
+	<div class="tab-pane active" id="tab-customer-authorized">
+		<div class="form-group">
+			<label class="col-sm-3 control-label">{{ text_status }}</label>
+			<div class="col-sm-9">
+				<div class="toggle-switch">
+					<label>
+						<input type="hidden" name="up_success_order_content[authorized][status]" value="0" />
+						<input type="checkbox" name="up_success_order_content[authorized][status]" value="1" {{ up_success_order_content.authorized.status is defined and up_success_order_content.authorized.status == 1 ? 'checked="checked"' }} />
+						<span></span>
+					</label>
+				</div>
+			</div>
+		</div>
+		<ul class="nav nav-tabs" id="customer-authorized-language">
+			{% for language in languages %}
+				<li><a href="#customer-authorized-language{{ language.language_id }}" data-toggle="tab"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /> {{ language.name }}</a></li>
+			{% endfor %}
+		</ul>
+		<div class="tab-content">
+			{% for language in languages %}
+				<div class="tab-pane" id="customer-authorized-language{{ language.language_id }}">
+					<div class="form-group">
+						<label class="col-xs-12 col-sm-3 control-label text-left" for="input-customer-authorized-heading-title{{ language.language_id }}">{{ entry_success_order_heading_title }}</label>
+						<div class="col-xs-12 col-sm-9">
+							<input class="form-control" value="{{ up_success_order_content.authorized[language.language_id].heading_title is defined ? up_success_order_content.authorized[language.language_id].heading_title : '' }}" name="up_success_order_content[authorized][{{ language.language_id }}][heading_title]" id="input-customer-authorized-heading-title{{ language.language_id }}" />
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-xs-12 col-sm-3 control-label text-left" for="input-customer-authorized-html{{ language.language_id }}">
+							<div class="order-variables">
+								{{ text_variable_order_id }}<br>
+								{{ text_variable_contact_page }}<br>
+								{{ text_variable_account_page }}<br>
+								{{ text_variable_orders_page }}<br>
+								{{ text_variable_date_added }}<br>
+								{{ text_variable_firstname }}<br>
+								{{ text_variable_lastname }}<br>
+								{{ text_variable_telephone }}<br>
+								{{ text_variable_email }}<br>
+								{{ text_variable_payment_method }}<br>
+								{{ text_variable_shipping_method }}<br>
+								{{ text_variable_shipping_zone }}<br>
+								{{ text_variable_shipping_city }}<br>
+								{{ text_variable_shipping_address_1 }}<br>
+								{{ text_variable_shipping_address_2 }}<br>
+								{{ text_variable_total }}<br>
+							</div>
+						</label>
+						<div class="col-xs-12 col-sm-9">
+							<textarea class="form-control" data-toggle="summernote" data-lang="{{ summernote }}" name="up_success_order_content[authorized][{{ language.language_id }}][html]" id="input-customer-authorized-html{{ language.language_id }}">{{ up_success_order_content.authorized[language.language_id].html is defined ? up_success_order_content.authorized[language.language_id].html : '' }}</textarea>
+						</div>
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+	<div class="tab-pane" id="tab-customer-guest">
+		<div class="form-group">
+			<label class="col-sm-3 control-label">{{ text_status }}</label>
+			<div class="col-sm-9">
+				<div class="toggle-switch">
+					<label>
+						<input type="hidden" name="up_success_order_content[guest][status]" value="0" />
+						<input type="checkbox" name="up_success_order_content[guest][status]" value="1" {{ up_success_order_content.guest.status is defined and up_success_order_content.guest.status == 1 ? 'checked="checked"' }} />
+						<span></span>
+					</label>
+				</div>
+			</div>
+		</div>
+		<ul class="nav nav-tabs" id="customer-guest-language">
+			{% for language in languages %}
+				<li><a href="#customer-guest-language{{ language.language_id }}" data-toggle="tab"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /> {{ language.name }}</a></li>
+			{% endfor %}
+		</ul>
+		<div class="tab-content">
+			{% for language in languages %}
+				<div class="tab-pane" id="customer-guest-language{{ language.language_id }}">
+					<div class="form-group">
+						<label class="col-xs-12 col-sm-3 control-label text-left" for="input-customer-guest-heading-title{{ language.language_id }}">{{ entry_success_order_heading_title }}</label>
+						<div class="col-xs-12 col-sm-9">
+							<input class="form-control" value="{{ up_success_order_content.guest[language.language_id].heading_title is defined ? up_success_order_content.guest[language.language_id].heading_title : '' }}" name="up_success_order_content[guest][{{ language.language_id }}][heading_title]" id="input-customer-guest-heading-title{{ language.language_id }}" />
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-xs-12 col-sm-3 control-label text-left" for="input-customer-guest-html{{ language.language_id }}">
+							<div class="order-variables">
+								{{ text_variable_order_id }}<br>
+								{{ text_variable_contact_page }}<br>
+								{{ text_variable_date_added }}<br>
+								{{ text_variable_firstname }}<br>
+								{{ text_variable_lastname }}<br>
+								{{ text_variable_telephone }}<br>
+								{{ text_variable_email }}<br>
+								{{ text_variable_payment_method }}<br>
+								{{ text_variable_shipping_method }}<br>
+								{{ text_variable_shipping_zone }}<br>
+								{{ text_variable_shipping_city }}<br>
+								{{ text_variable_shipping_address_1 }}<br>
+								{{ text_variable_shipping_address_2 }}<br>
+								{{ text_variable_total }}<br>
+							</div>
+						</label>
+						<div class="col-xs-12 col-sm-9">
+							<textarea class="form-control" data-toggle="summernote" data-lang="{{ summernote }}" name="up_success_order_content[guest][{{ language.language_id }}][html]" id="input-customer-guest-html{{ language.language_id }}">{{ up_success_order_content.guest[language.language_id].html is defined ? up_success_order_content.guest[language.language_id].html : '' }}</textarea>
+						</div>
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+</div>
+<script>
+	$('#customer-authorized-language a:first').tab('show');
+	$('#customer-guest-language a:first').tab('show');
+</script>

@@ -1,0 +1,1770 @@
+<ul class="nav nav-tabs">
+	<li class="active"><a data-toggle="tab" href="#tab-general-designed">{{ tab_general_designed }}</a></li>
+	<li><a data-toggle="tab" href="#tab-color-scheme-settings">{{ tab_color_scheme }}</a></li>
+</ul>
+<div class="tab-pane" id="tab-color-scheme-settings">
+	<div class="form-group">
+		<label class="col-sm-3 control-label">{{ entry_theme_mode_status }}</label>
+		<div class="col-sm-9">
+			<div class="toggle-switch">
+				<label>
+					<input type="hidden" name="theme_mode_status" value="0" />
+					<input type="checkbox" name="theme_mode_status" value="1" {{ theme_mode_status is defined and theme_mode_status == 1 ? 'checked="checked"' }} />
+					<span class="toggle-slider"></span>
+				</label>
+			</div>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-3 control-label">{{ entry_default_theme_mode }}</label>
+		<div class="col-sm-9">
+			<div class="btn-group" data-toggle="buttons">
+				<label class="btn btn-default{{ not default_theme_mode or default_theme_mode == 'light-theme' ? ' active' }}">
+					<input type="radio" name="default_theme_mode" value="light-theme" {{ not default_theme_mode or default_theme_mode == 'light-theme' ? 'checked="checked"' }}>
+					<span class="on-off">{{ text_light_theme }}</span>
+				</label>
+				<label class="btn btn-default{{ default_theme_mode == 'dark-theme' ? ' active' }}">
+					<input type="radio" name="default_theme_mode" value="dark-theme" {{ default_theme_mode == 'dark-theme' ? 'checked="checked"' }}>
+					<span class="on-off">{{ text_dark_theme }}</span>
+				</label>
+			</div>
+		</div>
+	</div>
+	<ul class="nav nav-tabs">
+		<li class="active"><a data-toggle="tab" href="#light-theme-color-setting">{{ tab_light_theme }}</a></li>
+		<li><a data-toggle="tab" href="#dark-theme-color-setting">{{ tab_dark_theme }}</a></li>
+	</ul>
+	<div class="tab-pane active" id="light-theme-color-setting">
+		<fieldset>
+		<div class="row">
+			<div class="col-sm-12 title-setting">{{ title_main_color }}</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-6">
+				<label class="col-sm-6 control-label">{{ entry_color_price }}</label>
+				<div class="col-sm-6 form-inline">
+					<input class="form-control color" autocomplete="off" type="text" name="up_color_price" value="{{ up_color_price }}"/>
+				</div>
+			</div>
+			<div class="col-sm-6">
+				<label class="col-sm-6 control-label">{{ entry_color_sale_price }}</label>
+				<div class="col-sm-6 form-inline">
+					<input class="form-control color" autocomplete="off" type="text" name="up_color_sale_price" value="{{ up_color_sale_price }}"/>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-6">
+				<label class="col-sm-6 control-label">{{ entry_color_status_in_stock }}</label>
+				<div class="col-sm-6 form-inline">
+					<input class="form-control color" autocomplete="off" type="text" name="up_color_status_in_stock" value="{{ up_color_status_in_stock }}"/>
+				</div>
+			</div>
+			<div class="col-sm-6">
+				<label class="col-sm-6 control-label">{{ entry_color_status_out_of_stock }}</label>
+				<div class="col-sm-6 form-inline">
+					<input class="form-control color" autocomplete="off" type="text" name="up_color_status_out_of_stock" value="{{ up_color_status_out_of_stock }}"/>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-6">
+				<label class="col-sm-6 control-label">{{ entry_color_link }}</label>
+				<div class="col-sm-6 form-inline">
+					<input class="form-control color" autocomplete="off" type="text" name="up_color_link" value="{{ up_color_link }}"/>
+				</div>
+			</div>
+			<div class="col-sm-6">
+				<label class="col-sm-6 control-label">{{ entry_color_link_hover }}</label>
+				<div class="col-sm-6 form-inline">
+					<input class="form-control color" autocomplete="off" type="text" name="up_color_link_hover" value="{{ up_color_link_hover }}"/>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-6">
+				<label class="col-sm-6 control-label">{{ entry_color_rating_active }}</label>
+				<div class="col-sm-6 form-inline">
+					<input class="form-control color" autocomplete="off" type="text" name="up_color_rating_active" value="{{ up_color_rating_active }}"/>
+				</div>
+			</div>
+			<div class="col-sm-6">
+				<label class="col-sm-6 control-label">{{ entry_color_rating_passive }}</label>
+				<div class="col-sm-6 form-inline">
+					<input class="form-control color" autocomplete="off" type="text" name="up_color_rating_passive" value="{{ up_color_rating_passive }}"/>
+				</div>
+			</div>
+		</div>
+	</fieldset>
+	<fieldset>
+		<div class="row">
+			<div class="col-sm-12 title-setting">{{ title_header_color }}</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-3 title-color-set">{{ title_btn_menu }}</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-6">
+				<label class="col-sm-6 control-label">{{ entry_background }}</label>
+				<div class="col-sm-6 form-inline">
+					<input class="form-control color" autocomplete="off" type="text" name="up_bg_menu" value="{{ up_bg_menu }}"/>
+				</div>
+			</div>
+			<div class="col-sm-6">
+				<label class="col-sm-6 control-label">{{ entry_background_hover }}</label>
+				<div class="col-sm-6 form-inline">
+					<input class="form-control color" autocomplete="off" type="text" name="up_bg_menu_hover" value="{{ up_bg_menu_hover }}"/>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-6">
+				<label class="col-sm-6 control-label">{{ entry_color_text_icon }}</label>
+				<div class="col-sm-6 form-inline">
+					<input class="form-control color" autocomplete="off" type="text" name="up_color_menu" value="{{ up_color_menu }}"/>
+				</div>
+			</div>
+			<div class="col-sm-6">
+				<label class="col-sm-6 control-label">{{ entry_color_text_icon_hover }}</label>
+				<div class="col-sm-6 form-inline">
+					<input class="form-control color" autocomplete="off" type="text" name="up_color_menu_hover" value="{{ up_color_menu_hover }}"/>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-3 control-label">{{ entry_border_status }}</label>
+			<div class="col-sm-9">
+				<div class="btn-group" data-toggle="buttons">
+					<label class="btn btn-default{% if up_border_menu_status == '1' %} active{% endif %}">
+						<input type="radio" name="up_border_menu_status" value="1" {% if up_border_menu_status == '1' %}checked="checked"{% endif %}>
+						<span class="on-off">{{ text_yes }}</span>
+					</label>
+					<label class="btn btn-default{% if up_border_menu_status == '0' %} active{% endif %}">
+						<input type="radio" name="up_border_menu_status" value="0" {% if up_border_menu_status == '0' %}checked="checked"{% endif %}>
+						<span class="on-off">{{ text_no }}</span>
+					</label>
+				</div>
+			</div>
+		</div>
+		<div id="menu_border_setting" class="collapse fade {% if up_border_menu_status == '1' %} in{% endif %}">
+			<div class="form-group">
+				<div class="col-sm-6">
+					<label class="col-sm-6 control-label">{{ entry_border_color }}</label>
+					<div class="col-sm-6 form-inline">
+						<input class="form-control color" autocomplete="off" type="text" name="up_border_color_menu" value="{{ up_border_color_menu }}"/>
+					</div>
+				</div>
+				<div class="col-sm-6">
+					<label class="col-sm-6 control-label">{{ entry_border_color_hover }}</label>
+					<div class="col-sm-6 form-inline">
+						<input class="form-control color" autocomplete="off" type="text" name="up_border_color_menu_hover" value="{{ up_border_color_menu_hover }}"/>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-3 title-color-set">{{ title_header_compare_wishlist }}</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-6">
+				<label class="col-sm-6 control-label">{{ entry_background_total }}</label>
+				<div class="col-sm-6 form-inline">
+					<input class="form-control color" autocomplete="off" type="text" name="up_bg_header_total_cw" value="{{ up_bg_header_total_cw }}"/>
+				</div>
+			</div>
+			<div class="col-sm-6">
+				<label class="col-sm-6 control-label">{{ entry_color_total }}</label>
+				<div class="col-sm-6 form-inline">
+					<input class="form-control color" autocomplete="off" type="text" name="up_color_header_total_cw" value="{{ up_color_header_total_cw }}"/>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-3 title-color-set">{{ title_header_cart }}</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-6">
+				<label class="col-sm-6 control-label">{{ entry_background }}</label>
+				<div class="col-sm-6 form-inline">
+					<input class="form-control color" autocomplete="off" type="text" name="up_bg_header_cart" value="{{ up_bg_header_cart }}"/>
+				</div>
+			</div>
+			<div class="col-sm-6">
+				<label class="col-sm-6 control-label">{{ entry_color_text_icon }}</label>
+				<div class="col-sm-6 form-inline">
+					<input class="form-control color" autocomplete="off" type="text" name="up_color_header_cart" value="{{ up_color_header_cart }}"/>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-6">
+				<label class="col-sm-6 control-label">{{ entry_background_total }}</label>
+				<div class="col-sm-6 form-inline">
+					<input class="form-control color" autocomplete="off" type="text" name="up_bg_header_total_cart" value="{{ up_bg_header_total_cart }}"/>
+				</div>
+			</div>
+			<div class="col-sm-6">
+				<label class="col-sm-6 control-label">{{ entry_color_total }}</label>
+				<div class="col-sm-6 form-inline">
+					<input class="form-control color" autocomplete="off" type="text" name="up_color_header_total_cart" value="{{ up_color_header_total_cart }}"/>
+				</div>
+			</div>
+		</div>
+	</fieldset>
+	<fieldset>
+		<div class="row">
+			<div class="col-sm-12 title-setting">{{ title_buttons }}</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-3 title-color-set">{{ title_btn_add_to_cart }}</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-6">
+				<label class="col-sm-6 control-label">{{ entry_background }}</label>
+				<div class="col-sm-6 form-inline">
+					<input class="form-control color" autocomplete="off" type="text" name="up_bg_mod_add_to_cart" value="{{ up_bg_mod_add_to_cart }}"/>
+				</div>
+			</div>
+			<div class="col-sm-6">
+				<label class="col-sm-6 control-label">{{ entry_color_text_icon }}</label>
+				<div class="col-sm-6 form-inline">
+					<input class="form-control color" autocomplete="off" type="text" name="up_color_mod_add_to_cart" value="{{ up_color_mod_add_to_cart }}"/>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-6">
+				<label class="col-sm-6 control-label">{{ entry_background_hover }}</label>
+				<div class="col-sm-6 form-inline">
+					<input class="form-control color" autocomplete="off" type="text" name="up_bg_mod_add_to_cart_hover" value="{{ up_bg_mod_add_to_cart_hover }}"/>
+				</div>
+			</div>
+			<div class="col-sm-6">
+				<label class="col-sm-6 control-label">{{ entry_color_text_icon_hover }}</label>
+				<div class="col-sm-6 form-inline">
+					<input class="form-control color" autocomplete="off" type="text" name="up_color_mod_add_to_cart_hover" value="{{ up_color_mod_add_to_cart_hover }}"/>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-6">
+				<label class="col-sm-6 control-label">{{ entry_background_hover_block }}</label>
+				<div class="col-sm-6 form-inline">
+					<input class="form-control color" autocomplete="off" type="text" name="up_bg_mod_add_to_cart_hover_block" value="{{ up_bg_mod_add_to_cart_hover_block }}"/>
+				</div>
+			</div>
+			<div class="col-sm-6">
+				<label class="col-sm-6 control-label">{{ entry_color_text_icon_hover_block }}</label>
+				<div class="col-sm-6 form-inline">
+					<input class="form-control color" autocomplete="off" type="text" name="up_color_mod_add_to_cart_hover_block" value="{{ up_color_mod_add_to_cart_hover_block }}"/>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-3 control-label">{{ entry_border_status }}</label>
+			<div class="col-sm-9">
+				<div class="btn-group" data-toggle="buttons">
+					<label class="btn btn-default{{ up_border_mod_add_to_cart_status == '1' ? ' active' : '' }}">
+						<input type="radio" name="up_border_mod_add_to_cart_status" value="1" {{ up_border_mod_add_to_cart_status == '1' ? 'checked="checked"' : '' }}>
+						<span class="on-off">{{ text_yes }}</span>
+					</label>
+					<label class="btn btn-default{{ up_border_mod_add_to_cart_status == '0' ? ' active' : '' }}">
+						<input type="radio" name="up_border_mod_add_to_cart_status" value="0" {{ up_border_mod_add_to_cart_status == '0' ? 'checked="checked"' : '' }}>
+						<span class="on-off">{{ text_no }}</span>
+					</label>
+				</div>
+			</div>
+		</div>
+		<div id="border_mod_add_to_cart_setting" class="collapse fade{{ up_border_mod_add_to_cart_status == '1' ? ' in' : '' }}">
+			<div class="form-group">
+				<div class="col-sm-6">
+					<label class="col-sm-6 control-label">{{ entry_border_color }}</label>
+					<div class="col-sm-6 form-inline">
+						<input class="form-control color" autocomplete="off" type="text" name="up_bc_mod_add_to_cart" value="{{ up_bc_mod_add_to_cart }}"/>
+					</div>
+				</div>
+				<div class="col-sm-6">
+					<label class="col-sm-6 control-label">{{ entry_border_color_hover }}</label>
+					<div class="col-sm-6 form-inline">
+						<input class="form-control color" autocomplete="off" type="text" name="up_bc_mod_add_to_cart_hover" value="{{ up_bc_mod_add_to_cart_hover }}"/>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">{{ entry_border_color_hover_block }}</label>
+				<div class="col-sm-5 form-inline">
+					<input class="form-control color" autocomplete="off" type="text" name="up_bc_mod_add_to_cart_hover_block" value="{{ up_bc_mod_add_to_cart_hover_block }}"/>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-5 title-color-set">{{ title_additional_buttons }}</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-6">
+				<label class="col-sm-6 control-label">{{ entry_background }}</label>
+				<div class="col-sm-6 form-inline">
+					<input class="form-control color" autocomplete="off" type="text" name="up_bg_mod_dop_btn" value="{{ up_bg_mod_dop_btn }}"/>
+				</div>
+			</div>
+			<div class="col-sm-6">
+				<label class="col-sm-6 control-label">{{ entry_color_text_icon }}</label>
+				<div class="col-sm-6 form-inline">
+					<input class="form-control color" autocomplete="off" type="text" name="up_color_mod_dop_btn" value="{{ up_color_mod_dop_btn }}"/>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-6">
+				<label class="col-sm-6 control-label">{{ entry_background_hover }}</label>
+				<div class="col-sm-6 form-inline">
+					<input class="form-control color" autocomplete="off" type="text" name="up_bg_mod_dop_btn_hover" value="{{ up_bg_mod_dop_btn_hover }}"/>
+				</div>
+			</div>
+			<div class="col-sm-6">
+				<label class="col-sm-6 control-label">{{ entry_color_text_icon_hover }}</label>
+				<div class="col-sm-6 form-inline">
+					<input class="form-control color" autocomplete="off" type="text" name="up_color_mod_dop_btn_hover" value="{{ up_color_mod_dop_btn_hover }}"/>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-3 title-color-set">{{ title_button_scroll_top }}</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-6">
+				<label class="col-sm-6 control-label">{{ entry_background }}</label>
+				<div class="col-sm-6 form-inline">
+					<input class="form-control color" autocomplete="off" type="text" name="up_bg_scroll_top" value="{{ up_bg_scroll_top }}"/>
+				</div>
+			</div>
+			<div class="col-sm-6">
+				<label class="col-sm-6 control-label">{{ entry_color_icon }}</label>
+				<div class="col-sm-6 form-inline">
+					<input class="form-control color" autocomplete="off" type="text" name="up_color_icon_scroll_top" value="{{ up_color_icon_scroll_top }}"/>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-6">
+				<label class="col-sm-6 control-label">{{ entry_background_hover }}</label>
+				<div class="col-sm-6 form-inline">
+					<input class="form-control color" autocomplete="off" type="text" name="up_bg_scroll_top_hover" value="{{ up_bg_scroll_top_hover }}"/>
+				</div>
+			</div>
+			<div class="col-sm-6">
+				<label class="col-sm-6 control-label">{{ entry_color_icon_hover }}</label>
+				<div class="col-sm-6 form-inline">
+					<input class="form-control color" autocomplete="off" type="text" name="up_color_icon_scroll_top_hover" value="{{ up_color_icon_scroll_top_hover }}"/>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-6">
+				<label class="col-sm-6 control-label">{{ entry_color_progress }}</label>
+				<div class="col-sm-6 form-inline">
+					<input class="form-control color" autocomplete="off" type="text" name="up_color_progress_scroll_top" value="{{ up_color_progress_scroll_top }}"/>
+				</div>
+			</div>
+			<div class="col-sm-6">
+				<label class="col-sm-6 control-label">{{ entry_color_progress_hover }}</label>
+				<div class="col-sm-6 form-inline">
+					<input class="form-control color" autocomplete="off" type="text" name="up_color_progress_scroll_top_hover" value="{{ up_color_progress_scroll_top_hover }}"/>
+				</div>
+			</div>
+		</div>
+	</fieldset>
+	<fieldset>
+		<div class="row">
+			<div class="col-sm-12 title-setting">{{ title_buttons_in_ppage }}</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-3 title-color-set">{{ title_btn_add_to_cart }}</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-6">
+				<label class="col-sm-6 control-label">{{ entry_background }}</label>
+				<div class="col-sm-6 form-inline">
+					<input class="form-control color" autocomplete="off" type="text" name="up_bg_pp_add_to_cart" value="{{ up_bg_pp_add_to_cart }}"/>
+				</div>
+			</div>
+			<div class="col-sm-6">
+				<label class="col-sm-6 control-label">{{ entry_color_text_icon }}</label>
+				<div class="col-sm-6 form-inline">
+					<input class="form-control color" autocomplete="off" type="text" name="up_color_pp_add_to_cart" value="{{ up_color_pp_add_to_cart }}"/>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-6">
+				<label class="col-sm-6 control-label">{{ entry_background_hover }}</label>
+				<div class="col-sm-6 form-inline">
+					<input class="form-control color" autocomplete="off" type="text" name="up_bg_pp_add_to_cart_hover" value="{{ up_bg_pp_add_to_cart_hover }}"/>
+				</div>
+			</div>
+			<div class="col-sm-6">
+				<label class="col-sm-6 control-label">{{ entry_color_text_icon_hover }}</label>
+				<div class="col-sm-6 form-inline">
+					<input class="form-control color" autocomplete="off" type="text" name="up_color_pp_add_to_cart_hover" value="{{ up_color_pp_add_to_cart_hover }}"/>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-3 control-label">{{ entry_border_status }}</label>
+			<div class="col-sm-9">
+				<div class="btn-group" data-toggle="buttons">
+					<label class="btn btn-default{% if up_border_pp_add_to_cart_status == '1' %} active{% endif %}">
+						<input type="radio" name="up_border_pp_add_to_cart_status" value="1" {% if up_border_pp_add_to_cart_status == '1' %}checked="checked"{% endif %}>
+						<span class="on-off">{{ text_yes }}</span>
+					</label>
+					<label class="btn btn-default{% if up_border_pp_add_to_cart_status == '0' %} active{% endif %}">
+						<input type="radio" name="up_border_pp_add_to_cart_status" value="0" {% if up_border_pp_add_to_cart_status == '0' %}checked="checked"{% endif %}>
+						<span class="on-off">{{ text_no }}</span>
+					</label>
+				</div>
+			</div>
+		</div>
+		<div id="border_pp_add_to_cart_setting" class="collapse fade {% if up_border_pp_add_to_cart_status == '1' %} in{% endif %}">
+			<div class="form-group">
+				<div class="col-sm-6">
+					<label class="col-sm-6 control-label">{{ entry_border_color }}</label>
+					<div class="col-sm-6 form-inline">
+						<input class="form-control color" autocomplete="off" type="text" name="up_bc_pp_add_to_cart" value="{{ up_bc_pp_add_to_cart }}"/>
+					</div>
+				</div>
+				<div class="col-sm-6">
+					<label class="col-sm-6 control-label">{{ entry_border_color_hover }}</label>
+					<div class="col-sm-6 form-inline">
+						<input class="form-control color" autocomplete="off" type="text" name="up_bc_pp_add_to_cart_hover" value="{{ up_bc_pp_add_to_cart_hover }}"/>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-3 title-color-set">{{ title_btn_fastorder }}</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-6">
+				<label class="col-sm-6 control-label">{{ entry_background }}</label>
+				<div class="col-sm-6 form-inline">
+					<input class="form-control color" autocomplete="off" type="text" name="up_bg_pp_fastorder" value="{{ up_bg_pp_fastorder }}"/>
+				</div>
+			</div>
+			<div class="col-sm-6">
+				<label class="col-sm-6 control-label">{{ entry_color_text_icon }}</label>
+				<div class="col-sm-6 form-inline">
+					<input class="form-control color" autocomplete="off" type="text" name="up_color_pp_fastorder" value="{{ up_color_pp_fastorder }}"/>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-6">
+				<label class="col-sm-6 control-label">{{ entry_background_hover }}</label>
+				<div class="col-sm-6 form-inline">
+					<input class="form-control color" autocomplete="off" type="text" name="up_bg_pp_fastorder_hover" value="{{ up_bg_pp_fastorder_hover }}"/>
+				</div>
+			</div>
+			<div class="col-sm-6">
+				<label class="col-sm-6 control-label">{{ entry_color_text_icon_hover }}</label>
+				<div class="col-sm-6 form-inline">
+					<input class="form-control color" autocomplete="off" type="text" name="up_color_pp_fastorder_hover" value="{{ up_color_pp_fastorder_hover }}"/>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-3 control-label">{{ entry_border_status }}</label>
+			<div class="col-sm-9">
+				<div class="btn-group" data-toggle="buttons">
+					<label class="btn btn-default{% if up_border_pp_fastorder_status == '1' %} active{% endif %}">
+						<input type="radio" name="up_border_pp_fastorder_status" value="1" {% if up_border_pp_fastorder_status == '1' %}checked="checked"{% endif %}>
+						<span class="on-off">{{ text_yes }}</span>
+					</label>
+					<label class="btn btn-default{% if up_border_pp_fastorder_status == '0' %} active{% endif %}">
+						<input type="radio" name="up_border_pp_fastorder_status" value="0" {% if up_border_pp_fastorder_status == '0' %}checked="checked"{% endif %}>
+						<span class="on-off">{{ text_no }}</span>
+					</label>
+				</div>
+			</div>
+		</div>
+		<div id="border_pp_fastorder_setting" class="collapse fade {% if up_border_pp_fastorder_status == '1' %} in{% endif %}">
+			<div class="form-group">
+				<div class="col-sm-6">
+					<label class="col-sm-6 control-label">{{ entry_border_color }}</label>
+					<div class="col-sm-6 form-inline">
+						<input class="form-control color" autocomplete="off" type="text" name="up_bc_pp_fastorder" value="{{ up_bc_pp_fastorder }}"/>
+					</div>
+				</div>
+				<div class="col-sm-6">
+					<label class="col-sm-6 control-label">{{ entry_border_color_hover }}</label>
+					<div class="col-sm-6 form-inline">
+						<input class="form-control color" autocomplete="off" type="text" name="up_bc_pp_fastorder_hover" value="{{ up_bc_pp_fastorder_hover }}"/>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-3 title-color-set">{{ title_btn_compare }}</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-6">
+				<label class="col-sm-6 control-label">{{ entry_background }}</label>
+				<div class="col-sm-6 form-inline">
+					<input class="form-control color" autocomplete="off" type="text" name="up_bg_pp_compare" value="{{ up_bg_pp_compare }}"/>
+				</div>
+			</div>
+			<div class="col-sm-6">
+				<label class="col-sm-6 control-label">{{ entry_color_text_icon }}</label>
+				<div class="col-sm-6 form-inline">
+					<input class="form-control color" autocomplete="off" type="text" name="up_color_pp_compare" value="{{ up_color_pp_compare }}"/>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-6">
+				<label class="col-sm-6 control-label">{{ entry_background_hover }}</label>
+				<div class="col-sm-6 form-inline">
+					<input class="form-control color" autocomplete="off" type="text" name="up_bg_pp_compare_hover" value="{{ up_bg_pp_compare_hover }}"/>
+				</div>
+			</div>
+			<div class="col-sm-6">
+				<label class="col-sm-6 control-label">{{ entry_color_text_icon_hover }}</label>
+				<div class="col-sm-6 form-inline">
+					<input class="form-control color" autocomplete="off" type="text" name="up_color_pp_compare_hover" value="{{ up_color_pp_compare_hover }}"/>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-3 title-color-set">{{ title_btn_wishlist }}</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-6">
+				<label class="col-sm-6 control-label">{{ entry_background }}</label>
+				<div class="col-sm-6 form-inline">
+					<input class="form-control color" autocomplete="off" type="text" name="up_bg_pp_wishlist" value="{{ up_bg_pp_wishlist }}"/>
+				</div>
+			</div>
+			<div class="col-sm-6">
+				<label class="col-sm-6 control-label">{{ entry_color_text_icon }}</label>
+				<div class="col-sm-6 form-inline">
+					<input class="form-control color" autocomplete="off" type="text" name="up_color_pp_wishlist" value="{{ up_color_pp_wishlist }}"/>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-6">
+				<label class="col-sm-6 control-label">{{ entry_background_hover }}</label>
+				<div class="col-sm-6 form-inline">
+					<input class="form-control color" autocomplete="off" type="text" name="up_bg_pp_wishlist_hover" value="{{ up_bg_pp_wishlist_hover }}"/>
+				</div>
+			</div>
+			<div class="col-sm-6">
+				<label class="col-sm-6 control-label">{{ entry_color_text_icon_hover }}</label>
+				<div class="col-sm-6 form-inline">
+					<input class="form-control color" autocomplete="off" type="text" name="up_color_pp_wishlist_hover" value="{{ up_color_pp_wishlist_hover }}"/>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-12 title-setting">{{ title_other_buttons }}</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-3 title-color-set">{{ title_btn_primary }}</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-6">
+				<label class="col-sm-6 control-label">{{ entry_background }}</label>
+				<div class="col-sm-6 form-inline">
+					<input class="form-control color" autocomplete="off" type="text" name="up_bg_btn_primary" value="{{ up_bg_btn_primary }}"/>
+				</div>
+			</div>
+			<div class="col-sm-6">
+				<label class="col-sm-6 control-label">{{ entry_color_text_icon }}</label>
+				<div class="col-sm-6 form-inline">
+					<input class="form-control color" autocomplete="off" type="text" name="up_color_btn_primary" value="{{ up_color_btn_primary }}"/>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-6">
+				<label class="col-sm-6 control-label">{{ entry_background_hover }}</label>
+				<div class="col-sm-6 form-inline">
+					<input class="form-control color" autocomplete="off" type="text" name="up_bg_btn_primary_hover" value="{{ up_bg_btn_primary_hover }}"/>
+				</div>
+			</div>
+			<div class="col-sm-6">
+				<label class="col-sm-6 control-label">{{ entry_color_text_icon_hover }}</label>
+				<div class="col-sm-6 form-inline">
+					<input class="form-control color" autocomplete="off" type="text" name="up_color_btn_primary_hover" value="{{ up_color_btn_primary_hover }}"/>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-3 title-color-set">{{ title_btn_default }}</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-6">
+				<label class="col-sm-6 control-label">{{ entry_background }}</label>
+				<div class="col-sm-6 form-inline">
+					<input class="form-control color" autocomplete="off" type="text" name="up_bg_btn_default" value="{{ up_bg_btn_default }}"/>
+				</div>
+			</div>
+			<div class="col-sm-6">
+				<label class="col-sm-6 control-label">{{ entry_color_text_icon }}</label>
+				<div class="col-sm-6 form-inline">
+					<input class="form-control color" autocomplete="off" type="text" name="up_color_btn_default" value="{{ up_color_btn_default }}"/>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-6">
+				<label class="col-sm-6 control-label">{{ entry_background_hover }}</label>
+				<div class="col-sm-6 form-inline">
+					<input class="form-control color" autocomplete="off" type="text" name="up_bg_btn_default_hover" value="{{ up_bg_btn_default_hover }}"/>
+				</div>
+			</div>
+			<div class="col-sm-6">
+				<label class="col-sm-6 control-label">{{ entry_color_text_icon_hover }}</label>
+				<div class="col-sm-6 form-inline">
+					<input class="form-control color" autocomplete="off" type="text" name="up_color_btn_default_hover" value="{{ up_color_btn_default_hover }}"/>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-3 title-color-set">{{ title_btn_black }}</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-6">
+				<label class="col-sm-6 control-label">{{ entry_background }}</label>
+				<div class="col-sm-6 form-inline">
+					<input class="form-control color" autocomplete="off" type="text" name="up_bg_btn_black" value="{{ up_bg_btn_black }}"/>
+				</div>
+			</div>
+			<div class="col-sm-6">
+				<label class="col-sm-6 control-label">{{ entry_color_text_icon }}</label>
+				<div class="col-sm-6 form-inline">
+					<input class="form-control color" autocomplete="off" type="text" name="up_color_btn_black" value="{{ up_color_btn_black }}"/>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-6">
+				<label class="col-sm-6 control-label">{{ entry_background_hover }}</label>
+				<div class="col-sm-6 form-inline">
+					<input class="form-control color" autocomplete="off" type="text" name="up_bg_btn_black_hover" value="{{ up_bg_btn_black_hover }}"/>
+				</div>
+			</div>
+			<div class="col-sm-6">
+				<label class="col-sm-6 control-label">{{ entry_color_text_icon_hover }}</label>
+				<div class="col-sm-6 form-inline">
+					<input class="form-control color" autocomplete="off" type="text" name="up_color_btn_black_hover" value="{{ up_color_btn_black_hover }}"/>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-12 title-setting">{{ title_fix_btn_bottom_desktop }}</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-6">
+				<label class="col-sm-6 control-label">{{ entry_background_menu }}</label>
+				<div class="col-sm-6 form-inline">
+					<input class="form-control color" autocomplete="off" type="text" name="up_bg_fix_bar" value="{{ up_bg_fix_bar }}"/>
+				</div>
+			</div>
+			<div class="col-sm-6">
+				<label class="col-sm-6 control-label">{{ entry_background_button }}</label>
+				<div class="col-sm-6 form-inline">
+					<input class="form-control color" autocomplete="off" type="text" name="up_bg_btn_fix_bar" value="{{ up_bg_btn_fix_bar }}"/>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-6">
+				<label class="col-sm-6 control-label">{{ entry_border_color }}</label>
+				<div class="col-sm-6 form-inline">
+					<input class="form-control color" autocomplete="off" type="text" name="up_bc_fix_bar" value="{{ up_bc_fix_bar }}"/>
+				</div>
+			</div>
+			<div class="col-sm-6">
+				<label class="col-sm-6 control-label">{{ entry_color_icon }}</label>
+				<div class="col-sm-6 form-inline">
+					<input class="form-control color" autocomplete="off" type="text" name="up_color_icon_btn_fix_bar" value="{{ up_color_icon_btn_fix_bar }}"/>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-6">
+				<label class="col-sm-6 control-label">{{ entry_background_total }}</label>
+				<div class="col-sm-6 form-inline">
+					<input class="form-control color" autocomplete="off" type="text" name="up_bg_total_fix_bar" value="{{ up_bg_total_fix_bar }}"/>
+				</div>
+			</div>
+			<div class="col-sm-6">
+				<label class="col-sm-6 control-label">{{ entry_color_total }}</label>
+				<div class="col-sm-6 form-inline">
+					<input class="form-control color" autocomplete="off" type="text" name="up_color_total_fix_bar" value="{{ up_color_total_fix_bar }}"/>
+				</div>
+			</div>
+		</div>
+	</fieldset>
+	<script>
+		$(document).on('change', '[name=up_border_menu_status]', function(){
+			setTimeout(function () {
+				if ($('[name=up_border_menu_status]:checked').val() == '1') {
+					$('#menu_border_setting').collapse('show');
+				} else {
+					$('#menu_border_setting').collapse('hide');
+				}
+			}, 50);
+		});
+		$(document).on('change', '[name=up_border_mod_add_to_cart_status]', function(){
+			setTimeout(function () {
+				if ($('[name=up_border_mod_add_to_cart_status]:checked').val() == '1') {
+					$('#border_mod_add_to_cart_setting').collapse('show');
+				} else {
+					$('#border_mod_add_to_cart_setting').collapse('hide');
+				}
+			}, 50);
+		});
+		$(document).on('change', '[name=up_border_pp_add_to_cart_status]', function(){
+			setTimeout(function () {
+				if ($('[name=up_border_pp_add_to_cart_status]:checked').val() == '1') {
+					$('#border_pp_add_to_cart_setting').collapse('show');
+				} else {
+					$('#border_pp_add_to_cart_setting').collapse('hide');
+				}
+			}, 50);
+		});
+		$(document).on('change', '[name=up_border_pp_fastorder_status]', function(){
+			setTimeout(function () {
+				if ($('[name=up_border_pp_fastorder_status]:checked').val() == '1') {
+					$('#border_pp_fastorder_setting').collapse('show');
+				} else {
+					$('#border_pp_fastorder_setting').collapse('hide');
+				}
+			}, 50);
+		});
+	</script>
+	</div>
+	<div class="tab-pane" id="dark-theme-color-setting">
+		<div class="form-group">
+			<label class="col-sm-2 control-label" for="input-dark-theme-logo">{{ entry_dark_theme_logo }}</label>
+			<div class="col-sm-10">
+				<a style="background: #000000" href="" id="thumb-dark-theme-logo" data-toggle="image" class="img-thumbnail">
+					<img src="{{ dark_theme_logo }}" alt="" title="" data-placeholder="{{ placeholder }}" />
+				</a>
+				<input type="hidden" name="config_dark_theme_logo" value="{{ config_dark_theme_logo }}" id="input-dark-theme-logo" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label" for="input-fm-dark-theme-logo">{{ entry_dark_theme_logo_mobile }}</label>
+			<div class="col-sm-10">
+				<a style="background: #000000" href="" id="thumb-fm-dark-theme-logo" data-toggle="image" class="img-thumbnail">
+					<img src="{{ fm_dark_theme_logo }}" alt="" title="" data-placeholder="{{ placeholder }}" />
+				</a>
+				<input type="hidden" name="config_fm_dark_theme_logo" value="{{ config_fm_dark_theme_logo }}" id="input-fm-dark-theme-logo" />
+			</div>
+		</div>
+
+		<fieldset>
+			<div class="row">
+				<div class="col-sm-12 title-setting">{{ title_main_color }}</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-6">
+					<label class="col-sm-6 control-label">{{ entry_color_price }}</label>
+					<div class="col-sm-6 form-inline">
+						<input class="form-control color" autocomplete="off" type="text" name="up_dark_color_price" value="{{ up_dark_color_price }}" />
+					</div>
+				</div>
+				<div class="col-sm-6">
+					<label class="col-sm-6 control-label">{{ entry_color_sale_price }}</label>
+					<div class="col-sm-6 form-inline">
+						<input class="form-control color" autocomplete="off" type="text" name="up_dark_color_sale_price" value="{{ up_dark_color_sale_price }}" />
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-6">
+					<label class="col-sm-6 control-label">{{ entry_color_status_in_stock }}</label>
+					<div class="col-sm-6 form-inline">
+						<input class="form-control color" autocomplete="off" type="text" name="up_dark_color_status_in_stock" value="{{ up_dark_color_status_in_stock }}" />
+					</div>
+				</div>
+				<div class="col-sm-6">
+					<label class="col-sm-6 control-label">{{ entry_color_status_out_of_stock }}</label>
+					<div class="col-sm-6 form-inline">
+						<input class="form-control color" autocomplete="off" type="text" name="up_dark_color_status_out_of_stock" value="{{ up_dark_color_status_out_of_stock }}" />
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-6">
+					<label class="col-sm-6 control-label">{{ entry_color_link }}</label>
+					<div class="col-sm-6 form-inline">
+						<input class="form-control color" autocomplete="off" type="text" name="up_dark_color_link" value="{{ up_dark_color_link }}" />
+					</div>
+				</div>
+				<div class="col-sm-6">
+					<label class="col-sm-6 control-label">{{ entry_color_link_hover }}</label>
+					<div class="col-sm-6 form-inline">
+						<input class="form-control color" autocomplete="off" type="text" name="up_dark_color_link_hover" value="{{ up_dark_color_link_hover }}" />
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-6">
+					<label class="col-sm-6 control-label">{{ entry_color_rating_active }}</label>
+					<div class="col-sm-6 form-inline">
+						<input class="form-control color" autocomplete="off" type="text" name="up_dark_color_rating_active" value="{{ up_dark_color_rating_active }}" />
+					</div>
+				</div>
+				<div class="col-sm-6">
+					<label class="col-sm-6 control-label">{{ entry_color_rating_passive }}</label>
+					<div class="col-sm-6 form-inline">
+						<input class="form-control color" autocomplete="off" type="text" name="up_dark_color_rating_passive" value="{{ up_dark_color_rating_passive }}" />
+					</div>
+				</div>
+			</div>
+		</fieldset>
+		<fieldset>
+			<div class="row">
+				<div class="col-sm-12 title-setting">{{ title_header_color }}</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-3 title-color-set">{{ title_btn_menu }}</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-6">
+					<label class="col-sm-6 control-label">{{ entry_background }}</label>
+					<div class="col-sm-6 form-inline">
+						<input class="form-control color" autocomplete="off" type="text" name="up_dark_bg_menu" value="{{ up_dark_bg_menu }}"/>
+					</div>
+				</div>
+				<div class="col-sm-6">
+					<label class="col-sm-6 control-label">{{ entry_background_hover }}</label>
+					<div class="col-sm-6 form-inline">
+						<input class="form-control color" autocomplete="off" type="text" name="up_dark_bg_menu_hover" value="{{ up_dark_bg_menu_hover }}"/>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-6">
+					<label class="col-sm-6 control-label">{{ entry_color_text_icon }}</label>
+					<div class="col-sm-6 form-inline">
+						<input class="form-control color" autocomplete="off" type="text" name="up_dark_color_menu" value="{{ up_dark_color_menu }}"/>
+					</div>
+				</div>
+				<div class="col-sm-6">
+					<label class="col-sm-6 control-label">{{ entry_color_text_icon_hover }}</label>
+					<div class="col-sm-6 form-inline">
+						<input class="form-control color" autocomplete="off" type="text" name="up_dark_color_menu_hover" value="{{ up_dark_color_menu_hover }}"/>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">{{ entry_border_status }}</label>
+				<div class="col-sm-9">
+					<div class="btn-group" data-toggle="buttons">
+						<label class="btn btn-default{% if up_dark_border_menu_status == '1' %} active{% endif %}">
+							<input type="radio" name="up_dark_border_menu_status" value="1" {% if up_dark_border_menu_status == '1' %}checked="checked"{% endif %}>
+							<span class="on-off">{{ text_yes }}</span>
+						</label>
+						<label class="btn btn-default{% if up_dark_border_menu_status == '0' %} active{% endif %}">
+							<input type="radio" name="up_dark_border_menu_status" value="0" {% if up_dark_border_menu_status == '0' %}checked="checked"{% endif %}>
+							<span class="on-off">{{ text_no }}</span>
+						</label>
+					</div>
+				</div>
+			</div>
+			<div id="menu_border_setting_dark" class="collapse fade{% if up_dark_border_menu_status == '1' %} in{% endif %}">
+				<div class="form-group">
+					<div class="col-sm-6">
+						<label class="col-sm-6 control-label">{{ entry_border_color }}</label>
+						<div class="col-sm-6 form-inline">
+							<input class="form-control color" autocomplete="off" type="text" name="up_dark_border_color_menu" value="{{ up_dark_border_color_menu }}"/>
+						</div>
+					</div>
+					<div class="col-sm-6">
+						<label class="col-sm-6 control-label">{{ entry_border_color_hover }}</label>
+						<div class="col-sm-6 form-inline">
+							<input class="form-control color" autocomplete="off" type="text" name="up_dark_border_color_menu_hover" value="{{ up_dark_border_color_menu_hover }}"/>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-3 title-color-set">{{ title_header_compare_wishlist }}</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-6">
+					<label class="col-sm-6 control-label">{{ entry_background_total }}</label>
+					<div class="col-sm-6 form-inline">
+						<input class="form-control color" autocomplete="off" type="text" name="up_dark_bg_header_total_cw" value="{{ up_dark_bg_header_total_cw }}"/>
+					</div>
+				</div>
+				<div class="col-sm-6">
+					<label class="col-sm-6 control-label">{{ entry_color_total }}</label>
+					<div class="col-sm-6 form-inline">
+						<input class="form-control color" autocomplete="off" type="text" name="up_dark_color_header_total_cw" value="{{ up_dark_color_header_total_cw }}"/>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-3 title-color-set">{{ title_header_cart }}</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-6">
+					<label class="col-sm-6 control-label">{{ entry_background }}</label>
+					<div class="col-sm-6 form-inline">
+						<input class="form-control color" autocomplete="off" type="text" name="up_dark_bg_header_cart" value="{{ up_dark_bg_header_cart }}"/>
+					</div>
+				</div>
+				<div class="col-sm-6">
+					<label class="col-sm-6 control-label">{{ entry_color_text_icon }}</label>
+					<div class="col-sm-6 form-inline">
+						<input class="form-control color" autocomplete="off" type="text" name="up_dark_color_header_cart" value="{{ up_dark_color_header_cart }}"/>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-6">
+					<label class="col-sm-6 control-label">{{ entry_background_total }}</label>
+					<div class="col-sm-6 form-inline">
+						<input class="form-control color" autocomplete="off" type="text" name="up_dark_bg_header_total_cart" value="{{ up_dark_bg_header_total_cart }}"/>
+					</div>
+				</div>
+				<div class="col-sm-6">
+					<label class="col-sm-6 control-label">{{ entry_color_total }}</label>
+					<div class="col-sm-6 form-inline">
+						<input class="form-control color" autocomplete="off" type="text" name="up_dark_color_header_total_cart" value="{{ up_dark_color_header_total_cart }}"/>
+					</div>
+				</div>
+			</div>
+		</fieldset>
+		<fieldset>
+			<div class="row">
+				<div class="col-sm-12 title-setting">{{ title_buttons }}</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-3 title-color-set">{{ title_btn_add_to_cart }}</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-6">
+					<label class="col-sm-6 control-label">{{ entry_background }}</label>
+					<div class="col-sm-6 form-inline">
+						<input class="form-control color" autocomplete="off" type="text" name="up_dark_bg_mod_add_to_cart" value="{{ up_dark_bg_mod_add_to_cart }}"/>
+					</div>
+				</div>
+				<div class="col-sm-6">
+					<label class="col-sm-6 control-label">{{ entry_color_text_icon }}</label>
+					<div class="col-sm-6 form-inline">
+						<input class="form-control color" autocomplete="off" type="text" name="up_dark_color_mod_add_to_cart" value="{{ up_dark_color_mod_add_to_cart }}"/>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-6">
+					<label class="col-sm-6 control-label">{{ entry_background_hover }}</label>
+					<div class="col-sm-6 form-inline">
+						<input class="form-control color" autocomplete="off" type="text" name="up_dark_bg_mod_add_to_cart_hover" value="{{ up_dark_bg_mod_add_to_cart_hover }}"/>
+					</div>
+				</div>
+				<div class="col-sm-6">
+					<label class="col-sm-6 control-label">{{ entry_color_text_icon_hover }}</label>
+					<div class="col-sm-6 form-inline">
+						<input class="form-control color" autocomplete="off" type="text" name="up_dark_color_mod_add_to_cart_hover" value="{{ up_dark_color_mod_add_to_cart_hover }}"/>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-6">
+					<label class="col-sm-6 control-label">{{ entry_background_hover_block }}</label>
+					<div class="col-sm-6 form-inline">
+						<input class="form-control color" autocomplete="off" type="text" name="up_dark_bg_mod_add_to_cart_hover_block" value="{{ up_dark_bg_mod_add_to_cart_hover_block }}"/>
+					</div>
+				</div>
+				<div class="col-sm-6">
+					<label class="col-sm-6 control-label">{{ entry_color_text_icon_hover_block }}</label>
+					<div class="col-sm-6 form-inline">
+						<input class="form-control color" autocomplete="off" type="text" name="up_dark_color_mod_add_to_cart_hover_block" value="{{ up_dark_color_mod_add_to_cart_hover_block }}"/>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">{{ entry_border_status }}</label>
+				<div class="col-sm-9">
+					<div class="btn-group" data-toggle="buttons">
+						<label class="btn btn-default{% if up_dark_border_mod_add_to_cart_status == '1' %} active{% endif %}">
+							<input type="radio" name="up_dark_border_mod_add_to_cart_status" value="1" {% if up_dark_border_mod_add_to_cart_status == '1' %}checked="checked"{% endif %}>
+							<span class="on-off">{{ text_yes }}</span>
+						</label>
+						<label class="btn btn-default{% if up_dark_border_mod_add_to_cart_status == '0' %} active{% endif %}">
+							<input type="radio" name="up_dark_border_mod_add_to_cart_status" value="0" {% if up_dark_border_mod_add_to_cart_status == '0' %}checked="checked"{% endif %}>
+							<span class="on-off">{{ text_no }}</span>
+						</label>
+					</div>
+				</div>
+			</div>
+			<div id="dark_border_mod_add_to_cart_setting" class="collapse fade{% if up_dark_border_mod_add_to_cart_status == '1' %} in{% endif %}">
+				<div class="form-group">
+					<div class="col-sm-6">
+						<label class="col-sm-6 control-label">{{ entry_border_color }}</label>
+						<div class="col-sm-6 form-inline">
+							<input class="form-control color" autocomplete="off" type="text" name="up_dark_bc_mod_add_to_cart" value="{{ up_dark_bc_mod_add_to_cart }}"/>
+						</div>
+					</div>
+					<div class="col-sm-6">
+						<label class="col-sm-6 control-label">{{ entry_border_color_hover }}</label>
+						<div class="col-sm-6 form-inline">
+							<input class="form-control color" autocomplete="off" type="text" name="up_dark_bc_mod_add_to_cart_hover" value="{{ up_dark_bc_mod_add_to_cart_hover }}"/>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">{{ entry_border_color_hover_block }}</label>
+					<div class="col-sm-5 form-inline">
+						<input class="form-control color" autocomplete="off" type="text" name="up_dark_bc_mod_add_to_cart_hover_block" value="{{ up_dark_bc_mod_add_to_cart_hover_block }}"/>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-5 title-color-set">{{ title_additional_buttons }}</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-6">
+					<label class="col-sm-6 control-label">{{ entry_background }}</label>
+					<div class="col-sm-6 form-inline">
+						<input class="form-control color" autocomplete="off" type="text" name="up_dark_bg_mod_dop_btn" value="{{ up_dark_bg_mod_dop_btn }}"/>
+					</div>
+				</div>
+				<div class="col-sm-6">
+					<label class="col-sm-6 control-label">{{ entry_color_text_icon }}</label>
+					<div class="col-sm-6 form-inline">
+						<input class="form-control color" autocomplete="off" type="text" name="up_dark_color_mod_dop_btn" value="{{ up_dark_color_mod_dop_btn }}"/>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-6">
+					<label class="col-sm-6 control-label">{{ entry_background_hover }}</label>
+					<div class="col-sm-6 form-inline">
+						<input class="form-control color" autocomplete="off" type="text" name="up_dark_bg_mod_dop_btn_hover" value="{{ up_dark_bg_mod_dop_btn_hover }}"/>
+					</div>
+				</div>
+				<div class="col-sm-6">
+					<label class="col-sm-6 control-label">{{ entry_color_text_icon_hover }}</label>
+					<div class="col-sm-6 form-inline">
+						<input class="form-control color" autocomplete="off" type="text" name="up_dark_color_mod_dop_btn_hover" value="{{ up_dark_color_mod_dop_btn_hover }}"/>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-3 title-color-set">{{ title_button_scroll_top }}</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-6">
+					<label class="col-sm-6 control-label">{{ entry_background }}</label>
+					<div class="col-sm-6 form-inline">
+						<input class="form-control color" autocomplete="off" type="text" name="up_dark_bg_scroll_top" value="{{ up_dark_bg_scroll_top }}"/>
+					</div>
+				</div>
+				<div class="col-sm-6">
+					<label class="col-sm-6 control-label">{{ entry_color_icon }}</label>
+					<div class="col-sm-6 form-inline">
+						<input class="form-control color" autocomplete="off" type="text" name="up_dark_color_icon_scroll_top" value="{{ up_dark_color_icon_scroll_top }}"/>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-6">
+					<label class="col-sm-6 control-label">{{ entry_background_hover }}</label>
+					<div class="col-sm-6 form-inline">
+						<input class="form-control color" autocomplete="off" type="text" name="up_dark_bg_scroll_top_hover" value="{{ up_dark_bg_scroll_top_hover }}"/>
+					</div>
+				</div>
+				<div class="col-sm-6">
+					<label class="col-sm-6 control-label">{{ entry_color_icon_hover }}</label>
+					<div class="col-sm-6 form-inline">
+						<input class="form-control color" autocomplete="off" type="text" name="up_dark_color_icon_scroll_top_hover" value="{{ up_dark_color_icon_scroll_top_hover }}"/>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-6">
+					<label class="col-sm-6 control-label">{{ entry_color_progress }}</label>
+					<div class="col-sm-6 form-inline">
+						<input class="form-control color" autocomplete="off" type="text" name="up_dark_color_progress_scroll_top" value="{{ up_dark_color_progress_scroll_top }}"/>
+					</div>
+				</div>
+				<div class="col-sm-6">
+					<label class="col-sm-6 control-label">{{ entry_color_progress_hover }}</label>
+					<div class="col-sm-6 form-inline">
+						<input class="form-control color" autocomplete="off" type="text" name="up_dark_color_progress_scroll_top_hover" value="{{ up_dark_color_progress_scroll_top_hover }}"/>
+					</div>
+				</div>
+			</div>
+		</fieldset>
+		<fieldset>
+			<div class="row">
+				<div class="col-sm-12 title-setting">{{ title_buttons_in_ppage }}</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-3 title-color-set">{{ title_btn_add_to_cart }}</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-6">
+					<label class="col-sm-6 control-label">{{ entry_background }}</label>
+					<div class="col-sm-6 form-inline">
+						<input class="form-control color" autocomplete="off" type="text" name="up_dark_bg_pp_add_to_cart" value="{{ up_dark_bg_pp_add_to_cart }}"/>
+					</div>
+				</div>
+				<div class="col-sm-6">
+					<label class="col-sm-6 control-label">{{ entry_color_text_icon }}</label>
+					<div class="col-sm-6 form-inline">
+						<input class="form-control color" autocomplete="off" type="text" name="up_dark_color_pp_add_to_cart" value="{{ up_dark_color_pp_add_to_cart }}"/>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-6">
+					<label class="col-sm-6 control-label">{{ entry_background_hover }}</label>
+					<div class="col-sm-6 form-inline">
+						<input class="form-control color" autocomplete="off" type="text" name="up_dark_bg_pp_add_to_cart_hover" value="{{ up_dark_bg_pp_add_to_cart_hover }}"/>
+					</div>
+				</div>
+				<div class="col-sm-6">
+					<label class="col-sm-6 control-label">{{ entry_color_text_icon_hover }}</label>
+					<div class="col-sm-6 form-inline">
+						<input class="form-control color" autocomplete="off" type="text" name="up_dark_color_pp_add_to_cart_hover" value="{{ up_dark_color_pp_add_to_cart_hover }}"/>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">{{ entry_border_status }}</label>
+				<div class="col-sm-9">
+					<div class="btn-group" data-toggle="buttons">
+						<label class="btn btn-default{% if up_dark_border_pp_add_to_cart_status == '1' %} active{% endif %}">
+							<input type="radio" name="up_dark_border_pp_add_to_cart_status" value="1" {% if up_dark_border_pp_add_to_cart_status == '1' %}checked="checked"{% endif %}>
+							<span class="on-off">{{ text_yes }}</span>
+						</label>
+						<label class="btn btn-default{% if up_dark_border_pp_add_to_cart_status == '0' %} active{% endif %}">
+							<input type="radio" name="up_dark_border_pp_add_to_cart_status" value="0" {% if up_dark_border_pp_add_to_cart_status == '0' %}checked="checked"{% endif %}>
+							<span class="on-off">{{ text_no }}</span>
+						</label>
+					</div>
+				</div>
+			</div>
+			<div id="dark_border_pp_add_to_cart_setting" class="collapse fade {% if up_dark_border_pp_add_to_cart_status == '1' %} in{% endif %}">
+				<div class="form-group">
+					<div class="col-sm-6">
+						<label class="col-sm-6 control-label">{{ entry_border_color }}</label>
+						<div class="col-sm-6 form-inline">
+							<input class="form-control color" autocomplete="off" type="text" name="up_dark_bc_pp_add_to_cart" value="{{ up_dark_bc_pp_add_to_cart }}"/>
+						</div>
+					</div>
+					<div class="col-sm-6">
+						<label class="col-sm-6 control-label">{{ entry_border_color_hover }}</label>
+						<div class="col-sm-6 form-inline">
+							<input class="form-control color" autocomplete="off" type="text" name="up_dark_bc_pp_add_to_cart_hover" value="{{ up_dark_bc_pp_add_to_cart_hover }}"/>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-3 title-color-set">{{ title_btn_fastorder }}</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-6">
+					<label class="col-sm-6 control-label">{{ entry_background }}</label>
+					<div class="col-sm-6 form-inline">
+						<input class="form-control color" autocomplete="off" type="text" name="up_dark_bg_pp_fastorder" value="{{ up_dark_bg_pp_fastorder }}"/>
+					</div>
+				</div>
+				<div class="col-sm-6">
+					<label class="col-sm-6 control-label">{{ entry_color_text_icon }}</label>
+					<div class="col-sm-6 form-inline">
+						<input class="form-control color" autocomplete="off" type="text" name="up_dark_color_pp_fastorder" value="{{ up_dark_color_pp_fastorder }}"/>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-6">
+					<label class="col-sm-6 control-label">{{ entry_background_hover }}</label>
+					<div class="col-sm-6 form-inline">
+						<input class="form-control color" autocomplete="off" type="text" name="up_dark_bg_pp_fastorder_hover" value="{{ up_dark_bg_pp_fastorder_hover }}"/>
+					</div>
+				</div>
+				<div class="col-sm-6">
+					<label class="col-sm-6 control-label">{{ entry_color_text_icon_hover }}</label>
+					<div class="col-sm-6 form-inline">
+						<input class="form-control color" autocomplete="off" type="text" name="up_dark_color_pp_fastorder_hover" value="{{ up_dark_color_pp_fastorder_hover }}"/>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">{{ entry_border_status }}</label>
+				<div class="col-sm-9">
+					<div class="btn-group" data-toggle="buttons">
+						<label class="btn btn-default{% if up_dark_border_pp_fastorder_status == '1' %} active{% endif %}">
+							<input type="radio" name="up_dark_border_pp_fastorder_status" value="1" {% if up_dark_border_pp_fastorder_status == '1' %}checked="checked"{% endif %}>
+							<span class="on-off">{{ text_yes }}</span>
+						</label>
+						<label class="btn btn-default{% if up_dark_border_pp_fastorder_status == '0' %} active{% endif %}">
+							<input type="radio" name="up_dark_border_pp_fastorder_status" value="0" {% if up_dark_border_pp_fastorder_status == '0' %}checked="checked"{% endif %}>
+							<span class="on-off">{{ text_no }}</span>
+						</label>
+					</div>
+				</div>
+			</div>
+			<div id="dark_border_pp_fastorder_setting" class="collapse fade {% if up_dark_border_pp_fastorder_status == '1' %} in{% endif %}">
+				<div class="form-group">
+					<div class="col-sm-6">
+						<label class="col-sm-6 control-label">{{ entry_border_color }}</label>
+						<div class="col-sm-6 form-inline">
+							<input class="form-control color" autocomplete="off" type="text" name="up_dark_bc_pp_fastorder" value="{{ up_dark_bc_pp_fastorder }}"/>
+						</div>
+					</div>
+					<div class="col-sm-6">
+						<label class="col-sm-6 control-label">{{ entry_border_color_hover }}</label>
+						<div class="col-sm-6 form-inline">
+							<input class="form-control color" autocomplete="off" type="text" name="up_dark_bc_pp_fastorder_hover" value="{{ up_dark_bc_pp_fastorder_hover }}"/>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-3 title-color-set">{{ title_btn_compare }}</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-6">
+					<label class="col-sm-6 control-label">{{ entry_background }}</label>
+					<div class="col-sm-6 form-inline">
+						<input class="form-control color" autocomplete="off" type="text" name="up_dark_bg_pp_compare" value="{{ up_dark_bg_pp_compare }}"/>
+					</div>
+				</div>
+				<div class="col-sm-6">
+					<label class="col-sm-6 control-label">{{ entry_color_text_icon }}</label>
+					<div class="col-sm-6 form-inline">
+						<input class="form-control color" autocomplete="off" type="text" name="up_dark_color_pp_compare" value="{{ up_dark_color_pp_compare }}"/>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-6">
+					<label class="col-sm-6 control-label">{{ entry_background_hover }}</label>
+					<div class="col-sm-6 form-inline">
+						<input class="form-control color" autocomplete="off" type="text" name="up_dark_bg_pp_compare_hover" value="{{ up_dark_bg_pp_compare_hover }}"/>
+					</div>
+				</div>
+				<div class="col-sm-6">
+					<label class="col-sm-6 control-label">{{ entry_color_text_icon_hover }}</label>
+					<div class="col-sm-6 form-inline">
+						<input class="form-control color" autocomplete="off" type="text" name="up_dark_color_pp_compare_hover" value="{{ up_dark_color_pp_compare_hover }}"/>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-3 title-color-set">{{ title_btn_wishlist }}</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-6">
+					<label class="col-sm-6 control-label">{{ entry_background }}</label>
+					<div class="col-sm-6 form-inline">
+						<input class="form-control color" autocomplete="off" type="text" name="up_dark_bg_pp_wishlist" value="{{ up_dark_bg_pp_wishlist }}"/>
+					</div>
+				</div>
+				<div class="col-sm-6">
+					<label class="col-sm-6 control-label">{{ entry_color_text_icon }}</label>
+					<div class="col-sm-6 form-inline">
+						<input class="form-control color" autocomplete="off" type="text" name="up_dark_color_pp_wishlist" value="{{ up_dark_color_pp_wishlist }}"/>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-6">
+					<label class="col-sm-6 control-label">{{ entry_background_hover }}</label>
+					<div class="col-sm-6 form-inline">
+						<input class="form-control color" autocomplete="off" type="text" name="up_dark_bg_pp_wishlist_hover" value="{{ up_dark_bg_pp_wishlist_hover }}"/>
+					</div>
+				</div>
+				<div class="col-sm-6">
+					<label class="col-sm-6 control-label">{{ entry_color_text_icon_hover }}</label>
+					<div class="col-sm-6 form-inline">
+						<input class="form-control color" autocomplete="off" type="text" name="up_dark_color_pp_wishlist_hover" value="{{ up_dark_color_pp_wishlist_hover }}"/>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-12 title-setting">{{ title_other_buttons }}</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-3 title-color-set">{{ title_btn_primary }}</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-6">
+					<label class="col-sm-6 control-label">{{ entry_background }}</label>
+					<div class="col-sm-6 form-inline">
+						<input class="form-control color" autocomplete="off" type="text" name="up_dark_bg_btn_primary" value="{{ up_dark_bg_btn_primary }}"/>
+					</div>
+				</div>
+				<div class="col-sm-6">
+					<label class="col-sm-6 control-label">{{ entry_color_text_icon }}</label>
+					<div class="col-sm-6 form-inline">
+						<input class="form-control color" autocomplete="off" type="text" name="up_dark_color_btn_primary" value="{{ up_dark_color_btn_primary }}"/>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-6">
+					<label class="col-sm-6 control-label">{{ entry_background_hover }}</label>
+					<div class="col-sm-6 form-inline">
+						<input class="form-control color" autocomplete="off" type="text" name="up_dark_bg_btn_primary_hover" value="{{ up_dark_bg_btn_primary_hover }}"/>
+					</div>
+				</div>
+				<div class="col-sm-6">
+					<label class="col-sm-6 control-label">{{ entry_color_text_icon_hover }}</label>
+					<div class="col-sm-6 form-inline">
+						<input class="form-control color" autocomplete="off" type="text" name="up_dark_color_btn_primary_hover" value="{{ up_dark_color_btn_primary_hover }}"/>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-3 title-color-set">{{ title_btn_default }}</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-6">
+					<label class="col-sm-6 control-label">{{ entry_background }}</label>
+					<div class="col-sm-6 form-inline">
+						<input class="form-control color" autocomplete="off" type="text" name="up_dark_bg_btn_default" value="{{ up_dark_bg_btn_default }}"/>
+					</div>
+				</div>
+				<div class="col-sm-6">
+					<label class="col-sm-6 control-label">{{ entry_color_text_icon }}</label>
+					<div class="col-sm-6 form-inline">
+						<input class="form-control color" autocomplete="off" type="text" name="up_dark_color_btn_default" value="{{ up_dark_color_btn_default }}"/>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-6">
+					<label class="col-sm-6 control-label">{{ entry_background_hover }}</label>
+					<div class="col-sm-6 form-inline">
+						<input class="form-control color" autocomplete="off" type="text" name="up_dark_bg_btn_default_hover" value="{{ up_dark_bg_btn_default_hover }}"/>
+					</div>
+				</div>
+				<div class="col-sm-6">
+					<label class="col-sm-6 control-label">{{ entry_color_text_icon_hover }}</label>
+					<div class="col-sm-6 form-inline">
+						<input class="form-control color" autocomplete="off" type="text" name="up_dark_color_btn_default_hover" value="{{ up_dark_color_btn_default_hover }}"/>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-3 title-color-set">{{ title_btn_black }}</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-6">
+					<label class="col-sm-6 control-label">{{ entry_background }}</label>
+					<div class="col-sm-6 form-inline">
+						<input class="form-control color" autocomplete="off" type="text" name="up_dark_bg_btn_black" value="{{ up_dark_bg_btn_black }}"/>
+					</div>
+				</div>
+				<div class="col-sm-6">
+					<label class="col-sm-6 control-label">{{ entry_color_text_icon }}</label>
+					<div class="col-sm-6 form-inline">
+						<input class="form-control color" autocomplete="off" type="text" name="up_dark_color_btn_black" value="{{ up_dark_color_btn_black }}"/>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-6">
+					<label class="col-sm-6 control-label">{{ entry_background_hover }}</label>
+					<div class="col-sm-6 form-inline">
+						<input class="form-control color" autocomplete="off" type="text" name="up_dark_bg_btn_black_hover" value="{{ up_dark_bg_btn_black_hover }}"/>
+					</div>
+				</div>
+				<div class="col-sm-6">
+					<label class="col-sm-6 control-label">{{ entry_color_text_icon_hover }}</label>
+					<div class="col-sm-6 form-inline">
+						<input class="form-control color" autocomplete="off" type="text" name="up_dark_color_btn_black_hover" value="{{ up_dark_color_btn_black_hover }}"/>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-12 title-setting">{{ title_fix_btn_bottom_desktop }}</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-6">
+					<label class="col-sm-6 control-label">{{ entry_background_menu }}</label>
+					<div class="col-sm-6 form-inline">
+						<input class="form-control color" autocomplete="off" type="text" name="up_dark_bg_fix_bar" value="{{ up_dark_bg_fix_bar }}"/>
+					</div>
+				</div>
+				<div class="col-sm-6">
+					<label class="col-sm-6 control-label">{{ entry_background_button }}</label>
+					<div class="col-sm-6 form-inline">
+						<input class="form-control color" autocomplete="off" type="text" name="up_dark_bg_btn_fix_bar" value="{{ up_dark_bg_btn_fix_bar }}"/>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-6">
+					<label class="col-sm-6 control-label">{{ entry_border_color }}</label>
+					<div class="col-sm-6 form-inline">
+						<input class="form-control color" autocomplete="off" type="text" name="up_dark_bc_fix_bar" value="{{ up_dark_bc_fix_bar }}"/>
+					</div>
+				</div>
+				<div class="col-sm-6">
+					<label class="col-sm-6 control-label">{{ entry_color_icon }}</label>
+					<div class="col-sm-6 form-inline">
+						<input class="form-control color" autocomplete="off" type="text" name="up_dark_color_icon_btn_fix_bar" value="{{ up_dark_color_icon_btn_fix_bar }}"/>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-6">
+					<label class="col-sm-6 control-label">{{ entry_background_total }}</label>
+					<div class="col-sm-6 form-inline">
+						<input class="form-control color" autocomplete="off" type="text" name="up_dark_bg_total_fix_bar" value="{{ up_dark_bg_total_fix_bar }}"/>
+					</div>
+				</div>
+				<div class="col-sm-6">
+					<label class="col-sm-6 control-label">{{ entry_color_total }}</label>
+					<div class="col-sm-6 form-inline">
+						<input class="form-control color" autocomplete="off" type="text" name="up_dark_color_total_fix_bar" value="{{ up_dark_color_total_fix_bar }}"/>
+					</div>
+				</div>
+			</div>
+		</fieldset>
+
+		<script>
+		$(document).on('change', '[name=up_dark_border_menu_status]', function(){
+			setTimeout(function () {
+				if ($('[name=up_dark_border_menu_status]:checked').val() == '1') {
+					$('#menu_border_setting_dark').collapse('show');
+				} else {
+					$('#menu_border_setting_dark').collapse('hide');
+				}
+			}, 50);
+		});
+		$(document).on('change', '[name=up_dark_border_mod_add_to_cart_status]', function(){
+			setTimeout(function () {
+				if ($('[name=up_dark_border_mod_add_to_cart_status]:checked').val() == '1') {
+					$('#dark_border_mod_add_to_cart_setting').collapse('show');
+				} else {
+					$('#dark_border_mod_add_to_cart_setting').collapse('hide');
+				}
+			}, 50);
+		});
+		$(document).on('change', '[name=up_dark_border_pp_add_to_cart_status]', function(){
+			setTimeout(function () {
+				if ($('[name=up_dark_border_pp_add_to_cart_status]:checked').val() == '1') {
+					$('#dark_border_pp_add_to_cart_setting').collapse('show');
+				} else {
+					$('#dark_border_pp_add_to_cart_setting').collapse('hide');
+				}
+			}, 50);
+		});
+		$(document).on('change', '[name=up_dark_border_pp_fastorder_status]', function(){
+			setTimeout(function () {
+				if ($('[name=up_dark_border_pp_fastorder_status]:checked').val() == '1') {
+					$('#dark_border_pp_fastorder_setting').collapse('show');
+				} else {
+					$('#dark_border_pp_fastorder_setting').collapse('hide');
+				}
+			}, 50);
+		});
+		</script>
+	</div>
+</div><!--end tab color-sheme-->
+<div class="tab-pane active" id="tab-general-designed">
+	<div class="form-group">
+		<label class="col-sm-3 control-label">{{ text_custom_style }}</br>
+		<div class="label-description">{{ text_custom_style_description }}</div>
+		</label>
+		<div class="col-sm-3">
+			<input class="form-control" placeholder="{{ text_custom_style_placeholder }}" type="text" name="config_custom_style_upstore" value="{{ config_custom_style_upstore }}" />
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label class="col-sm-3 control-label" for="input-theme-fonts">{{ entry_theme_fonts }}</label>
+		<div class="col-sm-9">
+			<select name="theme_fonts" id="input-theme-fonts" class="form-control">
+				<option {% if ((theme_fonts == 'exo2') or (not theme_fonts)) %}selected="selected"{% endif %} value="exo2">Exo 2</option>
+				<option {% if (theme_fonts == 'open-sans') %}selected="selected"{% endif %} value="open-sans">Open Sans</option>
+				<option {% if (theme_fonts == 'rubik') %}selected="selected"{% endif %} value="rubik">Rubik</option>
+				<option {% if (theme_fonts == 'roboto') %}selected="selected"{% endif %} value="roboto">Roboto</option>
+				<option {% if (theme_fonts == 'montserrat') %}selected="selected"{% endif %} value="montserrat">Montserrat</option>
+				<option {% if (theme_fonts == 'inter') %}selected="selected"{% endif %} value="inter">Inter</option>
+			</select>
+	</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-3 control-label">{{ text_design_icon_menu }}</label>
+		<div class="col-sm-9">
+			<div class="radio-upstore">
+				{% if (design_icon_menu is defined and (design_icon_menu == '1') or (not design_icon_menu)) %}
+				<input id="design-icon-menu1" class="hide-radio-text" type="radio" name="design_icon_menu" value="1" checked="checked" />
+				<label for="design-icon-menu1"><span class="design-icon-menu"><svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" width="22" height="18" fill="none" viewBox="0 0 22 18"><path stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M2 2h18M2 9h18M2 16h18"/></svg></span></label>
+				{% else %}
+				<input id="design-icon-menu1" class="hide-radio-text" type="radio" name="design_icon_menu" value="1" />
+				<label for="design-icon-menu1"><span class="design-icon-menu"><svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" width="22" height="18" fill="none" viewBox="0 0 22 18"><path stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M2 2h18M2 9h18M2 16h18"/></svg></span></label>
+				{% endif %}
+				{% if (design_icon_menu is defined and (design_icon_menu == '2')) %}
+				<input id="design-icon-menu2" class="hide-radio-text" type="radio" name="design_icon_menu" value="2" checked="checked" />
+				<label for="design-icon-menu2"><span class="design-icon-menu"><svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 22 22"><path stroke="#000" stroke-linecap="round" stroke-width="1.5" d="M12.8 13.25H20m-7.2 3.15H20m-7.2 3.15H20M3 20h5.2a1 1 0 001-1v-5.2a1 1 0 00-1-1H3a1 1 0 00-1 1V19a1 1 0 001 1zM13.8 9.65H19a1 1 0 001-1V3a1 1 0 00-1-1h-5.2a1 1 0 00-1 1v5.65a1 1 0 001 1zM3 9.65h5.2a1 1 0 001-1V3a1 1 0 00-1-1H3a1 1 0 00-1 1v5.65a1 1 0 001 1z"/></svg></span></label>
+				{% else %}
+				<input id="design-icon-menu2" class="hide-radio-text" type="radio" name="design_icon_menu" value="2" />
+				<label for="design-icon-menu2"><span class="design-icon-menu"><svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 22 22"><path stroke="#000" stroke-linecap="round" stroke-width="1.5" d="M12.8 13.25H20m-7.2 3.15H20m-7.2 3.15H20M3 20h5.2a1 1 0 001-1v-5.2a1 1 0 00-1-1H3a1 1 0 00-1 1V19a1 1 0 001 1zM13.8 9.65H19a1 1 0 001-1V3a1 1 0 00-1-1h-5.2a1 1 0 00-1 1v5.65a1 1 0 001 1zM3 9.65h5.2a1 1 0 001-1V3a1 1 0 00-1-1H3a1 1 0 00-1 1v5.65a1 1 0 001 1z"/></svg></span></label>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+	<style>
+		.radio-upstore input[type="radio"] {
+			display: none;
+		}
+		.radio-upstore input[type="radio"] + label {
+			display: inline-block;
+			margin: -2px;
+			padding: 0px 8px;
+			margin-bottom: 0;
+			line-height: 20px;
+			vertical-align: middle;
+			cursor: pointer;
+		}
+		.design-icon-menu {
+			background: #CED4DA;
+			text-align: left;
+			border-radius: 8px;
+			font-size: 14px;
+			margin-top: 0px;
+			margin-left: 0px;
+			border: 0px;
+			font-weight: 400;
+			height: 40px;
+			width: 40px;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+		.radio-upstore input[type="radio"]:checked + label .design-icon-menu{
+			background: #00BC52;
+		}
+		.radio-upstore input[type="radio"]:checked + label svg path {
+			stroke: #fff;
+		}
+	</style>
+	<div class="form-group">
+		<label class="col-sm-3 control-label">{{ text_type_menu_header }}</label>
+		<div class="col-sm-9">
+			<div class="radio-group-text">
+				{% if (type_menu_header is defined and (type_menu_header == '1') or (not type_menu_header)) %}
+				<input id="type_menu_header1" class="hide-radio-text" type="radio" name="type_menu_header" value="1" checked="checked" />
+				<label for="type_menu_header1">{{ text_center }}</label>
+				{% else %}
+				<input id="type_menu_header1" class="hide-radio-text" type="radio" name="type_menu_header" value="1" />
+				<label for="type_menu_header1">{{ text_center }}</label>
+				{% endif %}
+				{% if (type_menu_header is defined and (type_menu_header == '2')) %}
+				<input id="type_menu_header2" class="hide-radio-text" type="radio" name="type_menu_header" value="2" checked="checked" />
+				<label for="type_menu_header2">{{ text_left }}</label>
+				{% else %}
+				<input id="type_menu_header2" class="hide-radio-text" type="radio" name="type_menu_header" value="2" />
+				<label for="type_menu_header2">{{ text_left }}</label>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-3 control-label">{{ text_type_header }}</label>
+		<div class="col-sm-9">
+			<div class="radio-group-text">
+				{% if (type_header is defined and (type_header == '1') or (not type_header)) %}
+				<input id="type_header1" class="hide-radio-text" type="radio" name="type_header" value="1" checked="checked" />
+				<label for="type_header1">{{ ch_text_type }}1</label>
+				{% else %}
+				<input id="type_header1" class="hide-radio-text" type="radio" name="type_header" value="1" />
+				<label for="type_header1">{{ ch_text_type }}1</label>
+				{% endif %}
+				{% if (type_header is defined and (type_header == '2')) %}
+				<input id="type_header2" class="hide-radio-text" type="radio" name="type_header" value="2" checked="checked" />
+				<label for="type_header2">{{ ch_text_type }}2</label>
+				{% else %}
+				<input id="type_header2" class="hide-radio-text" type="radio" name="type_header" value="2" />
+				<label for="type_header2">{{ ch_text_type }}2</label>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-3 control-label">{{ text_catalog_before_logo }}</label>
+		<div class="col-sm-9">
+			<div class="checkbox-group-pixelshop">
+				<label><input onchange="change_shmt();" type="checkbox" name="catalog_before_logo" value="1" {{ catalog_before_logo is defined and catalog_before_logo == 1 ? 'checked="checked"' : '' }} /><span></span></label>
+			</div>
+		</div>
+	</div>
+	<script>
+	$(window).load(function(){
+		var catalog_before_logo = $('input[name=catalog_before_logo]:checked').val();
+		if (catalog_before_logo =='1') {
+			$('.shmt').addClass('hidden');
+		} else {
+			$('.shmt').removeClass('hidden');
+		}
+	})
+	function change_shmt(){
+		if ($('input[name=catalog_before_logo]').prop('checked') == true) {
+			$('.shmt').addClass('hidden');
+		} else {
+			$('.shmt').removeClass('hidden');
+		}
+	}
+	</script>
+	<div class="form-group shmt {% if catalog_before_logo is defined and catalog_before_logo == '1' %}hidden{% endif %}">
+		<label class="col-sm-3 control-label">{{ text_main_menu }}</label>
+		<div class="col-sm-9">
+			<div class="checkbox-group-pixelshop">
+				<label><input type="checkbox" name="show_text_menu" value="1" {{ show_text_menu is defined and show_text_menu == 1 ? 'checked="checked"' : '' }} /><span></span></label>
+			</div>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-3 control-label">{{ text_bg_product_image }}
+		<div class="label-description">{{ text_options_product_page_description }}</div>
+		</label>
+		<div class="col-sm-9">
+			<div class="checkbox-group-pixelshop">
+				<label><input type="checkbox" name="bg_product_image" value="1" {{ bg_product_image is defined and bg_product_image == 1 ? 'checked="checked"' : '' }} /><span></span></label>
+			</div>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-3 control-label">{{ text_hide_text_addtocart }}
+		<div class="label-description">{{ text_options_product_page_description }}</div>
+		</label>
+		<div class="col-sm-9">
+			<div class="checkbox-group-pixelshop">
+				<label><input type="checkbox" name="hide_text_addtocart" value="1" {{ hide_text_addtocart is defined and hide_text_addtocart == 1 ? 'checked="checked"' : '' }} /><span></span></label>
+			</div>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-3 control-label">{{ text_type_btn }}
+		</label>
+		<div class="col-sm-9">
+			<div class="radio-group-text">
+				{% if (ch_type_btn is defined and (ch_type_btn == '1') or (not ch_type_btn)) %}
+				<input id="ch_type_btn1" class="hide-radio-text" type="radio" name="ch_type_btn" value="1" checked="checked" />
+				<label for="ch_type_btn1">{{ ch_text_type }}1</label>
+				{% else %}
+				<input id="ch_type_btn1" class="hide-radio-text" type="radio" name="ch_type_btn" value="1" />
+				<label for="ch_type_btn1">{{ ch_text_type }}1</label>
+				{% endif %}
+				{% if (ch_type_btn is defined and (ch_type_btn == '2')) %}
+				<input id="ch_type_btn2" class="hide-radio-text" type="radio" name="ch_type_btn" value="2" checked="checked" />
+				<label for="ch_type_btn2">{{ ch_text_type }}2</label>
+				{% else %}
+				<input id="ch_type_btn2" class="hide-radio-text" type="radio" name="ch_type_btn" value="2" />
+				<label for="ch_type_btn2">{{ ch_text_type }}2</label>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+	<div class="form-group">
+		<div class="col-sm-12 title-setting">Mobile</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-3 control-label">{{ text_fm_type_design_bottom }}</label>
+		<div class="col-sm-9">
+			<div class="radio-group-text">
+				{% if (fm_type_design_bottom is defined and (fm_type_design_bottom == '1') or (not fm_type_design_bottom)) %}
+				<input id="fm_type_design_bottom1" class="hide-radio-text" type="radio" name="fm_type_design_bottom" value="1" checked="checked" />
+				<label for="fm_type_design_bottom1">1</label>
+				{% else %}
+				<input id="fm_type_design_bottom1" class="hide-radio-text" type="radio" name="fm_type_design_bottom" value="1" />
+				<label for="fm_type_design_bottom1">1</label>
+				{% endif %}
+				{% if (fm_type_design_bottom is defined and (fm_type_design_bottom == '2')) %}
+				<input id="fm_type_design_bottom2" class="hide-radio-text" type="radio" name="fm_type_design_bottom" value="2" checked="checked" />
+				<label for="fm_type_design_bottom2">2</label>
+				{% else %}
+				<input id="fm_type_design_bottom2" class="hide-radio-text" type="radio" name="fm_type_design_bottom" value="2" />
+				<label for="fm_type_design_bottom2">2</label>
+				{% endif %}
+				{% if (fm_type_design_bottom is defined and (fm_type_design_bottom == '3')) %}
+				<input id="fm_type_design_bottom3" class="hide-radio-text" type="radio" name="fm_type_design_bottom" value="3" checked="checked" />
+				<label for="fm_type_design_bottom3">3</label>
+				{% else %}
+				<input id="fm_type_design_bottom3" class="hide-radio-text" type="radio" name="fm_type_design_bottom" value="3" />
+				<label for="fm_type_design_bottom3">3</label>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-3 control-label" for="input-fm-logo">{{ text_logo_fix_menu }}</label>
+		<div class="col-sm-9"><a href="" id="thumb-fm-logo" data-toggle="image" class="img-thumbnail"><img src="{{ fm_logo_image }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a>
+			<input type="hidden" name="fm_logo" value="{{ config_fm_logo }}" id="input-fm-logo" />
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-3 control-label">{{ text_fm_logo_w_h }}</label>
+		<div class="col-sm-2">
+			<input type="text" class="form-control" name="fm_logo_width" value="{{ fm_logo_width }}" />
+		</div>
+		<div class="col-sm-2">
+			<input type="text" class="form-control" name="fm_logo_height" value="{{ fm_logo_height }}" />
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-3 control-label">{{ text_hide_btn_go_home }}</label>
+		<div class="col-sm-9">
+			<div class="checkbox-group-pixelshop">
+				<label><input type="checkbox" name="fm_show_btn_go_home" value="1" {{ fm_show_btn_go_home is defined and fm_show_btn_go_home == 1 ? 'checked="checked"' : '' }} /><span></span></label>
+			</div>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-3 control-label">{{ text_show_text_after_icon }}</label>
+		<div class="col-sm-9">
+			<div class="checkbox-group-pixelshop">
+				<label><input type="checkbox" name="show_text_after_icon" value="1" {{ show_text_after_icon is defined and show_text_after_icon == 1 ? 'checked="checked"' : '' }} /><span></span></label>
+			</div>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-3 control-label">{{ text_hidden_box_description }}</label>
+		<div class="col-sm-9">
+			<div class="checkbox-group-pixelshop">
+				<label><input type="checkbox" name="setting_module[hidden_desc]" value="1" {{ setting_module['hidden_desc'] is defined and setting_module['hidden_desc'] == 1 ? 'checked="checked"' : '' }} /><span></span></label>
+			</div>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-3 control-label">{{ text_hidden_box_model }}</label>
+		<div class="col-sm-9">
+			<div class="checkbox-group-pixelshop">
+				<label><input type="checkbox" name="setting_module[hidden_model]" value="1" {{ setting_module['hidden_model'] is defined and setting_module['hidden_model'] == 1 ? 'checked="checked"' : '' }} /><span></span></label>
+			</div>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-3 control-label">{{ text_hidden_box_rating }}</label>
+		<div class="col-sm-9">
+			<div class="checkbox-group-pixelshop">
+				<label><input type="checkbox" name="setting_module[hidden_rating]" value="1" {{ setting_module['hidden_rating'] is defined and setting_module['hidden_rating'] == 1 ? 'checked="checked"' : '' }} /><span></span></label>
+			</div>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-3 control-label">{{ text_hidden_box_action }}</label>
+		<div class="col-sm-9">
+			<div class="checkbox-group-pixelshop">
+				<label><input type="checkbox" name="setting_module[hidden_actions]" value="1" {{ setting_module['hidden_actions'] is defined and setting_module['hidden_actions'] == 1 ? 'checked="checked"' : '' }} /><span></span></label>
+			</div>
+		</div>
+	</div>
+</div>

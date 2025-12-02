@@ -1,0 +1,172 @@
+{{ header }}{{ column_left }}
+<div id="content">
+	<div class="page-header">
+		<div class="container-fluid">
+			<div class="pull-right">
+				<button type="submit" form="form-module-cookie-consent" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+				<a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a>
+			</div>
+			<h1>{{ heading_title }}</h1>
+			<ul class="breadcrumb">
+				{% for breadcrumb in breadcrumbs %}
+					<li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+				{% endfor %}
+			</ul>
+		</div>
+	</div>
+	<div class="container-fluid">
+		{% if error_warning %}
+			<div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+				<button type="button" class="close" data-dismiss="alert">&times;</button>
+			</div>
+		{% endif %}
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title"><i class="fa fa-pencil"></i> {{ text_edit }}</h3>
+			</div>
+			<div class="panel-body">
+				<form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-module-cookie-consent" class="form-horizontal">
+					<div class="form-group">
+						<label class="col-sm-2 control-label" for="input-module-upstore-cookie-consent-status">{{ entry_status }}</label>
+						<div class="col-sm-10">
+							<div class="btn-group" data-toggle="buttons">
+								<label class="btn btn-default{{ module_upstore_cookie_consent_status ? ' active' : '' }}">
+									<input autocomplete="off" type="radio" name="module_upstore_cookie_consent_status" value="1" {{ module_upstore_cookie_consent_status ? 'checked="checked"' : '' }} />
+									<span class="on-off">{{ text_on }}</span>
+								</label>
+								<label class="btn btn-default{{ not module_upstore_cookie_consent_status ? ' active' : '' }}">
+									<input autocomplete="off" type="radio" name="module_upstore_cookie_consent_status" value="0" {{ not module_upstore_cookie_consent_status ? 'checked="checked"' : '' }} />
+									<span class="on-off">{{ text_off }}</span>
+								</label>
+							</div>
+						</div>
+					</div>
+					<div id="setting-cookie-consent" class="collapse fade {% if module_upstore_cookie_consent_status %}in{% endif %}">
+						<div class="form-group">
+							<label class="col-sm-2 control-label" for="input-cookie-day"><span data-toggle="tooltip" title="{{ help_cookie_day }}">{{ entry_cookie_day }}</span></label>
+							<div class="col-sm-10 form-inline">
+								<input type="number" id="input-cookie-day" name="module_upstore_cookie_consent_setting[cookie_day]" value="{{ module_upstore_cookie_consent_setting['cookie_day'] is defined ? module_upstore_cookie_consent_setting['cookie_day'] : '7' }}" class="form-control" />
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label" for="input-cookie-delay-time"><span data-toggle="tooltip" title="{{ help_delay_time }}">{{ entry_delay_time }}</span></label>
+							<div class="col-sm-10 form-inline">
+								<input type="number" id="input-cookie-delay-time" name="module_upstore_cookie_consent_setting[delay_time]" value="{{ module_upstore_cookie_consent_setting['delay_time'] is defined ? module_upstore_cookie_consent_setting['delay_time'] : '10' }}" class="form-control" />
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label" for="input-bg-container">{{ entry_bg_container }}</label>
+							<div class="col-sm-10 form-inline">
+								<input class="form-control color" type="text" id="input-bg-container" name="module_upstore_cookie_consent_setting[bg_container]" value="{{ module_upstore_cookie_consent_setting['bg_container'] is defined ? module_upstore_cookie_consent_setting['bg_container'] : '#000000' }}" />
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">{{ entry_text_btn_agree }}</label>
+							<div class="col-sm-10 form-inline">
+								{% for language in languages %}
+									<div class="input-group">
+										<span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>
+										<input name="module_upstore_cookie_consent_setting[btn_agree_text][{{ language['language_id'] }}]" class="form-control" value="{{ module_upstore_cookie_consent_setting['btn_agree_text'][language['language_id']] is defined ? module_upstore_cookie_consent_setting['btn_agree_text'][language['language_id']] : '' }}"></input>
+									</div>
+								{% endfor %}
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">{{ entry_bg_btn_agree }}</label>
+							<div class="col-sm-10 form-inline">
+								<input class="form-control color" type="text" name="module_upstore_cookie_consent_setting[bg_btn_agree]" value="{{ module_upstore_cookie_consent_setting['bg_btn_agree'] is defined ? module_upstore_cookie_consent_setting['bg_btn_agree'] : '#000000' }}" autocomplete="off" />
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">{{ entry_bg_btn_agree_hover }}</label>
+							<div class="col-sm-10 form-inline">
+								<input class="form-control color" type="text" name="module_upstore_cookie_consent_setting[bg_btn_agree_hover]" value="{{ module_upstore_cookie_consent_setting['bg_btn_agree'] is defined ? module_upstore_cookie_consent_setting['bg_btn_agree'] : '#ffffff' }}" autocomplete="off" />
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">{{ entry_text_color_btn_agree }}</label>
+							<div class="col-sm-10 form-inline">
+								<input class="form-control color" type="text" name="module_upstore_cookie_consent_setting[text_color_btn_agree]" value="{{ module_upstore_cookie_consent_setting['text_color_btn_agree'] is defined ? module_upstore_cookie_consent_setting['text_color_btn_agree'] : '#ffffff' }}" autocomplete="off" />
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">{{ entry_text_color_btn_agree_hover }}</label>
+							<div class="col-sm-10 form-inline">
+								<input class="form-control color" type="text" name="module_upstore_cookie_consent_setting[text_color_btn_agree_hover]" value="{{ module_upstore_cookie_consent_setting['text_color_btn_agree_hover'] is defined ? module_upstore_cookie_consent_setting['text_color_btn_agree_hover'] : '#000000' }}" autocomplete="off" />
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">{{ entry_border_color_btn_agree }}</label>
+							<div class="col-sm-10 form-inline">
+								<input class="form-control color" type="text" name="module_upstore_cookie_consent_setting[border_color_btn_agree]" value="{{ module_upstore_cookie_consent_setting['border_color_btn_agree'] is defined ? module_upstore_cookie_consent_setting['border_color_btn_agree'] : '#ffffff' }}" autocomplete="off" />
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">{{ entry_border_color_btn_agree_hover }}</label>
+							<div class="col-sm-10 form-inline">
+								<input class="form-control color" type="text" name="module_upstore_cookie_consent_setting[border_color_btn_agree_hover]" value="{{ module_upstore_cookie_consent_setting['border_color_btn_agree_hover'] is defined ? module_upstore_cookie_consent_setting['border_color_btn_agree_hover'] : '#ffffff' }}" autocomplete="off" />
+							</div>
+						</div>
+						<ul class="nav nav-tabs" id="language">
+							{% for language in languages %}
+								<li>
+									<a href="#language{{ language['language_id'] }}" data-toggle="tab">
+										<img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" />
+										{{ language['name'] }}
+									</a>
+								</li>
+							{% endfor %}
+						</ul>
+						<div class="tab-content">
+							{% for language in languages %}
+								<div class="tab-pane" id="language{{ language['language_id'] }}">
+									<div class="form-group">
+										<div class="col-sm-12">
+											<textarea class="form-control" data-toggle="summernote" data-lang="{{ summernote }}" name="module_upstore_cookie_consent_setting[description][{{ language['language_id'] }}]" id="input-description-{{ language['language_id'] }}">{{ module_upstore_cookie_consent_setting['description'][language['language_id']] is defined ? module_upstore_cookie_consent_setting['description'][language['language_id']] : '' }}</textarea>
+										</div>
+									</div>
+								</div>
+							{% endfor %}
+						</div>
+
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<link href="view/javascript/codemirror/lib/codemirror.css" rel="stylesheet" />
+<link href="view/javascript/codemirror/theme/monokai.css" rel="stylesheet" />
+<script type="text/javascript" src="view/javascript/codemirror/lib/codemirror.js"></script>
+<script type="text/javascript" src="view/javascript/codemirror/lib/xml.js"></script>
+<script type="text/javascript" src="view/javascript/codemirror/lib/formatting.js"></script>
+<script type="text/javascript" src="view/javascript/summernote/summernote.js"></script>
+<link href="view/javascript/summernote/summernote.css" rel="stylesheet" />
+<script type="text/javascript" src="view/javascript/summernote/summernote-image-attributes.js"></script>
+<script type="text/javascript" src="view/javascript/summernote/opencart.js"></script>
+<script>
+$('#language a:first').tab('show');
+</script>
+<style>
+.on-off {
+	display: inline-block;
+	min-width: 44px;
+}
+.form-inline .form-control.color {
+	max-width: 84px;
+}
+</style>
+<script>
+$(document).on('change', '[name=module_upstore_cookie_consent_status]', function(){
+    setTimeout(function () {
+        var status = $('[name=module_upstore_cookie_consent_status]:checked').val();
+
+        if (status == '1') {
+            $('#setting-cookie-consent').collapse('show');
+        } else {
+            $('#setting-cookie-consent').collapse('hide');
+        }
+    }, 50);
+});
+</script>
+{{ footer }}

@@ -1,0 +1,227 @@
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right">
+        <button type="submit" form="form-reviewscustomer" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+        <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a></div>
+      <h1>{{ heading_title }}</h1>
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+        <li><a href="{{ breadcrumb['href'] }}">{{ breadcrumb['text'] }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div class="container-fluid">
+    {% if (error_warning) %}
+    <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %}
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-pencil"></i> {{ text_edit }}</h3>
+      </div>
+      <div class="panel-body">
+        <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-reviewscustomer" class="form-horizontal">
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-name">{{ entry_name }}</label>
+            <div class="col-sm-10">
+              <input type="text" name="name" value="{{ name is defined ? name : '' }}" placeholder="{{ entry_name }}" id="input-name" class="form-control" />
+              {% if (error_name) %}
+              <div class="text-danger">{{ error_name }}</div>
+              {% endif %}
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-order-type">{{ entry_order_type }}</label>
+            <div class="col-sm-10">
+              <select name="reviewscustomer[order_type]" id="input-order-type" class="form-control">
+                <option value="last" {{reviewscustomer['order_type'] is defined and reviewscustomer['order_type'] == 'last' ? 'selected' : '' }} >{{ text_order_last }}</option>
+                <option value="random" {{reviewscustomer['order_type'] is defined and reviewscustomer['order_type'] == 'random' ? 'selected' : '' }} >{{ text_order_random }}</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-header">{{ entry_header }}</label>
+            <div class="col-sm-10">
+              {% for language in languages %}
+                <div class="input-group"><span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>
+                  <input type="text" name="reviewscustomer[module_header][{{ language['language_id'] }}]" value="{{ reviewscustomer['module_header'][language['language_id']] is defined ? reviewscustomer['module_header'][language['language_id']] : '' }}" placeholder="{{ entry_header }}" id="input-header" class="form-control" />
+                </div>
+                {% if (error_header[language['language_id']] is defined and error_header[language['language_id']]) %}
+                  <div class="text-danger">{{ error_header[language['language_id']] }}</div>
+                {% endif %}
+              {% endfor %}
+            </div>
+          </div>
+         <div class="form-group">
+        <label class="col-sm-2 control-label" for="input-entry_status_showmore">{{ entry_status_showmore }}</label>
+        <div class="col-sm-10">
+          <select name="reviewscustomer[status_showmore]" id="input-entry_status_showmore" class="form-control">
+          {% if (reviewscustomer['status_showmore'] is defined and (reviewscustomer['status_showmore'] == 1)) %}
+          <option value="1" selected="selected">{{ text_enabled }}</option>
+          <option value="0">{{ text_disabled }}</option>
+          {% else %}
+          <option value="1">{{ text_enabled }}</option>
+          <option value="0" selected="selected">{{ text_disabled }}</option>
+          {% endif %}
+          </select>
+        </div>
+        </div>
+        <div class="form-group">
+        <label class="col-sm-2 control-label" for="input-limit-max">{{ entry_limit_max }}</label>
+        <div class="col-sm-10">
+          <input type="text" name="reviewscustomer[limit_max]" value="{{ reviewscustomer['limit_max'] is defined ? reviewscustomer['limit_max'] : '' }}" placeholder="{{ entry_limit_max }}" id="input-limit-max" class="form-control" />
+        </div>
+        </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-limit">{{ entry_limit }}</label>
+            <div class="col-sm-10">
+              <input type="text" name="reviewscustomer[limit]" value="{{ reviewscustomer['limit'] is defined ? reviewscustomer['limit'] : '4' }}" placeholder="{{ entry_limit }}" id="input-limit" class="form-control" />
+            </div>
+          </div>
+       <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-limit">{{ entry_limit_table }}</label>
+            <div class="col-sm-10">
+              <input type="text" name="reviewscustomer[limit_tablet]" value="{{ reviewscustomer['limit_tablet'] is defined ? reviewscustomer['limit_tablet'] : '2' }}" placeholder="{{ entry_limit_table }}" id="input-limit" class="form-control" />
+            </div>
+          </div>
+      <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-limit">{{ entry_limit_mob }}</label>
+            <div class="col-sm-10">
+              <input type="text" name="reviewscustomer[limit_mob]" value="{{ reviewscustomer['limit_mob'] is defined ? reviewscustomer['limit_mob'] : '1' }}" placeholder="{{ entry_limit_mob }}" id="input-limit" class="form-control" />
+            </div>
+          </div>
+     <div class="form-group">
+      <label class="col-sm-2 control-label">{{ entry_category_sensitive }}</label>
+      <div class="col-sm-10">
+        <div class="onoffswitch">
+          <input value="1" type="checkbox" name="reviewscustomer[category_sensitive]" class="onoffswitch-checkbox" id="config_category_sensitive" {{reviewscustomer['category_sensitive'] is defined ? 'checked' : '' }}>
+          <label class="onoffswitch-label" for="config_category_sensitive">
+            <span class="onoffswitch-inner"></span>
+            <span class="onoffswitch-switch"></span>
+          </label>
+        </div>
+      </div>
+    </div>
+     <div class="form-group">
+      <label class="col-sm-2 control-label">{{ entry_show_all_button }}</label>
+      <div class="col-sm-10">
+        <div class="onoffswitch">
+          <input value="1" type="checkbox" name="reviewscustomer[show_all_button]" class="onoffswitch-checkbox" id="config_show_all_button" {{reviewscustomer['show_all_button'] is defined ? 'checked' : '' }}>
+          <label class="onoffswitch-label" for="config_show_all_button">
+            <span class="onoffswitch-inner"></span>
+            <span class="onoffswitch-switch"></span>
+          </label>
+        </div>
+      </div>
+    </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-status">{{ entry_status }}</label>
+            <div class="col-sm-10">
+              <select name="status" id="input-status" class="form-control">
+                {% if (status) %}
+                <option value="1" selected="selected">{{ text_enabled }}</option>
+                <option value="0">{{ text_disabled }}</option>
+                {% else %}
+                <option value="1">{{ text_enabled }}</option>
+                <option value="0" selected="selected">{{ text_disabled }}</option>
+                {% endif %}
+              </select>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+  <style>
+  .onoffswitch {
+        position: relative;
+    width: 75px;
+    background-color: white;
+    background-image: linear-gradient(to bottom, #eeeeee, white 25px);
+    border-radius: 18px;
+    box-shadow: 0 -1px white inset, 0 1px 1px rgba(0, 0, 0, 0.05) inset;
+    padding: 3px;
+        -webkit-user-select:none;
+    -moz-user-select:none;
+    -ms-user-select: none;
+    }
+    .onoffswitch-checkbox {
+        display: none;
+    }
+    .onoffswitch-label {
+        display: block;
+    overflow: hidden;
+    cursor: pointer;
+    border-radius: 15px;
+    margin-bottom:1px;
+    }
+    .onoffswitch-inner {
+        display: block;
+    width: 200%;
+    margin-left: -100%;
+        transition: background 0.2s ease-in 0s;
+    }
+    .onoffswitch-inner:before, .onoffswitch-inner:after {
+        display: block;
+    float: left;
+    width: 50%;
+    height: 29px;
+    padding: 0;
+    line-height: 29px;
+        font-size: 14px;
+    color: white;
+    font-family: Trebuchet, Arial, sans-serif; font-weight: bold;
+        box-sizing: border-box;
+    }
+    .onoffswitch-inner:before {
+        content: "{{ text_yes}}";
+        padding-left: 13px;
+    color: #ffffff;
+    background-color: #47a8d8;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15) inset, 0 0 3px rgba(0, 0, 0, 0.2) inset;
+    text-shadow: 0 1px rgba(0, 0, 0, 0.2);
+    border-radius: 18px;
+    font-size:13px;
+    }
+    .onoffswitch-inner:after {
+        content: "{{ text_no}}";
+        padding-right: 9px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15) inset, 0 0 3px rgba(0, 0, 0, 0.2) inset;
+    text-shadow: 0 1px rgba(255, 255, 255, 0.5);
+    color: #aaa;
+    background:#eceeef none repeat scroll 0 0;
+        text-align: right;
+    border-radius: 18px;
+    font-size:13px;
+    }
+    .onoffswitch-switch {
+        display: block;
+    width: 25px;
+    height:25px;
+        box-shadow:-1px 1px 5px rgba(0, 0, 0, 0.2), 0 1px rgba(0, 0, 0, 0.02) inset;
+        background: #f9f9f9 linear-gradient(to bottom, #eeeeee, white) repeat scroll 0 0;
+        position: absolute;
+    top: 5px;
+    bottom: 4px;
+        right: 45px;
+        border: 4px solid #FFFFFF;
+    border-radius: 15px;
+        transition: all 0.2s ease-in 0s;
+    }
+    .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {
+        margin-left: 0;
+    }
+    .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
+        right: 5px;
+    box-shadow:-1px 1px 5px rgba(0, 0, 0, 0.2), 0 1px rgba(0, 0, 0, 0.02) inset;
+        background: #f9f9f9 linear-gradient(to bottom, #eeeeee, white) repeat scroll 0 0;
+
+    }
+
+</style>
+{{ footer }}

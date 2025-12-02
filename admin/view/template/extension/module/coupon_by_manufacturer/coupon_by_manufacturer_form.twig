@@ -1,0 +1,43 @@
+                  <label class="col-sm-2 control-label" for="input-manufacturer"><span data-toggle="tooltip" title="{{entry_help_manufacturer }}">{{ entry_manufacturer }}</span></label>
+                  <div class="col-sm-10">
+                    <input type="text" name="manufacturer" value="" placeholder="{{ entry_manufacturer }}" id="input-manufacturer" class="form-control" autocomplete="off">
+                    <div id="coupon-manufacturer" class="well well-sm" style="height: 150px; overflow: auto;">
+                      {% for coupon_manufacturer in coupon_manufacturers %} 
+                      <div id="coupon-manufacturer{{ coupon_manufacturer['manufacturer_id'] }}"><i class="fa fa-minus-circle"></i> {{ coupon_manufacturer['name'] }} 
+                      <input type="hidden" name="coupon_manufacturer[]" value="{{ coupon_manufacturer['manufacturer_id'] }}" />
+                      </div>
+                    {% endfor %} 
+                    </div>
+                  </div>
+              </div>
+ <script>
+// Manufacturer
+$('input[name=\'manufacturer\']').autocomplete({
+	'source': function(request, response) {
+		$.ajax({
+			url: 'index.php?route=catalog/manufacturer/autocomplete&user_token={{ user_token }}&filter_name=' +  encodeURIComponent(request),
+			dataType: 'json',
+			success: function(json) {
+				response($.map(json, function(item) {
+					return {
+						label: item['name'],
+						value: item['manufacturer_id']
+					}
+				}));
+			}
+		});
+	},
+	'select': function(item) {
+		$('input[name=\'manufacturer\']').val('');
+		
+		$('#coupon-manufacturer' + item['value']).remove();
+		
+		$('#coupon-manufacturer').append('<div id="coupon-manufacturer' + item['value'] + '"><i class="fa fa-minus-circle"></i> ' + item['label'] + '<input type="hidden" name="coupon_manufacturer[]" value="' + item['value'] + '" /></div>');
+	}	
+});
+
+$('#coupon-manufacturer').delegate('.fa-minus-circle', 'click', function() {
+	$(this).parent().remove();
+});
+</script>			  
+              <div class="form-group">

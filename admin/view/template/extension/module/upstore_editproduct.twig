@@ -1,0 +1,363 @@
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right">
+        <button type="submit" form="form-editproduct" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+        <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a></div>
+      <h1>{{ heading_title }}</h1>
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+        <li><a href="{{ breadcrumb['href'] }}">{{ breadcrumb['text'] }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div class="container-fluid">
+    {% if (error_warning) %}
+    <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %}
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-editproduct" class="form-horizontal">
+			<div class="form-group">
+				<label class="col-sm-3 control-label">
+					{{ cx_key }}<br />
+					{{ cx_text }}<br />
+					{{ cx_link }}<br />
+				</label>
+				<div class="col-sm-9">
+					<input class="form-control" type="text" name="cx_key_ediprod" value="{{ cx_key_ediprod }}"  />
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">
+					{{ api_key }}<br />
+					{{ api_link }}<br />
+				</label>
+				<div class="col-sm-9">
+					<input class="form-control" type="text" name="api_key_ediprod" value="{{ api_key_ediprod }}"  />
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">{{ entry_button_generate_url_keyword }}</label>
+				{% if (config_button_generate_url_keyword == '') %}
+					<div class="col-sm-3">
+						<input type="radio" name="config_button_generate_url_keyword" value="1" />
+						{{ text_id_keyword}}
+					</div>
+					<div class="col-sm-3">
+						<input type="radio" name="config_button_generate_url_keyword" value="2" />
+						{{ text_model_keyword}}
+					</div>
+				{% elseif (config_button_generate_url_keyword == "1") %}
+					<div class="col-sm-3">
+						<input type="radio" name="config_button_generate_url_keyword" value="1" checked="checked" />
+						{{ text_id_keyword}}
+					</div>
+					<div class="col-sm-3">
+						<input type="radio" name="config_button_generate_url_keyword" value="2" />
+						{{ text_model_keyword}}
+					</div>
+				{% elseif (config_button_generate_url_keyword == "2") %}
+					<div class="col-sm-3">
+						<input type="radio" name="config_button_generate_url_keyword" value="1"  />
+					   {{ text_id_keyword}}
+					</div>
+					<div class="col-sm-3">
+						<input type="radio" name="config_button_generate_url_keyword" value="2" checked="checked" />
+						{{ text_model_keyword}}
+					</div>
+				{% endif %}
+			</div>
+			<div class="form-group">
+				<div class="col-sm-12 text-center">
+					<h2>{{ text_seo_template }}</h2>
+				</div>
+			</div>
+			<div class="well">
+				<div class="form-group">
+					<label class="col-sm-3 control-label">
+						{{ text_seo_prod_meta_title }}
+					</label>
+					<div class="col-sm-9">
+						{% for language in languages %}
+							<div class="input-group"><span class="input-group-addon">{% if (VERSION < 2.2) %}<img src="view/image/flags/{{ language['image'] }}" title="{{ language['name'] }}" />{% else %}<img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" />{% endif %}</span>
+								 <input class="form-control" type="text" name="seo_prod[{{ language['language_id'] }}][seo_prod_meta_title]" value="{{ seo_prod[language['language_id']] is defined ? seo_prod[language['language_id']]['seo_prod_meta_title'] : '' }}"  />
+							</div>
+						 {% endfor %}
+
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">{{ text_on_off_seo_template }}</label>
+					<div class="col-sm-9">
+						<div class="radio-group-ns">
+							{% if (seo_prod['meta_title_on_off']) %}
+								<input id="seo_prod_meta_title_yes" class="hide-radio" type="radio" name="seo_prod[meta_title_on_off]" value="1" checked="checked" />
+								<label for="seo_prod_meta_title_yes">{{ text_yes }}</label>
+							{% else %}
+								<input id="seo_prod_meta_title_yes" class="hide-radio" type="radio" name="seo_prod[meta_title_on_off]" value="1" />
+								<label for="seo_prod_meta_title_yes">{{ text_yes }}</label>
+							{% endif %}
+							{% if (not seo_prod['meta_title_on_off']) %}
+								<input id="seo_prod_meta_title_no" class="hide-radio" type="radio" name="seo_prod[meta_title_on_off]" value="0" checked="checked" />
+								<label for="seo_prod_meta_title_no">{{ text_no }}</label>
+							{% else %}
+								<input id="seo_prod_meta_title_no" class="hide-radio" type="radio" name="seo_prod[meta_title_on_off]" value="0" />
+								<label for="seo_prod_meta_title_no">{{ text_no }}</label>
+							{% endif %}
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">
+						{{ text_seo_prod_meta_h1 }}
+					</label>
+					<div class="col-sm-9">
+						{% for language in languages %}
+							<div class="input-group"><span class="input-group-addon">{% if (VERSION < 2.2) %}<img src="view/image/flags/{{ language['image'] }}" title="{{ language['name'] }}" />{% else %}<img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" />{% endif %}</span>
+								 <input class="form-control" type="text" name="seo_prod[{{ language['language_id'] }}][seo_prod_meta_h1]" value="{{ seo_prod[language['language_id']] is defined ? seo_prod[language['language_id']]['seo_prod_meta_h1'] : '' }}"  />
+							</div>
+						 {% endfor %}
+
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">{{ text_on_off_seo_template }}</label>
+					<div class="col-sm-9">
+						<div class="radio-group-ns">
+							{% if (seo_prod['meta_h1_on_off']) %}
+								<input id="seo_prod_meta_h1_yes" class="hide-radio" type="radio" name="seo_prod[meta_h1_on_off]" value="1" checked="checked" />
+								<label for="seo_prod_meta_h1_yes">{{ text_yes }}</label>
+							{% else %}
+								<input id="seo_prod_meta_h1_yes" class="hide-radio" type="radio" name="seo_prod[meta_h1_on_off]" value="1" />
+								<label for="seo_prod_meta_h1_yes">{{ text_yes }}</label>
+							{% endif %}
+							{% if (not seo_prod['meta_h1_on_off']) %}
+								<input id="seo_prod_meta_h1_no" class="hide-radio" type="radio" name="seo_prod[meta_h1_on_off]" value="0" checked="checked" />
+								<label for="seo_prod_meta_h1_no">{{ text_no }}</label>
+							{% else %}
+								<input id="seo_prod_meta_h1_no" class="hide-radio" type="radio" name="seo_prod[meta_h1_on_off]" value="0" />
+								<label for="seo_prod_meta_h1_no">{{ text_no }}</label>
+							{% endif %}
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">
+						{{ text_seo_prod_meta_description }}
+					</label>
+					<div class="col-sm-9">
+						{% for language in languages %}
+							<div class="input-group"><span class="input-group-addon">{% if (VERSION < 2.2) %}<img src="view/image/flags/{{ language['image'] }}" title="{{ language['name'] }}" />{% else %}<img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" />{% endif %}</span>
+								 <input class="form-control" type="text" name="seo_prod[{{ language['language_id'] }}][seo_prod_meta_description]" value="{{ seo_prod[language['language_id']] is defined ? seo_prod[language['language_id']]['seo_prod_meta_description'] : '' }}"  />
+							</div>
+						 {% endfor %}
+
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">{{ text_on_off_seo_template }}</label>
+					<div class="col-sm-9">
+						<div class="radio-group-ns">
+							{% if (seo_prod['meta_description_on_off']) %}
+								<input id="meta_description_on_off_yes" class="hide-radio" type="radio" name="seo_prod[meta_description_on_off]" value="1" checked="checked" />
+								<label for="meta_description_on_off_yes">{{ text_yes }}</label>
+							{% else %}
+								<input id="meta_description_on_off_yes" class="hide-radio" type="radio" name="seo_prod[meta_description_on_off]" value="1" />
+								<label for="meta_description_on_off_yes">{{ text_yes }}</label>
+							{% endif %}
+							{% if (not seo_prod['meta_description_on_off']) %}
+								<input id="meta_description_on_off_no" class="hide-radio" type="radio" name="seo_prod[meta_description_on_off]" value="0" checked="checked" />
+								<label for="meta_description_on_off_no">{{ text_no }}</label>
+							{% else %}
+								<input id="meta_description_on_off_no" class="hide-radio" type="radio" name="seo_prod[meta_description_on_off]" value="0" />
+								<label for="meta_description_on_off_no">{{ text_no }}</label>
+							{% endif %}
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">
+						{{ text_seo_prod_meta_keyword }}
+					</label>
+					<div class="col-sm-9">
+						{% for language in languages %}
+							<div class="input-group"><span class="input-group-addon">{% if (VERSION < 2.2) %}<img src="view/image/flags/{{ language['image'] }}" title="{{ language['name'] }}" />{% else %}<img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" />{% endif %}</span>
+								 <input class="form-control" type="text" name="seo_prod[{{ language['language_id'] }}][seo_prod_meta_keyword]" value="{{ seo_prod[language['language_id']] is defined ? seo_prod[language['language_id']]['seo_prod_meta_keyword'] : '' }}"  />
+							</div>
+						 {% endfor %}
+
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">{{ text_on_off_seo_template }}</label>
+					<div class="col-sm-9">
+						<div class="radio-group-ns">
+							{% if (seo_prod['meta_keyword_on_off']) %}
+								<input id="meta_keyword_on_off_yes" class="hide-radio" type="radio" name="seo_prod[meta_keyword_on_off]" value="1" checked="checked" />
+								<label for="meta_keyword_on_off_yes">{{ text_yes }}</label>
+							{% else %}
+								<input id="meta_keyword_on_off_yes" class="hide-radio" type="radio" name="seo_prod[meta_keyword_on_off]" value="1" />
+								<label for="meta_keyword_on_off_yes">{{ text_yes }}</label>
+							{% endif %}
+							{% if (not seo_prod['meta_keyword_on_off']) %}
+								<input id="meta_keyword_on_off_no" class="hide-radio" type="radio" name="seo_prod[meta_keyword_on_off]" value="0" checked="checked" />
+								<label for="meta_keyword_on_off_no">{{ text_no }}</label>
+							{% else %}
+								<input id="meta_keyword_on_off_no" class="hide-radio" type="radio" name="seo_prod[meta_keyword_on_off]" value="0" />
+								<label for="meta_keyword_on_off_no">{{ text_no }}</label>
+							{% endif %}
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">
+						{{ text_seo_prod_meta_tag }}
+					</label>
+					<div class="col-sm-9">
+						{% for language in languages %}
+							<div class="input-group"><span class="input-group-addon">{% if (VERSION < 2.2) %}<img src="view/image/flags/{{ language['image'] }}" title="{{ language['name'] }}" />{% else %}<img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" />{% endif %}</span>
+								 <input class="form-control" type="text" name="seo_prod[{{ language['language_id'] }}][seo_prod_meta_tag]" value="{{ seo_prod[language['language_id']] is defined ? seo_prod[language['language_id']]['seo_prod_meta_tag'] : '' }}"  />
+							</div>
+						 {% endfor %}
+
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">{{ text_on_off_seo_template }}</label>
+					<div class="col-sm-9">
+						<div class="radio-group-ns">
+							{% if (seo_prod['meta_tag_on_off']) %}
+								<input id="meta_tag_on_off_yes" class="hide-radio" type="radio" name="seo_prod[meta_tag_on_off]" value="1" checked="checked" />
+								<label for="meta_tag_on_off_yes">{{ text_yes }}</label>
+							{% else %}
+								<input id="meta_tag_on_off_yes" class="hide-radio" type="radio" name="seo_prod[meta_tag_on_off]" value="1" />
+								<label for="meta_tag_on_off_yes">{{ text_yes }}</label>
+							{% endif %}
+							{% if (not seo_prod['meta_tag_on_off']) %}
+								<input id="meta_tag_on_off_no" class="hide-radio" type="radio" name="seo_prod[meta_tag_on_off]" value="0" checked="checked" />
+								<label for="meta_tag_on_off_no">{{ text_no }}</label>
+							{% else %}
+								<input id="meta_tag_on_off_no" class="hide-radio" type="radio" name="seo_prod[meta_tag_on_off]" value="0" />
+								<label for="meta_tag_on_off_no">{{ text_no }}</label>
+							{% endif %}
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">{{ text_seo_designations }}</label>
+					<div class="col-sm-9" style="padding-top:9px;">
+						<span>{{ text_seo_product_name }}</span>
+						<span>{{ text_seo_price }}</span>
+						<span>{{ text_seo_model }}</span>
+						<span>{{ text_seo_sku }}</span>
+						<span>{{ text_seo_category }}</span>
+						<span>{{ text_seo_manufacturer }}</span>
+						<span>{{ text_seo_random_text }}</span>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-6">{{ text_display_settings_editor }}</label>
+			</div>
+			<div class="table-responsive">
+				<table class="table table-bordered table-hover">
+					<thead>
+						<td class="text-right">{{ text_groups_name }}</td>
+						<td class="text-center"><button type="button"  data-toggle="tooltip" title="{{ text_link_module_admin }}" class="btn btn-primary"><i class="fa fa-cog" aria-hidden="true"></i></button></td>
+						<td class="text-center"><button type="button"  data-toggle="tooltip" title="{{ text_product_admin }}" class="btn btn-primary"><i class="fa fa-cogs" aria-hidden="true"></i></button></td>
+						<td class="text-center"><button type="button"  data-toggle="tooltip" title="{{ text_description }}" class="btn btn-primary"><i class="fa fa-newspaper-o" aria-hidden="true"></i></button></td>
+						<td class="text-center"><button type="button"  data-toggle="tooltip" title="{{ text_code }}" class="btn btn-primary"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button></td>
+						<td class="text-center"><button type="button"  data-toggle="tooltip" title="{{ text_category }}" class="btn btn-primary"><i class="fa fa-sitemap" aria-hidden="true"></i></button></td>
+						<td class="text-center"><button type="button"  data-toggle="tooltip" title="{{ text_image }}" class="btn btn-primary"><i class="fa fa-picture-o" aria-hidden="true"></i></button></td>
+						<td class="text-center"><button type="button"  data-toggle="tooltip" title="{{ text_image_url }}" class="btn btn-primary"><i class="fa fa-link" aria-hidden="true"></i></button></td>
+						<td class="text-center"><button type="button"  data-toggle="tooltip" title="{{ text_image_google }}" class="btn btn-primary"><i class="fa fa-google" aria-hidden="true"></i></button></td>
+						<td class="text-center"><button type="button"  data-toggle="tooltip" title="{{ text_price }}" class="btn btn-primary"><i class="fa fa-money" aria-hidden="true"></i></button></td>
+						<td class="text-center"><button type="button"  data-toggle="tooltip" title="{{ text_special }}" class="btn btn-primary"><i class="fa fa-tag" aria-hidden="true"></i></button></td>
+						<td class="text-center"><button type="button"  data-toggle="tooltip" title="{{ text_related }}" class="btn btn-primary"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i></button></td>
+						<td class="text-center"><button type="button"  data-toggle="tooltip" title="{{ text_attribute }}" class="btn btn-primary"><i class="fa fa-buysellads" aria-hidden="true"></i></button></td>
+						<td class="text-center"><button type="button"  data-toggle="tooltip" title="{{ text_option }}" class="btn btn-primary"><i class="fa fa-cubes" aria-hidden="true"></i></button></td>
+						<td class="text-center"><button type="button"  data-toggle="tooltip" title="{{ text_group_editor }}" class="btn btn-primary"><i class="fa fa-thumbs-up" aria-hidden="true"></i></button></td>
+
+					</thead>
+					{% set user_groups_prod_row = 0 %}
+
+					{% for user_groups_prod in user_groups_edit_prod %}
+						<tr>
+							<td class="text-right">
+								<span style="font-weight:bold; font-size:14px;margin:5px;">{{ user_groups_prod['name'] }}</span></br>
+							</td>
+							<td class="text-center">
+								<input class="hidden_input" id="c14{{ user_groups_prod_row }}" {% if ( 'Y' == user_groups_prod['link_module_edit_admin'] ) %} {{ 'checked="checked"' }}{% endif %} type="checkbox" name="user_groups_prod[{{ user_groups_prod_row }}][link_module_edit_admin]" value="{{ "Y" }}"></input>
+								<label class="lable_edit" for="c14{{ user_groups_prod_row }}"><span></span></label></br>
+							</td>
+							<td class="text-center">
+								<input class="hidden_input" id="c15{{ user_groups_prod_row }}" {% if ( 'Y' == user_groups_prod['link_product_admin'] ) %} {{ 'checked="checked"' }}{% endif %} type="checkbox" name="user_groups_prod[{{ user_groups_prod_row }}][link_product_admin]" value="{{ "Y" }}"></input>
+								<label class="lable_edit" for="c15{{ user_groups_prod_row }}"><span></span></label></br>
+							</td>
+							<td class="text-center">
+								<input type="hidden" name="user_groups_prod[{{ user_groups_prod_row }}][user_group_id]" value="{{ user_groups_prod['user_group_id'] }}"></input>
+								<input class="hidden_input" id="c1{{ user_groups_prod_row }}" {% if ( 'Y' == user_groups_prod['description_edit'] ) %} {{ 'checked="checked"' }}{% endif %} type="checkbox" name="user_groups_prod[{{ user_groups_prod_row }}][description_edit]" value="{{ "Y" }}"></input>
+								<label class="lable_edit" for="c1{{ user_groups_prod_row }}"><span></span></label></br>
+							</td>
+							<td class="text-center">
+								<input class="hidden_input" id="c11{{ user_groups_prod_row }}" {% if ( 'Y' == user_groups_prod['code_edit'] ) %} {{ 'checked="checked"' }}{% endif %} type="checkbox" name="user_groups_prod[{{ user_groups_prod_row }}][code_edit]" value="{{ "Y" }}"></input>
+								<label class="lable_edit" for="c11{{ user_groups_prod_row }}"><span></span></label></br>
+							</td>
+							<td class="text-center">
+								<input class="hidden_input" id="c2{{ user_groups_prod_row }}" {% if ( 'Y' == user_groups_prod['category_edit'] ) %} {{ 'checked="checked"' }}{% endif %} type="checkbox" name="user_groups_prod[{{ user_groups_prod_row }}][category_edit]" value="{{ "Y" }}"></input>
+								<label class="lable_edit" for="c2{{ user_groups_prod_row }}"><span></span></label></br>
+							</td>
+							<td class="text-center">
+								<input class="hidden_input" id="c3{{ user_groups_prod_row }}" {% if ( 'Y' == user_groups_prod['image_edit'] ) %} {{ 'checked="checked"' }}{% endif %} type="checkbox" name="user_groups_prod[{{ user_groups_prod_row }}][image_edit]" value="{{ "Y" }}"></input>
+								<label class="lable_edit" for="c3{{ user_groups_prod_row }}"><span></span></label></br>
+							</td>
+							<td class="text-center">
+								<input class="hidden_input" id="c4{{ user_groups_prod_row }}" {% if ( 'Y' == user_groups_prod['image_url_edit'] ) %} {{ 'checked="checked"' }}{% endif %} type="checkbox" name="user_groups_prod[{{ user_groups_prod_row }}][image_url_edit]" value="{{ "Y" }}"></input>
+								<label class="lable_edit" for="c4{{ user_groups_prod_row }}"><span></span></label></br>
+							</td>
+							<td class="text-center">
+								<input class="hidden_input" id="c5{{ user_groups_prod_row }}" {% if ( 'Y' == user_groups_prod['image_google_edit'] ) %} {{ 'checked="checked"' }}{% endif %} type="checkbox" name="user_groups_prod[{{ user_groups_prod_row }}][image_google_edit]" value="{{ "Y" }}"></input>
+								<label class="lable_edit" for="c5{{ user_groups_prod_row }}"><span></span></label></br>
+							</td>
+							<td class="text-center">
+								<input class="hidden_input" id="c6{{ user_groups_prod_row }}" {% if ( 'Y' == user_groups_prod['price_edit'] ) %} {{ 'checked="checked"' }}{% endif %} type="checkbox" name="user_groups_prod[{{ user_groups_prod_row }}][price_edit]" value="{{ "Y" }}"></input>
+								<label class="lable_edit" for="c6{{ user_groups_prod_row }}"><span></span></label></br>
+							</td>
+							<td class="text-center">
+								<input class="hidden_input" id="c9{{ user_groups_prod_row }}" {% if ( 'Y' == user_groups_prod['special_edit'] ) %} {{ 'checked="checked"' }}{% endif %} type="checkbox" name="user_groups_prod[{{ user_groups_prod_row }}][special_edit]" value="{{ "Y" }}"></input>
+								<label class="lable_edit" for="c9{{ user_groups_prod_row }}"><span></span></label></br>
+							</td>
+							<td class="text-center">
+								<input class="hidden_input" id="c10{{ user_groups_prod_row }}" {% if ( 'Y' == user_groups_prod['related_edit'] ) %} {{ 'checked="checked"' }}{% endif %} type="checkbox" name="user_groups_prod[{{ user_groups_prod_row }}][related_edit]" value="{{ "Y" }}"></input>
+								<label class="lable_edit" for="c10{{ user_groups_prod_row }}"><span></span></label></br>
+							</td>
+
+							<td class="text-center">
+								<input class="hidden_input" id="c12{{ user_groups_prod_row }}" {% if ( 'Y' == user_groups_prod['attribute_edit'] ) %} {{ 'checked="checked"' }}{% endif %} type="checkbox" name="user_groups_prod[{{ user_groups_prod_row }}][attribute_edit]" value="{{ "Y" }}"></input>
+								<label class="lable_edit" for="c12{{ user_groups_prod_row }}"><span></span></label></br>
+							</td>
+							<td class="text-center">
+								<input class="hidden_input" id="c13{{ user_groups_prod_row }}" {% if ( 'Y' == user_groups_prod['option_edit'] ) %} {{ 'checked="checked"' }}{% endif %} type="checkbox" name="user_groups_prod[{{ user_groups_prod_row }}][option_edit]" value="{{ "Y" }}"></input>
+								<label class="lable_edit" for="c13{{ user_groups_prod_row }}"><span></span></label></br>
+							</td>
+							<td class="text-center">
+								<input class="hidden_input" id="cge{{ user_groups_prod_row }}" {% if ( 'Y' == user_groups_prod['group_editor'] ) %} {{ 'checked="checked"' }}{% endif %} type="checkbox" name="user_groups_prod[{{ user_groups_prod_row }}][group_editor]" value="{{ "Y" }}"></input>
+								<label class="lable_edit" for="cge{{ user_groups_prod_row }}"><span></span></label></br>
+							</td>
+
+						</tr>
+					{% set user_groups_prod_row = user_groups_prod_row + 1 %}
+				{% endfor %}
+				</table>
+			</div>
+        </form>
+      </div>
+    </div>
+  </div>
+ </div>
+{{ footer }}

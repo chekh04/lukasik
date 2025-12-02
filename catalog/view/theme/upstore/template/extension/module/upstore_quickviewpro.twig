@@ -1,0 +1,911 @@
+<div class="modal-header dflex align-items-center">
+	<div class="modal-title">{{ heading_title }}</div>
+	<button type="button" class="close-modal" data-dismiss="modal"><i class="up-icon-close" aria-hidden="true"></i></button>
+</div>
+<div class="modal-body" id="popup-quickview">
+	<div class="row-flex">
+		<div class="left-image-block col-xs-12 col-sm-12 col-md-7 col-lg-7">
+			<div class="product-img-box thumbnails">
+				<div class="swiper slider-main{% if images and on_off_quickview_additional_image == 1 %} have-images{% endif %}">
+					<div class="swiper-wrapper">
+						<div class="item-img swiper-slide">
+							<img itemprop="image" width="{{ thumb_width }}" height="{{ thumb_height }}" class="img-responsive" src="{{ thumb }}" title="{{ heading_title }}" alt="{{ heading_title }}" />
+						</div>
+						{% if images and on_off_quickview_additional_image == 1 %}
+							{% for image in images %}
+								<div class="item-img swiper-slide">
+									<img class="img-responsive" width="{{ thumb_width }}" height="{{ thumb_height }}" src="{{ image.thumb_hover }}" title="{{ heading_title }}" alt="{{ heading_title }}" />
+								</div>
+							{% endfor %}
+						{% endif %}
+					</div>
+					<div class="swiper-pagination ch-pagination"></div>
+				</div>
+				{% if images and on_off_quickview_additional_image == 1 %}
+					<div class="dop-images hidden-xs{% if images|length > 4 %} image-loop{% endif %}">
+						<div class="swiper">
+							<div class="swiper-wrapper">
+								<div class="item swiper-slide">
+									<div class="thumbnail">
+										<img width="{{ ia_width }}" height="{{ ia_height }}" data-num="0" src="{{ thumb_min }}" alt="" />
+									</div>
+								</div>
+								{% set num_image = 1 %}
+									{% for image in images %}
+										<div class="item swiper-slide">
+											<div class="thumbnail">
+												<img width="{{ ia_width }}" height="{{ ia_height }}" data-num="{{ num_image }}" src="{{ image.thumb }}" alt="" />
+											</div>
+										</div>
+									{% set num_image = num_image + 1 %}
+								{% endfor %}
+							</div>
+						</div>
+						{% if images|length > 4 %}
+							<div class="swiper-ai-arrow swiper-button-lock swiper-button-disabled prev-image"><i class="up-icon-16 up-icon-angle-up" aria-hidden="true"></i></div>
+							<div class="swiper-ai-arrow swiper-button-lock next-image"><i class="up-icon-16 up-icon-angle-down" aria-hidden="true"></i></div>
+						{% endif %}
+					</div>
+				{% endif %}
+				<div class="stickers-ns">
+					{% if ((on_off_sticker_special == '1') and special) %}
+						<div class="sticker-ns special">
+							{% if (config_change_icon_sticker_special is not empty) %}<i class="fa {{ config_change_icon_sticker_special }} "></i>{% endif %}
+							{{ text_sticker_special[lang_id]['config_change_text_sticker_special'] }}
+						</div>
+					{% endif %}
+					{% if ((on_off_percent_discount == '1') and special) %}<span class="sticker-ns special">{{ skidka }} %</span>{% endif %}
+					{% if ((on_off_sticker_topbestseller == '1') and (top_bestsellers >= config_limit_order_product_topbestseller)) %}
+						<div class="sticker-ns bestseller">
+							{% if (config_change_icon_sticker_topbestseller is not empty) %}<i class="fa {{ config_change_icon_sticker_topbestseller }} "></i>{% endif %}
+							{{ text_sticker_topbestseller[lang_id]['config_change_text_sticker_topbestseller'] }}
+						</div>
+					{% endif %}
+					{% if ((on_off_sticker_popular == '1') and (viewed>=config_min_quantity_popular)) %}
+						<div class="sticker-ns popular">
+							{% if (config_change_icon_sticker_popular is not empty) %}<i class="fa {{ config_change_icon_sticker_popular }} "></i>{% endif %}
+							{{ text_sticker_popular[lang_id]['config_change_text_sticker_popular'] }}
+						</div>
+					{% endif %}
+					{% if ((on_off_sticker_newproduct == '1') and sticker_new_prod ) %}
+						<div class="sticker-ns newproduct">
+							{% if (config_change_icon_sticker_newproduct is not empty) %}<i class="fa {{ config_change_icon_sticker_newproduct }}"></i>{% endif %}
+							{{ text_sticker_newproduct[lang_id]['config_change_text_sticker_newproduct'] }}
+						</div>
+					{% endif %}
+				</div>
+			</div>
+		</div>
+		<div class="right-block col-xs-12 col-sm-12 col-md-5 col-lg-5">
+			<div class="info-product d-flex flex-wrap">
+				<div class="col-6 dflex flex-column justify-content-between flex-wrap no-gutters">
+					{% if on_off_quickview_quantity == 1 %}
+						<div class="info-product-stock dflex">
+							{% if stock_quantity_count <= 0 %}
+								<div class="stock-status outofstock">{{ stock_status }}</div>
+							{% else %}
+								<div class="stock-status up-icon instock">
+									{{ stock_status }}
+									{% if stock_quantity != 'not_display' %}
+										<span class="stock-quantity_success">{{ stock_quantity }}</span>
+									{% endif %}
+								</div>
+							{% endif %}
+						</div>
+					{% endif %}
+					{% if on_off_quickview_model == '1' %}
+						<div class="info-model">{{ text_model }} <span>{{ model }}</span></div>
+					{% endif %}
+					{% if sku is not empty and ch_show_sku %}
+						<div class="info-sku">{{ text_sku }} <span>{{ sku }}</span></div>
+					{% endif %}
+					{% if review_status %}
+						<div class="info-rating rating d-flex align-items-center">
+							<div class="rating-stars d-flex align-items-center">
+								{% for star_width in rating_stars %}
+									<div class="rating-star up-icon">
+										<div class="rating-star-active up-icon" style="width:{{ star_width }}%"></div>
+									</div>
+								{% endfor %}
+							</div>
+							<div class="product-reviews d-flex align-items-center">
+								<i class="up-icon-18 up-icon-message" aria-hidden="true"></i>
+								{% if reviewCount > 0 %}
+									<span class="total-reviews d-flex align-items-center justify-content-center">{{ reviewCount }}</span>
+								{% endif %}
+							</div>
+						</div>
+					{% endif %}
+				</div>
+				<div class="col-6 top-action dflex flex-column">
+					<div class="compare-wishlist-group dflex">
+						{% if on_off_quickview_compare == 1 %}
+							<button aria-label="Compare" type="button" data-toggle="tooltip" class="btn btn-compare mr-10" title="{{ button_compare }}" onclick="compare.add('{{ product_id }}');"><i class="up-icon-22 up-icon-compare" aria-hidden="true"></i></button>
+						{% endif %}
+						{% if on_off_quickview_wishlist == 1 %}
+							<button aria-label="Wishlist" type="button" data-toggle="tooltip" class="btn btn-wishlist" title="{{ button_wishlist }}" onclick="wishlist.add('{{ product_id }}');"><i class="up-icon-22 up-icon-wishlist" aria-hidden="true"></i></button>
+						{% endif %}
+					</div>
+					{% if manufacturer and on_off_quickview_manufacturer == 1 %}
+						<div class="info-manufacturer">{{ text_manufacturer }} <a href="{{ manufacturers }}"><span>{{ manufacturer }}</span></a></div>
+					{% endif %}
+				</div>
+			</div>
+
+			{% if (options) %}
+			<div class="options">
+				{% for option in options %}
+					{% if (option['type'] == 'select') %}
+						<div class="form-group{{ option['required'] ? ' required' : '' }}">
+							<label class="control-label" for="input-option{{ option['product_option_id'] }}">{{ option['name'] }}</label>
+							<select name="option[{{ option['product_option_id'] }}]" id="input-option{{ option['product_option_id'] }}" class="form-control">
+								<option value="">{{ text_select }}</option>
+								{% for option_value in option['product_option_value'] %}
+									<option value="{{ option_value.product_option_value_id }}" data-points="{{ option_value.points_value is defined ? option_value.points_value : 0 }}" data-prefix="{{ option_value.price_prefix }}" data-price="{{ option_value.price_value }}">{{ option_value.name }}
+										{% if (option_value.price) %}
+											({{ option_value.price_prefix }}{{ option_value.price }})
+										{% endif %}
+									</option>
+								{% endfor %}
+							</select>
+						</div>
+					{% endif %}
+					{% if (option['type'] == 'radio') %}
+						<div class="form-group{{ option['required'] ? ' required' : '' }}">
+							<label class="control-label" for="input-option{{ option['product_option_id'] }}">{{ option['name'] }}</label>
+							<div id="input-option{{ option['product_option_id'] }}">
+								{% for option_value in option['product_option_value'] %}
+									{% if (option_value['image'] or option_value['color']) %}
+										{% if (option['status_color_type'] == '1') %}
+											<div class="color-radio">
+												<input type="radio" name="option[{{ option['product_option_id'] }}]" value="{{ option_value['product_option_value_id'] }}" data-points="{{ option_value['points_value'] is defined ? option_value['points_value'] : 0 }}" data-prefix="{{ option_value['price_prefix'] }}" data-price="{{ option_value['price_value'] }}" id="qv_{{ option['product_option_id'] }}_{{ option_value['product_option_value_id'] }}" />
+												<label {% if (option_value['price']) %}data-toggle="tooltip" title="{{ option_value.price_prefix ~ option_value.price }}"{% endif %} for="qv_{{ option.product_option_id }}_{{ option_value.product_option_value_id }}">
+													<span class="color-option" style="background-color:{{ option_value['color']}}"></span>
+												</label>
+											</div>
+										{% else %}
+											<div class="image-radio">
+												<input type="radio" name="option[{{ option['product_option_id'] }}]" value="{{ option_value['product_option_value_id'] }}" data-points="{{ option_value['points_value'] is defined ? option_value['points_value'] : 0 }}" data-prefix="{{ option_value['price_prefix'] }}" data-price="{{ option_value['price_value'] }}" id="qv_{{ option['product_option_id'] }}_{{ option_value['product_option_value_id'] }}" />
+												<label {% if (option_value['price']) %}data-toggle="tooltip" title="{{ option_value.price_prefix ~ option_value.price }}"{% endif %} for="qv_{{ option.product_option_id }}_{{ option_value.product_option_value_id }}">
+													<img onclick="optionimage_qv('{{ option_value['image_click'] }}','{{ option_value['image_zoom'] }}','{{ option_value['image_thumb'] }}')" src="{{ option_value['image'] }}" alt="{{ option_value['name'] ~ option_value['price'] ? ' ' ~ option_value['price_prefix'] ~ option_value['price'] : '' }}" class="img-thumbnail" />
+												</label>
+											</div>
+										{% endif %}
+									{% else %}
+										<div class="default-radio">
+											<input type="radio" name="option[{{ option['product_option_id'] }}]" value="{{ option_value['product_option_value_id'] }}" data-points="{{ option_value['points_value'] is defined ? option_value['points_value'] : 0 }}" data-prefix="{{ option_value['price_prefix'] }}" data-price="{{ option_value['price_value'] }}" id="qv_{{ option['product_option_id'] }}_{{ option_value['product_option_value_id'] }}" />
+											<label {% if (option_value['price']) %}data-toggle="tooltip" title="{{ option_value.price_prefix ~ option_value.price }}"{% endif %} for="qv_{{ option.product_option_id }}_{{ option_value.product_option_value_id }}">
+												<span class="option-name">{{ option_value['name'] }}</span>
+											</label>
+										</div>
+									{% endif %}
+								{% endfor %}
+							</div>
+						</div>
+					{% endif %}
+					{% if (option['type'] == 'checkbox') %}
+						<div class="form-group{{ option['required'] ? ' required' : '' }}">
+							<label class="control-label" for="input-option{{ option['product_option_id'] }}">{{ option['name'] }}</label>
+							<div id="input-option{{ option['product_option_id'] }}">
+								{% for option_value in option['product_option_value'] %}
+									{% if (option_value['image'] or option_value['color']) %}
+										{% if (option['status_color_type'] == '1') %}
+											<div class="color-radio">
+												<input type="checkbox" name="option[{{ option['product_option_id'] }}][]" value="{{ option_value['product_option_value_id'] }}" data-points="{{ option_value['points_value'] is defined ? option_value['points_value'] : 0 }}" data-prefix="{{ option_value['price_prefix'] }}" data-price="{{ option_value['price_value'] }}" id="qv_{{ option['product_option_id'] }}_{{ option_value['product_option_value_id'] }}" />
+												<label {% if (option_value['price']) %}data-toggle="tooltip" title="{{ option_value.price_prefix ~ option_value.price }}"{% endif %} for="qv_{{ option.product_option_id }}_{{ option_value.product_option_value_id }}">
+													<span class="color-option" {% if (option_value['price']) %}data-toggle="tooltip" title="{{ option_value.price_prefix ~ option_value.price }}"{% endif %} style="background-color:{{ option_value['color']}}"></span>
+												</label>
+											</div>
+										{% else %}
+											<div class="image-radio">
+												<input type="checkbox" name="option[{{ option['product_option_id'] }}][]" value="{{ option_value['product_option_value_id'] }}" data-points="{{ option_value['points_value'] is defined ? option_value['points_value'] : 0 }}" data-prefix="{{ option_value['price_prefix'] }}" data-price="{{ option_value['price_value'] }}" id="qv_{{ option['product_option_id'] }}_{{ option_value['product_option_value_id'] }}" />
+												<label {% if (option_value['price']) %}data-toggle="tooltip" title="{{ option_value.price_prefix ~ option_value.price }}"{% endif %} for="qv_{{ option.product_option_id }}_{{ option_value.product_option_value_id }}">
+													<img onclick="optionimage_qv('{{ option_value['image_click'] }}','{{ option_value['image_zoom'] }}','{{ option_value['image_thumb'] }}')" src="{{ option_value['image'] }}" alt="{{ option_value['name'] ~ option_value['price'] ? ' ' ~ option_value['price_prefix'] ~ option_value['price'] : '' }}" class="img-thumbnail" />
+												</label>
+											</div>
+										{% endif %}
+									{% else %}
+										<div class="default-radio">
+											<input type="checkbox" name="option[{{ option['product_option_id'] }}][]" value="{{ option_value['product_option_value_id'] }}" data-points="{{ option_value['points_value'] is defined ? option_value['points_value'] : 0 }}" data-prefix="{{ option_value['price_prefix'] }}" data-price="{{ option_value['price_value'] }}" id="qv_{{ option['product_option_id'] }}_{{ option_value['product_option_value_id'] }}" />
+											<label {% if (option_value['price']) %}data-toggle="tooltip" title="{{ option_value.price_prefix ~ option_value.price }}"{% endif %} for="{{ option['product_option_id'] }}_{{ option_value['product_option_value_id'] }}">
+												<span class="option-name">{{ option_value['name'] }}</span>
+											</label>
+										</div>
+									{% endif %}
+								{% endfor %}
+							</div>
+						</div>
+					{% endif %}
+					{% if (option['type'] == 'text') %}
+						<div class="form-group{{ option['required'] ? ' required' : '' }}">
+							<label class="control-label" for="input-option{{ option['product_option_id'] }}">{{ option['name'] }}</label>
+							<input type="text" name="option[{{ option['product_option_id'] }}]" value="{{ option['value'] }}" placeholder="{{ option['name'] }}" id="input-option{{ option['product_option_id'] }}" class="form-control" />
+						</div>
+					{% endif %}
+					{% if (option['type'] == 'textarea') %}
+						<div class="form-group{{ option['required'] ? ' required' : '' }}">
+							<label class="control-label" for="input-option{{ option['product_option_id'] }}">{{ option['name'] }}</label>
+							<textarea name="option[{{ option['product_option_id'] }}]" rows="5" placeholder="{{ option['name'] }}" id="input-option{{ option['product_option_id'] }}" class="form-control">{{ option['value'] }}</textarea>
+						</div>
+					{% endif %}
+					{% if (option['type'] == 'file') %}
+						<div class="form-group{{ option['required'] ? ' required' : '' }}">
+							<label class="control-label" for="input-option{{ option['product_option_id'] }}">{{ option['name'] }}</label>
+							<button type="button" id="button-upload{{ option['product_option_id'] }}" data-loading-text="{{ text_loading }}" class="btn btn-default btn-block"><i class="fa fa-upload"></i> {{ button_upload }}</button>
+							<input type="hidden" name="option[{{ option['product_option_id'] }}]" value="" id="input-option{{ option['product_option_id'] }}" />
+						</div>
+					{% endif %}
+					{% if (option['type'] == 'date') %}
+						<div class="form-group{{ option['required'] ? ' required' : '' }}">
+							<label class="control-label" for="input-option{{ option['product_option_id'] }}">{{ option['name'] }}</label>
+							<div class="input-group date">
+								<input type="text" name="option[{{ option['product_option_id'] }}]" value="{{ option['value'] }}" data-date-format="YYYY-MM-DD" id="input-option{{ option['product_option_id'] }}" class="form-control" />
+								<span class="input-group-btn">
+									<button class="btn btn-default" type="button"><i class="fa fa-calendar"></i></button>
+								</span>
+							</div>
+						</div>
+					{% endif %}
+					{% if (option['type'] == 'datetime') %}
+						<div class="form-group{{ option['required'] ? ' required' : '' }}">
+							<label class="control-label" for="input-option{{ option['product_option_id'] }}">{{ option['name'] }}</label>
+							<div class="input-group datetime">
+								<input type="text" name="option[{{ option['product_option_id'] }}]" value="{{ option['value'] }}" data-date-format="YYYY-MM-DD HH:mm" id="input-option{{ option['product_option_id'] }}" class="form-control" />
+								<span class="input-group-btn">
+									<button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
+								</span>
+							</div>
+						</div>
+					{% endif %}
+					{% if (option['type'] == 'time') %}
+						<div class="form-group{{ option['required'] ? ' required' : '' }}">
+							<label class="control-label" for="input-option{{ option['product_option_id'] }}">{{ option['name'] }}</label>
+							<div class="input-group time">
+								<input type="text" name="option[{{ option['product_option_id'] }}]" value="{{ option['value'] }}" data-date-format="HH:mm" id="input-option{{ option['product_option_id'] }}" class="form-control" />
+								<span class="input-group-btn">
+									<button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
+								</span>
+							</div>
+						</div>
+					{% endif %}
+				{% endfor %}
+			</div>
+			{% endif %}
+
+			{% if (minimum > 1) %}
+				<div class="info-minimum">
+					<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M9 17C13.4183 17 17 13.4183 17 9C17 4.58172 13.4183 1 9 1C4.58172 1 1 4.58172 1 9C1 13.4183 4.58172 17 9 17ZM9 18C13.9706 18 18 13.9706 18 9C18 4.02944 13.9706 0 9 0C4.02944 0 0 4.02944 0 9C0 13.9706 4.02944 18 9 18Z" fill="#E5DB77"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M9 4.50952C9.27614 4.50952 9.5 4.73338 9.5 5.00952V10.2151C9.5 10.4913 9.27614 10.7151 9 10.7151C8.72386 10.7151 8.5 10.4913 8.5 10.2151V5.00952C8.5 4.73338 8.72386 4.50952 9 4.50952Z" fill="#E5DB77"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M9 12.2985C9.27614 12.2985 9.5 12.5223 9.5 12.7985V13.6879C9.5 13.964 9.27614 14.1879 9 14.1879C8.72386 14.1879 8.5 13.964 8.5 13.6879V12.7985C8.5 12.5223 8.72386 12.2985 9 12.2985Z" fill="#E5DB77"></path></svg>
+	 				 {{ text_minimum }}
+	 			</div>
+			{% endif %}
+
+			<div class="price-group dflex flex-wrap">
+				{% if price %}
+					<div class="price">
+						{% if not special %}
+							{{ price }}
+						{% else %}
+							<span class="price-old">{{ price }}</span>
+							<span class="price-new">{{ special }}</span>
+						{% endif %}
+						{% if tax %}
+							<span class="price-tax">{{ text_tax }} {{ tax }}</span>
+						{% endif %}
+					</div>
+				{% endif %}
+				{% if reward or (special and ns_on_off_countdown_product == 1) %}
+					<div class="timer_reward d-flex flex-column">
+						{% if reward %}
+							<div class="info-product-reward">
+								<span class="reward-icon">
+									<svg xmlns="http://www.w3.org/2000/svg" width="9" height="13" fill="none" viewBox="0 0 9 13">
+										<path fill="#fff" d="M3.87 12.216c-.996 0-1.71-.234-2.142-.702-.432-.48-.648-1.11-.648-1.89 0-.204.018-.45.054-.738.036-.288.084-.636.144-1.044.096-.588.168-1.11.216-1.566.048-.468.072-.978.072-1.53 0-.636-.018-1.152-.054-1.548-.204.12-.354.18-.45.18-.192 0-.288-.216-.288-.648 0-.336.072-.618.216-.846.156-.24.408-.462.756-.666.348-.216.786-.402 1.314-.558A6.199 6.199 0 0 1 4.788.426c.996 0 1.752.228 2.268.684.516.456.774 1.056.774 1.8 0 .48-.102.924-.306 1.332a3.37 3.37 0 0 1-.864 1.08c1.5.24 2.25 1.104 2.25 2.592 0 .804-.228 1.536-.684 2.196-.456.66-1.074 1.176-1.854 1.548-.756.372-1.59.558-2.502.558Zm.72-1.998c.54 0 1.026-.072 1.458-.216.444-.156.798-.378 1.062-.666.264-.288.396-.624.396-1.008 0-.492-.174-.84-.522-1.044a2.34 2.34 0 0 0-1.206-.306c-.192 0-.432.018-.72.054-.12.024-.258.036-.414.036a.835.835 0 0 1-.666-.324c-.168-.216-.252-.486-.252-.81 0-.228.102-.372.306-.432 1.464-.384 2.196-1.05 2.196-1.998 0-.756-.522-1.134-1.566-1.134-.384 0-.858.066-1.422.198 0 .588-.03 1.206-.09 1.854-.06.636-.15 1.302-.27 1.998-.072.48-.132.888-.18 1.224a7.473 7.473 0 0 0-.054.792c0 .648.162 1.11.486 1.386.324.264.81.396 1.458.396Z"/>
+									</svg>
+								</span>
+								<span class="qty-reward">{{ reward }} {{ text_reward }}</span>
+							</div>
+						{% endif %}
+						{% if special and ns_on_off_countdown_product == 1 and special_date_end != '' %}
+							<div class="product-timer">
+								<div class="product-timer__title">{{ text_promotion_end }}</div>
+								<div class="product-timer__countdown action-timer qv_timer" data-date-end="{{ special_date_end }}"></div>
+							</div>
+							<script>
+							if($('.qv_timer').attr('data-date-end')){
+								var parts_date = $('.qv_timer').attr('data-date-end').split('-');
+								var ts = new Date(parts_date[0], parts_date[1] - 1, parts_date[2]);
+								if((new Date()) > ts){
+									ts = (new Date()).getTime() + 10*24*60*60*1000;
+								}
+								$('.qv_timer').countdown({
+									timestamp    : ts,
+									callback    : function(days, hours, minutes, seconds){
+										var message = "";
+										message += days;
+										message += hours;
+										message += minutes;
+										message += seconds;
+										$(this).html(message);
+									}
+								});
+							}
+							</script>
+						{% endif %}
+					</div>
+				{% endif %}
+			</div>
+			<div class="qv-action-group dflex flex-wrap">
+				{% if price and on_off_quickview_addtocart == 1 and show_buy_button %}
+					<div class="quantity-adder">
+						<div class="quantity-number dflex">
+							<span onclick="btnminus_card_prod('{% if config_additional_settings_upstore.quantity_multiple is defined and config_additional_settings_upstore.quantity_multiple == '1' %}{{ minimum }}{% else %}1{% endif %}');" class="add-down add-action">
+								<i class="up-icon-14 up-icon-angle-left" aria-hidden="true"></i>
+							</span>
+							<input aria-label="Quantity" {% if config_additional_settings_upstore.quantity_multiple is defined and config_additional_settings_upstore.quantity_multiple == '1' and minimum > 1 %}disabled{% endif %} class="quantity-product" type="text" name="quantity" size="2" value="{{ minimum }}" />
+							<span onclick="btnplus_card_prod('{% if config_additional_settings_upstore.quantity_multiple is defined and config_additional_settings_upstore.quantity_multiple == '1' %}{{ minimum }}{% else %}1{% endif %}');" class="add-up add-action">
+								<i class="up-icon-14 up-icon-angle-right" aria-hidden="true"></i>
+							</span>
+						</div>
+						<input type="hidden" name="product_id" value="{{ product_id }}" />
+					</div>
+					<script>
+					function btnminus_card_prod(minimum){
+						var $input = $('#popup-quickview .quantity-adder .quantity-product');
+						var count = parseInt($input.val()) - parseInt(minimum);
+						count = count < parseInt({{ minimum }}) ? parseInt({{ minimum }}) : count;
+						$input.val(count);
+						$input.change();
+					}
+					function btnplus_card_prod(minimum){
+						var $input = $('#popup-quickview .quantity-adder .quantity-product');
+						var count = parseInt($input.val()) + parseInt(minimum);
+						$input.val(count);
+						$input.change();
+					};
+					</script>
+				{% endif %}
+				{% if on_off_quickview_addtocart == 1 and show_buy_button %}
+					<div class="cart">
+						{% if product_quantity <= 0 and disable_cart_button %}
+							<button type="button" id="button-cart-quickview" class="btn btn-general" disabled>
+								{% if change_text_cart_button_out_of_stock == 1 and product_quantity <= 0 %}
+									<span>{{ disable_cart_button_text }}</span>
+								{% else %}
+									<span class="icon-cart-add"></span>
+									<span class="text-cart-add">{{ button_cart }}</span>
+								{% endif %}
+							</button>
+						{% else %}
+							<button type="button" id="button-cart-quickview" class="btn btn-general{% if in_cart %} is-active{% endif %}" data-pid="{{ product_id }}">
+								{% if change_text_cart_button_out_of_stock == 1 and product_quantity <= 0 %}
+									<span>{{ disable_cart_button_text }}</span>
+								{% else %}
+									<i class="up-icon-22 up-icon-cart" aria-hidden="true"></i>
+									<span class="text-cart-add">{% if in_cart %}{{ text_in_cart }}{% else %}{{ button_cart }}{% endif %}</span>
+								{% endif %}
+							</button>
+						{% endif %}
+					</div>
+				{% else %}
+					<button type="button" onclick="$('#modal-quickview .close-modal').trigger('click');setTimeout(function () {upstoreNotifyStock('{{ product_id }}')}, 600);" class="btn btn-general btn-notify-stock xs-w-100 sm-w-auto"><i class="up-icon-22 up-icon-notify" aria-hidden="true"></i><span class="text-cart-add">{{ button_notify_stock }}</span></button>
+				{% endif %}
+
+				{% if show_nsproduct_btn_fastorder == 1 and show_buy_button %}
+					<button class="btn btn-fastorder {% if product_quantity <= 0 and disable_fastorder_button %}hidden-quick-order{% endif %}" type="button" onclick="$('#modal-quickview .close-modal').trigger('click');setTimeout(function () {fastorder_open({{ product_id }});}, 600);" {% if product_quantity <= 0 and disable_fastorder_button %}disabled{% endif %}>
+						<i class="up-icon-22 up-icon-fastorder" aria-hidden="true"></i>
+						<span>{{ config_text_open_form_send_order[lang_id].config_text_open_form_send_order }}</span>
+					</button>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+<script>
+var qv_galleryMain,qv_galleryThumbs,qv_galleryThumbsOpts,qv_galleryMainOpts;
+
+{% if images and on_off_quickview_additional_image == 1 %}
+
+	var numAdditionalImages = $('.product-img-box .dop-images .swiper-slide').length;
+
+	if (numAdditionalImages <= 5) {
+		$('.product-img-box .dop-images .prev-image, .product-img-box .dop-images .next-image').hide();
+	}
+
+	$(document).on('click', '.product-img-box .dop-images .next-image', function(){
+		qv_galleryMain.slideNext();
+	});
+
+	$(document).on('click', '.product-img-box .dop-images .prev-image', function(){
+		qv_galleryMain.slidePrev();
+	});
+
+	var loopSetting = numAdditionalImages > 5 ? true : false;
+
+	qv_galleryThumbsOpts = {
+		observer: true,
+		observeParents: true,
+		speed: 400,
+		slidesPerView: 5,
+		slideToClickedSlide: true,
+		direction: 'horizontal',
+		loop: loopSetting,
+		breakpoints: {
+			768: {
+				direction: 'vertical',
+			},
+		},
+	};
+	qv_galleryThumbs = new Swiper('.product-img-box .dop-images .swiper', qv_galleryThumbsOpts);
+{% endif %}
+var qv_galleryMainOpts = {
+	observer: true,
+	observeParents: true,
+	spaceBetween: 0,
+	speed: 400,
+	slidesPerView: 1,
+	slideToClickedSlide: true,
+	observer: true,
+	observeParents: true,
+	nested: false,
+	loop: true,
+	pagination: {
+		el: '.thumbnails .swiper-pagination',
+		type: 'bullets',
+		enabled: true,
+	},
+	breakpoints: {
+		768: {
+			spaceBetween: 10,
+			pagination: {
+				enabled: false,
+			}
+		},
+	},
+	{% if images and on_off_quickview_additional_image == 1 %}
+	thumbs: {
+		swiper: qv_galleryThumbs
+	},
+	{% endif %}
+},
+qv_galleryMain = new Swiper('.product-img-box .slider-main', qv_galleryMainOpts);
+
+{% if images and on_off_quickview_additional_image == 1 %}
+	qv_galleryMain.on('slideChangeTransitionEnd', function() {
+		if (qv_galleryThumbs.activeIndex !== qv_galleryMain.realIndex) {
+			qv_galleryThumbs.slideTo(qv_galleryMain.realIndex);
+		}
+	});
+
+	qv_galleryThumbs.on('transitionEnd', function() {
+		if (qv_galleryMain.realIndex !== qv_galleryMain.realIndex) {
+			qv_galleryMain.slideTo(qv_galleryMain.realIndex);
+		}
+	});
+{% endif %}
+
+
+
+
+function optionimage_qv(image, image_zoom,image_thumb) {
+	{% if images and on_off_quickview_additional_image == 1 %}
+		if($('.option-image-new').length > 0) {
+			var cnt_last_slider = qv_galleryMain.slides.length;
+			$('.product-img-box .slider-main .option-image-new img').replaceWith('<img class="img-responsive" data-num="'+ cnt_last_slider +'" src="'+ image +'" />');
+			$('.product-img-box .dop-images .option-image-new img').replaceWith('<img class="img-responsive" data-num="'+ cnt_last_slider +'" src="'+ image_thumb +'" />');
+			setTimeout(function () {
+				qv_galleryMain.slideTo(cnt_last_slider);
+			}, 200);
+		} else {
+			var cnt_last_slider = qv_galleryMain.slides.length + 1;
+
+			qv_galleryMain.appendSlide('<div class="item swiper-slide option-image-new"><img class="img-responsive" data-num="'+ cnt_last_slider +'" src="'+ image +'" /></div>');
+			qv_galleryThumbs.appendSlide('<div class="item swiper-slide option-image-new"><div class="thumbnail"><img class="img-responsive" data-num="'+ cnt_last_slider +'" src="'+ image_thumb +'" /></div></div>');
+
+			setTimeout(function () {
+				for (i = 0; i < qv_galleryMain.slides.length / 5; i++) {
+					qv_galleryMain.slideTo(cnt_last_slider);
+				}
+			}, 200);
+		}
+	{% else %}
+		$('.slider-main').addClass('have-images');
+		if($('.option-image-new').length > 0) {
+			$('.product-img-box .slider-main .option-image-new img').replaceWith('<img class="img-responsive" data-num="1" src="'+ image +'" />');
+			setTimeout(function () {
+				qv_galleryMain.slideTo(1);
+			}, 200);
+		} else {
+			qv_galleryMain.appendSlide('<div class="item swiper-slide option-image-new"><img class="img-responsive" data-num="1" src="'+ image +'" /></div>');
+			setTimeout(function () {
+				qv_galleryMain.init(qv_galleryMainOpts);
+				qv_galleryMain.slideTo(1);
+			}, 200);
+		}
+	{% endif %}
+}
+
+$('#button-cart-quickview').on('click', function() {
+	$.ajax({
+		url: 'index.php?route=checkout/cart/add',
+		type: 'post',
+		data: $('#popup-quickview input[type=\'text\'], #popup-quickview input[type=\'hidden\'], #popup-quickview input[type=\'radio\']:checked, #popup-quickview input[type=\'checkbox\']:checked, #popup-quickview select, #product textarea'),
+		dataType: 'json',
+		success: function(json) {
+			$('.alert, .text-danger').remove();
+			$('.form-group').removeClass('has-error');
+			$('.form-group').removeClass('option-error');
+
+			if (json['error']) {
+				if (json['error']['option']) {
+					for (i in json['error']['option']) {
+						var element = $('#input-option' + i.replace('_', '-'));
+						if (element.parent().hasClass('input-group')) {
+							element.parent().parent().addClass('option-error');
+						} else {
+							element.parent().addClass('option-error');
+						}
+						setTimeout(function () {
+			  				$('.option-danger, .alert, .text-danger').remove();
+						}, 3000);
+						$('#top').before('<div class="alert option-danger"><img class="success-icon" alt="success-icon" src="catalog/view/theme/upstore/image/warning-icon.svg"><div class="text-modal-block">' + json['error']['option'][i] + '</div><button type="button" class="close" data-dismiss="alert"><i class="up-icon-close" aria-hidden="true"></i></button></div>');
+					}
+				}
+
+				if (json['error']['recurring']) {
+					$('select[name=\'recurring_id\']').after('<div class="text-danger">' + json['error']['recurring'] + '</div>');
+				}
+
+				// Highlight any found errors
+				$('.text-danger').parent().addClass('has-error');
+			}
+
+			if (json['success']) {
+				if(json['popup_design']=='1'){
+					fastorder_open_cart();
+				} else if(json['popup_design']=='0') {
+					$('#modal-quickview').modal('hide');
+					html  = '<div id="modal-addcart" class="modal">';
+					html += '  <div class="modal-dialog" style="overflow:hidden">';
+					html += '    <div class="modal-content">';
+					if(json['show_newstorecheckout']=='1'){
+						html += '<div class="modal-body"><div class="text-center">' + json['success'] + '<br><img style="margin:10px 0px;" src="'+ json['image_cart'] +'"  /><br></div><div><a href=' + chSetting.link_onepcheckout + ' class="btn-checkout">'+ chSetting.button_checkout +'</a><button data-dismiss="modal" class="btn-shopping">'+ chSetting.button_shopping +'</button></div></div>';
+					} else {
+						html += '<div class="modal-body"><div class="text-center">' + json['success'] + '<br><img style="margin:10px 0px;" src="'+ json['image_cart'] +'"  /><br></div><div><a href=' + chSetting.link_checkout + ' class="btn-checkout">'+ chSetting.button_checkout +'</a><button data-dismiss="modal" class="btn-shopping">'+ chSetting.button_shopping +'</button></div></div>';
+					}
+					html += '    </div>';
+					html += '  </div>';
+					html += '</div>';
+
+					$('body').append(html);
+
+					setTimeout(function () {
+						$('#modal-addcart').modal('show');
+					}, 700);
+
+					$('#modal-addcart').on('hide.bs.modal', function (e) {
+						$('#modal-addcart').remove();
+					});
+				} else {
+					$('#top').before('<div class="alert add_product_alert"><img class="success-icon" alt="success-icon" src="catalog/view/theme/upstore/image/success-icon.svg"><div class="text-modal-block">' + json['success'] + '</div><button type="button" class="close" data-dismiss="alert"><i class="up-icon-close" aria-hidden="true"></i></button></div>');
+				}
+
+				setTimeout(function () {
+					$('.option-danger, .alert, .text-danger,.add_product_alert').remove();
+				}, 7000);
+				setTimeout(function () {
+					$('.cart-total').html(json['total']);
+				}, 100);
+
+				$('.shopping-cart .cart-content').load('index.php?route=common/cart/info .cart-content > *');
+				setTimeout(function () {
+					changeAddToCartBtn();
+				}, 150);
+
+				$('#modal-quickview .close-modal').trigger('click');
+			}
+
+		},
+        error: function(xhr, ajaxOptions, thrownError) {
+            alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+        }
+	});
+});
+{% if (load_file) %}
+$('#popup-quickview button[id^=\'button-upload\']').on('click', function() {
+	var node = this;
+
+	$('#form-upload').remove();
+
+	$('body').prepend('<form enctype="multipart/form-data" id="form-upload" style="display: none;"><input type="file" name="file" /></form>');
+
+	$('#form-upload input[name=\'file\']').trigger('click');
+
+	if (typeof timer != 'undefined') {
+    	clearInterval(timer);
+	}
+
+	timer = setInterval(function() {
+		if ($('#form-upload input[name=\'file\']').val() != '') {
+			clearInterval(timer);
+
+			$.ajax({
+				url: 'index.php?route=tool/upload',
+				type: 'post',
+				dataType: 'json',
+				data: new FormData($('#form-upload')[0]),
+				cache: false,
+				contentType: false,
+				processData: false,
+				beforeSend: function() {
+					$(node).button('loading');
+				},
+				complete: function() {
+					$(node).button('reset');
+				},
+				success: function(json) {
+					$('.text-danger').remove();
+
+					if (json['error']) {
+						$(node).parent().find('input').after('<div class="text-danger">' + json['error'] + '</div>');
+					}
+
+					if (json['success']) {
+						alert(json['success']);
+
+						$(node).parent().find('input').attr('value', json['code']);
+					}
+				},
+				error: function(xhr, ajaxOptions, thrownError) {
+					alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+				}
+			});
+		}
+	}, 500);
+});
+{% endif %}
+{% if (currency_autocalc is not empty) %}
+function qv_price_format_autocalc(n)
+{
+    c = {{ currency_autocalc.decimals is empty ? "0" : currency_autocalc.decimals }};
+    d = '{{ currency_autocalc.decimal_point }}';
+    t = '{{ currency_autocalc.thousand_point }}';
+    s_left = '{{ currency_autocalc.symbol_left }}';
+    s_right = '{{ currency_autocalc.symbol_right }}';
+
+    n = n * {{ currency_autocalc.value }};
+    i = parseInt(n = Math.abs(n).toFixed(c)) + '';
+
+    j = ((j = i.length) > 3) ? j % 3 : 0;
+    return s_left + (j ? i.substr(0, j) + t : '') + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : '') + s_right;
+}
+
+function qv_calculate_tax_autocalc(price)
+{
+    {# Process Tax Rates #}
+ {% if (tax_rates is defined and tax) %}
+ {% for tax_rate in tax_rates %}
+ {% if (tax_rate.type == 'F') %}
+ {{ 'price += '~tax_rate.rate~';' }}
+ {% elseif (tax_rate.type == 'P') %}
+ {{ 'price += (price * '~tax_rate.rate~') / 100.0;' }}
+ {% endif %}
+ {% endfor %}
+ {% endif %}
+
+    return price;
+}
+
+function qv_process_discounts_autocalc(price, quantity)
+{
+     {% for discount in dicounts_unf_autocalc %}
+ {{ 'if ((quantity >= '~discount.quantity~') && ('~discount.price~' < price)) price = '~discount.price~';'~"\n" }}
+ {% endfor %}
+
+    return price;
+}
+
+
+animate_delay = 10;
+
+main_price_autocalc_final = qv_calculate_tax_autocalc({{ price_value }});
+main_price_autocalc_start = qv_calculate_tax_autocalc({{ price_value }});
+main_step = 0;
+main_timeout_id = 0;
+
+function qv_animateMainPrice_callback() {
+    main_price_autocalc_start += main_step;
+
+    if ((main_step > 0) && (main_price_autocalc_start > main_price_autocalc_final)){
+        main_price_autocalc_start = main_price_autocalc_final;
+    } else if ((main_step < 0) && (main_price_autocalc_start < main_price_autocalc_final)) {
+        main_price_autocalc_start = main_price_autocalc_final;
+    } else if (main_step == 0) {
+        main_price_autocalc_start = main_price_autocalc_final;
+    }
+
+    $('#popup-quickview .autocalc-product-price').html( qv_price_format_autocalc(main_price_autocalc_start) );
+
+    if (main_price_autocalc_start != main_price_autocalc_final) {
+        main_timeout_id = setTimeout(qv_animateMainPrice_callback, animate_delay);
+    }
+}
+
+function qv_animateMainPriceAutocalc(price) {
+
+    main_price_autocalc_start = main_price_autocalc_final;
+    main_price_autocalc_final = price;
+    main_step = (main_price_autocalc_final - main_price_autocalc_start) / 10;
+
+    clearTimeout(main_timeout_id);
+    main_timeout_id = setTimeout(qv_animateMainPrice_callback, animate_delay);
+}
+
+
+{% if (special) %}
+special_autocalc_price_final = qv_calculate_tax_autocalc({{ special_value }});
+special_autocalc_price_start = qv_calculate_tax_autocalc({{ special_value }});
+special_autocalc_step = 0;
+special_autocalc_timeout_id = 0;
+
+function animateSpecialPrice_autocalc_callback_autocalc() {
+    special_autocalc_price_start += special_autocalc_step;
+
+    if ((special_autocalc_step > 0) && (special_autocalc_price_start > special_autocalc_price_final)){
+        special_autocalc_price_start = special_autocalc_price_final;
+    } else if ((special_autocalc_step < 0) && (special_autocalc_price_start < special_autocalc_price_final)) {
+        special_autocalc_price_start = special_autocalc_price_final;
+    } else if (special_autocalc_step == 0) {
+        special_autocalc_price_start = special_autocalc_price_final;
+    }
+
+    $('#popup-quickview .autocalc-product-special').html( qv_price_format_autocalc(special_autocalc_price_start) );
+
+    if (special_autocalc_price_start != special_autocalc_price_final) {
+        special_autocalc_timeout_id = setTimeout(animateSpecialPrice_autocalc_callback_autocalc, animate_delay);
+    }
+}
+
+function animateSpecialPrice_autocalc(price) {
+    special_autocalc_price_start = special_autocalc_price_final;
+    special_autocalc_price_final = price;
+    special_autocalc_step = (special_autocalc_price_final - special_autocalc_price_start) / 10;
+
+    clearTimeout(special_autocalc_timeout_id);
+    special_autocalc_timeout_id = setTimeout(animateSpecialPrice_autocalc_callback_autocalc, animate_delay);
+}
+{% endif %}
+
+function qv_recalculateprice_autocalc()
+{
+    var qv_main_price_autocalc = {{ price_value }};
+    var qv_input_quantity = Number($('#popup-quickview input[name="quantity"]').val());
+    {% if special %}
+		var special_autocalc = {{ special_value }};
+	{% else %}
+		var special_autocalc = 0;
+	{% endif %}
+    var tax = 0;
+
+    if (isNaN(qv_input_quantity)) qv_input_quantity = 0;
+
+    {% if special %}
+        special_coefficient = {{ price_value/special_value }};
+    {% endif %}
+    qv_main_price_autocalc = qv_process_discounts_autocalc(qv_main_price_autocalc, qv_input_quantity);
+    tax = qv_process_discounts_autocalc(tax, qv_input_quantity);
+    var option_price = 0;
+    {% if points %}
+      var points = {{ points_value }};
+      $('input:checked,option:selected').each(function() {
+          if ($(this).data('points')) points += Number($(this).data('points'));
+      });
+      $('.autocalc-product-points').html(points);
+    {% endif %}
+
+    $('input:checked,option:selected').each(function() {
+      if ($(this).data('prefix') == '=') {
+        option_price += Number($(this).data('price'));
+        qv_main_price_autocalc = 0;
+        special_autocalc = 0;
+      }
+    });
+    $('input:checked,option:selected').each(function() {
+      if ($(this).data('prefix') == '+') {
+        option_price += Number($(this).data('price'));
+      }
+      if ($(this).data('prefix') == '-') {
+        option_price -= Number($(this).data('price'));
+      }
+      if ($(this).data('prefix') == 'u') {
+        pcnt = 1.0 + (Number($(this).data('price')) / 100.0);
+        option_price *= pcnt;
+        qv_main_price_autocalc *= pcnt;
+        special_autocalc *= pcnt;
+      }
+      if ($(this).data('prefix') == 'd') {
+        pcnt = 1.0 - (Number($(this).data('price')) / 100.0);
+        option_price *= pcnt;
+        qv_main_price_autocalc *= pcnt;
+        special_autocalc *= pcnt;
+      }
+      if ($(this).data('prefix') == '*') {
+        option_price *= Number($(this).data('price'));
+        qv_main_price_autocalc *= Number($(this).data('price'));
+        special_autocalc *= Number($(this).data('price'));
+      }
+    });
+
+    special_autocalc += option_price;
+    qv_main_price_autocalc += option_price;
+
+    {% if special %}
+      qv_main_price_autocalc = special_autocalc * special_coefficient;
+      tax = special_autocalc;
+    {% else %}
+      tax = qv_main_price_autocalc;
+    {% endif %}
+
+    // Process TAX.
+    qv_main_price_autocalc = qv_calculate_tax_autocalc(qv_main_price_autocalc);
+    special_autocalc = qv_calculate_tax_autocalc(special_autocalc);
+    qv_main_price_autocalc *= qv_input_quantity;
+    special_autocalc *= qv_input_quantity;
+    tax *= qv_input_quantity;
+
+    // Display Main Price
+    qv_animateMainPriceAutocalc(qv_main_price_autocalc);
+
+    {% if special %}
+      animateSpecialPrice_autocalc(special_autocalc);
+    {% endif %}
+}
+
+$(function() {
+
+    $('#popup-quickview input.quantity-product').bind('change', function() { qv_recalculateprice_autocalc(); });
+    $('#popup-quickview input[type="checkbox"]').bind('change', function() { qv_recalculateprice_autocalc(); });
+    $('#popup-quickview input[type="radio"]').bind('change', function() { qv_recalculateprice_autocalc(); });
+    $('#popup-quickview select').bind('change', function() { qv_recalculateprice_autocalc(); });
+
+    $qv_quantity_autocalc = $('#popup-quickview input[name="quantity"]');
+    $qv_quantity_autocalc.data('val', $qv_quantity_autocalc.val());
+
+    (function() {
+
+        if ($qv_quantity_autocalc.val() != $qv_quantity_autocalc.data('val')){
+            $qv_quantity_autocalc.data('val',$qv_quantity_autocalc.val());
+            qv_recalculateprice_autocalc();
+        }
+        setTimeout(arguments.callee, 250);
+    })();
+    {% if (config_additional_settings_upstore['price_recalc'] is defined and (config_additional_settings_upstore['price_recalc'] == '1')) %}
+    qv_recalculateprice_autocalc();
+     {% endif %}
+      changeWishlistBtn();
+ 		changeCompareBtn();
+});
+{% endif %}
+</script>
+{% if (load_datetimepicker) %}
+<link rel="stylesheet" href="catalog/view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.css"/>
+<script src="catalog/view/javascript/jquery/datetimepicker/moment/moment.min.js"></script>
+<script src="catalog/view/javascript/jquery/datetimepicker/moment/moment-with-locales.min.js"></script>
+<script src="catalog/view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.js"></script>
+<script>
+$('#popup-quickview .date').datetimepicker({
+	language: '{{ lang_datetimepicker }}',
+	pickTime: false
+});
+
+$('#popup-quickview .datetime').datetimepicker({
+	language: '{{ lang_datetimepicker }}',
+	pickDate: true,
+	pickTime: true
+});
+
+$('#popup-quickview .time').datetimepicker({
+	language: '{{ lang_datetimepicker }}',
+	pickDate: false
+});
+</script>
+{% endif %}
+</div>

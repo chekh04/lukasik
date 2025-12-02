@@ -1,0 +1,40 @@
+{% if (article_comments) %}
+<div id="article-comment">
+{% for article_comment in article_comments %}
+<div class="comment-item">
+  <div class="comment-heading dflex">
+  		<div class="block-author">{{ article_comment.author }}</div>
+		<div class="block-date">{{ article_comment.date_added }}</div>
+  </div>
+  <div class="comment-info {% if (article_show_like_dislike is defined and (article_show_like_dislike == 1)) %}show-like-dislike{% endif %}">
+	  <div class="comment">{{ article_comment.text }}</div>
+	    {% if (article_show_like_dislike is defined and (article_show_like_dislike == 1)) %}
+		  <div class="article-like-dislike-box">
+			<button type="button" onclick="ArticleCommentlikeDislike('{{ article_comment.article_comment_id}}','like')" id="like_article_comment{{ article_comment.article_comment_id}}" class="btn-like like">
+			  <img src="catalog/view/theme/upstore/image/r-store/like-icon.svg" alt="like-icon.svg">
+			  <span class="likes">{{ article_comment.like }}</span>
+			</button>
+			<button type="button" onclick="ArticleCommentlikeDislike('{{ article_comment.article_comment_id}}','dislike')" id="dislike_article_comment{{ article_comment.article_comment_id}}" class="btn-dislike dislike">
+			  <img src="catalog/view/theme/upstore/image/r-store/dislike-icon.svg" alt="dislike-icon.svg">
+			  <span class="dislikes">{{ article_comment.dislike }}</span>
+			</button>
+		  </div>
+		{% endif %}
+  </div>
+  {% if (article_comment.admin_reply is defined and article_comment.admin_reply != '') %}
+	<div class="admin_reply">
+	  <div>{{ text_admin_reply }}</div>
+	  {{ article_comment.admin_reply }}
+	</div>
+  {% endif %}
+</div>
+{% endfor %}
+</div>
+{% else %}
+<div id="article-comment">
+{{ text_no_article_comments }}
+</div>
+{% endif %}
+{% if (article_comments) %}
+<div class="text-center mb-20">{{ pagination }}</div>
+{% endif %}

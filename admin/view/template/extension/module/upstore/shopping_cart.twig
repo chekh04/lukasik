@@ -1,0 +1,189 @@
+<div class="form-group">
+	<div class="col-sm-12 title-setting">{{ text_setting_shopping_cart }}</div>
+</div>
+<div class="form-group">
+	<label class="col-sm-3 control-label">{{ text_on_off_click_shopping_cart }}</label>
+	<div class="col-sm-9">
+		<select name="config_on_off_shopping_cart_click" class="form-control">
+			{% if config_on_off_shopping_cart_click == '1' %}
+				<option value="1" selected="selected">{{ popup_shopping_cart }}</option>
+				<option value="0">{{ popup_standart }}</option>
+			{% else %}
+				<option value="0" selected="selected">{{ popup_standart }}</option>
+				<option value="1">{{ popup_shopping_cart }}</option>
+			{% endif %}
+		</select>
+	</div>
+</div>
+<div class="form-group">
+	<label class="col-sm-3 control-label">{{ text_shopping_cart_after_add }}</label>
+	<div class="col-sm-9">
+		<select name="config_shopping_cart_after_add" class="form-control">
+			{% if config_shopping_cart_after_add == '1' %}
+				<option value="1" selected="selected">{{ popup_shopping_cart }}</option>
+				<option value="0">{{ popup_standart }}</option>
+				<option value="2">{{ mini_informer }}</option>
+				<option value="3">{{ text_cart_right }}</option>
+			{% elseif config_shopping_cart_after_add == '0' %}
+				<option value="0" selected="selected">{{ popup_standart }}</option>
+				<option value="1">{{ popup_shopping_cart }}</option>
+				<option value="2">{{ mini_informer }}</option>
+				<option value="3">{{ text_cart_right }}</option>
+			{% elseif config_shopping_cart_after_add == '2' %}
+				<option value="2" selected="selected">{{ mini_informer }}</option>
+				<option value="0">{{ popup_standart }}</option>
+				<option value="1">{{ popup_shopping_cart }}</option>
+				<option value="3">{{ text_cart_right }}</option>
+			{% else %}
+				<option value="3" selected="selected">{{ text_cart_right }}</option>
+				<option value="0">{{ popup_standart }}</option>
+				<option value="1">{{ popup_shopping_cart }}</option>
+				<option value="2">{{ mini_informer }}</option>
+			{% endif %}
+		</select>
+	</div>
+</div>
+<div class="form-group">
+	<label class="col-sm-3 control-label">{{ text_show_shopping_cart_btn }}</label>
+	<div class="col-sm-9">
+		<div class="btn-group" data-toggle="buttons">
+			<label class="btn btn-default{% if config_show_shopping_cart_btn %} active{% endif %}">
+				<input type="radio" name="config_show_shopping_cart_btn" value="1" {% if config_show_shopping_cart_btn %}checked="checked"{% endif %}>
+				<span class="on-off">{{ text_yes }}</span>
+			</label>
+			<label class="btn btn-default{% if not config_show_shopping_cart_btn %} active{% endif %}">
+				<input type="radio" name="config_show_shopping_cart_btn" value="0" {% if not config_show_shopping_cart_btn %}checked="checked"{% endif %}>
+				<span class="on-off">{{ text_no }}</span>
+			</label>
+		</div>
+	</div>
+</div>
+<div class="form-group">
+	<label class="col-sm-3 control-label">{{ entry_related_products_status }}</label>
+	<div class="col-sm-9">
+		<div class="btn-group" data-toggle="buttons">
+			<label class="btn btn-default{% if cart_related_products_status %} active{% endif %}">
+				<input type="radio" name="cart_related_products_status" value="1" {% if cart_related_products_status %}checked="checked"{% endif %}>
+				<span class="on-off">{{ text_on }}</span>
+			</label>
+			<label class="btn btn-default{% if not cart_related_products_status %} active{% endif %}">
+				<input type="radio" name="cart_related_products_status" value="0" {% if not cart_related_products_status %}checked="checked"{% endif %}>
+				<span class="on-off">{{ text_off }}</span>
+			</label>
+		</div>
+	</div>
+</div>
+<div class="form-group">
+	<label class="col-sm-3 control-label">{{ entry_related_products_title }}</label>
+	<div class="col-sm-9">
+		{% for language in languages %}
+			<div class="input-group">
+				<span class="input-group-addon">
+					<img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" />
+				</span>
+				<textarea name="cart_related_products_setting[title][{{ language.language_id }}]" rows="1" placeholder="" class="form-control">{{ cart_related_products_setting.title[language.language_id] | default('') }}</textarea>
+			</div>
+		{% endfor %}
+	</div>
+</div>
+<div class="form-group required">
+	<label class="col-sm-3 control-label">{{ entry_limit }}</label>
+	<div class="col-sm-9 form-inline">
+		<input name="cart_related_products_setting[limit]" value="{{ cart_related_products_setting.limit | default(10) }}" type="text" class="form-control">
+	</div>
+</div>
+<div class="form-group">
+	<label class="col-sm-3 control-label">{{ entry_type_product_display }}</label>
+	<div class="col-sm-9">
+		<div class="btn-group" data-toggle="buttons">
+			<label class="btn btn-default {% if cart_related_products_setting.type_product_display == 'related' %}active{% endif %}">
+				<input type="radio" name="cart_related_products_setting[type_product_display]" value="related" autocomplete="off" {% if cart_related_products_setting.type_product_display == 'related' %}checked="checked"{% endif %}>
+				{{ text_related_product }}
+			</label>
+			<label class="btn btn-default {% if cart_related_products_setting.type_product_display == 'featured' %}active{% endif %}">
+				<input type="radio" name="cart_related_products_setting[type_product_display]" value="featured" autocomplete="off" {% if cart_related_products_setting.type_product_display == 'featured' %}checked="checked"{% endif %}>
+				{{ text_featured_product }}
+			</label>
+		</div>
+		<div class="info-related-product mt-15 {% if cart_related_products_setting.type_product_display == 'featured' %}hidden{% endif %}">
+			<b>{{ text_info_related_products }}</b>
+		</div>
+	</div>
+</div>
+<div class="form-group">
+	<label class="col-sm-3 control-label">{{ entry_shuffle_products }}</label>
+	<div class="col-sm-9">
+		<div class="btn-group" data-toggle="buttons">
+			<label class="btn btn-default {% if cart_related_products_setting.shuffle_products %}active{% endif %}">
+				<input type="radio" name="cart_related_products_setting[shuffle_products]" value="1" autocomplete="off" {% if cart_related_products_setting.shuffle_products %}checked="checked"{% endif %}>
+				{{ text_yes }}
+			</label>
+			<label class="btn btn-default {% if not cart_related_products_setting.shuffle_products %}active{% endif %}">
+				<input type="radio" name="cart_related_products_setting[shuffle_products]" value="0" autocomplete="off" {% if not cart_related_products_setting.shuffle_products %}checked="checked"{% endif %}>
+				{{ text_no }}
+			</label>
+		</div>
+	</div>
+</div>
+<div class="form-group info-featured-product {% if cart_related_products_setting.type_product_display == 'related' %} hidden{% endif %}">
+	<label class="col-sm-3 control-label" for="input-featured-product">
+		<span data-toggle="tooltip" title="{{ help_product }}">{{ entry_add_product }}</span>
+	</label>
+	<div class="col-sm-9">
+		<input type="text" name="featured_product_name" value="" placeholder="{{ entry_add_product }}" id="input-featured-product" class="form-control" />
+		<div id="featured-product" class="well well-sm" style="height: 150px; overflow: auto;">
+			{% if cart_featured_products is not empty %}
+				{% for featured_product in cart_featured_products %}
+					<div id="featured-product{{ featured_product.product_id }}">
+						<i class="fa fa-minus-circle"></i> {{ featured_product.name }}
+						<input type="hidden" name="cart_related_products_setting[featured_products][]" value="{{ featured_product.product_id }}" />
+					</div>
+				{% endfor %}
+			{% endif %}
+		</div>
+	</div>
+</div>
+<script>
+	$(document).on('change','[name="cart_related_products_setting[type_product_display]"]', function(){
+		if($(this).val() == 'featured'){
+			$('.info-featured-product').removeClass('hidden');
+			$('.info-related-product').addClass('hidden');
+		} else {
+			$('.info-featured-product').addClass('hidden');
+			$('.info-related-product').removeClass('hidden');
+		}
+	});
+
+	Sortable.create(document.getElementById('featured-product'), {
+		filter: '.fa-minus-circle',
+		animation: 150
+	});
+
+	$('input[name=\'featured_product_name\']').autocomplete({
+		source: function(request, response) {
+			$.ajax({
+				url: 'index.php?route=catalog/product/autocomplete&user_token={{ user_token }}&filter_name=' +  encodeURIComponent(request),
+				dataType: 'json',
+				success: function(json) {
+					response($.map(json, function(item) {
+						return {
+							label: item['name'],
+							value: item['product_id']
+						}
+					}));
+				}
+			});
+		},
+		select: function(item) {
+			$('input[name=\'featured_product_name\']').val('');
+
+			$('#featured-product' + item['value']).remove();
+
+			$('#featured-product').append('<div id="featured-product' + item['value'] + '"><i class="fa fa-minus-circle"></i> ' + item['label'] + '<input type="hidden" name="cart_related_products_setting[featured_products][]" value="' + item['value'] + '" /></div>');
+		}
+	});
+
+	$('#featured-product').delegate('.fa-minus-circle', 'click', function() {
+		$(this).parent().remove();
+	});
+</script>

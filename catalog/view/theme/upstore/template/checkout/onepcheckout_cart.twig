@@ -1,0 +1,86 @@
+<div>
+	<div class="cart-list">
+		{% if products is not empty or vouchers %}
+		{% for product in products %}
+			<div class="cart-item dflex">
+				<div class="cart-item-left">
+					{% if product['thumb'] %}
+						<a href="{{ product['href'] }}"><img width="{{ cart_width }}"  height="{{ cart_height }}" src="{{ product['thumb'] }}" alt="{{ product['name'] }}" class="img-responsive" /></a>
+					{% endif %}
+				</div>
+				<div class="cart-item-center dflex flex-column">
+					<div class="cart-item-prod-name"><a href="{{ product['href'] }}">{{ product['name'] }}</a></div>
+					<div class="product-model">{{ text_model }}{{ product['model'] }}</div>
+					{% if (not product.stock) %}
+						<div class="cart-prod-info-stock text-danger">***</div>
+					{% endif %}
+					{% if (product.option) %}
+						<div class="cart-item-options">
+							{% for option in product.option %}
+								<div class="cart-item-option dflex">
+									<div class="cart-item-option-name">{{ option.name }}:</div>
+									<div class="cart-item-option-value">{{ option.value }}</div>
+								</div>
+							{% endfor %}
+						</div>
+					{% endif %}
+					{% if (product.reward) %}
+						<div class="cart-prod-info-reward">{{ product.reward }}</div>
+					{% endif %}
+					{% if (product.recurring) %}
+						<br />
+						<span class="label label-info">{{ text_recurring_item }}</span> <small>{{ product.recurring }}</small>
+					{% endif %}
+					{% if product.ch_gift_id and product.ch_gift_id > 0%}
+						<div class="ch-gift">{{ text_gift }}</div>
+					{% endif %}
+				</div>
+				<div class="cart-item-price-quantity dflex">
+					<div class="dflex justify-content-end">
+						{% if not product.ch_gift_id or product.ch_gift_id == 0 %}
+							<div class="ch-cart-quantity">
+							<span class="input-btn">
+								<button class="btn btn-quantity-minus" type="button" data-action="minus">
+									<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+								</button>
+							</span>
+							<input type="text" autocomplete="off" id="input_pr_quantity_{{ product['key'] }}" class="form-control" data-minimum="{{ product['minimum'] }}" data-key="{{ product['key'] }}" value="{{ product['quantity'] }}">
+							<span class="input-btn">
+								<button class="btn btn-quantity-plus" type="button" data-action="plus">
+									<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+								</button>
+							</span>
+							</div>
+						{% endif %}
+						<button type="button" data-action="remove" data-key="{{ product.key }}" title="{{ button_remove }}" class="btn btn-remove">
+							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+						</button>
+					</div>
+					<div class="cart-totals dflex">
+						<div class="cart-item-price"><span class="text-cart-item-price">{{ column_price }}</span>{{ product['price'] }}</div>
+						<div class="cart-item-total"><span class="text-cart-item-total">{{ column_total }}</span>{{ product['total'] }}</div>
+					</div>
+				</div>
+			</div>
+		{% endfor %}
+		{% for voucher in vouchers %}
+			<div class="cart-item dflex">
+				<div class="cart-item-left"></div>
+				<div class="cart-item-center dflex flex-column">
+					<div class="cart-item-prod-name">{{ voucher['description'] }}</div>
+				</div>
+				<div class="cart-item-price-quantity dflex">
+					<div class="dflex justify-content-end">
+						<button type="button" data-toggle="tooltip" title="{{ button_remove }}" class="btn btn-remove" onclick="voucher.remove('{{ voucher['key'] }}');">
+							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+						</button>
+					</div>
+					<div class="cart-totals dflex">
+						<div class="cart-item-total"><span class="text-cart-item-total"></span>{{ voucher['amount'] }}</div>
+					</div>
+				</div>
+			</div>
+		{% endfor %}
+		{% endif %}
+	</div>
+</div>

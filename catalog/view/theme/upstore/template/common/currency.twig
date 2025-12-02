@@ -1,0 +1,53 @@
+{% if currencies|length > 1 %}
+    <div class="box-currency hidden-xs hidden-sm">
+        <form action="{{ action }}" method="post" enctype="multipart/form-data" id="currency">
+            <span class="mob-text-currency">{{ text_currency }}</span>
+            <div class="dropdown-box">
+                <button class="btn-currency-top dropdown-toggle" data-toggle="dropdown">
+                    {% for currency in currencies %}
+                        {% if currency.symbol_left and currency.code == code %}
+                            {{ currency.symbol_left }}
+                        {% elseif currency.symbol_right and currency.code == code %}
+                            {{ currency.symbol_right }}
+                        {% endif %}
+                    {% endfor %}
+                </button>
+                <ul class="dropdown-menu dropdown-menu-right up-compact-dropdown">
+                    {% for currency in currencies %}
+                        {% if currency.symbol_left %}
+                            {% if currency.code == code %}
+                                <li class="active">
+                                    <button class="currency-select btn btn-link btn-block" type="button" name="{{ currency.code }}">
+                                        {{ currency.symbol_left }} <span class="currency__title">{{ currency.title }}</span>
+                                    </button>
+                                </li>
+                            {% else %}
+                                <li>
+                                    <button class="currency-select btn btn-link btn-block" type="button" name="{{ currency.code }}">
+                                        {{ currency.symbol_left }} <span class="currency__title">{{ currency.title }}</span>
+                                    </button>
+                                </li>
+                            {% endif %}
+                        {% else %}
+                            {% if currency.code == code %}
+                                <li class="active">
+                                    <button class="currency-select btn btn-link btn-block" type="button" name="{{ currency.code }}">
+                                        {{ currency.symbol_right }} <span class="currency__title">{{ currency.title }}</span>
+                                    </button>
+                                </li>
+                            {% else %}
+                                <li>
+                                    <button class="currency-select btn btn-link btn-block" type="button" name="{{ currency.code }}">
+                                        {{ currency.symbol_right }} <span class="currency__title">{{ currency.title }}</span>
+                                    </button>
+                                </li>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </div>
+            <input type="hidden" name="code" value="" />
+            <input type="hidden" name="redirect" value="{{ redirect }}" />
+        </form>
+    </div>
+{% endif %}

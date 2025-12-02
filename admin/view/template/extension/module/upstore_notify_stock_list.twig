@@ -1,0 +1,83 @@
+{% if waitlist_requests %}
+    <div class="row" style="margin-bottom:10px">
+        <div class="col-sm-12 text-right">
+            <button type="button" class="btn btn-danger" onclick="deleteSelected();">{{ button_delete }}</button>
+        </div>
+    </div>
+{% endif %}
+<div class="table-responsive">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <td width="1" style="text-align: center;">
+                    <input type="checkbox" onclick="document.querySelectorAll('input[name*=\'selected\']').forEach(el => el.checked = this.checked);" />
+                </td>
+                <td class="text-left">{{ column_customer }}</td>
+                <td class="text-left">{{ column_product }}</td>
+                <td class="text-left">{{ column_status }}</td>
+                <td class="text-left">{{ column_date_added }}</td>
+                <td class="text-left">{{ column_date_send }}</td>
+                <td class="text-right">{{ column_action }}</td>
+            </tr>
+        </thead>
+        <tbody>
+            {% if waitlist_requests %}
+                {% for result in waitlist_requests %}
+                    <tr>
+                        <td style="text-align: center;">
+                            <input class="nsp-checkbox" type="checkbox" name="selected[]" value="{{ result.notify_stock_id }}" />
+                        </td>
+                        <td class="text-left">
+                            {% if result.name %}
+                                <div><i class="fa fa-user"></i> {{ result.name }}</div>
+                            {% endif %}
+                            {% if result.telephone %}
+                                <div><i class="fa fa-phone-square"></i> {{ result.telephone }}</div>
+                            {% endif %}
+                            {% if result.email %}
+                                <div><i class="fa fa-envelope-o"></i> {{ result.email }}</div>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <div class="d-flex align-items-start gap-10">
+                                <img src="{{ result.product.thumb }}" alt="{{ result.product.name }}" title="{{ result.product.name }}" class="img-thumbnail" />
+                                <div class="d-flex flex-column gap-2">
+                                    <div class="d-flex gap-10">
+                                        <a target="_blank" data-toggle="tooltip" title="{{ button_edit }}" href="{{ result.product.edit }}"><i class="fa fa-pencil"></i></a>
+                                        <a target="_blank" href="{{ result.product.href }}">{{ result.product.name }}</a>
+                                    </div>
+                                    {% if result.product.quantity > 0 %}
+                                        <span class="in-stock">{{ text_in_stock }}</span>
+                                    {% else %}
+                                        <span class="out-stock">{{ text_out_stock }}</span>
+                                    {% endif %}
+                                    {% if result.product.model %}
+                                        <span class="sku"><b>{{ text_model_product }}</b>{{ result.product.model }}</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </td>
+                        <td class="right" style="background:{{ result.status_id == '1' ? '#0BED0B' : '#EDB40B' }} !important;">
+                            {{ result.status }}
+                        </td>
+                        <td class="text-left">{{ result.date_added }}</td>
+                        <td class="text-left">{{ result.date_send_email }}</td>
+                        <td class="text-right">
+                            <button type="button" onclick="deleteSelected('{{ result.notify_stock_id }}')" data-toggle="tooltip" title="{{ button_delete }}" class="btn btn-danger">
+                                <i class="fa fa-trash-o"></i>
+                            </button>
+                        </td>
+                    </tr>
+                {% endfor %}
+            {% else %}
+                <tr>
+                    <td class="text-center" colspan="7">{{ text_no_results }}</td>
+                </tr>
+            {% endif %}
+        </tbody>
+    </table>
+</div>
+<div class="row">
+    <div class="col-sm-6 text-left">{{ pagination }}</div>
+    <div class="col-sm-6 text-right">{{ results }}</div>
+</div>

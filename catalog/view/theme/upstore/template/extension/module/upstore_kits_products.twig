@@ -1,0 +1,35 @@
+<div class="modal-header">
+	<div class="modal-title">{{ text_kits_products }}</div>
+	<button type="button" class="close-modal" data-dismiss="modal"><i class="up-icon-close" aria-hidden="true"></i></button>
+</div>
+<div class="modal-body">
+<div class="row">
+	{% for product in products %}
+   <div data-old-pid="{{ prod_id }}" data-pid="{{ product.product_id }}" data-kid="{{ product.kit_id }}" data-vid="{{ product.vk_id }}" class="item add-kit-product col-xs-12">
+    <div class="product-thumb {% if product.active_prod %}active-prod{% endif %} dflex h-100">
+      <div class="image">
+			<img class="img-responsive" decoding="async" width="{{ product.width }}" height="{{ product.height }}" loading="lazy" src="{{ product.thumb }}" alt="{{ product.name }}" />
+	  </div>
+	  <div class="caption dflex flex-column flex-grow-1">
+			<div class="product-name">{{ product.name }}</div>
+			<div class="price-actions-box dflex flex-wrap mt-auto">
+				{% if product.price %}
+					<div class="price">
+						{% if not product.special %}
+							<span>{{ product.price }}</span>
+						{% else %}
+							<span class="price-old">{{ product.price }}{% if ((on_off_percent_discount == '1') and product.special) %}<span class="sticker-ch-pd procent-skidka">{{ product.skidka }} %</span>{% endif %}</span>
+							<span class="price-new">{{ product.special }}</span>
+						{% endif %}
+						{% if product.tax %}
+						<span class="price-tax">{{ text_tax }} {{ product.tax }}</span>
+						{% endif %}
+					</div>
+				{% endif %}
+			</div>
+      </div>
+    </div>
+  </div>
+{% endfor %}
+</div>
+</div>

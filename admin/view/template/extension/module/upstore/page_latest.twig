@@ -1,0 +1,102 @@
+<div class="form-group">
+  <label for="input-status_latest_page" class="col-sm-3 control-label">{{ ns_text_status }}</label>
+  <div class="col-sm-9">
+	<div class="checkbox-group-pixelshop">
+		<label><input type="checkbox" name="setting_lp[status_latest_page]" value="1" {{ setting_lp['status_latest_page'] is defined and setting_lp['status_latest_page'] == '1' ? 'checked="checked"' : '' }} /><span></span></label>
+	</div>
+  </div>
+</div>
+<div class="form-group">
+  <label for="input-status_receipt_date" class="col-sm-3 control-label">{{ text_status_receipt_date }}</label>
+  <div class="col-sm-9">
+	<div class="checkbox-group-pixelshop">
+		<label><input type="checkbox" name="setting_lp[status_receipt_date]" value="1" {{ setting_lp['status_receipt_date'] is defined and setting_lp['status_receipt_date'] == '1' ? 'checked="checked"' : '' }} /><span></span></label>
+	</div>
+  </div>
+</div>
+<div class="form-group">
+  <label for="input-status_active_last_date" class="col-sm-3 control-label">{{ text_status_active_last_date }}</label>
+  <div class="col-sm-9">
+	<div class="checkbox-group-pixelshop">
+		<label><input type="checkbox" name="setting_lp[status_active_last_date]" value="1" {{ setting_lp['status_active_last_date'] is defined and setting_lp['status_active_last_date'] == '1' ? 'checked="checked"' : '' }} /><span></span></label>
+	</div>
+  </div>
+</div>
+<div class="form-group">
+  <label class="col-sm-3 control-label" for="input-count_day_latest_product">{{ text_day_show_latest }}</label>
+  <div class="col-sm-9">
+	<input type="text" name="config_day_latest_product" value="{{ config_day_latest_product }}"  id="input-count_day_latest_product" class="form-control" />
+  </div>
+</div>
+<div class="form-group">
+  <label for="input-status_lp_price_list" class="col-sm-3 control-label">{{ text_localstorege_pricelist }}</label>
+  <div class="col-sm-9">
+	<div class="checkbox-group-pixelshop">
+		<label><input type="checkbox" name="setting_lp[status_lp_price_list]" value="1" {{ setting_lp['status_lp_price_list'] is defined and setting_lp['status_lp_price_list'] == '1' ? 'checked="checked"' : '' }} /><span></span></label>
+	</div>
+  </div>
+</div>
+<div class="form-group">
+	<label class="col-sm-3 control-label">{{ text_status_model }}</label>
+	<div class="col-sm-9">
+		<div class="checkbox-group-pixelshop">
+			<label><input type="checkbox" name="setting_lp[status_lp_model]" value="1" {{ setting_lp['status_lp_model'] is defined and setting_lp['status_lp_model'] == '1' ? 'checked="checked"' : '' }} /><span></span></label>
+		</div>
+	</div>
+</div>
+<div class="form-group">
+	<label class="col-sm-3 control-label">{{ text_status_description }}</label>
+	<div class="col-sm-9">
+		<div class="checkbox-group-pixelshop">
+			<label><input type="checkbox" name="setting_lp[status_lp_description]" value="1" {{ setting_lp['status_lp_description'] is defined and setting_lp['status_lp_description'] == '1' ? 'checked="checked"' : '' }} /><span></span></label>
+		</div>
+	</div>
+</div>
+<div class="form-group">
+<label class="col-sm-3 control-label">{{ text_additional_image }}</label>
+	<div class="col-sm-9">
+		<label class="radio"><input {% if  setting_lp.image_hover  and  setting_lp.image_hover == 0  or  setting_lp.image_hover is empty%}checked="checked"{% endif %} type="radio" name="setting_lp[image_hover]" value="0"> {{ text_disabled }}</label>
+		<label class="radio"><input {% if  setting_lp.image_hover  and  setting_lp.image_hover == 1 %}checked="checked"{% endif %} type="radio" name="setting_lp[image_hover]" value="1"> {{ text_addit_image_type1 }}</label>
+		<label class="radio"><input {% if  setting_lp.image_hover  and  setting_lp.image_hover == 2 %}checked="checked"{% endif %} type="radio" name="setting_lp[image_hover]" value="2"> {{ text_addit_image_type2 }}</label>
+	</div>
+</div>
+<div class="form-group">
+	<label class="col-sm-3 control-label">{{ text_status_rating }}</label>
+	<div class="col-sm-9">
+		<div class="checkbox-group-pixelshop">
+			<label><input type="checkbox" name="setting_lp[status_lp_rating]" value="1" {{ setting_lp['status_lp_rating'] is defined and setting_lp['status_lp_rating'] == '1' ? 'checked="checked"' : '' }} /><span></span></label>
+		</div>
+	</div>
+</div>
+<div class="form-group">
+	<label class="col-sm-3 control-label">{{ text_status_quantity_reviews }}</label>
+	<div class="col-sm-9">
+		<div class="checkbox-group-pixelshop">
+			<label><input type="checkbox" name="setting_lp[status_lp_quantity_reviews]" value="1" {{ setting_lp['status_lp_quantity_reviews'] is defined and setting_lp['status_lp_quantity_reviews'] == '1' ? 'checked="checked"' : '' }} /><span></span></label>
+		</div>
+	</div>
+</div>
+<div class="form-group">
+	<label class="col-sm-3 control-label">{{ text_status_fastorder }}</label>
+	<div class="col-sm-9">
+		<div class="checkbox-group-pixelshop">
+			<label><input type="checkbox" name="setting_lp[status_lp_fastorder]" value="1" {{ setting_lp['status_lp_fastorder'] is defined and setting_lp['status_lp_fastorder'] == '1' ? 'checked="checked"' : '' }} /><span></span></label>
+		</div>
+	</div>
+</div>
+<div class="form-group">
+	<label class="col-sm-3 control-label">{{ text_status_wishlist }}</label>
+	<div class="col-sm-9">
+		<div class="checkbox-group-pixelshop">
+			<label><input type="checkbox" name="setting_lp[status_lp_wishlis]" value="1" {{ setting_lp['status_lp_wishlis'] is defined and setting_lp['status_lp_wishlis'] == '1' ? 'checked="checked"' : '' }} /><span></span></label>
+		</div>
+	</div>
+</div>
+<div class="form-group">
+	<label class="col-sm-3 control-label">{{ text_status_compare }}</label>
+	<div class="col-sm-9">
+		<div class="checkbox-group-pixelshop">
+			<label><input type="checkbox" name="setting_lp[status_lp_compare]" value="1" {{ setting_lp['status_lp_compare'] is defined and setting_lp['status_lp_compare'] == '1' ? 'checked="checked"' : '' }} /><span></span></label>
+		</div>
+	</div>
+</div>

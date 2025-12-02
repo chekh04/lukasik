@@ -1,0 +1,131 @@
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="page-header">
+	<div class="container-fluid">
+	  <div class="pull-right">
+		<button type="submit" form="form-comment" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+		<a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a></div>
+	  <h1>{{ heading_title }}</h1>
+	  <ul class="breadcrumb">
+	  {% for breadcrumb in breadcrumbs %}
+	  <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+	  {% endfor %}
+	  </ul>
+	</div>
+  </div>
+  <div class="container-fluid">
+	{% if error_warning %}
+    <div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %}
+	<div class="panel panel-default">
+	  <div class="panel-heading">
+		<h3 class="panel-title"><i class="fa fa-pencil"></i> {{ text_form }}</h3>
+	  </div>
+	  <div class="panel-body">
+		<form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-comment" class="form-horizontal">
+		  <div class="form-group required">
+			<label class="col-sm-2 control-label" for="input-author">{{ entry_author }}</label>
+			<div class="col-sm-10">
+			  <input type="text" name="author" value="{{ author }}" placeholder="{{ entry_author }}" id="input-author" class="form-control" />
+			  {% if error_author %}
+			  <div class="text-danger">{{ error_author }}</div>
+			  {% endif %}
+			</div>
+		  </div>
+		  <div class="form-group required">
+			<label class="col-sm-2 control-label" for="input-article"><span data-toggle="tooltip" title="{{ help_article }}">{{ entry_article }}</span></label>
+			<div class="col-sm-10">
+			  <input type="text" name="article" value="{{ article }}" placeholder="{{ entry_article }}" id="input-product" class="form-control" />
+			  <input type="hidden" name="article_id" value="{{ article_id }}" />
+			   {% if error_article %}
+			  <div class="text-danger">{{ error_article }}</div>
+			 {% endif %}
+			</div>
+		  </div>
+		  <div class="form-group required">
+			<label class="col-sm-2 control-label" for="input-text">{{ entry_text }}</label>
+			<div class="col-sm-10">
+			  <textarea name="text" cols="60" rows="8" placeholder="{{ entry_text }}" id="input-text" class="form-control">{{ text }}</textarea>
+			   {% if error_text %}
+			  <div class="text-danger">{{ error_text }}</div>
+			  {% endif %}
+			</div>
+		   </div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label" for="input-name-like"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> {{ entry_like }}</label>
+				<div class="col-sm-10">
+					<input type="number" min="0" name="like" value="{{ like }}" id="input-name-like" class="form-control" />
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label" for="input-name-dislike"><i class="fa fa-thumbs-o-down" aria-hidden="true"></i> {{ entry_dislike }}</label>
+				<div class="col-sm-10">
+					<input type="number" min="0" name="dislike" value="{{ dislike }}" id="input-name-dislike" class="form-control" />
+				</div>
+			</div>
+		  <div class="form-group">
+			<label class="col-sm-2 control-label" for="input-date-added">{{ entry_date_added }}</label>
+			<div class="col-sm-3">
+			  <div class="input-group datetime">
+				<input type="text" name="date_added" value="{{ date_added }}" placeholder="{{ entry_date_added }}" data-date-format="YYYY-MM-DD HH:mm:ss" id="input-date-added" class="form-control" />
+				<span class="input-group-btn">
+				<button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
+				</span>
+			  </div>
+			</div>
+		  </div>
+		  <div class="form-group">
+				<label class="col-sm-2 control-label" for="input-admin_reply">{{ entry_admin_reply }}</label>
+				<div class="col-sm-10">
+					<textarea name="admin_reply" cols="60" rows="8" placeholder="{{ entry_admin_reply }}" id="input-text" class="form-control">{{ admin_reply }}</textarea>
+				</div>
+			</div>
+			<div class="form-group">
+			<label class="col-sm-2 control-label" for="input-status">{{ entry_status }}</label>
+			<div class="col-sm-10">
+			  <select name="status" id="input-status" class="form-control">
+				{% if status %}
+				<option value="1" selected="selected">{{ text_enabled }}</option>
+				<option value="0">{{ text_disabled }}</option>
+				{% else %}
+				<option value="1">{{ text_enabled }}</option>
+				<option value="0" selected="selected">{{ text_disabled }}</option>
+				{% endif %}
+			  </select>
+			</div>
+		  </div>
+		</form>
+	  </div>
+	</div>
+  </div>
+<script>
+$('.datetime').datetimepicker({
+	pickDate: true,
+	pickTime: true
+});
+
+$('input[name=\'article\']').autocomplete({
+	'source': function(request, response) {
+		$.ajax({
+			url: 'index.php?route=upstore/news_articles/autocomplete&user_token={{ user_token }}&filter_name=' +  encodeURIComponent(request),
+			dataType: 'json',
+			success: function(json) {
+				response($.map(json, function(item) {
+					return {
+						label: item['name'],
+						value: item['article_id']
+					}
+				}));
+			}
+		});
+	},
+	'select': function(item) {
+		$('input[name=\'article\']').val(item['label']);
+		$('input[name=\'article_id\']').val(item['value']);
+	}
+});
+</script>
+</div>
+{{ footer }}

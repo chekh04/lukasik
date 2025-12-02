@@ -1,0 +1,360 @@
+{{ header }}{{ column_left }}
+<div id="content">
+ <div class="page-header">
+    <div class="container-fluid">
+       <div class="pull-right">
+      <div class="buttons">
+		  <a class="btn btn-primary" onclick="$('#form').submit();" class="button"><span  data-toggle="tooltip" title="{{ button_save }}" ><i class="fa fa-save"></i></span></a>
+		  <a class="btn btn-default" onclick="location = '{{ cancel }}';" class="button"><span  data-toggle="tooltip" title="{{ button_cancel }}" ><i class="fa fa-reply"></i></span></a>
+	  </div>
+    </div>
+       <h1>{{ heading_title_setting }}</h1>
+	  <ul class="breadcrumb">
+		{% for breadcrumb in breadcrumbs %}
+		<li><a href="{{ breadcrumb['href'] }}">{{ breadcrumb['text'] }}</a></li>
+		{% endfor %}
+	  </ul>
+    </div>
+  </div>
+	<script type="text/javascript" src="view/javascript/summernote/summernote.js"></script>
+	<link href="view/javascript/summernote/summernote.css" rel="stylesheet" />
+	<script type="text/javascript" src="view/javascript/summernote/opencart.js"></script>
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h3 class="panel-title"><i class="fa fa-pencil"></i> {{ text_setting_module }}</h3>
+		</div>
+	</div>
+
+	<div class="panel-body">
+		<form action="{{ action }}" method="post" enctype="multipart/form-data" id="form" class="form-horizontal">
+			<ul class="nav nav-tabs">
+				<li class="active"><a href="#tab-fields-setting" data-toggle="tab">{{ tab_fields_setting }}</a></li>
+				<li><a href="#tab-general-setting" data-toggle="tab">{{ tab_general_setting }}</a></li>
+				<li><a href="#tab-email-setting" data-toggle="tab">{{ tab_email_setting }}</a></li>
+			</ul>
+			 <div class="tab-content">
+
+				<div class="tab-pane active" id="tab-fields-setting">
+
+					<!--ПОЛЕ FIRST-->
+						<div class="form-group">
+							<div class="col-sm-2 title-fields">{{ text_on_off_fields_firstname }}</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">{{ text_status_fields }}</label>
+							<div class="col-sm-10">
+								<div class="toggle-switch">
+									<label><input type="checkbox" name="config_on_off_fields_firstname" value="1" {{ config_on_off_fields_firstname is defined and config_on_off_fields_firstname == 1 ? 'checked="checked"' : '' }} /><span></span></label>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">{{ text_requared_fields }}</label>
+							<div class="col-sm-10">
+								<div class="toggle-switch">
+									<label><input type="checkbox" name="config_fields_firstname_requared" value="1" {{ config_fields_firstname_requared is defined and config_fields_firstname_requared == 1 ? 'checked="checked"' : '' }} /><span></span></label>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">{{ text_placeholder_fields }}</label>
+							<div class="col-sm-3">
+								{% for language in languages %}
+									<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+										<input name="config_placeholder_fields_firstname[{{ language['language_id'] }}][config_placeholder_fields_firstname]" rows="5" class="form-control" value="{{ config_placeholder_fields_firstname[language['language_id']] is defined ? config_placeholder_fields_firstname[language['language_id']]['config_placeholder_fields_firstname'] : '' }}"></input>
+									</div>
+								{% endfor %}
+							</div>
+						</div>
+					<div class="clearfix"></div>
+					<!--ПОЛЕ PHONE-->
+					<div class="form-group">
+						<div class="col-sm-2 title-fields">{{ text_on_off_fields_phone }}</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">{{ text_status_fields }}</label>
+						<div class="col-sm-10">
+							<div class="toggle-switch">
+								<label><input type="checkbox" name="config_on_off_fields_phone" value="1" {{ config_on_off_fields_phone is defined and config_on_off_fields_phone == 1 ? 'checked="checked"' : '' }} /><span></span></label>
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">{{ text_requared_fields }}</label>
+						<div class="col-sm-10">
+							<div class="toggle-switch">
+								<label><input type="checkbox" name="config_fields_phone_requared" value="1" {{ config_fields_phone_requared is defined and config_fields_phone_requared == 1 ? 'checked="checked"' : '' }} /><span></span></label>
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+							<label class="col-sm-2 control-label">{{ text_placeholder_fields }}</label>
+							<div class="col-sm-3">
+								{% for language in languages %}
+									<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+										<input name="config_placeholder_fields_phone[{{ language['language_id'] }}][config_placeholder_fields_phone]" rows="5" class="form-control" value="{{ config_placeholder_fields_phone[language['language_id']] is defined ? config_placeholder_fields_phone[language['language_id']]['config_placeholder_fields_phone'] : '' }}"></input>
+									</div>
+								{% endfor %}
+							</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">{{ entry_mask_phone_number}}</label>
+						<div class="col-sm-10">
+							<input class="form-control" type="text" name="config_mask_phone_number" value="{{ config_mask_phone_number }}" />
+						</div>
+					</div>
+
+					<!--ПОЛЕ COMMENT-->
+					<div class="form-group">
+						<div class="col-sm-2 title-fields">{{ text_on_off_fields_comment }}</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">{{ text_status_fields }}</label>
+						<div class="col-sm-10">
+							<div class="toggle-switch">
+								<label><input type="checkbox" name="config_on_off_fields_comment" value="1" {{ config_on_off_fields_comment is defined and config_on_off_fields_comment == 1 ? 'checked="checked"' : '' }} /><span></span></label>
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">{{ text_requared_fields }}</label>
+						<div class="col-sm-10">
+							<div class="toggle-switch">
+								<label><input type="checkbox" name="config_fields_comment_requared" value="1" {{ config_fields_comment_requared is defined and config_fields_comment_requared == 1 ? 'checked="checked"' : '' }} /><span></span></label>
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+							<label class="col-sm-2 control-label">{{ text_placeholder_fields }}</label>
+							<div class="col-sm-3">
+								{% for language in languages %}
+									<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+										<input name="config_placeholder_fields_comment[{{ language['language_id'] }}][config_placeholder_fields_comment]" rows="5" class="form-control" value="{{ config_placeholder_fields_comment[language['language_id']] is defined ? config_placeholder_fields_comment[language['language_id']]['config_placeholder_fields_comment'] : '' }}"></input>
+									</div>
+								{% endfor %}
+							</div>
+					</div>
+					<div class="clearfix"></div>
+					<!--ПОЛЕ EMAIL-->
+					<div class="form-group">
+						<div class="col-sm-2 title-fields">{{ text_on_off_fields_email }}</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">{{ text_status_fields }}</label>
+						<div class="col-sm-10">
+							<div class="toggle-switch">
+								<label><input type="checkbox" name="config_on_off_fields_email" value="1" {{ config_on_off_fields_email is defined and config_on_off_fields_email == 1 ? 'checked="checked"' : '' }} /><span></span></label>
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">{{ text_requared_fields }}</label>
+						<div class="col-sm-10">
+							<div class="toggle-switch">
+								<label><input type="checkbox" name="config_fields_email_requared" value="1" {{ config_fields_email_requared is defined and config_fields_email_requared == 1 ? 'checked="checked"' : '' }} /><span></span></label>
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+							<label class="col-sm-2 control-label">{{ text_placeholder_fields }}</label>
+							<div class="col-sm-3">
+								{% for language in languages %}
+									<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+										<input name="config_placeholder_fields_email[{{ language['language_id'] }}][config_placeholder_fields_email]" rows="5" class="form-control" value="{{ config_placeholder_fields_email[language['language_id']] is defined ? config_placeholder_fields_email[language['language_id']]['config_placeholder_fields_email'] : '' }}"></input>
+									</div>
+								{% endfor %}
+							</div>
+					</div>
+				</div>
+				<div class="tab-pane" id="tab-general-setting">
+					<div class="form-group">
+						<label class="col-sm-2 control-label">{{ entry_title_popup_quickorder }}</label>
+						<div class="col-sm-3">
+							{% for language in languages %}
+								<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+									<input name="config_title_popup_quickorder[{{ language['language_id'] }}][config_title_popup_quickorder]" rows="5" class="form-control" value="{{ config_title_popup_quickorder[language['language_id']] is defined ? config_title_popup_quickorder[language['language_id']]['config_title_popup_quickorder'] : '' }}"></input>
+								</div>
+							{% endfor %}
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">{{ entry_text_open_form_send_order }}</label>
+						<div class="col-sm-3">
+							{% for language in languages %}
+								<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+									<input name="config_text_open_form_send_order[{{ language['language_id'] }}][config_text_open_form_send_order]" rows="5" class="form-control" value="{{ config_text_open_form_send_order[language['language_id']] is defined ? config_text_open_form_send_order[language['language_id']]['config_text_open_form_send_order'] : '' }}"></input>
+								</div>
+							{% endfor %}
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">{{ text_before_button_send }}</label>
+						<div class="col-sm-3">
+							{% for language in languages %}
+								<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+									<textarea name="config_text_before_button_send[{{ language['language_id'] }}][config_text_before_button_send]" rows="5" class="form-control">{{ config_text_before_button_send[language['language_id']] is defined ? config_text_before_button_send[language['language_id']]['config_text_before_button_send'] : '' }}</textarea>
+								</div>
+							{% endfor %}
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">{{ entry_any_text_at_the_bottom }}</label>
+						<div class="col-sm-3">
+							{% for language in languages %}
+								<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+									<textarea name="config_any_text_at_the_bottom[{{ language['language_id'] }}][config_any_text_at_the_bottom]" rows="5" class="form-control">{{ config_any_text_at_the_bottom[language['language_id']] is defined ? config_any_text_at_the_bottom[language['language_id']]['config_any_text_at_the_bottom'] : '' }}</textarea>
+								</div>
+							{% endfor %}
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">{{ text_complete_quickorder }}</label>
+						<div class="col-sm-3">
+							{% for language in languages %}
+								<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+									<textarea name="config_complete_quickorder[{{ language['language_id'] }}][config_complete_quickorder]" rows="5" class="form-control">{{ config_complete_quickorder[language['language_id']] is defined ? config_complete_quickorder[language['language_id']]['config_complete_quickorder'] : '' }}</textarea>
+								</div>
+							{% endfor %}
+						</div>
+					</div>
+				</div>
+				<div class="tab-pane" id="tab-email-setting">
+					<div class="form-group">
+							<div class="col-sm-2 title-fields">{{ form_latter_from_buyer }}</div>
+					</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">{{ text_on_off_send_buyer_mail }}</label>
+							<div class="col-sm-10">
+								<div class="toggle-switch">
+									<label><input type="checkbox" name="config_on_off_send_buyer_mail" value="1" {{ config_on_off_send_buyer_mail is defined and config_on_off_send_buyer_mail == 1 ? 'checked="checked"' : '' }} /><span></span></label>
+								</div>
+							</div>
+						</div>
+					<div>
+						 <ul class="nav nav-tabs" id="language">
+							{% for language in languages %}
+							<li><a href="#language{{ language.language_id }}" data-toggle="tab"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /> {{ language.name }}</a></li>
+							{% endfor %}
+						</ul>
+						<div class="tab-content">
+							{% for language in languages %}
+								<div class="tab-pane" id="language{{ language['language_id'] }}">
+									<div class="form-group">
+										<label class="col-sm-2 control-label" for="quickorder_subject{{ language.language_id }}">{{ quickorder_subject_buyer }}<br />{{ subject_text_variables }}</label>
+										<div class="col-sm-10">
+											<textarea name="quickorder_subject[{{ language.language_id }}][text]" id="quickorder_subject{{ language.language_id }}" cols="50" rows="3">{{ quickorder_subject[language.language_id].text is defined ? quickorder_subject[language.language_id].text : '' }}</textarea>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-2 control-label" for="quickorder_description{{ language['language_id'] }}">{{ quickorder_description_buyer }}<br />{{ subject_text_variables }}<br />{{ list_of_variables_entry }}</label>
+										<div class="col-sm-10">
+											<textarea class="form-control" data-toggle="summernote" name="quickorder_description[{{ language.language_id }}][text]" id="quickorder_description{{ language.language_id }}" cols="50" rows="3">{{ quickorder_description[language.language_id].text is defined ? quickorder_description[language.language_id].text : '' }}</textarea>
+										</div>
+									</div>
+								</div>
+							 {% endfor %}
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">{{ text_form_latter_products }}</label>
+							<div class="col-sm-10">
+								<div class="toggle-switch">
+									<label><input type="checkbox" name="config_buyer_html_products" value="1" {{ config_buyer_html_products is defined and config_buyer_html_products == 1 ? 'checked="checked"' : '' }} /><span></span></label>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div>
+						<div class="form-group">
+								<div class="col-sm-2 title-fields">{{ form_latter_from_me }}</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">{{ text_on_off_send_me_mail }}</label>
+							<div class="col-sm-10">
+								<div class="toggle-switch">
+									<label><input type="checkbox" name="config_on_off_send_me_mail" value="1" {{ config_on_off_send_me_mail is defined and config_on_off_send_me_mail == 1 ? 'checked="checked"' : '' }} /><span></span></label>
+								</div>
+							</div>
+						</div>
+						<ul class="nav nav-tabs" id="language_me">
+							{% for language in languages %}
+							<li><a href="#language_me{{ language['language_id'] }}" data-toggle="tab"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /> {{ language['name'] }}</a></li>
+							{% endfor %}
+						</ul>
+							<div class="tab-content">
+								{% for language in languages %}
+									<div class="tab-pane" id="language_me{{ language['language_id'] }}">
+										<div class="form-group">
+											<label class="col-sm-2 control-label" for="quickorder_subject_me{{ language.language_id }}">{{ quickorder_subject_buyer }}<br />{{ subject_text_variables }}</label>
+											<div class="col-sm-10">
+												<textarea name="quickorder_subject_me[{{ language.language_id }}][text]" id="quickorder_subject_me{{ language.language_id }}" cols="50" rows="3">{{ quickorder_subject_me[language.language_id].text is defined ? quickorder_subject_me[language.language_id].text : '' }}</textarea>
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="col-sm-2 control-label" for="quickorder_description_me{{ language.language_id }}">{{ quickorder_description_buyer }}<br />{{ subject_text_variables }}<br />{{ list_of_variables_entry }}</label>
+											<div class="col-sm-10">
+												<textarea class="form-control" data-toggle="summernote" name="quickorder_description_me[{{ language.language_id }}][text]" id="quickorder_description_me{{ language.language_id }}" cols="50" rows="3">{{ quickorder_description_me[language.language_id].text is defined ? quickorder_description_me[language.language_id].text : '' }}</textarea>
+											</div>
+										</div>
+									</div>
+								 {% endfor %}
+							</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">{{ text_form_latter_products }}</label>
+							<div class="col-sm-10">
+								<div class="toggle-switch">
+									<label><input type="checkbox" name="config_me_html_products" value="1" {{ config_me_html_products is defined and config_me_html_products == 1 ? 'checked="checked"' : '' }} /><span></span></label>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">{{ entry_you_email_quickorder}}</label>
+							<div class="col-sm-10">
+								<input class="form-control" type="text" name="config_you_email_quickorder" value="{{ config_you_email_quickorder }}" />
+							</div>
+						</div>
+					</div>
+				</div>
+<style>
+	.title-fields {
+	color: orange !important;
+	font-size: 16px;
+	text-align: right;
+	}
+	.toggle-switch label {margin-bottom:0px;}
+	.toggle-switch {
+	background-color: white;
+	background-image: linear-gradient(to bottom, #eeeeee, white 25px);
+	border-radius: 20px / 20px;
+	box-shadow: 0 -1px white inset, 0 1px 1px rgba(0, 0, 0, 0.05) inset;
+	display: inline-block;
+	padding: 3px;
+	}
+	.toggle-switch input[type="checkbox"] {display:none}
+	.toggle-switch input[type="checkbox"] + span {
+	position:relative;
+	display:inline-block;
+	vertical-align:middle;
+	width:50px;
+	height:28px;
+	background:#ECEEEF;
+	border-radius:20px / 20px;
+	box-shadow:0 1px 2px rgba(0, 0, 0, 0.15) inset, 0 0 3px rgba(0, 0, 0, 0.2) inset;
+	cursor:pointer;
+	transition:all ease-in-out .2s;}
+	.toggle-switch input[type="checkbox"]:checked + span {background:#00BC52;}
+
+	.toggle-switch label:hover input[type="checkbox"] + span {background:#ECEEEF;}
+	.toggle-switch label:hover input[type="checkbox"]:checked + span {background:#00BC52;}
+
+	.toggle-switch input[type="checkbox"] + span:after {position:absolute;left:50%;top:3px;right:auto;width:22px;height:22px;content:'';background:#fff;border-radius:100%;box-shadow:0 1px 1px #777;transition:all ease-in-out .2s;}
+	.toggle-switch input[type="checkbox"]:checked + span:after {left:3px;right:auto;background:#fff;transition:all ease-in-out .2s;}
+</style>
+ <script>
+$('#language a:first').tab('show');
+$('#language_me a:first').tab('show');
+</script>
+			</div>
+		</form>
+	</div>
+</div>
+{{ footer }}

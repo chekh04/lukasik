@@ -1,0 +1,179 @@
+<div class="form-group hidden">
+	<label class="col-sm-3 control-label">{{ text_mobile_qrp }}</label>
+	<div class="col-sm-9">
+	<div class="radio-group-text">
+		{% if (setting_module['mobile_qrp'] is defined and (setting_module['mobile_qrp'] == '0') or (not setting_module['mobile_qrp'])) %}
+		<input id="mobile_qrp1" class="hide-radio-text" type="radio" name="setting_module[mobile_qrp]" value="0" checked="checked" />
+		<label for="mobile_qrp1">1</label>
+		{% else %}
+		<input id="mobile_qrp1" class="hide-radio-text" type="radio" name="setting_module[mobile_qrp]" value="0" />
+		<label for="mobile_qrp1">1</label>
+		{% endif %}
+		{% if (setting_module['mobile_qrp'] is defined and (setting_module['mobile_qrp'] == '1')) %}
+		<input id="mobile_qrp2" class="hide-radio-text" type="radio" name="setting_module[mobile_qrp]" value="1" checked="checked" />
+		<label for="mobile_qrp2">2</label>
+		{% else %}
+		<input id="mobile_qrp2" class="hide-radio-text" type="radio" name="setting_module[mobile_qrp]" value="1" />
+		<label for="mobile_qrp2">2</label>
+		{% endif %}
+	</div>
+	</div>
+</div>
+<div class="form-group">
+	<label class="col-sm-3 control-label">{{ text_status_model }}</label>
+	<div class="col-sm-9">
+		<div class="radio-group-infinity">
+			{% if (setting_module['status_model'] is defined and (setting_module['status_model'] == 1)) %}
+			<input id="status_model_yes" class="hide-radio" type="radio" name="setting_module[status_model]" value="1" checked="checked" />
+			<label for="status_model_yes">{{ text_yes }}</label>
+			{% else %}
+			<input id="status_model_yes" class="hide-radio" type="radio" name="setting_module[status_model]" value="1" />
+			<label for="status_model_yes">{{ text_yes }}</label>
+			{% endif %}
+			{% if (setting_module['status_model'] is not defined or (setting_module['status_model'] == 0)) %}
+			<input id="status_model_no" class="hide-radio" type="radio" name="setting_module[status_model]" value="0" checked="checked" />
+			<label for="status_model_no">{{ text_no }}</label>
+			{% else %}
+			<input id="status_model_no" class="hide-radio" type="radio" name="setting_module[status_model]" value="0" />
+			<label for="status_model_no">{{ text_no }}</label>
+			{% endif %}
+		</div>
+	</div>
+</div>
+
+
+<div class="form-group">
+	<label class="col-sm-3 control-label">{{ text_status_description }}</label>
+	<div class="col-sm-9">
+		<div class="radio-group-infinity">
+			{% if (setting_module['status_description'] is defined and (setting_module['status_description'] == 1)) %}
+			<input id="status_description_yes" class="hide-radio" type="radio" name="setting_module[status_description]" value="1" checked="checked" />
+			<label for="status_description_yes">{{ text_yes }}</label>
+			{% else %}
+			<input id="status_description_yes" class="hide-radio" type="radio" name="setting_module[status_description]" value="1" />
+			<label for="status_description_yes">{{ text_yes }}</label>
+			{% endif %}
+			{% if (setting_module['status_description'] is not defined or (setting_module['status_description'] == 0)) %}
+			<input id="status_description_no" class="hide-radio" type="radio" name="setting_module[status_description]" value="0" checked="checked" />
+			<label for="status_description_no">{{ text_no }}</label>
+			{% else %}
+			<input id="status_description_no" class="hide-radio" type="radio" name="setting_module[status_description]" value="0" />
+			<label for="status_description_no">{{ text_no }}</label>
+			{% endif %}
+		</div>
+	</div>
+</div>
+<div class="form-group">
+<label class="col-sm-3 control-label">{{ text_additional_image }}</label>
+	<div class="col-sm-9">
+		<label class="radio"><input {% if  setting_module.image_hover  and  setting_module.image_hover == 0  or  setting_module.image_hover is empty%}checked="checked"{% endif %} type="radio" name="setting_module[image_hover]" value="0"> {{ text_disabled }}</label>
+		<label class="radio"><input {% if  setting_module.image_hover  and  setting_module.image_hover == 1 %}checked="checked"{% endif %} type="radio" name="setting_module[image_hover]" value="1"> {{ text_addit_image_type1 }}</label>
+		<label class="radio"><input {% if  setting_module.image_hover  and  setting_module.image_hover == 2 %}checked="checked"{% endif %} type="radio" name="setting_module[image_hover]" value="2"> {{ text_addit_image_type2 }}</label>
+	</div>
+</div>
+<div class="form-group">
+	<label class="col-sm-3 control-label">{{ text_status_rating }}</label>
+	<div class="col-sm-9">
+		<div class="radio-group-infinity">
+			{% if (setting_module['status_rating'] is defined and (setting_module['status_rating'] == 1)) %}
+			<input id="status_rating_yes" class="hide-radio" type="radio" name="setting_module[status_rating]" value="1" checked="checked" />
+			<label for="status_rating_yes">{{ text_yes }}</label>
+			{% else %}
+			<input id="status_rating_yes" class="hide-radio" type="radio" name="setting_module[status_rating]" value="1" />
+			<label for="status_rating_yes">{{ text_yes }}</label>
+			{% endif %}
+			{% if (setting_module['status_rating'] is not defined or (setting_module['status_rating'] == 0)) %}
+			<input id="status_rating_no" class="hide-radio" type="radio" name="setting_module[status_rating]" value="0" checked="checked" />
+			<label for="status_rating_no">{{ text_no }}</label>
+			{% else %}
+			<input id="status_rating_no" class="hide-radio" type="radio" name="setting_module[status_rating]" value="0" />
+			<label for="status_rating_no">{{ text_no }}</label>
+			{% endif %}
+		</div>
+	</div>
+</div>
+<div class="form-group">
+	<label class="col-sm-3 control-label">{{ text_status_quantity_reviews }}</label>
+	<div class="col-sm-9">
+		<div class="radio-group-infinity">
+			{% if (setting_module['status_quantity_reviews'] is defined and (setting_module['status_quantity_reviews'] == 1)) %}
+			<input id="status_quantity_reviews_yes" class="hide-radio" type="radio" name="setting_module[status_quantity_reviews]" value="1" checked="checked" />
+			<label for="status_quantity_reviews_yes">{{ text_yes }}</label>
+			{% else %}
+			<input id="status_quantity_reviews_yes" class="hide-radio" type="radio" name="setting_module[status_quantity_reviews]" value="1" />
+			<label for="status_quantity_reviews_yes">{{ text_yes }}</label>
+			{% endif %}
+			{% if (setting_module['status_quantity_reviews'] is not defined or (setting_module['status_quantity_reviews'] == 0)) %}
+			<input id="status_quantity_reviews_no" class="hide-radio" type="radio" name="setting_module[status_quantity_reviews]" value="0" checked="checked" />
+			<label for="status_quantity_reviews_no">{{ text_no }}</label>
+			{% else %}
+			<input id="status_quantity_reviews_no" class="hide-radio" type="radio" name="setting_module[status_quantity_reviews]" value="0" />
+			<label for="status_quantity_reviews_no">{{ text_no }}</label>
+			{% endif %}
+		</div>
+	</div>
+</div>
+<div class="form-group">
+	<label class="col-sm-3 control-label">{{ text_status_fastorder }}</label>
+	<div class="col-sm-9">
+		<div class="radio-group-infinity">
+			{% if (setting_module['status_fastorder'] is defined and (setting_module['status_fastorder'] == 1)) %}
+			<input id="status_fastorder_yes" class="hide-radio" type="radio" name="setting_module[status_fastorder]" value="1" checked="checked" />
+			<label for="status_fastorder_yes">{{ text_yes }}</label>
+			{% else %}
+			<input id="status_fastorder_yes" class="hide-radio" type="radio" name="setting_module[status_fastorder]" value="1" />
+			<label for="status_fastorder_yes">{{ text_yes }}</label>
+			{% endif %}
+			{% if (setting_module['status_fastorder'] is not defined or (setting_module['status_fastorder'] == 0)) %}
+			<input id="status_fastorder_no" class="hide-radio" type="radio" name="setting_module[status_fastorder]" value="0" checked="checked" />
+			<label for="status_fastorder_no">{{ text_no }}</label>
+			{% else %}
+			<input id="status_fastorder_no" class="hide-radio" type="radio" name="setting_module[status_fastorder]" value="0" />
+			<label for="status_fastorder_no">{{ text_no }}</label>
+			{% endif %}
+		</div>
+	</div>
+</div>
+<div class="form-group">
+	<label class="col-sm-3 control-label">{{ text_status_wishlist }}</label>
+	<div class="col-sm-9">
+		<div class="radio-group-infinity">
+			{% if (setting_module['status_wishlist'] is defined and (setting_module['status_wishlist'] == 1)) %}
+			<input id="status_wishlist_yes" class="hide-radio" type="radio" name="setting_module[status_wishlist]" value="1" checked="checked" />
+			<label for="status_wishlist_yes">{{ text_yes }}</label>
+			{% else %}
+			<input id="status_wishlist_yes" class="hide-radio" type="radio" name="setting_module[status_wishlist]" value="1" />
+			<label for="status_wishlist_yes">{{ text_yes }}</label>
+			{% endif %}
+			{% if (setting_module['status_wishlist'] is not defined or (setting_module['status_wishlist'] == 0)) %}
+			<input id="status_wishlist_no" class="hide-radio" type="radio" name="setting_module[status_wishlist]" value="0" checked="checked" />
+			<label for="status_wishlist_no">{{ text_no }}</label>
+			{% else %}
+			<input id="status_wishlist_no" class="hide-radio" type="radio" name="setting_module[status_wishlist]" value="0" />
+			<label for="status_wishlist_no">{{ text_no }}</label>
+			{% endif %}
+		</div>
+	</div>
+</div>
+<div class="form-group">
+	<label class="col-sm-3 control-label">{{ text_status_compare }}</label>
+	<div class="col-sm-9">
+		<div class="radio-group-infinity">
+			{% if (setting_module['status_compare'] is defined and (setting_module['status_compare'] == 1)) %}
+			<input id="status_compare_yes" class="hide-radio" type="radio" name="setting_module[status_compare]" value="1" checked="checked" />
+			<label for="status_compare_yes">{{ text_yes }}</label>
+			{% else %}
+			<input id="status_compare_yes" class="hide-radio" type="radio" name="setting_module[status_compare]" value="1" />
+			<label for="status_compare_yes">{{ text_yes }}</label>
+			{% endif %}
+			{% if (setting_module['status_compare'] is not defined or (setting_module['status_compare'] == 0)) %}
+			<input id="status_compare_no" class="hide-radio" type="radio" name="setting_module[status_compare]" value="0" checked="checked" />
+			<label for="status_compare_no">{{ text_no }}</label>
+			{% else %}
+			<input id="status_compare_no" class="hide-radio" type="radio" name="setting_module[status_compare]" value="0" />
+			<label for="status_compare_no">{{ text_no }}</label>
+			{% endif %}
+		</div>
+	</div>
+</div>
+

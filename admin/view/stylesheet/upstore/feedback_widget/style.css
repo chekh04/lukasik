@@ -1,0 +1,42 @@
+#fb_box_widget .icon_open {
+	display: table-cell;
+	float: none;
+	cursor:pointer;
+}
+.ns-input-group .input-group {
+	margin-bottom: 10px;
+	width: 100%;
+}
+.cs-pad-addon {
+	padding: 3px 13px;
+}
+.ns-input-group .input-group .input-group-addon + .form-control {
+	height: 35px;
+	padding: 4px 10px;
+	width: 200px;
+}
+
+.input-group-dflex {
+	margin-bottom: 0px;
+	display: flex;
+	justify-content: space-between;
+}
+.input-group-dflex .input-group-addon {
+	width: auto;
+	border-radius: 0px;
+	margin-left: -1px;
+}
+.input-group-dflex .textarea-no-resize {
+	flex: 0 1 100%;
+	border-radius: 0px;
+	resize: vertical;
+	height: 35px;
+	padding: 4px 10px;
+	margin-left: -1px;
+}
+.group-ta {
+	background-color: #eee;
+	border-top: 1px solid #ccc;
+	border-bottom: 1px solid #ccc;
+	padding: 3px;
+}

@@ -1,0 +1,306 @@
+			<div class="form-group">
+				<label class="col-sm-2 control-label">{{ entry_type_sticker }}</label>
+				<div class="col-sm-10">
+					<div class="radio-group-text">
+						{% if (ns_type_sticker is defined and (ns_type_sticker == '1') or (not ns_type_sticker)) %}
+						<input id="ns_type_sticker1" class="hide-radio-text" type="radio" name="ns_type_sticker" value="1" checked="checked" />
+						<label for="ns_type_sticker1">{{ text_type_sticker_row }}</label>
+						{% else %}
+						<input id="ns_type_sticker1" class="hide-radio-text" type="radio" name="ns_type_sticker" value="1" />
+						<label for="ns_type_sticker1">{{ text_type_sticker_row }}</label>
+						{% endif %}
+						{% if (ns_type_sticker is defined and (ns_type_sticker == '2')) %}
+						<input id="ns_type_sticker2" class="hide-radio-text" type="radio" name="ns_type_sticker" value="2" checked="checked" />
+						<label for="ns_type_sticker2">{{ text_type_sticker_column }}</label>
+						{% else %}
+						<input id="ns_type_sticker2" class="hide-radio-text" type="radio" name="ns_type_sticker" value="2" />
+						<label for="ns_type_sticker2">{{ text_type_sticker_column }}</label>
+						{% endif %}
+					</div>
+				</div>
+			</div>
+			<ul class="nav nav-tabs">
+				<li class="active"><a data-toggle="tab" href="#tab-spicial-sticker">{{ tab_special_sticker }}</a></li>
+				<li><a data-toggle="tab" href="#tab-newproduct-sticker">{{ tab_newproduct_sticker }}</a></li>
+				<li><a data-toggle="tab" href="#tab-popular-sticker">{{ tab_popular_sticker }}</a></li>
+				<li><a data-toggle="tab" href="#tab-bestseller-sticker">{{ tab_bestseller_sticker }}</a></li>
+			</ul>
+			<div class="tab-pane active" id="tab-spicial-sticker">
+				<div class="form-group">
+					<label class="col-sm-3 control-label">{{ text_on_off_sticker }}</label>
+					<div class="col-sm-5">
+					 <div class="radio-group-infinity">
+							{% if (on_off_sticker_special) %}
+							<input id="on_off_sticker_special_yes" class="hide-radio" type="radio" name="on_off_sticker_special" value="1" checked="checked" />
+							<label for="on_off_sticker_special_yes">{{ text_yes }}</label>
+							{% else %}
+							<input id="on_off_sticker_special_yes" class="hide-radio" type="radio" name="on_off_sticker_special" value="1" />
+							<label for="on_off_sticker_special_yes">{{ text_yes }}</label>
+							{% endif %}
+							{% if (not on_off_sticker_special) %}
+							<input id="on_off_sticker_special_no" class="hide-radio" type="radio" name="on_off_sticker_special" value="0" checked="checked" />
+							<label for="on_off_sticker_special_no">{{ text_no }}</label>
+							{% else %}
+							<input id="on_off_sticker_special_no" class="hide-radio" type="radio" name="on_off_sticker_special" value="0" />
+							<label for="on_off_sticker_special_no">{{ text_no }}</label>
+							{% endif %}
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">{{ text_percent_discount }}</label>
+					<div class="col-sm-9">
+						<div class="checkbox-group-pixelshop">
+							<label><input type="checkbox" name="on_off_percent_discount" value="1" {{ on_off_percent_discount is defined and on_off_percent_discount == '1' ? 'checked="checked"' : '' }} /><span></span></label>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">{{ entry_background_sticker }}</label>
+					<div class="col-sm-5">
+						<input class="form-control color" type="text"  name="config_change_background_sticker_special" value="{{ config_change_background_sticker_special }}"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">{{ entry_color_text_sticker }}</label>
+					<div class="col-sm-5">
+						<input class="form-control color" type="text"  name="config_change_color_text_sticker_special" value="{{ config_change_color_text_sticker_special }}"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">{{ entry_text_sticker }}</label>
+					<div class="col-sm-5">
+					<tr>
+						<td class="text-left">{% for language in languages %}
+                        <div class="input-group"><span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>
+                          <input type="text" name="config_change_text_sticker_special[{{ language['language_id'] }}][config_change_text_sticker_special]" rows="5" placeholder="" class="form-control" value="{{ config_change_text_sticker_special[language['language_id']] is defined ? config_change_text_sticker_special[language['language_id']]['config_change_text_sticker_special'] : '' }}"></input>
+                        </div>
+                        {% endfor %}</td>
+					</tr>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">{{ entry_icon_sticker }}</label>
+					<div class="col-sm-5">
+						<span class="icon_open" id="config_change_icon_sticker_special" onclick="icon_fontawesome_popup($(this).attr('id'))">
+						{{ text_select_icon }}
+						{% if (config_change_icon_sticker_special is defined) %}<i class="{{ config_change_icon_sticker_special }}"></i>{% endif %}</span>
+						<input class="form-control" type="hidden"  name="config_change_icon_sticker_special" value="{{ config_change_icon_sticker_special }}"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">{{ entry_color_icon }}</label>
+					<div class="col-sm-5">
+						<input class="form-control color" type="text"  name="config_change_color_icon_sticker_special" value="{{ config_change_color_icon_sticker_special }}"/>
+					</div>
+				</div>
+
+			</div>
+			<!--STICKER NEW PRODUCT-->
+			<div class="tab-pane" id="tab-newproduct-sticker">
+					<div class="form-group">
+					<label class="col-sm-3 control-label">{{ text_on_off_sticker }}</label>
+					<div class="col-sm-5">
+						<div class="radio-group-infinity">
+							{% if (on_off_sticker_newproduct) %}
+							<input id="on_off_sticker_newproduct_yes" class="hide-radio" type="radio" name="on_off_sticker_newproduct" value="1" checked="checked" />
+							<label for="on_off_sticker_newproduct_yes">{{ text_yes }}</label>
+							{% else %}
+							<input id="on_off_sticker_newproduct_yes" class="hide-radio" type="radio" name="on_off_sticker_newproduct" value="1" />
+							<label for="on_off_sticker_newproduct_yes">{{ text_yes }}</label>
+							{% endif %}
+							{% if (not on_off_sticker_newproduct) %}
+							<input id="on_off_sticker_newproduct_no" class="hide-radio" type="radio" name="on_off_sticker_newproduct" value="0" checked="checked" />
+							<label for="on_off_sticker_newproduct_no">{{ text_no }}</label>
+							{% else %}
+							<input id="on_off_sticker_newproduct_no" class="hide-radio" type="radio" name="on_off_sticker_newproduct" value="0" />
+							<label for="on_off_sticker_newproduct_no">{{ text_no }}</label>
+							{% endif %}
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">{{ entry_text_limit_day }}</label>
+					<div class="col-sm-5">
+						<input class="form-control" type="text"  name="config_limit_day_newproduct" value="{{ config_limit_day_newproduct }}"/>
+					</div>
+					<label class="col-sm-5">{{ text_day }}</label>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">{{ entry_background_sticker }}</label>
+					<div class="col-sm-5">
+						<input class="form-control color" type="text"  name="config_change_background_sticker_newproduct" value="{{ config_change_background_sticker_newproduct }}"/>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-sm-3 control-label">{{ entry_text_sticker }}</label>
+					<div class="col-sm-5">
+					<tr>
+						<td class="text-left">{% for language in languages %}
+                        <div class="input-group"><span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>
+                          <input name="config_change_text_sticker_newproduct[{{ language['language_id'] }}][config_change_text_sticker_newproduct]" rows="5" placeholder="" class="form-control" value="{{ config_change_text_sticker_newproduct[language['language_id']] is defined ? config_change_text_sticker_newproduct[language['language_id']]['config_change_text_sticker_newproduct'] : '' }}"></input>
+                        </div>
+                        {% endfor %}</td>
+					</tr>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">{{ entry_color_text_sticker }}</label>
+					<div class="col-sm-5">
+						<input class="form-control color" type="text"  name="config_change_color_text_sticker_newproduct" value="{{ config_change_color_text_sticker_newproduct }}"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">{{ entry_icon_sticker }}</label>
+					<div class="col-sm-5">
+						<span class="icon_open" id="config_change_icon_sticker_newproduct" onclick="icon_fontawesome_popup($(this).attr('id'))">
+						{{ text_select_icon }}
+						{% if (config_change_icon_sticker_newproduct is defined) %}<i class="{{ config_change_icon_sticker_newproduct }}"></i>{% endif %}</span>
+						<input class="form-control" type="hidden"  name="config_change_icon_sticker_newproduct" value="{{ config_change_icon_sticker_newproduct }}"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">{{ entry_color_icon }}</label>
+					<div class="col-sm-5">
+						<input class="form-control color" type="text"  name="config_change_color_icon_sticker_newproduct" value="{{ config_change_color_icon_sticker_newproduct }}"/>
+					</div>
+				</div>
+			</div>
+			<div class="tab-pane" id="tab-popular-sticker">
+			<div class="form-group">
+					<label class="col-sm-3 control-label">{{ text_on_off_sticker }}</label>
+					<div class="col-sm-5">
+						<div class="radio-group-infinity">
+							{% if (on_off_sticker_popular) %}
+							<input id="on_off_sticker_popular_yes" class="hide-radio" type="radio" name="on_off_sticker_popular" value="1" checked="checked" />
+							<label for="on_off_sticker_popular_yes">{{ text_yes }}</label>
+							{% else %}
+							<input id="on_off_sticker_popular_yes" class="hide-radio" type="radio" name="on_off_sticker_popular" value="1" />
+							<label for="on_off_sticker_popular_yes">{{ text_yes }}</label>
+							{% endif %}
+							{% if (not on_off_sticker_popular) %}
+							<input id="on_off_sticker_popular_no" class="hide-radio" type="radio" name="on_off_sticker_popular" value="0" checked="checked" />
+							<label for="on_off_sticker_popular_no">{{ text_no }}</label>
+							{% else %}
+							<input id="on_off_sticker_popular_no" class="hide-radio" type="radio" name="on_off_sticker_popular" value="0" />
+							<label for="on_off_sticker_popular_no">{{ text_no }}</label>
+							{% endif %}
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">{{ entry_text_min_quantity_popular }}</label>
+					<div class="col-sm-5">
+						<input class="form-control" type="text"  name="config_min_quantity_popular" value="{{ config_min_quantity_popular }}"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">{{ entry_background_sticker }}</label>
+					<div class="col-sm-5">
+						<input class="form-control color" type="text"  name="config_change_background_sticker_popular" value="{{ config_change_background_sticker_popular }}"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">{{ entry_text_sticker }}</label>
+					<div class="col-sm-5">
+					<tr>
+						<td class="text-left">{% for language in languages %}
+                        <div class="input-group"><span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>
+                          <input type="text" name="config_change_text_sticker_popular[{{ language['language_id'] }}][config_change_text_sticker_popular]" rows="5" placeholder="" class="form-control" value="{{ config_change_text_sticker_popular[language['language_id']] is defined ? config_change_text_sticker_popular[language['language_id']]['config_change_text_sticker_popular'] : '' }}"></input>
+                        </div>
+                        {% endfor %}</td>
+					</tr>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">{{ entry_color_text_sticker }}</label>
+					<div class="col-sm-5">
+						<input class="form-control color" type="text" name="config_change_color_text_sticker_popular" value="{{ config_change_color_text_sticker_popular }}"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">{{ entry_icon_sticker }}</label>
+					<div class="col-sm-5">
+						<span class="icon_open" id="config_change_icon_sticker_popular" onclick="icon_fontawesome_popup($(this).attr('id'))">
+						{{ text_select_icon }}
+						{% if (config_change_icon_sticker_popular is defined) %}<i class="{{ config_change_icon_sticker_popular }}"></i>{% endif %}</span>
+						<input class="form-control" type="hidden"  name="config_change_icon_sticker_popular" value="{{ config_change_icon_sticker_popular }}"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">{{ entry_color_icon }}</label>
+					<div class="col-sm-5">
+						<input class="form-control color" type="text" name="config_change_color_icon_sticker_popular" value="{{ config_change_color_icon_sticker_popular }}"/>
+					</div>
+				</div>
+			</div>
+
+			<div class="tab-pane" id="tab-bestseller-sticker">
+				<div class="form-group">
+					<label class="col-sm-3 control-label">{{ text_on_off_sticker }}</label>
+					<div class="col-sm-5">
+						<div class="radio-group-infinity">
+							{% if (on_off_sticker_topbestseller) %}
+							<input id="on_off_sticker_topbestseller_yes" class="hide-radio" type="radio" name="on_off_sticker_topbestseller" value="1" checked="checked" />
+							<label for="on_off_sticker_topbestseller_yes">{{ text_yes }}</label>
+							{% else %}
+							<input id="on_off_sticker_topbestseller_yes" class="hide-radio" type="radio" name="on_off_sticker_topbestseller" value="1" />
+							<label for="on_off_sticker_topbestseller_yes">{{ text_yes }}</label>
+							{% endif %}
+							{% if (not on_off_sticker_topbestseller) %}
+							<input id="on_off_sticker_topbestseller_no" class="hide-radio" type="radio" name="on_off_sticker_topbestseller" value="0" checked="checked" />
+							<label for="on_off_sticker_topbestseller_no">{{ text_no }}</label>
+							{% else %}
+							<input id="on_off_sticker_topbestseller_no" class="hide-radio" type="radio" name="on_off_sticker_topbestseller" value="0" />
+							<label for="on_off_sticker_topbestseller_no">{{ text_no }}</label>
+							{% endif %}
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">{{ entry_text_limit_order_product_topbestseller }}</label>
+					<div class="col-sm-5">
+						<input class="form-control" type="text"  name="config_limit_order_product_topbestseller" value="{{ config_limit_order_product_topbestseller }}"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">{{ entry_background_sticker }}</label>
+					<div class="col-sm-5">
+						<input class="form-control color" type="text" name="config_change_background_sticker_topbestseller" value="{{ config_change_background_sticker_topbestseller }}"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">{{ entry_text_sticker }}</label>
+					<div class="col-sm-5">
+					<tr>
+						<td class="text-left">{% for language in languages %}
+                        <div class="input-group"><span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>
+                          <input type="text" name="config_change_text_sticker_topbestseller[{{ language['language_id'] }}][config_change_text_sticker_topbestseller]" rows="5" placeholder="" class="form-control" value="{{ config_change_text_sticker_topbestseller[language['language_id']] is defined ? config_change_text_sticker_topbestseller[language['language_id']]['config_change_text_sticker_topbestseller'] : '' }}"></input>
+                        </div>
+                        {% endfor %}</td>
+					</tr>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">{{ entry_color_text_sticker }}</label>
+					<div class="col-sm-5">
+						<input class="form-control color" type="text" name="config_change_color_text_sticker_topbestseller" value="{{ config_change_color_text_sticker_topbestseller }}"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">{{ entry_icon_sticker }}</label>
+					<div class="col-sm-5">
+						<span class="icon_open" id="config_change_icon_sticker_topbestseller" onclick="icon_fontawesome_popup($(this).attr('id'))">
+						{{ text_select_icon }}
+						{% if (config_change_icon_sticker_topbestseller is defined) %}<i class="{{ config_change_icon_sticker_topbestseller }}"></i>{% endif %}</span>
+						<input class="form-control" type="hidden"  name="config_change_icon_sticker_topbestseller" value="{{ config_change_icon_sticker_topbestseller }}"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">{{ entry_color_icon }}</label>
+					<div class="col-sm-5">
+						<input class="form-control color" type="text" name="config_change_color_icon_sticker_topbestseller" value="{{ config_change_color_icon_sticker_topbestseller }}"/>
+					</div>
+				</div>
+			</div>

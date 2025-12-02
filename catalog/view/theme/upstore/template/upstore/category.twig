@@ -1,0 +1,144 @@
+{{ header }}
+<div class="container">
+<div class="breadcrumbs-box">
+	<ul class="breadcrumb">
+		{% for i,breadcrumb in breadcrumbs %}
+			{% if (i+1 < breadcrumbs|length) %}
+				<li><a href="{{ breadcrumb.href }}"><span>{{ breadcrumb.text }}</span></a></li>
+			{% else %}
+				<li><span>{{ breadcrumb.text }}</span></li>
+			{% endif %}
+		{% endfor %}
+	</ul>
+</div>
+  <div class="row">
+	<div class="col-xs-12 col-sm-12">
+		<h1>{{ heading_title }}</h1>
+	</div>
+	{{ column_left }}
+	{% if (column_left and column_right) %}
+	{% set class = 'col-sm-8 col-md-6' %}
+	{% set cols_class = 'col-lg-6 col-md-6 col-sm-12' %}
+	{% elseif (column_left or column_right) %}
+	{% set class = 'col-sm-8 col-md-9' %}
+	{% set cols_class = 'col-lg-4 col-md-4 col-sm-6' %}
+	{% else %}
+	{% set class = 'col-sm-12' %}
+	{% set cols_class = 'col-lg-3 col-md-3 col-sm-6' %}
+	{% endif %}
+	<div id="content" class="{{ class }}">
+	{{ content_top }}
+		{% if (thumb or description) %}
+		  <div class="category_description news">
+			{% if (thumb) %}
+			<div class="psfl-l"><img src="{{ thumb }}" alt="{{ heading_title }}" title="{{ heading_title }}" class="img-thumbnail" /></div>
+			{% endif %}
+			{% if (description) %}
+				<div>{{ description }}</div>
+			{% endif %}
+		  </div>
+		{% endif %}
+	  {% if (categories and news_show_subcategories is defined and (news_show_subcategories == 1) ) %}
+	  <div class="row">
+		  {% for category in categories %}
+			<div class="col-xs-6 col-sm-6 col-md-4 col-lg-3">
+				<div class="thumbnail subcategory">
+					<a href="{{ category['href'] }}">
+						{% if (news_show_subcategories_image == 1) %}<div><img width="{{ news_subcat_width }}" height="{{ news_subcat_height }}" class="img-responsive" alt="{{ category['name'] }}" src="{{ category['thumb'] }}"></div>{% endif %}
+						<div class="name-wrapper">
+							<div class="display-table">
+								<div class="display-table-cell">{{ category['name'] }}</div>
+							</div>
+						</div>
+					</a>
+				</div>
+			</div>
+		  {% endfor %}
+	  </div>
+	  {% endif %}
+	  {% if (articles) %}
+		<div class="view-box">
+			<div class="row">
+				<div class="col-xs-12 col-sm-12 localstorage dflex align-items-center">
+					<div class="ch-limit-sorts dflex w-auto">
+						<div class="btn-group">
+						  <ul class="dropdown-menu ch-dropdown dropdown-menu-right">
+							{% set mmr_limit_active = '' %}
+							{% for limits in limits %}
+							{% if (limits.value == limit) %}
+							<li class="active"><a href="{{ limits.href }}" rel="nofollow">{{ limits.text }}</a></li>
+							{% set mmr_limit_active = limits.text %}
+							{% else %}
+							<li><a href="{{ limits.href }}" rel="nofollow">{{ limits.text }}</a></li>
+							{% endif %}
+							{% endfor %}
+						  </ul>
+						  <button type="button" class="btn btn-sort-limit dropdown-toggle" data-toggle="dropdown" title="{{ text_limit }}">
+							{{ mmr_limit_active is defined ? mmr_limit_active : limits['text'] }}
+							<svg xmlns="http://www.w3.org/2000/svg" width="7" height="5" fill="none" viewBox="0 0 7 5"><path fill="currentColor" fill-rule="evenodd" d="M3.174 2.856a.5.5 0 00.707-.004L6.144.562a.5.5 0 01.712.704L4.592 3.555a1.5 1.5 0 01-2.121.012L.148 1.27A.5.5 0 11.852.559l2.322 2.297z" clip-rule="evenodd"></path></svg>
+						  </button>
+						</div>
+						<div class="btn-group">
+							<button type="button" class="btn btn-sort-limit dropdown-toggle" data-toggle="dropdown">
+								{% for sort_active in sorts %}{% if (sort_active['value'] == sort ~ '-' ~ order) %}{{ sort_active['text'] }}{% endif %}{% endfor %}
+								<svg xmlns="http://www.w3.org/2000/svg" width="7" height="5" fill="none" viewBox="0 0 7 5"><path fill="currentColor" fill-rule="evenodd" d="M3.174 2.856a.5.5 0 00.707-.004L6.144.562a.5.5 0 01.712.704L4.592 3.555a1.5 1.5 0 01-2.121.012L.148 1.27A.5.5 0 11.852.559l2.322 2.297z" clip-rule="evenodd"></path></svg>
+							</button>
+							<ul class="dropdown-menu dropdown-menu-right ch-dropdown">
+								{% for sorts in sorts %}
+									{% if (sorts['value'] == sort ~ '-' ~ order) %}
+										<li class="active"><button class="btn-sort-link" onclick="location.href='{{ sorts['href'] }}'">{{ sorts['text'] }}</button></li>
+									{% else %}
+										<li><button class="btn-sort-link" onclick="location.href='{{ sorts['href'] }}'">{{ sorts['text'] }}</button></li>
+									{% endif %}
+								{% endfor %}
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="articles">
+			<div class="articles__list row-flex">
+				{% for article in articles %}
+					<div class="articles__item col-xs-12 col-sm-6 col-md-3">
+						<div class="articles__content dflex flex-column h-100">
+							<div class="articles__image">
+								<a href="{{ article.href }}"><img decoding="async" width="{{ article.width }}" height="{{ article.height }}" loading="lazy" src="{{ article.image }}" alt="{{ article.name }}" class="img-responsive" /></a>
+							</div>
+							<div class="articles__caption dflex flex-column flex-grow-1">
+								<div class="articles__title"><a href="{{ article.href }}">{{ article.name }}</a></div>
+								{% if (news_show_description) %}
+									<div class="articles__description">{{ article.description }}</div>
+								{% endif %}
+								<div class="atricles__footer">
+									<div class="articles__date">
+										<svg xmlns="http://www.w3.org/2000/svg" width="19" height="20" fill="none" viewBox="0 0 19 20">
+											<path fill="#C5C5C5" fill-rule="evenodd" d="M5.506.25a.75.75 0 0 1 .75.75v1.05h5.873V1a.75.75 0 0 1 1.5 0v1.05h.157a4.35 4.35 0 0 1 4.35 4.35v9a4.35 4.35 0 0 1-4.35 4.35H4.6A4.35 4.35 0 0 1 .25 15.4v-9A4.35 4.35 0 0 1 4.6 2.05h.156V1a.75.75 0 0 1 .75-.75Zm-.75 3.3H4.6A2.85 2.85 0 0 0 1.75 6.4v1.05h14.886V6.4a2.85 2.85 0 0 0-2.85-2.85h-.156V4.6a.75.75 0 0 1-1.5 0V3.55H6.256V4.6a.75.75 0 0 1-1.5 0V3.55Zm11.88 5.4H1.75v6.45a2.85 2.85 0 0 0 2.85 2.85h9.186a2.85 2.85 0 0 0 2.85-2.85V8.95ZM4.3 12.25a.75.75 0 0 1 .75-.75h.9a.75.75 0 0 1 0 1.5h-.9a.75.75 0 0 1-.75-.75Zm3.6 0a.75.75 0 0 1 .75-.75h.9a.75.75 0 0 1 0 1.5h-.9a.75.75 0 0 1-.75-.75Zm3.6 0a.75.75 0 0 1 .75-.75h.9a.75.75 0 0 1 0 1.5h-.9a.75.75 0 0 1-.75-.75Zm-7.2 2.7a.75.75 0 0 1 .75-.75h.9a.75.75 0 0 1 0 1.5h-.9a.75.75 0 0 1-.75-.75Zm3.6 0a.75.75 0 0 1 .75-.75h.9a.75.75 0 0 1 0 1.5h-.9a.75.75 0 0 1-.75-.75Zm3.6 0a.75.75 0 0 1 .75-.75h.9a.75.75 0 0 1 0 1.5h-.9a.75.75 0 0 1-.75-.75Z" clip-rule="evenodd"></path>
+										</svg>
+										<span class="articles__date-text">{{ article.date_added }}</span>
+									</div>
+									<div class="atricles__viewed">
+										<i class="up-icon-22 up-icon-quickview" aria-hidden="true"></i>
+										{{ article.viewed }}
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				{% endfor %}
+			</div>
+		</div>
+	  <div class="row">
+	  		<div class="col-sm-12 text-center">{{ pagination }}</div>
+	  </div>
+	  {% endif %}
+	  {% if (not categories and not articles) %}
+	  <p>{{ text_empty }}</p>
+	  <div class="buttons">
+		<div class="pull-right"><a href="{{ continue }}" class="btn btn-primary">{{ button_continue }}</a></div>
+	  </div>
+	  {% endif %}
+	  {{ content_bottom }}</div>
+	{{ column_right }}</div>
+</div>
+{{ footer }}

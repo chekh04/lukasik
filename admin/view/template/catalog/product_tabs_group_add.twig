@@ -1,0 +1,117 @@
+<div class="modal-dialog modal-lg">
+  <div class="modal-content">
+	<div class="modal-header">
+		<button id="button-close" class="pull-right btn btn-danger btn-sm" type="button">×</button>
+		<h4 class="modal-title">{{ entry_description_poduct_tab }}</h4>
+	</div>
+	<div id="body-edit-product-name" class="modal-body">
+	  <form class="form-horizontal" id="form-product-tab-group-add" enctype="multipart/form-data" method="post">
+		<input type="hidden" name="tabs_ns_id" value="{{ tabs_ns_id }}" />
+		<div class="form-group">
+            <label class="col-sm-2 control-label" for="input-product">{{ entry_product }}</label>
+            <div class="col-sm-10">
+              <input type="text" name="product" value="" placeholder="{{ entry_product }}" id="input-product" class="form-control" />
+              <div id="product-tabs-group" class="well well-sm" style="height: 150px; overflow: auto;">
+                {% for product in products %}
+                <div id="product-tabs-group{{ product['product_id'] }}"><i class="fa fa-minus-circle"></i> {{ product['name'] }}
+                  <input type="hidden" name="product[]" value="{{ product['product_id'] }}" />
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+		<div class="form-group">
+		    <div class="col-sm-12">
+				<ul class="nav nav-tabs" id="language">
+					{% for language in languages %}
+					<li><a href="#language{{ language['language_id'] }}" data-toggle="tab"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /> {{ language['name'] }}</a></li>
+					{% endfor %}
+				</ul>
+				<div class="tab-content">
+					{% for language in languages %}
+						<div class="tab-pane active" id="language{{ language['language_id'] }}">
+							<div class="form-group">
+								<div class="col-sm-12">
+								  <textarea name="product_extra_tab[{{ language['language_id'] }}][product_extra_tab_description]" placeholder="{{ entry_description_poduct_tab }}" id="input-description{{ language['language_id'] }}"></textarea>
+								</div>
+							</div>
+						</div>
+					{% endfor %}
+				</div>
+            </div>
+		</div>
+	  </form>
+	</div>
+	<div class="modal-footer">
+	  <div class="text-center"><a onclick="saveEditor();" class="button-save btn btn-info btn-lg" data-form="form-product-tab-group-add"><i class="fa fa-save fa-fw"></i>{{ button_save }}</a></div>
+	</div>
+  </div>
+  <script type="text/javascript" src="view/javascript/summernote/summernote.js"></script>
+  <link href="view/javascript/summernote/summernote.css" rel="stylesheet" />
+  <script type="text/javascript" src="view/javascript/summernote/opencart.js"></script>
+
+<script type="text/javascript">
+$('#language a:first').tab('show');
+{% for language in languages %}
+$('#input-description{{ language['language_id'] }}').summernote({height: 150});
+{% endfor %}
+
+function saveEditor() {
+	$.ajax({
+		url: 'index.php?route=catalog/product_tabs/changeProductTabsDescriptionGroup&user_token={{ user_token }}&',
+		type: 'post',
+		dataType: 'json',
+		data: $('#form-product-tab-group-add').serialize(),
+		success: function(json) {
+		$('.alert.alert-danger').remove()
+			if (json['warning']) {
+				$('#form-product-tab-group-add').before('<div class="alert alert-danger"><i class="fa fa-check-circle"></i> ' + json['warning'] + '</div>');
+			}
+			if (json['success']) {
+				$('#form-product-tab-group-add').before('<div class="alert alert-success"><i class="fa fa-check-circle"></i> ' + json['success'] + '</div>');
+
+				setTimeout(function(){
+					$('#name-modal-{{ tabs_ns_id }}').modal('hide');
+					$('#name-content-{{ tabs_ns_id }}').empty();
+				}, 1000)
+			}
+		}
+	});
+}
+
+$('#button-close').on('click', function() {
+	$('#name-modal-{{ tabs_ns_id }}').modal('hide');
+	$('#name-content-{{ tabs_ns_id }}').empty();
+});
+</script>
+<script type="text/javascript"><!--
+$('input[name=\'product\']').autocomplete({
+	source: function(request, response) {
+		$.ajax({
+			url: 'index.php?route=catalog/product/autocomplete&user_token={{ user_token }}&filter_name=' +  encodeURIComponent(request),
+			dataType: 'json',
+			success: function(json) {
+				response($.map(json, function(item) {
+					return {
+						label: item['name'],
+						value: item['product_id']
+					}
+				}));
+			}
+		});
+	},
+	select: function(item) {
+		$('input[name=\'product\']').val('');
+
+		$('#product-tabs-group' + item['value']).remove();
+
+		$('#product-tabs-group').append('<div id="product-tabs-group' + item['value'] + '"><i class="fa fa-minus-circle"></i> ' + item['label'] + '<input type="hidden" name="product[]" value="' + item['value'] + '" /></div>');
+	}
+});
+
+$('#product-tabs-group').delegate('.fa-minus-circle', 'click', function() {
+	$(this).parent().remove();
+});
+//--></script>
+	</div>
+</div>

@@ -1,0 +1,18 @@
+<div class="container-module">
+	<div class="row banner-blocks-container">
+		{% for block in blocks %}
+			<div class="mt-10 mb-10 col-xs-6 col-sm-6 {% if banner_column == 6 %}col-md-6{% else %}col-md-4{% endif %} col-lg-{{ banner_column }}">
+				<div class="banner-item dflex flex-column h-100 align-items-center{% if (block.popup == '1' and block.link[language_id] != '') or (block.popup == '0' and block.link[language_id] != '') %} is_a_link{% endif %}"{% if block.popup == '1' and block.link[language_id] != '' %} onclick="banner_link_open('{{ block.link[language_id] }}')"{% elseif block.popup == '0' and block.link[language_id] != '' %} onclick="location='{{ block.link[language_id] }}'"{% endif %}>
+					<div class="banner-image">
+						<img decoding="async" width="{{ block.width }}" height="{{ block.height }}" loading="lazy" src="{{ block.image }}" alt="{{ block.title[language_id] }}" class="img-responsive" />
+						<span class="bb-circle-color" style="background: {{ block.color }}"></span>
+					</div>
+					<div class="banner-info dflex flex-column h-100 w-100">
+						<div class="banner-title">{{ block.title[language_id] }}</div>
+						<div class="banner-description">{{ block.description[language_id] }}</div>
+					</div>
+				</div>
+			</div>
+		{% endfor %}
+	</div>
+</div>

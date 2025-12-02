@@ -1,0 +1,216 @@
+{{ header }}{{column_left }}
+<div id="content">
+	<div class="page-header">
+		<div class="container-fluid">
+			<div class="pull-right">
+				<button type="submit" form="form-setting" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+				<a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a>
+			</div>
+			<h1>{{ heading_title_setting }}</h1>
+			<ul class="breadcrumb">
+				{% for breadcrumb in breadcrumbs %}
+					<li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+				{% endfor %}
+			</ul>
+		</div>
+	</div>
+	<div class="container-fluid">
+		{% if error_warning %}
+			<div class="alert alert-danger">
+				<i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+				<button type="button" class="close" data-dismiss="alert">&times;</button>
+			</div>
+		{% endif %}
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title"><i class="fa fa-pencil"></i> {{ heading_title_setting }}</h3>
+			</div>
+			<div class="panel-body">
+				<form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-setting" class="form-horizontal">
+					<ul class="nav nav-tabs">
+						<li class="active"><a href="#tab-general" data-toggle="tab">{{ tab_general }} </a></li>
+						<li><a href="#tab-email" data-toggle="tab">{{ tab_email }}</a></li>
+						<li><a href="#tab-smsclub" data-toggle="tab">{{ tab_smsclub }}</a></li>
+					</ul>
+					<div class="tab-content">
+						<div class="tab-pane active" id="tab-general">
+
+							<div class="form-group">
+								<label class="col-sm-3 control-label" for="input-status-informer">{{ entry_status }}</label>
+								<div class="col-sm-9">
+									<div class="btn-group" data-toggle="buttons">
+										<label class="btn btn-default {% if abandoned_status_informer %}active{% endif %}">
+											<input type="radio" name="abandoned_status_informer" value="1" autocomplete="off" {% if abandoned_status_informer %}checked="checked"{% endif %}>
+											{{ text_enabled }}
+										</label>
+										<label class="btn btn-default {% if not abandoned_status_informer %}active{% endif %}">
+											<input type="radio" name="abandoned_status_informer" value="0" autocomplete="off" {% if not abandoned_status_informer %}checked="checked"{% endif %}>
+											{{ text_disabled }}
+										</label>
+									</div>
+									<p class="help-block">{{ help_status_informer }}</p>
+								</div>
+							</div>
+						</div>
+
+						<div class="tab-pane" id="tab-email">
+							<div class="form-group">
+								<label class="col-sm-3 control-label" for="input-status-email">{{ entry_status }}</label>
+								<div class="col-sm-9">
+									<div class="btn-group" data-toggle="buttons">
+										<label class="btn btn-default {% if abandoned_status_email %}active{% endif %}">
+											<input type="radio" name="abandoned_status_email" value="1" autocomplete="off" {% if abandoned_status_email %}checked="checked"{% endif %}>
+											{{ text_enabled }}
+										</label>
+										<label class="btn btn-default {% if not abandoned_status_email %}active{% endif %}">
+											<input type="radio" name="abandoned_status_email" value="0" autocomplete="off" {% if not abandoned_status_email %}checked="checked"{% endif %}>
+											{{ text_disabled }}
+										</label>
+									</div>
+									<p class="help-block">{{ help_status_email }}</p>
+								</div>
+							</div>
+							<ul class="nav nav-tabs" id="language_email">
+								{% for language in languages %}
+									<li><a href="#language_email{{ language.language_id }}" data-toggle="tab"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /> {{ language.name }}</a></li>
+								{% endfor %}
+							</ul>
+							<div class="tab-content">
+								{% for language in languages %}
+									<div class="tab-pane" id="language_email{{ language.language_id }}">
+										<div class="form-group">
+											<div class="col-sm-3 text-right">
+												<label class="control-label" for="input-email-subject-{{ language.language_id }}">{{ entry_email_subject }}</label>
+												<p class="help-block">{{ help_email_subject }}</p>
+											</div>
+											<div class="col-sm-9">
+												<textarea class="form-control" name="abandoned_email_subject[{{ language.language_id }}]" id="input-email-subject-{{ language.language_id }}" cols="50" rows="3">{{ abandoned_email_subject[language.language_id] ?? '' }}</textarea>
+											</div>
+										</div>
+										<div class="form-group">
+											<div class="col-sm-3 text-right">
+												<label class="control-label" for="input-email-template-{{ language.language_id }}">{{ entry_email_template }}</label>
+												<p class="help-block">{{ help_email_template }}</p>
+											</div>
+											<div class="col-sm-9">
+												<textarea class="form-control summernote" data-toggle="summernote" data-lang="{{ summernote }}" name="abandoned_email_template[{{ language.language_id }}]" id="input-email-template-{{ language.language_id }}" cols="50" rows="3">{{ abandoned_email_template[language.language_id] ?? '' }}</textarea>
+											</div>
+										</div>
+									</div>
+								{% endfor %}
+							</div>
+						</div>
+
+						<div class="tab-pane" id="tab-smsclub">
+							<div class="form-group">
+								<label class="col-sm-3 control-label" for="input-status-sms">{{ entry_status }}</label>
+								<div class="col-sm-9">
+									<div class="btn-group" data-toggle="buttons">
+										<label class="btn btn-default {% if abandoned_status_sms %}active{% endif %}">
+											<input type="radio" name="abandoned_status_sms" value="1" autocomplete="off" {% if abandoned_status_sms %}checked="checked"{% endif %}>
+											{{ text_enabled }}
+										</label>
+										<label class="btn btn-default {% if not abandoned_status_sms %}active{% endif %}">
+											<input type="radio" name="abandoned_status_sms" value="0" autocomplete="off" {% if not abandoned_status_sms %}checked="checked"{% endif %}>
+											{{ text_disabled }}
+										</label>
+									</div>
+									<p class="help-block">{{ help_status_email }}</p>
+								</div>
+							</div>
+							<div class="form-group required">
+								<label class="col-sm-3 control-label" for="input-smsclub-token">{{ entry_smsclub_token }}</label>
+								<div class="col-sm-9">
+									<input type="text" name="abandoned_smsclub_token" value="{{ abandoned_smsclub_token }}" placeholder="{{ entry_smsclub_token }}" id="input-smsclub-token" class="form-control" />
+									<p class="help-block">{{ help_token }}</p>
+									<div class="balance-block {% if balance is empty %}hidden{% endif %}">{{ text_smsclub_balance }}<span class="balance-credit">{{ balance|default('') }}</sapn></div>
+								</div>
+							</div>
+							<div class="form-group required smsclub_originators {% if originators is empty %}hidden{% endif %}">
+								<label class="col-sm-3 control-label" for="input-smsclub-src-addr">{{ entry_src_addr }}</label>
+								<div class="col-sm-9">
+									<select name="abandoned_smsclub_src_addr" id="input-smsclub-src-addr" class="form-control">
+										<option value="">{{ text_select }}</option>
+										{% if originators %}
+											{% for originator in originators %}
+												{% if originator == abandoned_smsclub_src_addr %}
+													<option value="{{ originator }}" selected="selected">{{ originator }}</option>
+												{% else %}
+													<option value="{{ originator }}">{{ originator }}</option>
+												{% endif %}
+											{% endfor %}
+										{% endif %}
+									</select>
+									<p class="help-block">{{ help_originators }}</p>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label" for="input-smsclub-message">{{ entry_smsclub_message }}</label>
+								<div class="col-sm-9">
+									<textarea name="abandoned_smsclub_message" class="form-control" id="input-smsclub-message" rows="6">{{ abandoned_smsclub_message }}</textarea>
+									<p class="help-block">{{ help_sms_message }}</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<style>
+.balance-block {
+	font-size:12px;
+	font-weight: 600;
+	color:#000;
+}
+</style>
+<script>
+$(document).on('change', '#input-smsclub-token', function(e){
+	e.preventDefault();
+
+	var smsclub_token = $(this).val();
+
+	$.ajax({
+		url: 'index.php?route=sale/abandoned_order/getSmsInfo&user_token={{ user_token }}',
+		type: 'post',
+		data: 'smsclub_token=' + smsclub_token,
+		dataType: 'json',
+		success: function(json) {
+
+			if (json['balance'] && json['balance']['money'].length > 0) {
+				var money = json['balance']['money'];
+				var currency = json['balance']['currency'];
+				var formattedBalance = parseFloat(money).toFixed(2) + ' ' + currency;
+				$('.balance-block').removeClass('hidden').find('.balance-credit').html(formattedBalance);
+			} else {
+				$('.balance-block').addClass('hidden');
+			}
+
+			if (json['originators'] && json['originators'] != '') {
+				options = '<option value="">{{ text_select }}</option>';
+				for (i = 0; i < json['originators'].length; i++) {
+					options += '<option value="' + json['originators'][i] + '">'+ json['originators'][i] +'</option>';
+				}
+				$('.smsclub_originators').removeClass('hidden');
+				$('select[name=\'abandoned_smsclub_src_addr\']').html(options);
+			} else {
+				$('.smsclub_originators').addClass('hidden');
+				$('select[name=\'abandoned_smsclub_src_addr\']').html();
+			}
+
+
+		},
+	});
+});
+
+
+$('#language_email a:first').tab('show');
+
+{% if ckeditor %}
+	{% for language in languages %}
+		ckeditorInit('input-description{{ language.language_id }}', getURLVar('token'));
+	{% endfor %}
+{% endif %}
+</script>
+{{ footer }}

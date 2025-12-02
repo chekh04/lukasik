@@ -1,0 +1,37 @@
+.swiper-mod-arrow {
+	background: #fff;
+	box-shadow: 0px 6px 10px rgba(232, 234, 243, 0.8);
+}
+.swiper-mod-arrow:hover, .swiper-mod-arrow:active {
+	background: #DCE0E9;
+}
+.breadcrumb-box:after {
+	background: linear-gradient(90deg, rgba(217, 217, 217, 0) 0%, #F6F7FA 100%);
+}
+footer.ch-light-theme .footer-top,
+footer.ch-light-theme .footer-center,
+footer.ch-light-theme .footer-bottom {
+	background-color: #ffffff;
+}
+footer .sficon,
+footer.ch-light-theme .igb-nl, footer.ch-light-theme .newsletter .form-control, footer.ch-light-theme .newsletter .form-control:focus {
+	background: #F7F8FB;
+}
+.box-showmore .chm-btn-grey{
+	background: #DCE0E9;
+}
+.pagination>li>a,
+.pagination>li>span {background-color:#fff;}
+.view-box {
+	background: #fff;
+}
+.localstorage .btn-group .dropdown-toggle {
+	box-shadow: 0px 0px 0px 1px #DCE0E9;
+}
+.chm-search-block {
+	padding: 25px;
+	border-radius: 10px;
+}
+.register-content {
+	padding: 25px;
+}

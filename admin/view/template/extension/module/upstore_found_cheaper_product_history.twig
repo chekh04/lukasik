@@ -1,0 +1,67 @@
+{% if (foundcheaper_data) %}
+  <div class="row" style="margin-bottom:10px">
+    <div class="col-sm-12 text-right">
+       <a class="btn btn-primary" href="javascript:void(0);" onclick="update_status();">{{ btn_change_status }}</a>
+       <a class="btn btn-danger" href="javascript:void(0);" onclick="del_selected();">{{ btn_del }}</a>
+    </div>
+  </div>
+{% endif %}
+<div class="table-responsive">
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <td width="1" style="text-align: center;"><input type="checkbox" onclick="$('input[name*=\'selected_id_found_cheaper\']').attr('checked', this.checked);" /></td>
+        <td class="text-left" >{{ column_buyer }}</td>
+        <td class="text-left" >{{ column_product }}</td>
+        <td class="text-left">{{ column_comment_manager }}</td>
+        <td class="text-left">{{ column_status }}</td>
+        <td class="text-left">{{ column_date_added }}</td>
+        <td class="text-left">{{ column_date_modified }}</td>
+
+      </tr>
+    </thead>
+    <tbody>
+    {% if (foundcheaper_data) %}
+      {% for result in foundcheaper_data %}
+      <tr>
+        <td style="text-align: center;"><input class="checkbox_found_cheaper_selected" type="checkbox" name="selected_id_found_cheaper[]" value="{{ result['id_found_cheaper'] }}" /></td>
+        <td class="text-left">
+      {% if (result['name_field'] != '') %}<div class="name_field"><i class="fa fa-user fa-fw"></i> {{ result['name_field'] }}</div>{% endif %}
+      {% if (result['telephone_field'] != '') %}<div class="telephone_field"><i class="fa fa-phone-square fa-fw"></i> {{ result['telephone_field'] }}</div>{% endif %}
+      {% if (result['email_field'] != '') %}<div class="email_field"><i class="fa fa-envelope-o fa-fw"></i> {{ result['email_field'] }}</div>{% endif %}
+      {% if (result['link_field'] != '') %}<div class="link_field"><i class="fa fa-link fa-fw"></i> {{ result['link_field'] }}</div>{% endif %}
+      {% if (result['comment_field'] != '') %}<div class="comment_field"><i class="fa fa-comment-o fa-fw"></i> {{ result['comment_field'] }}</div>{% endif %}
+        </td>
+    <td><div class="name-product">{{ result['product']['name'] }}</div>
+    <div class="image-product"><img src="{{ result['product']['thumb'] }}" alt="{{ result['product']['name'] }}" title="{{ result['product']['name'] }}" class="img-responsive"/></div>
+    <div class="cod-product">
+      {% if (result['product']['sku'] != '') %}<span class="sku"><b>{{ text_sku_product }}</b>{{ result['product']['sku'] }}</span></br>{% endif %}
+      {% if (result['product']['model'] != '') %}<span class="sku"><b>{{ text_model_product }}</b>{{ result['product']['model'] }}</span>{% endif %}
+    </div>
+    </td>
+    <td class="text-left">
+    <textarea class="form-control" id="comment_manager_{{ result['id_found_cheaper'] }}" name="{{ result['comment_manager'] }}">{{ result['comment_manager'] }}</textarea>
+    <a class="btn btn-info martb" onclick="saveCommentManager('{{ result['id_found_cheaper'] }}');">{{ btn_change_comment_manager }}</a>
+    </td>
+        {% if (result['status_id'] == '1') %}
+            <td class="right" style="background:#0BED0B !important;">{{ result['status'] }}</td>
+        {% else %}
+      <td class="right" style="background:#EDB40B !important;">{{ result['status'] }}</td>
+        {% endif %}
+
+        <td class="text-left">{{ result['date_added'] }}</td>
+        <td class="text-left">{{ result['date_modified'] }}</td>
+      </tr>
+      {% endfor %}
+      {% else %}
+        <tr>
+          <td class="text-center" colspan="5">{{ text_no_results }}</td>
+        </tr>
+      {% endif %}
+    </tbody>
+  </table>
+</div>
+<div class="row">
+  <div class="col-sm-6 text-left">{{ pagination }}</div>
+  <div class="col-sm-6 text-right">{{ results }}</div>
+</div>

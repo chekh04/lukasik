@@ -1,0 +1,117 @@
+<div class="modal-dialog chm-modal sm-modal-4 modal-dialog-centered">
+	 <div id="popup-callback" class="modal-content">
+		  <div class="modal-header">
+				<div class="modal-title">
+					 {{ callbackpro.title_callback[lang_id].text is not empty ? callbackpro.title_callback[lang_id].text : title_callback }}
+				</div>
+				<button type="button" class="close-modal" data-dismiss="modal"><i class="up-icon-close" aria-hidden="true"></i></button>
+		  </div>
+		  <div class="modal-body">
+				{% if callbackpro.config_any_text_bottom_before_button[lang_id].config_any_text_bottom_before_button is not empty %}
+					 <div class="anytext-callback text-left">{{ callbackpro.config_any_text_bottom_before_button[lang_id].config_any_text_bottom_before_button }}</div>
+				{% endif %}
+				{% if main_image_callback != '' %}
+					 <div class="popup-image hidden-xs">
+						  <div class="text-center">
+								<img class="img-responsive" src="{{ main_image_callback }}" />
+						  </div>
+					 </div>
+				{% endif %}
+				<form id="callback_data" enctype="multipart/form-data" method="post">
+					 <div class="form-group hidden">
+						  <input type="hidden" id="callback_url" value="" name="url_site" />
+						  <input type="hidden" name="token_csrf" value="{{ csrf_token }}" />
+					 </div>
+					 {% if callbackpro.config_on_off_fields_firstname_cb is defined %}
+						  <div class="form-group {{ callbackpro.config_fields_firstname_requared_cb is defined ? 'field_required' : '' }}">
+								<div class="input-group-flex">
+									 <div class="input-group-icon">
+										  <img src="catalog/view/theme/upstore/image/form-icon/name-icon.svg" alt="" />
+									 </div>
+									 <input id="contact-name" class="form-control contact-name" type="text" placeholder="{{ callbackpro.config_placeholder_fields_firstname_cb[lang_id].config_placeholder_fields_firstname_cb }}" value="" name="name" />
+								</div>
+						  </div>
+					 {% endif %}
+					 {% if callbackpro.config_on_off_fields_phone_cb is defined %}
+						  <div class="form-group {{ callbackpro.config_fields_phone_requared_cb is defined ? 'field_required' : '' }}">
+								<div class="input-group-flex">
+									 <div class="input-group-icon">
+										  <img src="catalog/view/theme/upstore/image/form-icon/tel-icon.svg" alt="" />
+									 </div>
+									 <input id="contact-phone" class="form-control contact-phone" type="text" placeholder="{{ callbackpro.config_placeholder_fields_phone_cb[lang_id].config_placeholder_fields_phone_cb }}" value="" name="phone" />
+								</div>
+						  </div>
+					 {% endif %}
+					 {% if callbackpro.config_on_off_fields_email_cb is defined %}
+						  <div class="form-group {{ callbackpro.config_fields_email_requared_cb is defined ? 'field_required' : '' }}">
+								<div class="input-group-flex">
+									 <input id="contact-email" class="form-control contact-email" type="text" placeholder="{{ callbackpro.config_placeholder_fields_email_cb[lang_id].config_placeholder_fields_email_cb }}" value="" name="email_buyer" />
+									 <div class="input-group-icon">
+										  <img src="catalog/view/theme/upstore/image/form-icon/email-icon.svg" alt="" />
+									 </div>
+								</div>
+						  </div>
+					 {% endif %}
+					 {% if callbackpro.config_on_off_fields_comment_cb is defined %}
+						  <div class="form-group">
+								<div class="{{ callbackpro.config_fields_comment_requared_cb is defined ? 'field_required_textarea' : '' }}">
+									 <textarea id="contact-comment" rows="3" class="form-control contact-comment" type="text" placeholder="{{ callbackpro.config_placeholder_fields_comment_cb[lang_id].config_placeholder_fields_comment_cb }}" name="comment_buyer"></textarea>
+								</div>
+						  </div>
+					 {% endif %}
+					 {% if call_topic_data is not empty %}
+						  <div class="form-group">
+								<select class="form-control call_theme" name="topic_callback_send">
+									 {% for res_call_topic in call_topic_data %}
+										  <option value="{{ res_call_topic.name }}">{{ res_call_topic.name }}</option>
+									 {% endfor %}
+								</select>
+						  </div>
+					 {% endif %}
+					 {% if callbackpro.config_on_off_date_time is defined %}
+						  <div class="form-group">
+								<input type="text" name="time_callback_on" value="" class="form-control start" placeholder="{{ when_you_call_back }}" />
+								<input type="hidden" name="time_callback_off" value="" />
+						  </div>
+					 {% endif %}
+					 {% if text_agree is not empty %}
+						  <div class="form-group">
+								<label class="chm-checkbox mb-0">
+									 <input class="checkbox-input" type="checkbox" name="agree" value="1" />
+									 <span class="checkbox-check"></span>{{ text_agree }}
+								</label>
+						  </div>
+					 {% endif %}
+				</form>
+		  </div>
+		  <div class="modal-footer">
+				<div class="text-left">
+					 <button id="up-btn-callback" class="chm-btn chm-btn-primary chm-px-lg chm-lg-rounded w-100" type="button" onclick="sendCallback();">{{ button_send }}</button>
+				</div>
+				<script src="catalog/view/theme/upstore/js/callback_send.js" type="text/javascript"></script>
+				{% if (callbackpro['config_on_off_date_time'] is defined) %}
+					<script src="catalog/view/javascript/jquery/datetimepicker/moment/moment.min.js"></script>
+					<script src="catalog/view/javascript/jquery/datetimepicker/moment/moment-with-locales.min.js"></script>
+					{% if (dt_locale_file) %}
+						<script src="catalog/view/javascript/jquery/datetimepicker/locale/{{ lang_datetimepicker }}.js"></script>
+					{% endif %}
+					<script src="catalog/view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.js"></script>
+					<link rel="stylesheet" href="catalog/view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.css"/>
+					<script>
+					$('.start').datetimepicker({
+						pickDate: true,
+						language: '{{ lang_datetimepicker }}',
+						minDate : moment(),
+						pickTime: true
+					});
+					</script>
+				{% endif %}
+				{% if callbackpro.config_mask_phone_number_cb != '' %}
+					 <script src="catalog/view/theme/upstore/js/maskedinput.js" type="text/javascript"></script>
+					 <script>
+						  $("#contact-phone").mask('{{ callbackpro.config_mask_phone_number_cb }}');
+					 </script>
+				{% endif %}
+		  </div>
+	 </div>
+</div>

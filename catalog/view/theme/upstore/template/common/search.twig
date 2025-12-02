@@ -1,0 +1,30 @@
+<div class="header-search input-group{% if ns_autosearch_data.status == '1' %} livesearch{% endif %}{% if search_word is defined and search_word is not empty %} pt20{% endif %}">
+	{% if show_hc_search == '1' %}
+		<div class="input-group-btn categories">
+			<button aria-label="Search category" type="button" data-toggle="dropdown" data-placement="left" title="{{ text_search_everywhere }}" class="btn-search-select dropdown-toggle">
+				<i class="up-icon-22 up-icon-search-category" aria-hidden="true"></i>
+			</button>
+			<ul class="dropdown-menu dropdown-menu-left ch-dropdown">
+				<li class="sel-cat-search"><a href="#" onclick="return false;" data-idsearch="0">{{ text_search_everywhere }}</a></li>
+				{% for search_category in categories %}
+					<li><a href="#" onclick="return false;" data-idsearch="{{ search_category.category_id }}">{{ search_category.name }}</a></li>
+				{% endfor %}
+			</ul>
+			<input type="hidden" name="search_category_id" value="0" />
+		</div>
+	{% endif %}
+	<input type="text" name="search" value="{{ search }}" placeholder="{{ text_search }}" class="form-control search-autocomplete" />
+	<span class="input-group-btn group_voice_search d-none">
+		<button type="button" class="btn btn-voice-search" aria-label="Search">
+			<i class="up-icon-22 up-icon-microphone" aria-hidden="true"></i>
+		</button>
+	</span>
+	<span class="input-group-btn button_search">
+		<button type="button" class="btn btn-search" aria-label="Search">
+			<i class="up-icon-22 up-icon-search" aria-hidden="true"></i>
+		</button>
+	</span>
+</div>
+{% if search_word is defined and search_word is not empty %}
+	<div class="search_word hidden-xs hidden-sm">{{ text_search_word }}<a>{{ search_word }}</a></div>
+{% endif %}

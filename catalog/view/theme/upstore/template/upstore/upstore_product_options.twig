@@ -1,0 +1,258 @@
+<div id="product-options" class="product-thumb">
+	<div class="modal-header">
+		<div class="modal-title">{{ text_select_options }}</div>
+		<button type="button" class="close-modal" data-dismiss="modal"><i class="up-icon-close" aria-hidden="true"></i></button>
+	</div>
+	<div class="modal-body">
+	{% if options %}
+		<div class="options">
+			{% for option in options %}
+				{% if option.type == 'select' %}
+					<div class="form-group{{ option.required ? ' required' : '' }}">
+						<label class="control-label" for="input-modal-option{{ option.product_option_id }}">{{ option.name }}</label>
+						<select name="option[{{ option.product_option_id }}]" id="input-modal-option{{ option.product_option_id }}" class="form-control">
+							<option value="">{{ text_select }}</option>
+							{% for option_value in option['product_option_value'] %}
+							<option value="{{ option_value.product_option_value_id }}" data-option-prefix="{{ option_value.price_prefix }}" data-option-price="{{ option_value.price_value }}">{{ option_value.name }}
+							{% if option_value.price %}
+							({{ option_value.price_prefix }}{{ option_value.price }})
+							{% endif %}
+							</option>
+							{% endfor %}
+						</select>
+					</div>
+				{% endif %}
+
+				{% if option.type == 'radio' %}
+					<div class="form-group{{ option.required ? ' required' : '' }}">
+						<label class="control-label">{{ option.name }}</label>
+						<div id="input-modal-option{{ option.product_option_id }}">
+							{% for option_value in option['product_option_value'] %}
+								{% if option_value.image or option_value.color %}
+									{% if option.status_color_type == '1' %}
+										<div class="color-radio">
+											<input type="radio" name="option[{{ option.product_option_id }}]" value="{{ option_value.product_option_value_id }}" data-option-prefix="{{ option_value.price_prefix }}" data-option-price="{{ option_value.price_value }}" id="input-m-option{{ option.product_option_id }}_{{ option_value.product_option_value_id }}" />
+											<label {% if (option_value['price']) %}data-toggle="tooltip" title="{{ option_value.price_prefix ~ option_value.price }}"{% endif %} for="input-m-option{{ option.product_option_id }}_{{ option_value.product_option_value_id }}">
+												<span class="color-option" style="background-color:{{ option_value.color }}"></span>
+											</label>
+										</div>
+									{% else %}
+										<div class="image-radio">
+											<input type="radio" name="option[{{ option.product_option_id }}]" value="{{ option_value.product_option_value_id }}" data-option-prefix="{{ option_value.price_prefix }}" data-option-price="{{ option_value.price_value }}" id="input-m-option{{ option.product_option_id }}_{{ option_value.product_option_value_id }}" />
+											<label {% if (option_value['price']) %}data-toggle="tooltip" title="{{ option_value.price_prefix ~ option_value.price }}"{% endif %} for="input-m-option{{ option.product_option_id }}_{{ option_value.product_option_value_id }}">
+												<img src="{{ option_value.image }}" alt="{{ option_value.name ~ option_value.price ? ' ' ~ option_value.price_prefix ~ option_value.price : '' }}" class="img-thumbnail" />
+										 </label>
+										</div>
+									{% endif %}
+								{% else %}
+									<div class="default-radio">
+									 <input type="radio" name="option[{{ option.product_option_id }}]" value="{{ option_value.product_option_value_id }}" data-option-prefix="{{ option_value.price_prefix }}" data-option-price="{{ option_value.price_value }}" id="input-m-option{{ option.product_option_id }}_{{ option_value.product_option_value_id }}" />
+										<label {% if (option_value['price']) %}data-toggle="tooltip" title="{{ option_value.price_prefix ~ option_value.price }}"{% endif %} for="input-m-option{{ option.product_option_id }}_{{ option_value.product_option_value_id }}">
+											<span class="option-name">{{ option_value.name }}</span>
+									 </label>
+									</div>
+								{% endif %}
+							{% endfor %}
+						</div>
+					</div>
+				{% endif %}
+				{% if option.type == 'checkbox' %}
+					<div class="form-group{{ option.required ? ' required' : '' }}">
+						<label class="control-label">{{ option.name }}</label>
+						<div id="input-modal-option{{ option.product_option_id }}">
+							{% for option_value in option['product_option_value'] %}
+								{% if option_value.image or option_value.color %}
+										{% if option.status_color_type == '1' %}
+											<div class="color-radio">
+												<input type="checkbox" name="option[{{ option.product_option_id }}][]" value="{{ option_value.product_option_value_id }}" data-option-prefix="{{ option_value.price_prefix }}" data-option-price="{{ option_value.price_value }}" id="input-m-option{{ option.product_option_id }}_{{ option_value.product_option_value_id }}" />
+												<label {% if (option_value['price']) %}data-toggle="tooltip" title="{{ option_value.price_prefix ~ option_value.price }}"{% endif %} for="input-m-option{{ option.product_option_id }}_{{ option_value.product_option_value_id }}">
+													<span class="color-option" style="background-color:{{ option_value.color }}"></span>
+											 </label>
+											</div>
+										{% else %}
+											<div class="image-radio">
+												<input type="checkbox" name="option[{{ option.product_option_id }}][]" value="{{ option_value.product_option_value_id }}" data-option-prefix="{{ option_value.price_prefix }}" data-option-price="{{ option_value.price_value }}" id="input-m-option{{ option.product_option_id }}_{{ option_value.product_option_value_id }}" />
+												<label {% if (option_value['price']) %}data-toggle="tooltip" title="{{ option_value.price_prefix ~ option_value.price }}"{% endif %} for="input-m-option{{ option.product_option_id }}_{{ option_value.product_option_value_id }}">
+													<img src="{{ option_value.image }}" alt="{{ option_value.name ~ option_value.price ? ' ' ~ option_value.price_prefix ~ option_value.price : '' }}" class="img-thumbnail" />
+											 </label>
+											</div>
+										{% endif %}
+									{% else %}
+										<div class="default-radio">
+										 <input type="checkbox" name="option[{{ option.product_option_id }}][]" value="{{ option_value.product_option_value_id }}" data-option-prefix="{{ option_value.price_prefix }}" data-option-price="{{ option_value.price_value }}" id="input-m-option{{ option.product_option_id }}_{{ option_value.product_option_value_id }}" />
+											<label {% if (option_value['price']) %}data-toggle="tooltip" title="{{ option_value.price_prefix ~ option_value.price }}"{% endif %} for="input-m-option{{ option.product_option_id }}_{{ option_value.product_option_value_id }}">
+											<span class="option-name">{{ option_value.name }}</span>
+										 </label>
+										</div>
+									{% endif %}
+							{% endfor %}
+						</div>
+					</div>
+				{% endif %}
+
+				{% if (option.type == 'text') %}
+					<div class="form-group{{ option.required ? ' required' : '' }}">
+						<label class="control-label" for="input-modal-option{{ option.product_option_id }}">{{ option.name }}</label>
+						<input type="text" name="option[{{ option.product_option_id }}]" value="{{ option.value }}" placeholder="{{ option.name }}" id="input-modal-option{{ option.product_option_id }}" class="form-control" />
+					</div>
+				{% endif %}
+				{% if (option.type == 'textarea') %}
+					<div class="form-group{{ option.required ? ' required' : '' }}">
+						<label class="control-label" for="input-modal-option{{ option.product_option_id }}">{{ option.name }}</label>
+						<textarea name="option[{{ option.product_option_id }}]" rows="5" placeholder="{{ option.name }}" id="input-modal-option{{ option.product_option_id }}" class="form-control">{{ option.value }}</textarea>
+					</div>
+				{% endif %}
+				{% if (option.type == 'file') %}
+					<div class="form-group{{ option.required ? ' required' : '' }}">
+						<label class="control-label" for="input-modal-option{{ option.product_option_id }}">{{ option.name }}</label>
+						<button type="button" id="button-upload{{ option.product_option_id }}" data-loading-text="{{ text_loading }}" class="btn btn-default btn-block"><i class="fa fa-upload"></i> {{ button_upload }}</button>
+						<input type="hidden" name="option[{{ option.product_option_id }}]" value="" id="input-modal-option{{ option.product_option_id }}" />
+					</div>
+				{% endif %}
+				{% if (option.type == 'date') %}
+					<div class="form-group{{ option.required ? ' required' : '' }}">
+						<label class="control-label" for="input-modal-option{{ option.product_option_id }}">{{ option.name }}</label>
+						<div class="input-group date">
+							<input type="text" name="option[{{ option.product_option_id }}]" value="{{ option.value }}" data-date-format="YYYY-MM-DD" id="input-modal-option{{ option.product_option_id }}" class="form-control" />
+							<span class="input-group-btn">
+								<button class="btn btn-default" type="button"><i class="fa fa-calendar"></i></button>
+							</span>
+						</div>
+					</div>
+				{% endif %}
+				{% if (option.type == 'datetime') %}
+					<div class="form-group{{ option.required ? ' required' : '' }}">
+						<label class="control-label" for="input-modal-option{{ option.product_option_id }}">{{ option.name }}</label>
+						<div class="input-group datetime">
+							<input type="text" name="option[{{ option.product_option_id }}]" value="{{ option.value }}" data-date-format="YYYY-MM-DD HH:mm" id="input-modal-option{{ option.product_option_id }}" class="form-control" />
+							<span class="input-group-btn">
+								<button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
+							</span>
+						</div>
+					</div>
+				{% endif %}
+				{% if (option.type == 'time') %}
+					<div class="form-group{{ option.required ? ' required' : '' }}">
+						<label class="control-label" for="input-modal-option{{ option.product_option_id }}">{{ option.name }}</label>
+						<div class="input-group time">
+							<input type="text" name="option[{{ option.product_option_id }}]" value="{{ option.value }}" data-date-format="HH:mm" id="input-modal-option{{ option.product_option_id }}" class="form-control" />
+							<span class="input-group-btn">
+								<button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
+							</span>
+						</div>
+					</div>
+				{% endif %}
+
+			{% endfor %}
+		</div>
+	{% endif %}
+	</div>
+	<div class="modal-footer">
+		<div class="info-options-bottom dflex">
+			<input type="hidden" name="check_option" value="true">
+			<div class="quantity_plus_minus">
+				<span class="add-up add-action">
+					<svg xmlns="http://www.w3.org/2000/svg" width="7" height="5" fill="none" viewBox="0 0 7 5">
+						<path fill="#000" fill-rule="evenodd" d="M3.826 2.144a.5.5 0 00-.707.004L.856 4.438a.5.5 0 01-.712-.704l2.264-2.289a1.5 1.5 0 012.121-.012L6.852 3.73a.5.5 0 11-.704.711L3.826 2.144z" clip-rule="evenodd"/>
+					</svg>
+				</span>
+				<input type="text" class="quantity-num form-control" name="quantity" value="{{ quantity }}" data-minimum="{{ minimum }}" {% if config_additional_settings_upstore.quantity_multiple and config_additional_settings_upstore.quantity_multiple == '1' and minimum > 1%}disabled{% endif %}>
+				<span class="add-down add-action">
+					<svg xmlns="http://www.w3.org/2000/svg" width="7" height="5" fill="none" viewBox="0 0 7 5">
+						<path fill="#000" fill-rule="evenodd" d="M3.174 2.856a.5.5 0 00.707-.004L6.144.562a.5.5 0 01.712.704L4.592 3.555a1.5 1.5 0 01-2.121.012L.148 1.27A.5.5 0 11.852.559l2.322 2.297z" clip-rule="evenodd"/>
+					</svg>
+				</span>
+			</div>
+			<div class="chm-price-totals price" data-price-value="{{ price_value }}" data-special-value="{{ special_value }}">
+				{% if not special %}
+					<span class="price"><span class="price_value">{{ price }}</span></span>
+				{% else %}
+					<span class="price-old"><span class="price_value">{{ price }}</span></span>
+					<span class="price-new"><span class="special_value">{{ special }}</span></span>
+				{% endif %}
+			</div>
+			<div class="cart"><button class="btn btn-general" onclick="cart.add('{{ product_id }}',this)" type="button"><span class="icon-cart-add"></span> <span class="text-cart-add">{{ button_cart }}</span></button></div>
+		</div>
+	</div>
+</div>
+{% if (load_datetimepicker) %}
+<link rel="stylesheet" href="catalog/view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.css"/>
+<script src="catalog/view/javascript/jquery/datetimepicker/moment/moment.min.js"></script>
+<script src="catalog/view/javascript/jquery/datetimepicker/moment/moment-with-locales.min.js"></script>
+<script src="catalog/view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.js"></script>
+{% endif %}
+<script>
+$(function () {
+	$('#product-options .quantity-num').trigger('change');
+});
+{% if (load_datetimepicker) %}
+$('.date').datetimepicker({
+  language: '{{ datepicker }}',
+  pickTime: false
+});
+
+$('.datetime').datetimepicker({
+  language: '{{ datepicker }}',
+  pickDate: true,
+  pickTime: true
+});
+
+$('.time').datetimepicker({
+  language: '{{ datepicker }}',
+  pickDate: false
+});
+{% endif %}
+{% if (load_file) %}
+$('button[id^=\'button-upload\']').on('click', function() {
+	var node = this;
+
+	$('#form-upload').remove();
+
+	$('body').prepend('<form enctype="multipart/form-data" id="form-upload" style="display: none;"><input type="file" name="file" /></form>');
+
+	$('#form-upload input[name=\'file\']').trigger('click');
+
+	if (typeof timer != 'undefined') {
+		clearInterval(timer);
+	}
+
+	timer = setInterval(function() {
+		if ($('#form-upload input[name=\'file\']').val() != '') {
+			clearInterval(timer);
+
+			$.ajax({
+				url: 'index.php?route=tool/upload',
+				type: 'post',
+				dataType: 'json',
+				data: new FormData($('#form-upload')[0]),
+				cache: false,
+				contentType: false,
+				processData: false,
+				beforeSend: function() {
+					$(node).button('loading');
+				},
+				complete: function() {
+					$(node).button('reset');
+				},
+				success: function(json) {
+					$('.text-danger').remove();
+
+					if (json['error']) {
+						$(node).parent().find('input').after('<div class="text-danger">' + json['error'] + '</div>');
+					}
+
+					if (json['success']) {
+						alert(json['success']);
+
+						$(node).parent().find('input').val(json['code']);
+					}
+				},
+				error: function(xhr, ajaxOptions, thrownError) {
+					alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+				}
+			});
+		}
+	}, 500);
+});
+{% endif %}
+</script>

@@ -1,0 +1,309 @@
+<div id="popup-quickorder" class="modal-dialog chm-modal {{ products ? 'us-modal-lg' : 'sm-modal-4' }} shop-cart modal-dialog-centered">
+	<div class="modal-content">
+		<div class="modal-header">
+			<div class="modal-title">{{ title_shopping_cart }}</div>
+			<button type="button" class="close-modal" data-dismiss="modal"><i class="up-icon-close" aria-hidden="true"></i></button>
+		</div>
+		<div class="modal-body">
+			{% if products %}
+				<div class="cart-products">
+					{% for product in products %}
+						<div class="cart-products__item">
+							<div class="cart-products__image">
+								{% if product.thumb %}
+									<a href="{{ product.href }}">
+										<img width="74" height="74" src="{{ product.thumb }}" alt="{{ product.name }}" title="{{ product.name }}" class="img-responsive" />
+									</a>
+								{% endif %}
+							</div>
+							<div class="cart-products__details d-flex flex-column">
+								<div class="cart-products__name">
+									<a href="{{ product.href }}">{{ product.name }}</a>
+								</div>
+								<div class="cart-products__model">{{ text_model }}{{ product.model }}</div>
+								<div class="cart-products__option d-flex flex-column">
+									{% if product.option %}
+										{% for option in product.option %}
+											<span>{{ option.name }}: {{ option.value }}</span>
+										{% endfor %}
+									{% endif %}
+									{% if product.recurring %}
+										<span>{{ text_recurring }} {{ product.recurring }}</span>
+									{% endif %}
+								</div>
+								{% if product.ch_gift_id is defined and product.ch_gift_id > 0 %}
+									<div class="ch-gift">{{ text_gift }}</div>
+								{% endif %}
+							</div>
+							<div class="cart-products__price d-flex flex-column">
+								<span class="cart-products__total">{{ product.total }}</span>
+								{% if not (product.ch_gift_id is defined and product.ch_gift_id > 0) %}
+									<span class="cart-products__one-price">{{ text_one_price }}: {{ product.price }}</span>
+								{% endif %}
+							</div>
+							<div class="cart-products__action d-flex">
+								<div class="cart-products__quantity">
+									{% if not (product.ch_gift_id is defined and product.ch_gift_id > 0) %}
+										<div class="quantity_quickorder dflex">
+											<button class="btn-minus-quantity" type="button" onclick="updateQuantity('{{ product.cart_id }}','{{ product.quantity - 1 }}');"><i class="fa fa-angle-left"></i></button>
+											<input type="text" class="qty_quickorder" value="{{ product.quantity }}" onchange="updateQuantity('{{ product.cart_id }}', $(this).val());">
+											<button class="btn-plus-quantity" type="button" onclick="updateQuantity('{{ product.cart_id }}','{{ product.quantity + 1 }}');"><i class="fa fa-angle-right"></i></button>
+										</div>
+									{% endif %}
+								</div>
+								<div class="cart-products__remove">
+									<button class="btn btn-link-delete" type="button" onclick="deleteProduct('{{ product.cart_id }}');return false;" title="{{ button_remove }}"><i class="fa fa-trash-o"></i></button>
+								</div>
+							</div>
+						</div>
+					{% endfor %}
+				</div>
+				<div class="d-flex flex-column flex-sm-row mb-20">
+					{% if show_shopping_cart_field_telephone == '1' %}
+						<div class="fo-group-field-tel form-group mb-0 required">
+							<form id="fastorder_data" enctype="multipart/form-data" method="post">
+								<div class="form-group mb-0">
+									<div class="input-group">
+										<input id="fo-contact-phone" class="form-control contact-phone" type="text" placeholder="{{ placeholder_phone }}" value="" name="phone">
+										<div class="input-group-btn">
+											<button type="button" onclick="quickorder_confirm_checkout();" class="chm-btn chm-btn-outline-primary chm-px-lg">
+												<i class="up-icon-18 up-icon-phone-sound"></i>
+												<span class="btn-text">{{ button_buy }}</span>
+											</button>
+										</div>
+									</div>
+								</div>
+							</form>
+						</div>
+					{% endif %}
+					<div class="fo-cart-totals mt-20 mt-md-0">
+						<div class="fo-cart-totals__text">{{ text_totals }}</div>
+						<div class="fo-cart-totals__value">{{ total_order }}</div>
+					</div>
+				</div>
+				{% if free_shipping_status %}
+					<div class="fo-cart-free-shipping-left">
+						{% if fs_percentage < 100 %}
+							<div class="fo-cart-free-shipping-left__text{% if fs_percentage == 100 %} fo-active-free-shipping{% endif %}">{{ text_free_shipping_left }}</div>
+							<div class="fo-cart-free-shipping-left__progress-bar">
+								<div class="fo-cart-free-shipping-left__progress-fill" style="width:{{ fs_percentage }}%"></div>
+							</div>
+						{% else %}
+							<div class="fo-cart-free-shipping-left__text-active">{{ text_free_shipping }}</div>
+						{% endif %}
+					</div>
+				{% endif %}
+				{% if related.products is not empty %}
+					<div class="fo-related">
+						{% if related.title is not empty %}
+							<div class="fo-related__title">{{ related.title }}</div>
+						{% endif %}
+						<div class="swiper fo-related__swiper-module">
+							<div class="swiper-wrapper fo-related__list d-flex">
+								{% for related_product in related.products %}
+									<div class="fo-related__item swiper-slide">
+										<div class="fo-related__content">
+											<div class="fo-related__image">
+												{% if related_product.thumb %}
+													<a href="{{ related_product.href }}">
+														<img width="74" height="74" src="{{ related_product.thumb }}" alt="{{ related_product.name }}" title="{{ related_product.name }}" class="img-responsive" />
+													</a>
+												{% endif %}
+											</div>
+											<div class="fo-related__details">
+												<div class="fo-related__name">
+													<a href="{{ related_product.href }}">{{ related_product.name }}</a>
+												</div>
+												<div class="fo-related__group">
+													<div class="fo-related__price d-flex flex-column">
+														{% if not related_product.special %}
+															<span class="price_value">{{ related_product.price }}</span>
+														{% else %}
+															<span class="old-price"><span class="price_value">{{ related_product.price }}</span></span>
+															<span class="new-price"><span class="special_value">{{ related_product.special }}</span></span>
+														{% endif %}
+														{% if related_product.tax %}
+															<span class="price-tax">{{ related_product.tax }}</span>
+														{% endif %}
+													</div>
+													<div class="fo-related__action">
+														<div class="cart">
+															{% if related_product.show_buy_button %}
+																<button aria-label="Add to cart" class="btn btn-general{% if related_product.in_cart %} is-active{% endif %}" type="button" {% if (related_product.quantity <= 0 and disable_cart_button) %}disabled{% else %}onclick="cart.add('{{ related_product.product_id }}', this)"{% endif %}><span class="add-icon-plus"></span></button>
+															{% else %}
+																<button aria-label="notify stock" class="btn btn-general {% if related_product.in_waitlist %} is-active{% endif %}" type="button" onclick="$('#modal-quickorder .close-modal').trigger('click');setTimeout(function () {upstoreNotifyStock('{{ related_product['product_id'] }}')}, 600);"><i class="up-icon-18 up-icon-notify" aria-hidden="true"></i></button>
+															{% endif %}
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								{% endfor %}
+							</div>
+							<div class="swiper-scrollbar fo-related__scrollbar"></div>
+						</div>
+					</div>
+					<script>
+					function initRelatedProducts(){
+						var swiperStories = new Swiper('.fo-related__swiper-module', {
+							slidesPerView: 1,
+							watchSlidesVisibility: true,
+							watchSlidesProgress: true,
+							watchOverflow: true,
+							observer: true,
+							observeParents: true,
+							spaceBetween: 15,
+							nested: false,
+							speed: 400,
+							breakpointsBase: 'container',
+							grabCursor: true,
+							navigation: {
+								enabled: false,
+							},
+							scrollbar: {
+								el: '.fo-related__scrollbar',
+								draggable: true,
+							},
+							on: {
+								afterInit: function () {
+									setTimeout(function () {
+										$('.fo-related__swiper-module').addClass('swiper-visible');
+									}, 500);
+								},
+							},
+							breakpoints: {
+								300: {slidesPerView: 1.1},
+								400: {slidesPerView: 1.5},
+								780: {slidesPerView: 2.2},
+							},
+						});
+					}
+					initRelatedProducts();
+					</script>
+				{% endif %}
+			{% else %}
+				<div class="text-center" style="padding: 30px 0">{{ text_empty }}</div>
+			{% endif %}
+		</div>
+		<div class="modal-footer">
+			{% if products %}
+				<div class="d-flex flex-column flex-sm-row align-items-center justify-content-between pt-25 border-top-solid-gray">
+					<button class="chm-btn chm-btn-outline-primary chm-px-lg chm-lg-rounded xs-w-100 sm-w-auto mw-200 xs-mb-20 sm-mb-0" type="button" onclick="$('#modal-quickorder').modal('hide');">
+						{{ text_continue }}
+					</button>
+					<a class="chm-btn chm-btn-primary chm-px-lg chm-lg-rounded xs-w-100 sm-w-auto mw-200" href="{{ checkout }}">
+						{{ text_checkout }}
+					</a>
+				</div>
+			{% else %}
+				<button type="button" onclick="$('#modal-quickorder').modal('hide');" class="chm-btn chm-btn-outline-primary chm-px-lg chm-lg-rounded w-100">
+					{{ text_continue }}
+				</button>
+			{% endif %}
+		</div>
+
+	</div>
+<script>
+
+function updateQuantity(key,quantity){
+	$.ajax({
+		url: 'index.php?route=extension/module/upstore_newfastordercart/editCartQuick',
+		type: 'post',
+		data: 'key=' + key + '&quantity=' + (typeof(quantity) != 'undefined' ? quantity : 1),
+		dataType: 'json',
+		beforeSend: function() {
+			creatOverlayLoadPage(true);
+		},
+		complete: function() {
+			setTimeout(function () {
+				creatOverlayLoadPage(false);
+			}, 500);
+		},
+		success: function(json) {
+
+			if (getURLVar('route') == 'checkout/cart' || getURLVar('route') == 'checkout/checkout') {
+				location = 'index.php?route=checkout/cart';
+			}
+
+			setTimeout(function () {
+				updateFoCart()
+			}, 500);
+		},
+		error: function(xhr, ajaxOptions, thrownError) {
+			alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+		}
+	});
+};
+
+function deleteProduct(key){
+	$.ajax({
+		url: 'index.php?route=checkout/cart/remove',
+		type: 'post',
+		data: 'key=' + key,
+		dataType: 'json',
+		beforeSend: function() {
+			creatOverlayLoadPage(true);
+		},
+		complete: function() {
+			setTimeout(function () {
+				creatOverlayLoadPage(false);
+			}, 500);
+		},
+		success: function(json) {
+
+			if (getURLVar('route') == 'checkout/cart' || getURLVar('route') == 'checkout/checkout') {
+				location = 'index.php?route=checkout/cart';
+			}
+			setTimeout(function () {
+				updateFoCart()
+			}, 500);
+		},
+		error: function(xhr, ajaxOptions, thrownError) {
+			alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+		}
+	});
+};
+
+function updateFoCart(){
+	$.ajax({
+		url: 'index.php?route=extension/module/upstore_newfastordercart',
+		type: 'get',
+		dataType: 'html',
+		success: function(data){
+			$('#popup-quickorder .modal-body').html($(data).find('.modal-body').html());
+			$('#popup-quickorder .modal-footer').html($(data).find('.modal-footer').html());
+			if($('#popup-quickorder .fo-related').length ){
+				$('#popup-quickorder .fo-related').html($(data).find('.fo-related').html());
+				initRelatedProducts();
+			}
+
+			setTimeout(function () {
+				$('.shopping-cart#cart').load('index.php?route=common/cart/info .shopping-cart#cart');
+			}, 100);
+
+		}
+	});
+}
+
+$(document).ajaxComplete(function( event, xhr, settings ) {
+	if ( settings.url === "index.php?route=checkout/cart/add" ) {
+		setTimeout(function() {
+			updateFoCart()
+		}, 500);
+	}
+});
+
+</script>
+{% if mask_phone_number != '' %}
+<script src="catalog/view/theme/upstore/js/maskedinput.js" type="text/javascript"></script>
+<script>
+$(document).ready(function() {
+	if($('#fo-contact-phone').length){
+		$('#fo-contact-phone').mask('{{ mask_phone_number }}');
+	}
+});
+</script>
+{% endif %}
+<script src="catalog/view/theme/upstore/js/newfastorder.js" type="text/javascript"></script>
+</div>

@@ -1,0 +1,74 @@
+<div id="chm-menu-account">
+<div class="chm-mod-account chm-list-group">
+	{% if not logged %}
+		<a href="{{ login }}" class="chm-list-group-item"><svg class="icon-am-login"><use xlink:href="catalog/view/theme/upstore/image/sprite_am.svg#icon-am-login"></use></svg>{{ text_login }}</a>
+		<a href="{{ register }}" class="chm-list-group-item"><svg class="icon-am-registration"><use xlink:href="catalog/view/theme/upstore/image/sprite_am.svg#icon-am-registration"></use></svg>{{ text_register }}</a>
+		<a href="{{ forgotten }}" class="chm-list-group-item"><svg class="icon-am-forgot-password"><use xlink:href="catalog/view/theme/upstore/image/sprite_am.svg#icon-am-forgot-password"></use></svg>{{ text_forgotten }}</a>
+	{% endif %}
+	{% if logged %}
+		<a href="{{ account }}" class="chm-list-group-item"><svg class="icon-am-person"><use xlink:href="catalog/view/theme/upstore/image/sprite_am.svg#icon-am-person"></use></svg>{{ text_account }}</a>
+		<a href="{{ edit }}" class="chm-list-group-item"><svg class="icon-am-account-edit"><use xlink:href="catalog/view/theme/upstore/image/sprite_am.svg#icon-am-account-edit"></use></svg>{{ text_edit }}</a>
+		<a href="{{ password }}" class="chm-list-group-item"><svg class="icon-am-change-password"><use xlink:href="catalog/view/theme/upstore/image/sprite_am.svg#icon-am-change-password"></use></svg>{{ text_password }}</a>
+		<a href="{{ address }}" class="chm-list-group-item"><svg class="icon-am-address-book"><use xlink:href="catalog/view/theme/upstore/image/sprite_am.svg#icon-am-address-book"></use></svg>{{ text_address }}</a>
+		<a href="{{ wishlist }}" class="chm-list-group-item"><svg class="icon-am-wishlist"><use xlink:href="catalog/view/theme/upstore/image/sprite_am.svg#icon-am-wishlist"></use></svg>{{ text_wishlist }}</a>
+		{% if notify_stock_status %}
+		<a href="{{ notify_stock }}" class="chm-list-group-item"><svg class="icon-am-notify-stock"><use xlink:href="catalog/view/theme/upstore/image/sprite_am.svg#icon-am-notify-stock"></use></svg>{{ text_notify_stock }}</a>
+		{% endif %}
+		<a href="{{ order }}" class="chm-list-group-item"><svg class="icon-am-order-history"><use xlink:href="catalog/view/theme/upstore/image/sprite_am.svg#icon-am-order-history"></use></svg>{{ text_order }}</a>
+		<a href="{{ download }}" class="chm-list-group-item"><svg class="icon-am-downloads"><use xlink:href="catalog/view/theme/upstore/image/sprite_am.svg#icon-am-downloads"></use></svg>{{ text_download }}</a>
+		<a href="{{ recurring }}" class="chm-list-group-item"><svg class="icon-am-recurring"><use xlink:href="catalog/view/theme/upstore/image/sprite_am.svg#icon-am-recurring"></use></svg>{{ text_recurring }}</a>
+		<a href="{{ reward }}" class="chm-list-group-item"><svg class="icon-am-reward-points"><use xlink:href="catalog/view/theme/upstore/image/sprite_am.svg#icon-am-reward-points"></use></svg>{{ text_reward }}</a>
+		<a href="{{ return }}" class="chm-list-group-item"><svg class="icon-am-returns"><use xlink:href="catalog/view/theme/upstore/image/sprite_am.svg#icon-am-returns"></use></svg>{{ text_return }}</a>
+		<a href="{{ transaction }}" class="chm-list-group-item"><svg class="icon-am-transactions"><use xlink:href="catalog/view/theme/upstore/image/sprite_am.svg#icon-am-transactions"></use></svg>{{ text_transaction }}</a>
+		<a href="{{ newsletter }}" class="chm-list-group-item"><svg class="icon-am-newsletter"><use xlink:href="catalog/view/theme/upstore/image/sprite_am.svg#icon-am-newsletter"></use></svg>{{ text_newsletter }}</a>
+		<a href="{{ logout }}" class="chm-list-group-item"><svg class="icon-am-logout"><use xlink:href="catalog/view/theme/upstore/image/sprite_am.svg#icon-am-logout"></use></svg>{{ text_logout }}</a>
+	{% endif %}
+</div>
+</div>
+<script>
+$('.chm-mod-account a').each(function () {
+	if ($(this).attr('href') == document.location.href.toString().replace(/[\?\&]fw\=[^\&]+/g, '')) {
+		$(this).addClass('active');
+	}
+});
+
+var chm_amob_box = $('<div class="chm-account-backdrop"></div><div class="chm-account-fixed hidden-md hidden-lg"><div class="chm-account-button"><svg class="icon-account-menu"><use xlink:href="catalog/view/theme/upstore/image/sprite.svg#icon-account"></use></svg><span class="text-am-menu">{{ text_ai_menu }}</span></div><div class="chm-account-menu-content"></div></div>').prependTo($('body'));
+
+var chm_mva = function(){
+	$('.chm-account-fixed .chm-account-menu-content').append( $('#chm-menu-account .chm-mod-account') );
+};
+
+var chm_pva = function(){
+	$('#chm-menu-account').append( $('.chm-account-menu-content .chm-mod-account') );
+};
+
+if($(window).innerWidth() < 767) {
+	chm_mva();
+}
+
+$(window).resize(function() {
+    chm_delay(function(){
+      if($(window).innerWidth() < 992) {
+			chm_mva();
+		} else {
+			chm_pva();
+		}
+    }, 100, "account_menu");
+});
+
+$(document).on('click', '.chm-account-button', function() {
+	if($('.chm-account-fixed').hasClass('chm-account-is-open') == true) {
+		$('.chm-account-backdrop').removeClass('active');
+		$('.chm-account-fixed').removeClass('chm-account-is-open');
+		$('body').removeClass('no-scroll');
+	} else{
+		$('.chm-account-fixed').addClass('chm-account-is-open');
+		$('body').addClass('no-scroll');
+		$('.chm-account-backdrop').addClass('active');
+	}
+});
+
+$(document).on('click', '.chm-account-backdrop', function() {
+	$('.chm-account-button').trigger('click');
+});
+</script>

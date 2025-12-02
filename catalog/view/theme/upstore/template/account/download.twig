@@ -1,0 +1,62 @@
+{{ header }}
+<div id="account-download" class="container">
+	<ul class="breadcrumb">
+		{% for i,breadcrumb in breadcrumbs %}
+			{% if (i+1 < breadcrumbs|length) %}
+				<li><a href="{{ breadcrumb.href }}"><span>{{ breadcrumb.text }}</span></a></li>
+			{% else %}
+				<li><span>{{ breadcrumb.text }}</span></li>
+			{% endif %}
+		{% endfor %}
+	</ul>
+	<h1>{{ heading_title }}</h1>
+	<div class="row-flex">{{ column_left }}
+	{% if column_left and column_right %}
+	{% set class = 'col-sm-6' %}
+	{% elseif column_left or column_right %}
+	{% set class = 'col-sm-9' %}
+	{% else %}
+	{% set class = 'col-sm-12' %}
+	{% endif %}
+	<div id="content" class="{{ class }}">{{ content_top }}
+		<div class="chm-account-content h-100">
+			{% if downloads %}
+				<div class="table-responsive">
+					<table class="table ch-table">
+						<thead>
+							<tr>
+								<td class="text-left">{{ column_order_id }}</td>
+								<td class="text-left">{{ column_name }}</td>
+								<td class="text-left">{{ column_size }}</td>
+								<td class="text-right">{{ column_date_added }}</td>
+								<td></td>
+							</tr>
+						</thead>
+						<tbody>
+							{% for download in downloads %}
+								<tr>
+									<td class="text-left"><a href="{{ download.view }}">#{{ download.order_id }}</a></td>
+									<td class="text-left">{{ download.name }}</td>
+									<td class="text-left">{{ download.size }}</td>
+									<td class="text-right">{{ download.date_added }}</td>
+									<td class="text-right pr-0"><a href="{{ download.href }}" data-toggle="tooltip" title="{{ button_download }}" class="chm-btn chm-btn-grey chm-btn-sm-only-icon"><svg class="icon-downloads"><use xlink:href="catalog/view/theme/upstore/image/sprite_am.svg#icon-am-downloads"></use></svg></a></td>
+								</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+				<div class="row">
+					<div class="col-sm-12 text-center">{{ pagination }}</div>
+					<div class="col-sm-12 text-center">{{ results }}</div>
+				</div>
+			{% else %}
+				<div class="chm-text-empty">{{ text_empty }}</div>
+			{% endif %}
+			<div class="buttons clearfix">
+				<a href="{{ continue }}" class="btn btn-primary">{{ button_continue }}</a>
+			</div>
+		</div>
+		{{ content_bottom }}</div>
+		{{ column_right }}</div>
+</div>
+{{ footer }}

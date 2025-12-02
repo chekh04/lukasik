@@ -1,0 +1,19 @@
+<div class="container-module easy-catalog-{{ module }}">
+{% if (heading_title[lang_id].title_name is not empty) %}
+<div class="title-module visible-md visible-lg"><span>{{ heading_title[lang_id].title_name }}</span></div>
+{% endif %}
+<div class="easy-catalog-box dflex flex-xs-nowrap flex-sm-wrap">
+	{% for category in categories %}
+		<div class="box-item-catalog col-sm-4 col-md-2">
+			<div class="dflex flex-column item-catalog">
+				<div class="easy-cat-image">
+					<a href="{{ category.href }}"><img decoding="async" width="{{ category.width }}" height="{{ category.height }}" loading="lazy" src="{{ category.image }}" alt="{{ category.name }}" class="img-responsive" /></a>
+				</div>
+				<div class="mt-auto easy-cat-name dflex align-items-center justify-content-center">
+					<a href="{{ category.href }}" >{{ category.name }}</a>
+				</div>
+			</div>
+		</div>
+	{% endfor %}
+</div>
+</div>

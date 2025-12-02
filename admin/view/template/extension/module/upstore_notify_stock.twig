@@ -1,0 +1,455 @@
+{{ header }}{{ column_left }}
+<div id="content">
+	<div class="page-header">
+		<div class="container-fluid">
+			<div class="pull-right">
+				<button type="submit" form="form-notify-stock" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+				<a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a>
+			</div>
+			<h1>{{ heading_title }}</h1>
+			<ul class="breadcrumb">
+				{% for breadcrumb in breadcrumbs %}
+					<li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+				{% endfor %}
+			</ul>
+		</div>
+	</div>
+	<div class="container-fluid">
+		{% if error_warning %}
+			<div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+				<button type="button" class="close" data-dismiss="alert">&times;</button>
+			</div>
+		{% endif %}
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title"><i class="fa fa-pencil"></i> {{ text_edit }}</h3>
+			</div>
+			<div class="panel-body">
+				<form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-notify-stock" class="form-horizontal">
+					<ul class="nav nav-tabs">
+						<li class="active"><a href="#tab-form-field" data-toggle="tab">{{ tab_form_field }}</a></li>
+						<li><a href="#tab-setting" data-toggle="tab">{{ tab_setting }}</a></li>
+						<li><a href="#tab-email" data-toggle="tab">{{ tab_email }}</a></li>
+						<li><a href="#tab-list" data-toggle="tab">{{ tab_list }}</a></li>
+					</ul>
+					<div class="tab-content">
+						<div class="tab-pane active" id="tab-form-field">
+							<div class="form-group">
+								<label class="col-sm-2 control-label">{{ entry_status }}</label>
+								<div class="col-sm-10">
+									<div class="toggle-switch">
+										<label>
+											<input type="hidden" name="upstore_notify_stock_status" value="0" />
+											<input type="checkbox" name="upstore_notify_stock_status" value="1" {{ upstore_notify_stock_status == 1 ? 'checked="checked"' }} />
+											<span></span>
+										</label>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">{{ entry_send_email_status }}</label>
+								<div class="col-sm-10">
+									<div class="toggle-switch">
+										<label>
+											<input type="hidden" name="upstore_notify_stock_setting[send_email_status]" value="0" />
+											<input type="checkbox" name="upstore_notify_stock_setting[send_email_status]" value="1" {{ upstore_notify_stock_setting.send_email_status == 1 ? 'checked="checked"' }} />
+											<span></span>
+										</label>
+									</div>
+								</div>
+							</div>
+							<div class="form-group required">
+								<label class="col-sm-2 control-label" for="input-email-admin">{{ entry_email }}</label>
+								<div class="col-sm-10">
+									<input type="text" name="upstore_notify_stock_setting[email_admin]" value="{{ upstore_notify_stock_setting.email_admin }}" id="input-email-admin" class="form-control" />
+									{% if error_email_admin %}
+										<div class="text-danger">{{ error_email_admin }}</div>
+									{% endif %}
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">{{ entry_notify_after_edit_product }}</label>
+								<div class="col-sm-10">
+									<div class="toggle-switch">
+										<label>
+											<input type="hidden" name="upstore_notify_stock_setting[notify_after_edit_product]" value="0" />
+											<input type="checkbox" name="upstore_notify_stock_setting[notify_after_edit_product]" value="1" {{ upstore_notify_stock_setting.notify_after_edit_product == 1 ? 'checked="checked"' }} />
+											<span></span>
+										</label>
+									</div>
+								</div>
+							</div>
+
+							<div class="form-group">
+								<div class="col-sm-2 title-fields">{{ text_field_name }}</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">{{ entry_status_field }}</label>
+								<div class="col-sm-10">
+									<div class="toggle-switch">
+										<label>
+											<input type="hidden" name="upstore_notify_stock_setting[name_field]" value="0" />
+											<input type="checkbox" name="upstore_notify_stock_setting[name_field]" value="1" {{ upstore_notify_stock_setting.name_field == 1 ? 'checked="checked"' : '' }} />
+											<span></span>
+										</label>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">{{ entry_requared_field }}</label>
+								<div class="col-sm-10">
+									<div class="toggle-switch">
+										<label>
+											<input type="hidden" name="upstore_notify_stock_setting[name_field_required]" value="0" />
+											<input type="checkbox" name="upstore_notify_stock_setting[name_field_required]" value="1" {{ upstore_notify_stock_setting.name_field_required == 1 ? 'checked="checked"' : '' }} />
+											<span></span>
+										</label>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">{{ entry_placeholder_field }}</label>
+								<div class="col-sm-3">
+									{% for language in languages %}
+										<div class="input-group">
+											<span class="input-group-addon">
+												<img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" />
+											</span>
+											<input name="upstore_notify_stock_setting[name_field_placeholder][{{ language.language_id }}][text]" class="form-control" value="{{ upstore_notify_stock_setting.name_field_placeholder[language.language_id].text ?? '' }}" />
+										</div>
+									{% endfor %}
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-sm-2 title-fields">{{ text_field_telephone }}</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">{{ entry_status_field }}</label>
+								<div class="col-sm-10">
+									<div class="toggle-switch">
+										<label>
+											<input type="hidden" name="upstore_notify_stock_setting[telephone_field]" value="0" />
+											<input type="checkbox" name="upstore_notify_stock_setting[telephone_field]" value="1" {{ upstore_notify_stock_setting.telephone_field == 1 ? 'checked="checked"' : '' }} />
+											<span></span>
+										</label>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">{{ entry_telephone_mask }}</label>
+								<div class="col-sm-3">
+									<input name="upstore_notify_stock_setting[telephone_field_mask]" class="form-control" value="{{ upstore_notify_stock_setting.telephone_field_mask ?? '' }}" />
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">{{ entry_requared_field }}</label>
+								<div class="col-sm-10">
+									<div class="toggle-switch">
+										<label>
+											<input type="hidden" name="upstore_notify_stock_setting[telephone_field_required]" value="0" />
+											<input type="checkbox" name="upstore_notify_stock_setting[telephone_field_required]" value="1" {{ upstore_notify_stock_setting.telephone_field_required == 1 ? 'checked="checked"' : '' }} />
+											<span></span>
+										</label>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">{{ entry_placeholder_field }}</label>
+								<div class="col-sm-3">
+									{% for language in languages %}
+										<div class="input-group">
+											<span class="input-group-addon">
+												<img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" />
+											</span>
+											<input name="upstore_notify_stock_setting[telephone_field_placeholder][{{ language.language_id }}][text]" class="form-control" value="{{ upstore_notify_stock_setting.telephone_field_placeholder[language.language_id].text ?? '' }}" />
+										</div>
+									{% endfor %}
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="input-agree-notify-stock">
+									<span data-toggle="tooltip" title="{{ help_agree }}">{{ entry_agree }}</span>
+								</label>
+								<div class="col-sm-10">
+									<select name="upstore_notify_stock_setting[agree_notify_stock_id]" id="input-agree-notify-stock" class="form-control">
+										<option value="0">{{ text_none }}</option>
+										{% for information in informations %}
+											<option value="{{ information.information_id }}" {{ information.information_id == upstore_notify_stock_setting.agree_notify_stock_id ? 'selected="selected"' : '' }}>
+												{{ information.title }}
+											</option>
+										{% endfor %}
+									</select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">{{ entry_cron_security_key }}</label>
+								<div class="col-sm-3">
+									<input name="upstore_notify_stock_setting[cron_security_key]" class="form-control" value="{{ upstore_notify_stock_setting.cron_security_key ?? '' }}" />
+								</div>
+							</div>
+						</div>
+
+						<div class="tab-pane" id="tab-setting">
+							<div class="form-group">
+								<label class="col-sm-2 control-label">{{ entry_popup_title }}</label>
+								<div class="col-sm-3">
+									{% for language in languages %}
+										<div class="input-group">
+											<span class="input-group-addon">
+												<img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" />
+											</span>
+											<input name="upstore_notify_stock_setting[popup_title][{{ language.language_id }}]" class="form-control" value="{{ upstore_notify_stock_setting.popup_title[language.language_id] ?? '' }}" />
+										</div>
+									{% endfor %}
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">{{ entry_popup_after_title }}</label>
+								<div class="col-sm-3">
+									{% for language in languages %}
+										<div class="input-group">
+											<span class="input-group-addon">
+												<img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" />
+											</span>
+											<textarea name="upstore_notify_stock_setting[popup_text_after_title][{{ language.language_id }}]" class="form-control" rows="5">{{ upstore_notify_stock_setting.popup_text_after_title[language.language_id] ?? '' }}</textarea>
+										</div>
+									{% endfor %}
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">{{ entry_button_notify_stock }}</label>
+								<div class="col-sm-3">
+									{% for language in languages %}
+										<div class="input-group">
+											<span class="input-group-addon">
+												<img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" />
+											</span>
+											<input name="upstore_notify_stock_setting[button_text][{{ language.language_id }}]" class="form-control" value="{{ upstore_notify_stock_setting.button_text[language.language_id] ?? '' }}" />
+										</div>
+									{% endfor %}
+								</div>
+							</div>
+						</div>
+
+						<div class="tab-pane" id="tab-email">
+							<div class="form-group">
+								<label class="col-sm-2 control-label">{{ entry_status }}</label>
+								<div class="col-sm-10">
+									<div class="toggle-switch">
+										<label>
+											<input type="hidden" name="upstore_notify_stock_setting[customer_email_status]" value="0" />
+											<input type="checkbox" name="upstore_notify_stock_setting[customer_email_status]" value="1" {{ upstore_notify_stock_setting.customer_email_status is defined and upstore_notify_stock_setting.customer_email_status == 1 ? 'checked="checked"' : '' }} />
+											<span></span>
+										</label>
+									</div>
+								</div>
+							</div>
+							<ul class="nav nav-tabs" id="email-language">
+								{% for language in languages %}
+									<li>
+										<a href="#email-language{{ language.language_id }}" data-toggle="tab">
+											<img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /> {{ language.name }}
+										</a>
+									</li>
+								{% endfor %}
+							</ul>
+							<div class="tab-content">
+								{% for language in languages %}
+									<div class="tab-pane" id="email-language{{ language.language_id }}">
+										<div class="form-group">
+											<label class="col-sm-2 control-label" for="input-customer-email-subject-{{ language.language_id }}">
+												{{ entry_customer_email_subject }}
+											</label>
+											<div class="col-sm-10">
+												<textarea class="form-control" name="upstore_notify_stock_setting[customer_email_subject][{{ language.language_id }}]" id="input-customer-email-subject-{{ language.language_id }}" cols="50" rows="3">{{ upstore_notify_stock_setting.customer_email_subject[language.language_id] ?? '' }}</textarea>
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="col-sm-2 control-label" for="input-customer-email-html-{{ language.language_id }}">
+												{{ entry_customer_email_html }}<br />{{ text_customer_email_variables }}
+											</label>
+											<div class="col-sm-10">
+												<textarea class="form-control" data-toggle="summernote" data-lang="{{ summernote }}" name="upstore_notify_stock_setting[customer_email_html][{{ language.language_id }}]" id="input-customer-email-html-{{ language.language_id }}" cols="50" rows="3">{{ upstore_notify_stock_setting.customer_email_html[language.language_id] ?? '' }}</textarea>
+											</div>
+										</div>
+									</div>
+								{% endfor %}
+							</div>
+						</div>
+
+						<div class="tab-pane" id="tab-list">
+							<div class="well">
+								<div class="row">
+									<div class="col-sm-6">
+										<div class="custom-form-group">
+											<label class="control-label" for="input-name">{{ entry_name }}</label>
+											<input type="text" name="filter_name" value="{{ filter_name }}" placeholder="{{ entry_name }}" id="input-name" class="form-control" />
+										</div>
+										<div class="custom-form-group">
+											<label class="control-label" for="input-email">{{ entry_email }}</label>
+											<input type="text" name="filter_email" value="{{ filter_email }}" placeholder="{{ entry_email }}" id="input-email" class="form-control" />
+										</div>
+										<div class="custom-form-group">
+											<label class="control-label" for="input-telephone">{{ entry_telephone }}</label>
+											<input type="text" name="filter_telephone" value="{{ filter_name }}" placeholder="{{ entry_telephone }}" id="input-telephone" class="form-control" />
+										</div>
+									</div>
+
+									<div class="col-sm-6">
+										<div class="custom-form-group">
+											<label class="control-label" for="input-product">{{ entry_product }}</label>
+											<input type="text" name="filter_product" value="{{ filter_product }}" placeholder="{{ entry_product }}" id="input-product" class="form-control" />
+										</div>
+										<div class="custom-form-group">
+											<label class="control-label" for="input-status">{{ entry_status }}</label>
+											<select name="filter_status" id="input-status" class="form-control">
+												<option value="*"></option>
+												{% if filter_status %}
+													<option value="1" selected="selected">{{ text_status_done }}</option>
+												{% else %}
+													<option value="1">{{ text_status_done }}</option>
+												{% endif %}
+												{% if filter_status is not defined or filter_status == 0 %}
+													<option value="0" selected="selected">{{ text_status_wait }}</option>
+												{% else %}
+													<option value="0">{{ text_status_wait }}</option>
+												{% endif %}
+											</select>
+										</div>
+										<div class="custom-form-group">
+											<button type="button" id="button-filter" class="btn btn-primary pull-right">
+												<i class="fa fa-filter"></i> {{ button_filter }}
+											</button>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div id="list"></div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript" src="view/javascript/summernote/summernote.js"></script>
+<link href="view/javascript/summernote/summernote.css" rel="stylesheet" />
+<script type="text/javascript" src="view/javascript/summernote/summernote-image-attributes.js"></script>
+<script type="text/javascript" src="view/javascript/summernote/opencart.js"></script>
+<script>
+$('#email-language a:first').tab('show');
+
+function deleteSelected(id = null) {
+	let data;
+
+	if (id) {
+		data = { selected: [id] };
+	} else {
+		const selectedIds = $('#list input.nsp-checkbox[type="checkbox"]:checked').map(function () {
+			return this.value;
+		}).get();
+
+		data = { selected: selectedIds };
+	}
+
+	$.ajax({
+		type: 'post',
+		url:  'index.php?route=extension/module/upstore_notify_stock/deleteSelected&user_token={{ user_token }}',
+		data: data,
+		dataType: 'json',
+		success: function(json) {
+			$('.alert.alert-danger.del_selected, .alert.alert-success.del_selected').remove();
+
+			if (json['error']) {
+				$('#list').before('<div class="alert alert-danger del_selected"><i class="fa fa-exclamation-circle"></i> ' + json['error'] + '<button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+			}
+			if (json['success']) {
+				$('#button-filter').trigger('click');
+				$('#list').before('<div class="alert alert-success del_selected"><i class="fa fa-exclamation-circle"></i> ' + json['success'] + '<button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+			}
+
+		}
+	});
+}
+
+$('#list').delegate('.pagination a', 'click', function(e) {
+	e.preventDefault();
+	$('#list').load(this.href);
+});
+
+$('#list').load('{{ baseUrl }}');
+
+$('#button-filter').on('click', function() {
+	$('#button-filter').data('original-content', $('#button-filter').html());
+	$('#button-filter').html('<i class="fa fa-spinner fa-spin"></i>').prop('disabled', true);
+
+	var baseUrl = 'index.php?route=extension/module/upstore_notify_stock/getList&user_token={{ user_token }}';
+	var visibleBaseUrl = 'index.php?route=extension/module/upstore_notify_stock&user_token={{ user_token }}';
+	var params = [];
+
+	var filter_name = $('input[name=\'filter_name\']').val();
+	if (filter_name) {
+		params.push('filter_name=' + encodeURIComponent(filter_name));
+	}
+
+	var filter_email = $('input[name=\'filter_email\']').val();
+	if (filter_email) {
+		params.push('filter_email=' + encodeURIComponent(filter_email));
+	}
+
+	var filter_telephone = $('input[name=\'filter_telephone\']').val();
+	if (filter_telephone) {
+		params.push('filter_telephone=' + encodeURIComponent(filter_telephone));
+	}
+
+	var filter_product = $('input[name=\'filter_product\']').val();
+	if (filter_product) {
+		params.push('filter_product=' + encodeURIComponent(filter_product));
+	}
+
+	var filter_status = $('select[name=\'filter_status\']').val();
+	if (filter_status != '*') {
+		params.push('filter_status=' + encodeURIComponent(filter_status));
+	}
+
+	var queryString = params.length ? '&' + params.join('&') : '';
+
+	$('#list').load(baseUrl + queryString, function() {
+		$('#button-filter').html($('#button-filter').data('original-content')).prop('disabled', false);
+
+		if (history.pushState) {
+			var visibleUrl = visibleBaseUrl + queryString;
+			history.pushState(null, '', visibleUrl);
+		}
+	});
+});
+
+$('input[name=\'filter_product\']').autocomplete({
+	'source': function(request, response) {
+		$.ajax({
+			url: 'index.php?route=catalog/product/autocomplete&user_token={{ user_token }}&filter_name=' +  encodeURIComponent(request),
+			dataType: 'json',
+			success: function(json) {
+				response($.map(json, function(item) {
+					return {
+						label: item['name'],
+						value: item['product_id']
+					}
+				}));
+			}
+		});
+	},
+	'select': function(item) {
+		$('input[name=\'filter_product\']').val(item['label']);
+	}
+});
+
+{% if tablist %}
+$(document).ready(function () {
+	$('.nav-tabs a[href="#tab-list"]').trigger('click');
+});
+{% endif %}
+</script>
+{{ footer }}

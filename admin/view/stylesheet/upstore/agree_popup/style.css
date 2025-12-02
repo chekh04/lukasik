@@ -1,0 +1,75 @@
+.icon_fontawesome_popup {display:none;max-width:80%;background:#fff; padding:10px; border-radius:10px;}
+.icon_fontawesome_popup .col-xs-1 {width:35px; padding:5px 0;text-align:center;}
+.icon_fontawesome_popup i{padding:5px;font-size:18px !important;color:#555;cursor:pointer;border:solid 1px transparent;border-radius:2px;}
+.icon_fontawesome_popup i:hover{color:#4FC605;border:solid 1px #ccc}
+span.icon_open {display:block;float:left;text-align:center;font-weight:400 !important;color:#444 !important;cursor:pointer;text-shadow:0 1px 0 rgba(255, 255, 255, 1);min-width:85px;max-width:150px;margin:0 5px 0 0;padding:5px;line-height:28px;background:#eee;border:solid 1px #aaa;border-radius:4px;}
+span.icon_open:hover {background:#ddd;}
+span.icon_open i {vertical-align:middle;font-size:20px;color:#4FC605;}
+span.icon_open + input + input {width:260px !important;}
+.cod-product {
+	margin-left:50px;
+}
+.name-product {
+	font-size:14px;
+}
+.image-product {
+	float:left;
+}
+.martb {
+	margin:5px 0px;
+}
+.hide-radio {
+	display:none;
+}
+.radio-group-ns {
+	display: inline-block;
+	margin-top: 9px;
+	border-radius:15px;
+	background-color: white;
+	background-image: linear-gradient(to bottom, #eeeeee, white 25px);
+	padding:3px;
+	box-shadow: 0 -1px white inset, 0 1px 1px rgba(0, 0, 0, 0.05) inset;
+}
+.hide-radio + label {
+	background: #eceeef none repeat scroll 0 0;
+	color: #fff;
+	display: block;
+	float: left;
+	font-family: "Oswald",sans-serif;
+	padding: 5px 0;
+	text-align: center;
+	-webkit-transition: background-image 0.15s ease-in-out;
+	-moz-transition: background-image 0.15s ease-in-out;
+	-o-transition: background-color 0.15s ease-in-out;
+	transition: background-image 0.15s ease-in-out;
+	width: 45px;
+	margin-bottom:0px;	
+	position:relative;
+	color:#969696;
+	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15) inset, 0 0 3px rgba(0, 0, 0, 0.2) inset;
+	text-shadow:0 1px rgba(255, 255, 255, 0.8);
+}
+.hide-radio + label:hover {
+	box-shadow:2px 3px 3px rgba(0, 0, 0, 0.25) inset;
+}
+.hide-radio:first-child + label{
+	border-radius:15px 0px 0px 15px;
+}
+.radio-group-ns > label:last-child{
+	border-radius:0px 15px 15px 0px;	
+	margin-left:-1px;
+}
+ 
+.hide-radio:checked + label {
+	background-image: linear-gradient(#47a8d8, #47a8d8);
+	display: inline-block;
+	margin-bottom:0px;
+	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15) inset, 0 0 3px rgba(0, 0, 0, 0.2) inset;
+	color:#fff;
+	text-shadow:0 1px rgba(0, 0, 0, 0.2);
+}
+.title-fields {
+  color: orange !important;
+  font-size: 16px;
+  text-align: right;
+}

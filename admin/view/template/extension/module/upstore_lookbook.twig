@@ -1,0 +1,599 @@
+{{ header }}{{ column_left }}
+<div id="content">
+	<div class="page-header">
+		<div class="container-fluid">
+			<div class="pull-right">
+				<button type="submit" form="form-upstore-lookbook" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+				<a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a></div>
+				<h1>{{ heading_title }}</h1>
+				<ul class="breadcrumb">
+					{% for breadcrumb in breadcrumbs %}
+						<li><a href="{{ breadcrumb['href'] }}">{{ breadcrumb['text'] }}</a></li>
+					{% endfor %}
+				</ul>
+			</div>
+		</div>
+		<div class="container-fluid">
+			{% if (error_warning) %}
+				<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+					<button type="button" class="close" data-dismiss="alert">&times;</button>
+				</div>
+			{% endif %}
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title"><i class="fa fa-pencil"></i> {{ text_edit }}</h3>
+				</div>
+				<div class="panel-body">
+					<form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-upstore-lookbook" class="form-horizontal">
+						<div class="info-header">
+							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="butt" stroke-linejoin="bevel"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></svg>
+							{{ text_main_setting }}
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">{{ entry_status }}</label>
+							<div class="col-sm-10">
+								<div class="btn-group" data-toggle="buttons">
+									<label class="btn btn-default{% if status %} active{% endif %}">
+										<input type="radio" name="status" value="1" {% if status %}checked="checked"{% endif %}>
+										<span class="on-off">{{ text_on }}</span>
+									</label>
+									<label class="btn btn-default{% if not status %} active{% endif %}">
+										<input type="radio" name="status" value="0" {% if not status %}checked="checked"{% endif %}>
+										<span class="on-off">{{ text_off }}</span>
+									</label>
+								</div>
+							</div>
+						</div>
+						<div class="form-group required">
+							<label class="col-sm-2 control-label" for="input-name">{{ entry_name }}</label>
+							<div class="col-xs-12 col-sm-5">
+								<input type="text" name="name" value="{{ name }}" placeholder="{{ entry_name }}" id="input-name" class="form-control" />
+								{% if error_name %}
+									<div class="text-danger">{{ error_name }}</div>
+								{% endif %}
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">{{ entry_title }}</label>
+							<div class="col-xs-12 col-sm-5">
+								{% for language in languages %}
+									<div class="input-group">
+										<span class="input-group-addon">
+											<img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" />
+										</span>
+										<textarea rows="2" name="title[{{ language.language_id }}]" placeholder="" class="form-control">{{ title[language.language_id] ?? '' }}</textarea>
+									</div>
+								{% endfor %}
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-2 control-label">{{ entry_typeb }}</label>
+							<div class="col-sm-10">
+								<div class="btn-group" data-toggle="buttons">
+									<label class="btn btn-default{% if quantity_column == 2 %} active{% endif %}">
+										<input type="radio" name="quantity_column" value="2" {% if quantity_column == 2 %}checked="checked"{% endif %}>
+										<span class="on-off">2</span>
+									</label>
+									<label class="btn btn-default{% if quantity_column == 3 %} active{% endif %}">
+										<input type="radio" name="quantity_column" value="3" {% if quantity_column == 3 %}checked="checked"{% endif %}>
+										<span class="on-off">3</span>
+									</label>
+									<label class="btn btn-default{% if quantity_column == 4 %} active{% endif %}">
+										<input type="radio" name="quantity_column" value="4" {% if quantity_column == 4 %}checked="checked"{% endif %}>
+										<span class="on-off">4</span>
+									</label>
+								</div>
+							</div>
+						</div>
+						<div class="info-header">
+							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="butt" stroke-linejoin="bevel"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M20.4 14.5L16 10 4 20"/></svg>
+							{{ text_sliders }}
+						</div>
+						<div class="row">
+							<div class="col-sm-2">
+								<ul class="nav nav-pills nav-stacked" id="lookbook">
+									{% set module_row = 1 %}
+									{% for result in items %}
+										<li><a href="#tab-module{{ module_row }}" data-toggle="tab"><i class="fa fa-minus-circle" onclick="$('a[href=\'#tab-module{{ module_row }}\']').parent().remove(); $('#tab-module{{ module_row }}').remove(); $('#module a:first').tab('show');activeBtn();"></i> {{ text_banner }}{{ module_row }}</a></li>
+									{% set module_row = module_row + 1 %}
+									{% endfor %}
+									<li id="module-add"><a role="button" onclick="addLookBook();"><i class="fa fa-plus-circle"></i> {{ button_add }}</a></li>
+								</ul>
+							</div>
+							<div class="col-sm-10">
+								<div class="tab-content">
+									{% set module_row = 1 %}
+									{% for result in items %}
+										<div class="tab-pane" id="tab-module{{ module_row }}">
+											<div class="form-group">
+												<label class="col-sm-2 control-label">{{ entry_image }}</label>
+												<div class="col-sm-10">
+													<a href="" id="thumb-image-{{ module_row }}" data-toggle="image" class="img-thumbnail">
+														<img src="{{ result.thumb }}" alt="" title="" data-placeholder="{{ placeholder }}" />
+													</a>
+													<input type="hidden" name="items[{{ module_row }}][image]" value="{{ result.image }}" id="input-image-{{ module_row }}" />
+												</div>
+											</div>
+
+											<div class="point-setting {% if not result.original_image %}hidden{% endif %}">
+												<div class="form-group">
+													<label class="col-sm-2 control-label">{{ entry_image_points }}</label>
+													<div class="col-xs-12 col-sm-6" id="original-image-block{{ module_row }}">
+														<div class="image-container">
+															<img id="lookbook-image-{{ module_row }}" class="img-responsive" src="{{ result.original_image }}" alt="">
+															{% if result.point %}
+															{% set pointCounter = 1 %}
+															{% for point in result.point %}
+																<div class="map-point" style="left: {{ point.left }}%; top: {{ point.top }}%;" id="point-{{ module_row }}_{{ pointCounter }}">{{ pointCounter }}</div>
+																{% set pointCounter = pointCounter + 1 %}
+																{% endfor %}
+															{% endif %}
+														</div>
+														{% if result.point %}
+															{% set pointId = 1 %}
+															{% for point_info in result.point %}
+																<div class="input-group mb-3" id="point-info-{{ module_row }}_{{ pointId }}">
+																	<div class="input-group-addon">{{ pointId }}</div>
+																	<input type="text" class="form-control product-input" placeholder="{{ entry_product }}" value="{{ point_info.product_name }}" name="items[{{ module_row }}][point][{{ pointId }}][product_name]" />
+																	<input type="hidden" class="form-control" name="items[{{ module_row }}][point][{{ pointId }}][product_id]" id="point-product-{{ module_row }}_{{ pointId }}" value="{{ point_info.product_id }}" />
+																	<input type="hidden" class="form-control" name="items[{{ module_row }}][point][{{ pointId }}][left]" id="position-left-{{ module_row }}_{{ pointId }}" value="{{ point_info.left }}" />
+																	<input type="hidden" class="form-control" name="items[{{ module_row }}][point][{{ pointId }}][top]" id="position-top-{{ module_row }}_{{ pointId }}" value="{{ point_info.top }}" />
+																	<div class="input-group-btn"><a class="btn btn-danger" onclick="removePoint({{ module_row }}, {{ pointId }});" data-toggle="tooltip" title="{{ button_delete }}"><i class="fa fa-trash-o"></i></a></div>
+																</div>
+															{% set pointId = pointId + 1 %}
+															{% endfor %}
+														{% endif %}
+													</div>
+												</div>
+											</div>
+											<div class="form-group">
+												<label class="col-sm-2 control-label">{{ button_add_point }}</label>
+												<div class="col-sm-10">
+													<button type="button" class="btn btn-primary" onclick="addPoint({{ module_row }})">{{ button_add_point }}</button>
+												</div>
+											</div>
+											<div class="form-group required">
+												<label class="col-sm-2 control-label">{{ entry_image_wh }}</label>
+												<div class="col-sm-10">
+													<div class="input-group d-flex">
+														<span class="input-group-addon w-auto">{{ entry_width }}</span>
+														<input name="items[{{ module_row }}][image_width]" value="{{ result.image_width ?? '' }}" type="text" class="form-control w-70">
+														<span class="input-group-addon w-auto ml-15">{{ entry_height }}</span>
+														<input name="items[{{ module_row }}][image_height]" value="{{ result.image_height ?? '' }}" type="text" class="form-control w-70">
+													</div>
+												</div>
+											</div>
+											<div class="form-group">
+												<label class="col-sm-2 control-label" for="input-bgblock-{{ module_row }}">{{ entry_bg_block }}</label>
+												<div class="col-sm-10">
+													<input type="text" placeholder="#000000" id="input-bgblock-{{ module_row }}" name="items[{{ module_row }}][bg_block]" value="{{ result.bg_block ?? '' }}" class="form-control color" />
+												</div>
+											</div>
+											<div class="form-group">
+												<label class="col-sm-2 control-label" for="input-bg-point-{{ module_row }}">{{ entry_bg_point }}</label>
+												<div class="col-sm-10">
+													<input type="text" placeholder="#000000" id="input-bg-point-{{ module_row }}" name="items[{{ module_row }}][bg_point]" value="{{ result.bg_point ?? '' }}" class="form-control color" />
+												</div>
+											</div>
+										</div>
+									{% set module_row = module_row + 1 %}
+									{% endfor %}
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+		<script>
+		$('#lookbook li:first-child a').tab('show');
+
+		function initPointDrag($point, pointId, module_row) {
+
+			let $wrapper = $('#lookbook-image-' + module_row).parent();
+			if (!$wrapper.length) {
+				console.error('Wrapper not found for module_row:', module_row);
+				return;
+			}
+
+			$point.on('mousedown', function(event) {
+				event.preventDefault();
+
+				let pointOffset = $(this).offset();
+				let wrapperOffset = $wrapper.offset();
+				let shiftX = event.pageX - pointOffset.left;
+				let shiftY = event.pageY - pointOffset.top;
+
+				$(document).on('mousemove', function(e) {
+					let newLeft = e.pageX - wrapperOffset.left - shiftX;
+					let newTop = e.pageY - wrapperOffset.top - shiftY;
+
+					let leftPercent = (newLeft / $wrapper.width()) * 100;
+					let topPercent = (newTop / $wrapper.height()) * 100;
+
+					if (leftPercent < 0) leftPercent = 0;
+					if (topPercent < 0) topPercent = 0;
+					if (leftPercent > 100) leftPercent = 100;
+					if (topPercent > 100) topPercent = 100;
+
+					$point.css({
+						left: leftPercent + '%',
+						top: topPercent + '%'
+					});
+
+					$('#position-left-' + pointId).val(leftPercent.toFixed(2));
+					$('#position-top-' + pointId).val(topPercent.toFixed(2));
+				});
+
+				$(document).on('mouseup', function() {
+					$(document).off('mousemove');
+				});
+			});
+		}
+
+		function initAutocomplete($input, pointId) {
+			$input.autocomplete({
+				source: function(request, response) {
+					$.ajax({
+						url: 'index.php?route=catalog/product/autocomplete&user_token={{ user_token }}&filter_name=' + encodeURIComponent(request),
+						dataType: 'json',
+						success: function(data) {
+							response($.map(data, function(item) {
+								return {
+									label: item['name'],
+									value: item['product_id']
+								};
+							}));
+						}
+					});
+				},
+				select: function(item) {
+					$('#point-info-' + pointId + ' .product-input').val(item.label);
+					$('#point-info-' + pointId + ' #point-product-' + pointId).val(item.value);
+					return false;
+				}
+			});
+		}
+
+
+
+		function activeBtn() {
+			if($('#lookbook li').length >= 7){
+				$('#module-add').addClass('hidden');
+			} else {
+				$('#module-add').removeClass('hidden');
+			}
+		}
+
+		function updateImage(module_row, newImageValue) {
+			let $imageBlock = $('#original-image-block' + module_row + ' .image-container');
+			$imageBlock.closest('.point-setting').removeClass('hidden');
+			if ($imageBlock.length) {
+				let $existingImage = $imageBlock.find('img');
+
+				if ($existingImage.length) {
+					$existingImage.attr('src', newImageValue);
+				} else {
+					let newImage = $('<img>', {
+						src: newImageValue,
+						alt: 'Original Image',
+						class: 'img-responsive',
+						id: 'lookbook-image-' + module_row,
+						style: 'max-width: 100%;'
+					});
+					$imageBlock.append(newImage);
+				}
+			} else {
+				console.error('Image block not found:', '#original-image-block' + module_row);
+			}
+		}
+
+		function observeImageChanges(module_row) {
+			let imageId = '#thumb-image-' + module_row + ' img';
+			let targetImage = document.querySelector(imageId);
+
+			if (!targetImage) {
+				console.error('Image element not found:', imageId);
+				return;
+			}
+
+			let observer = new MutationObserver(function(mutationsList) {
+				for (let mutation of mutationsList) {
+					if (mutation.type === 'attributes' && mutation.attributeName === 'src') {
+						let inputId = '#input-image-' + module_row;
+						let newImageValue = $(inputId).val();
+
+						if (newImageValue) {
+							updateImage(module_row, '{{ dir_image }}' + newImageValue);
+						}
+					}
+				}
+			});
+
+			observer.observe(targetImage, { attributes: true });
+		}
+
+		let points = {};
+		let pointCounters = {};
+
+		function addPoint(module_row) {
+			if (!points[module_row]) {
+				points[module_row] = [];
+			}
+
+			let pointCounter = points[module_row].length ? Math.max(...points[module_row]) + 1 : 1;
+
+			let $image = $('#lookbook-image-' + module_row);
+			let $wrapper = $image.parent();
+
+			let pointId = module_row + '_' + pointCounter;
+			let $point = $('<div class="map-point" id="point-' + pointId + '">' + pointCounter + '</div>');
+
+			$wrapper.append($point);
+			points[module_row].push(pointCounter);
+
+			initPointDrag($point, pointId, module_row);
+
+			let $inputGroup = $(`
+				<div class="input-group mb-3" id="point-info-${pointId}">
+				<div class="input-group-addon">${pointCounter}</div>
+				<input type="text" class="form-control product-input" placeholder="{{ entry_product }}" name="items[${module_row}][point][${pointCounter}][product_name]" />
+				<input type="hidden" class="form-control" name="items[${module_row}][point][${pointCounter}][product_id]" id="point-product-${pointId}" value="" />
+				<input type="hidden" class="form-control" name="items[${module_row}][point][${pointCounter}][left]" id="position-left-${pointId}" value="50" />
+				<input type="hidden" class="form-control" name="items[${module_row}][point][${pointCounter}][top]" id="position-top-${pointId}" value="90" />
+				<div class="input-group-btn"><a class="btn btn-danger" onclick="removePoint(${module_row}, ${pointCounter});" data-toggle="tooltip" title="{{ button_delete }}"><i class="fa fa-trash-o"></i></a></div>
+				</div>
+				`);
+
+			$wrapper.parent().append($inputGroup);
+
+			initAutocomplete($inputGroup.find('.product-input'), pointId);
+		}
+
+		activeBtn();
+
+		var module_row = Number('{{ module_row }}');
+
+		function addLookBook() {
+			points[module_row] = [];
+
+			html  = '<div class="tab-pane" id="tab-module' + module_row + '">';
+			html += '<div class="form-group">';
+			html += '	<label class="col-sm-2 control-label">{{ entry_image }}</label>';
+			html += '	<div class="col-sm-10">';
+			html += '		<a href="" id="thumb-image-'+ module_row +'" data-toggle="image" class="img-thumbnail">';
+			html += '			<img src="{{ placeholder }}" alt="" title="" data-placeholder="{{ placeholder }}"  />';
+			html += '		</a>';
+			html += '		<input type="hidden" name="items['+ module_row +'][image]" value="" id="input-image-'+ module_row +'" />';
+			html += '	</div>';
+			html += '</div>';
+
+			html += '<div class="point-setting hidden">';
+
+			html += '	<div class="form-group">';
+			html += '		<label class="col-sm-2 control-label">{{ entry_image_points }}</label>';
+			html += '		<div class="col-sm-10" id="original-image-block'+ module_row +'"><div class="image-container"></div></div>';
+			html += '	</div>';
+
+			html += '	<div class="form-group">';
+			html += '		<label class="col-sm-2 control-label">{{ button_add_point }}</label>';
+			html += '		<div class="col-sm-10"><button type="button" class="btn btn-primary" onclick="addPoint('+ module_row +')">{{ button_add_point }}</button></div>';
+			html += '	</div>';
+
+			html += '	<div class="form-group required">';
+			html += '		<label class="col-sm-2 control-label">{{ entry_image_wh }}</label>';
+			html += '		<div class="col-sm-10">';
+			html += '			<div class="input-group d-flex">';
+			html += '				<span class="input-group-addon w-auto">{{ entry_width }}</span>';
+			html += '				<input name="items['+ module_row +'][image_width]" value="" type="text" class="form-control w-70">';
+			html += '				<span class="input-group-addon w-auto ml-15">{{ entry_height }}</span>';
+			html += '				<input name="items['+ module_row +'][image_height]" value="" type="text" class="form-control w-70">';
+			html += '			</div>';
+			html += '		</div>';
+			html += '	</div>';
+
+			html += '	<div class="form-group">';
+			html += '		<label class="col-sm-2 control-label" for="input-bgblock-'+ module_row +'">{{ entry_bg_block }}</label>';
+			html += '		<div class="col-sm-10">';
+			html += '			<input type="text" placeholder="#000000" id="input-bgblock-'+ module_row +'" name="items['+ module_row +'][bg_block]" value="" class="form-control color" />';
+			html += '		</div>';
+			html += '	</div>';
+
+			html += '	<div class="form-group">';
+			html += '		<label class="col-sm-2 control-label" for="input-bg-point-'+ module_row +'">{{ entry_bg_point }}</label>';
+			html += '		<div class="col-sm-10">';
+			html += '			<input type="text" placeholder="#000000" id="input-bg-point-'+ module_row +'" name="items['+ module_row +'][bg_point]" value="" class="form-control color" />';
+			html += '		</div>';
+			html += '	</div>';
+
+			html += '</div>';
+			html += '</div>';
+
+			$('.tab-content').append(html);
+
+			$('#module-add').before('<li><a href="#tab-module' + module_row + '" data-toggle="tab"><i class="fa fa-minus-circle" onclick="$(\'a[href=\\\'#tab-module' + module_row + '\\\']\').parent().remove(); $(\'#tab-module' + module_row + '\').remove(); $(\'#module a:first\').tab(\'show\');activeBtn();"></i> {{ text_banner }} ' + module_row + '</a></li>');
+
+			$('#lookbook a[href=\'#tab-module' + module_row + '\']').tab('show');
+
+			jscolor.bind();
+			activeBtn();
+			observeImageChanges(module_row);
+
+			module_row++;
+		}
+
+		function removePoint(module_row, pointIndex) {
+			let pointId = module_row + '_' + pointIndex;
+
+			$('#point-info-' + pointId).remove();
+			$('#point-' + pointId).remove();
+
+			let index = points[module_row].indexOf(pointIndex);
+			if (index !== -1) {
+				points[module_row].splice(index, 1);
+			}
+
+			if (points[module_row].length > 0) {
+
+				$('#original-image-block' + module_row + ' .map-point').each(function(i) {
+					let newPointIndex = i + 1;
+					let newPointId = module_row + '_' + newPointIndex;
+					let oldPointId = $(this).attr('id').replace('point-', '');
+
+					$('#point-info-' + oldPointId + ' .input-group-addon').text(newPointIndex);
+					$('#point-info-' + oldPointId + ' .product-input').attr('name', 'items['+ module_row +'][point][' + newPointIndex + '][product_name]');
+					$('#point-info-' + oldPointId).attr('id', 'point-info-' + newPointId);
+
+					$('#point-product-' + oldPointId).attr('name', 'items['+ module_row +'][point][' + newPointIndex + '][product_id]');
+					$('#position-left-' + oldPointId).attr('name', 'items['+ module_row +'][point][' + newPointIndex + '][left]');
+					$('#position-top-' + oldPointId).attr('name', 'items['+ module_row +'][point][' + newPointIndex + '][top]');
+
+					$(this).attr('id', 'point-' + newPointId).text(newPointIndex);
+				});
+
+				points[module_row] = points[module_row].map((_, i) => i + 1);
+			} else {
+				$('#original-image-block' + module_row + ' .map-point').remove();
+				pointCounters[module_row] = 1;
+			}
+		}
+
+
+		$(document).ready(function() {
+
+			$('.tab-pane').each(function() {
+				let $tab = $(this);
+				let tabId = $tab.attr('id');
+				let module_row = tabId.replace('tab-module', '');
+				if (!points[module_row]) {
+					points[module_row] = [];
+				}
+
+				$tab.find('.map-point').each(function(i) {
+					let newPointIndex = i + 1;
+					points[module_row].push(newPointIndex);
+
+					let $point = $(this);
+					let pointId = $point.attr('id').replace('point-', '');
+					let module_row_id = pointId.split('_')[0];
+
+					initPointDrag($point, pointId, module_row_id);
+				});
+			});
+
+			$('.product-input').each(function() {
+				let $input = $(this);
+				let pointId = $input.closest('.input-group').attr('id').replace('point-info-', '');
+				initAutocomplete($input, pointId);
+			});
+
+			$('[id^="original-image-block"]').each(function() {
+				let module_row_id = $(this).attr('id').replace('original-image-block', '');
+				observeImageChanges(module_row_id)
+			});
+		});
+
+		</script>
+	</div>
+	<style>
+	.mb-3 {
+		margin-bottom: 10px;
+	}
+	[id^="original-image-block"] img {
+		max-width: 715px !important;
+		width: 100%;
+	}
+	.image-container {
+		display: inline-block;
+		overflow: hidden;
+		position: relative;
+		border-radius: 8px;
+		margin-bottom: 15px;
+	}
+	.map-point {
+		position: absolute;
+		width: 26px;
+		height: 26px;
+		background-color: #457DE3;
+		border: 4px solid white;
+		border-radius: 50%;
+		left: 50%;
+		top: 90%;
+		text-align: center;
+		color: #fff;
+		font-weight: 600;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		cursor: move;
+	}
+	.info-header {
+		padding: 10px 15px;
+		background: #f8f8f8;
+		color: #333;
+		font-size: 14px;
+		line-height: 22px;
+		font-weight: 600;
+		border-radius: 4px;
+		margin-bottom: 15px;
+	}
+	.info-header svg {
+		height: 20px;
+		width: 20px;
+		color: #6F6F6F;
+		vertical-align: middle;
+		display: block;
+		float: left;
+		margin-right: 10px;
+	}
+	.form-control.number,
+	.form-control.color {
+		width: 85px;
+	}
+	.d-flex {
+		display: -webkit-flex;
+		display: -moz-flex;
+		display: -ms-flex;
+		display: -o-flex;
+		display: flex;
+	}
+	.w-auto {
+		width: auto;
+		min-width: 80px;
+		line-height: 17px;
+	}
+	.w-70 {
+		width: 70px !important;
+		border-radius: 0px 4px 4px 0px !important;
+	}
+	.ml-15 {
+		margin-left: 15px;
+	}
+	.pt-0 {
+		padding-top: 0;
+	}
+	.color {
+		width: 80px !important;
+	}
+	.input-group-color .color {
+		height: 22px;
+		padding: 2px 8px;
+	}
+	.input-group-color {
+		padding-top: 3px;
+		padding-bottom: 3px;
+	}
+	.on-off {
+		min-width: 42px;
+		text-align: center;
+		display: block;
+	}
+	</style>
+	<script>
+	$(".form-control.number").keypress(function(event){
+		event = event || window.event;
+		if (event.charCode && event.charCode!=0 && event.charCode!=46 && (event.charCode < 48 || event.charCode > 57) )
+			return false;
+	});
+	</script>
+	{{ footer }}

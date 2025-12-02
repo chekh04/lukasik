@@ -1,0 +1,80 @@
+<div class="container-module lookbook">
+    {% if title is not empty %}
+        <div class="title-module"><span>{{ title }}</span></div>
+    {% endif %}
+    <div class="row-flex">
+        {% for key, item in items %}
+            <div class="lookbook__column lookbook__column--col-{{ col }} mb-10 mt-10">
+                <div class="lookbook__item lookbook__item--{{ module ~ key }} dflex flex-column flex-grow-1"
+                     {% if item.bg_block is not empty %}style="background-color: {{ item.bg_block }}"{% endif %}>
+                    <div class="lookbook__image">
+                        <img class="lookbook__img_cover img-responsive" loading="lazy" width="{{ item.image_width }}" height="{{ item.image_height }}" src="{{ item.image }}" alt=""/>
+                        {% if item.point is not empty %}
+                            {% set pointCounter = 1 %}
+                            {% for point in item.point %}
+                                <button type="button" class="map-point" data-product-id="{{ point.product_id }}" style="background-color: {{ item.bg_point }}; left: {{ point.left }}%; top: {{ point.top }}%;" id="point-{{ key }}_{{ pointCounter }}"></button>
+                                {% set pointCounter = pointCounter + 1 %}
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+<script>
+	$(document).on('click', '.map-point', function(event) {
+		event.preventDefault();
+
+		var productId = $(this).data('product-id');
+		var pointElement = $(this);
+
+		if (pointElement.hasClass('active-popover')) {
+			pointElement.removeClass('active-popover').popover('destroy');
+			return;
+		}
+
+		$('.map-point').removeClass('active-popover').popover('destroy');
+
+		pointElement.addClass('active-popover');
+
+		$.ajax({
+			url: 'index.php?route=extension/module/upstore_lookbook/getProductInfo',
+			type: 'post',
+			data: { product_id: productId },
+			dataType: 'html',
+			success: function(response) {
+            pointElement.popover({
+                content: response,
+                html: true,
+                placement: 'auto',
+                trigger: 'click',
+                container: 'body'
+            });
+
+            var popoverTip = pointElement.data('bs.popover').tip();
+            popoverTip.css('min-width', '200px');
+            popoverTip.css('max-width', '270px');
+
+            pointElement.data('bs.popover').tip().addClass('popover-lookbook');
+
+            pointElement.popover('show');
+
+            $(document).on('click.hidePopover', function(e) {
+                if (!$(e.target).closest('.map-point, .popover.popover-lookbook').length) {
+                    pointElement.removeClass('active-popover').popover('destroy');
+                    $(document).off('click.hidePopover');
+                }
+                if ($(e.target).closest('.lookbook-product-popup__cart').length) {
+                    pointElement.removeClass('active-popover').popover('destroy');
+                    $(document).off('click.hidePopover');
+                }
+            });
+
+			},
+			error: function(xhr, status, error) {
+				console.error('Error data:', error);
+			}
+		});
+	});
+</script>

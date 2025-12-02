@@ -1,0 +1,33 @@
+{{ header }}
+<div id="common-success" class="container">
+	<div class="breadcrumb-box">
+		<ul class="breadcrumb">
+			{% for i,breadcrumb in breadcrumbs %}
+				{% if (i+1 < breadcrumbs|length) %}
+					<li><a href="{{ breadcrumb.href }}"><span>{{ breadcrumb.text }}</span></a></li>
+				{% else %}
+					<li><span>{{ breadcrumb.text }}</span></li>
+				{% endif %}
+			{% endfor %}
+		</ul>
+	</div>
+  <h1>{{ heading_title }}</h1>
+  <div class="row-flex">{{ column_left }}
+	 {% if column_left and column_right %}
+	 {% set class = 'col-sm-6' %}
+	 {% elseif column_left or column_right %}
+	 {% set class = 'col-sm-9' %}
+	 {% else %}
+	 {% set class = 'col-sm-12' %}
+	 {% endif %}
+	 <div id="content" class="{{ class }}">
+	 	{{ content_top }}
+	 	<div class="chm-content h-100">
+	 		<div class="pb-10">{{ text_message }}</div>
+	 		{{ content_bottom }}
+	 	</div>
+	 </div>
+	 {{ column_right }}
+	</div>
+</div>
+{{ footer }}

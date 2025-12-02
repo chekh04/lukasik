@@ -1,0 +1,223 @@
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+       <div class="pull-right">
+      <div class="buttons">
+	  <a class="btn btn-primary" onclick="$('#form').attr('action', '{{ update }}'); $('#form').submit();" class="button"><span  data-toggle="tooltip" title="{{ status_done }}" ><i class="fa fa-refresh"></i></span></a>
+	  <a class="btn btn-danger" onclick="$('form').submit();" class="button"><span><i class="fa fa-trash-o fa-fw"></i>{{ button_delete }}</span></a>
+	  <a class="btn btn-primary" href="{{ callback_setting }}"><span><i class="fa fa-wrench fa-fw"></i>{{ button_callback_setting }}</span></a></div>
+	</div>
+      <h1>{{ heading_title_callback }}</h1>
+      <ul class="breadcrumb">
+         <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+        <li><a href="{{ breadcrumb['href'] }}">{{ breadcrumb['text'] }}</a></li>
+        {% endfor %}
+        </ul>
+      </ul>
+    </div>
+  </div>
+	<div class="container-fluid">
+	   {% if (error_warning) %}
+	  <div class="alert alert-danger">{{ error_warning }}</div>
+	  {% endif %}
+	  {% if (success) %}
+	  <div class="alert alert-success">{{ success }}</div>
+	  {% endif %}
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title"><i class="fa fa-list"></i> {{ text_list }}</h3>
+			</div>
+			<div class="panel-body">
+				<div class="well">
+					<div class="row">
+						<div class="col-sm-4">
+							<div class="form-group">
+								<label class="control-label" for="input-callback-id">{{ text_id }}</label>
+								<input type="text" name="filter_callback_id" value="{{ filter_callback_id }}" placeholder="{{ text_id }}" id="input-callback-id" class="form-control" />
+							</div>
+							<div class="form-group">
+								<label class="control-label" for="input-fio">{{ text_fio }}</label>
+								<input type="text" name="filter_fio" value="{{ filter_fio }}" placeholder="{{ text_fio }}" id="input-fio" class="form-control" />
+							</div>
+						</div>
+						<div class="col-sm-4">
+							<div class="form-group">
+								<label class="control-label" for="input-date-added">{{ text_added }}</label>
+								<div class="input-group date">
+									<input type="text" name="filter_date_added" value="{{ filter_date_added }}" placeholder="{{ text_added }}" data-date-format="YYYY-MM-DD" id="input-date-added" class="form-control" />
+									<span class="input-group-btn">
+										<button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
+									</span>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label" for="input-phone">{{ text_telephone }}</label>
+								<input type="text" name="filter_phone" value="{{ filter_phone }}" placeholder="{{ text_telephone }}" id="input-phone" class="form-control" />
+							</div>
+						</div>
+						<div class="col-sm-4">
+							<div class="form-group">
+								<label class="control-label" for="input-status">{{ text_status }}</label>
+								<select name="filter_status" id="input-status" class="form-control">
+								  <option value="*">---*---</option>
+									{% if filter_status =='1' %}
+										<option value="1" selected="selected">{{ status_done }}</option>
+									{% else %}
+									<option value="1">{{status_done}}</option>
+									{% endif %}
+								  {% if filter_status =='0' %}
+								  <option value="0" selected="selected">{{ status_wait }}</option>
+								 {% else %}
+								  <option value="0">{{ status_wait }}</option>
+								  {% endif %}
+								</select>
+							</div>
+							<div class="form-group">
+								<label class="control-label" for="input-email">{{ text_email_buyer }}</label>
+								<input type="text" name="filter_email" value="{{ filter_email }}" placeholder="{{ text_email_buyer }}" id="input-email" class="form-control" />
+							</div>
+							<button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-search"></i> {{ button_filter }}</button>
+						</div>
+					</div>
+				</div>
+				<div class="table-responsive">
+				<form action="{{ delete }}" method="post" enctype="multipart/form-data" id="form">
+					<table class="table table-bordered table-hover">
+						<thead>
+							<tr>
+								<td width="1" style="text-align: center;"><input type="checkbox" onclick="$('input[name*=\'selected\']').attr('checked', this.checked);" /></td>
+								<td class="text-left">
+									{% if (sort == 'call_id') %}
+										<a href="{{ sort_call_id }}" class="{{ order|lower }}">{{ text_id }}</a>
+									{% else %}
+										<a href="{{ sort_call_id }}">{{ text_id }}</a>
+									{% endif %}
+								</td>
+								<td class="text-left">
+									{% if (sort == 'name') %}
+										<a href="{{ sort_name }}" class="{{ order|lower }}">{{ column_name }}</a>
+									{% else %}
+										<a href="{{ sort_name }}">{{ column_name }}</a>
+									{% endif %}
+								</td>
+								<td class="text-center"><span data-toggle="tooltip" title="{{ text_callback_url_info }}">{{ text_callback_url }}</span></td>
+								<td class="text-center">{{ text_time_callback }}</td>
+								<td class="text-left">{{ text_topic_callback }}</td>
+								<td class="text-left">{{ text_comment }}</td>
+								<td class="text-center">
+									{% if (sort == 'username') %}
+										<a href="{{ sort_username }}" class="{{ order|lower }}">{{ text_manager }}</a>
+									{% else %}
+										<a href="{{ sort_username }}">{{ text_manager }}</a>
+									{% endif %}
+								</td>
+								<td class="text-center">{{ text_status }}</td>
+								<td class="text-right">{{ text_added }}</td>
+								<td class="text-right">{{ text_modified }}</td>
+								<td class="text-right">{{ text_action }}</td>
+							</tr>
+						</thead>
+						<tbody>
+							{% if (callbacks) %}
+							{% for callback in callbacks %}
+							<tr>
+								<td class="text-center">
+									{% if (callback['selected']) %}
+										<input type="checkbox" name="selected[]" value="{{ callback['callback_id'] }}" checked="checked" />
+									{% else %}
+										<input type="checkbox" name="selected[]" value="{{ callback['callback_id'] }}" />
+									{% endif %}
+								</td>
+								<td class="text-left">{{ callback['callback_id'] }}</td>
+								<td class="text-left">
+									{% if (callback['name']) %}<div class="firstname"><i class="fa fa-user fa-fw"></i> {{ callback['name'] }}</div>{% endif %}
+									{% if (callback['telephone']) %}<div class="telephone"><i class="fa fa-phone fa-fw"></i>{{ callback['telephone'] }}</div>{% endif %}
+									{% if (callback['email_buyer']) %}<div class="email"><i class="fa fa-envelope-o fa-fw"></i> {{ callback['email_buyer'] }}</div>{% endif %}
+									{% if (callback['comment_buyer']) %}<div class="email"><i class="fa fa fa-comment fa-fw"></i> {{ callback.comment_buyer }}</div>{% endif %}
+								</td>
+								<td class="text-center"><a class="btn btn-info" href="{{ callback['url_site'] }}" target="_blank"><i class="fa fa-link" aria-hidden="true"></i> {{ text_link }}</td>
+								<td class="text-center">{{ callback['time_callback_on'] }}</br>{{ callback['time_callback_off'] }}</td>
+								<td class="text-left">{{ callback['topic_callback_send'] }}</td>
+								<td class="text-left">{{ callback['comment'] }}</td>
+								<td class="text-center">{{ callback['username'] }}</td>
+								{% if (callback['status'] == status_done) %}
+									<td class="text-center" style="background:#0BED0B;">{{ callback['status'] }}</td>
+								{% else %}
+									<td class="text-center" style="background:#EDB40B;">{{ callback['status'] }}</td>
+								{% endif %}
+								<td class="text-right">{{ callback['date_added'] }}</td>
+								<td class="text-right">{{ callback['date_modified'] }}</td>
+								<td class="text-right">
+									<a class="btn btn-primary" href="{{ callback['action'] }}" data-toggle="tooltip" title="{{ text_edit }}"><i class="fa fa-pencil"></i></a>
+								</td>
+							</tr>
+							{% endfor %}
+							{% else %}
+								<tr>
+									<td class="center" colspan="9">{{ text_no_results }}</td>
+								</tr>
+							{% endif %}
+						</tbody>
+					</table>
+				</form>
+
+				</div>
+				<div class="row">
+					<div class="col-sm-6 text-left">{{ pagination }}</div>
+					<div class="col-sm-6 text-right">{{ results }}</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+$('#button-filter').on('click', function() {
+	url = 'index.php?route=sale/callback&user_token={{ user_token }}';
+
+	var filter_callback_id = $('input[name=\'filter_callback_id\']').val();
+
+	if (filter_callback_id) {
+		url += '&filter_callback_id=' + encodeURIComponent(filter_callback_id);
+	}
+
+	var filter_fio = $('input[name=\'filter_fio\']').val();
+
+	if (filter_fio) {
+		url += '&filter_fio=' + encodeURIComponent(filter_fio);
+	}
+	var filter_phone = $('input[name=\'filter_phone\']').val();
+
+	if (filter_phone) {
+		url += '&filter_phone=' + encodeURIComponent(filter_phone);
+	}
+	var filter_email = $('input[name=\'filter_email\']').val();
+
+	if (filter_email) {
+		url += '&filter_email=' + encodeURIComponent(filter_email);
+	}
+
+	var filter_date_added = $('input[name=\'filter_date_added\']').val();
+
+	if (filter_date_added) {
+		url += '&filter_date_added=' + encodeURIComponent(filter_date_added);
+	}
+
+	var filter_status = $('select[name=\'filter_status\']').val();
+
+	if (filter_status != '*') {
+		url += '&filter_status=' + encodeURIComponent(filter_status);
+	}
+
+	location = url;
+});
+</script>
+  <script src="view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.js"></script>
+  <link href="view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen" />
+  <script>
+$('.date').datetimepicker({
+	pickTime: false
+});
+</script>
+{{ footer }}

@@ -1,0 +1,240 @@
+{{ header }}
+{% if (position_1 is defined) %}
+	<div class="container-fluid">
+		<div class="row">
+		<div class="col-sm-12 pos1">
+			{% for pos1 in position_1 %}
+				{{ pos1 }}
+			{% endfor %}
+		</div>
+		</div>
+	</div>
+{% endif %}
+<div class="container">
+	<div class="row">
+		{% if (content_top) %}
+		<div class="col-sm-12 col-md-12{% if chm_mm_open_hp %} home-page-content-top{% endif %}">{{ content_top }}</div>
+		{% endif %}
+		{% if (position_17 is defined) %}
+			<div class="col-md-4 pos17">
+				{% for pos17 in position_17 %}
+					{{ pos17 }}
+				{% endfor %}
+			</div>
+		{% endif %}
+		{% if (position_18 is defined) %}
+			<div class="col-md-4 pos18">
+				{% for pos18 in position_18 %}
+					{{ pos18 }}
+				{% endfor %}
+			</div>
+		{% endif %}
+		{% if (position_19 is defined) %}
+			<div class="col-md-4 pos19">
+				{% for pos19 in position_19 %}
+					{{ pos19 }}
+				{% endfor %}
+			</div>
+		{% endif %}
+		{% if (position_20 is defined) %}
+			<div class="col-md-8 pos20">
+				{% for pos20 in position_20 %}
+					{{ pos20 }}
+				{% endfor %}
+			</div>
+		{% endif %}
+		{% if (position_21 is defined) %}
+			<div class="col-md-4 pos21">
+				{% for pos21 in position_21 %}
+					{{ pos21 }}
+				{% endfor %}
+			</div>
+		{% endif %}
+	</div>
+	<div class="row">
+	{{ column_left }}
+    {% if (column_left and column_right) %}
+    {% set class = 'col-sm-4 col-md-6' %}
+    {% elseif (column_left or column_right) %}
+    {% set class = 'col-sm-8 col-md-9' %}
+    {% else %}
+    {% set class = 'col-sm-12' %}
+    {% endif %}
+    {% if (content_bottom) %}
+    <div class="{{ class }}">
+		{{ content_bottom }}
+	</div>
+	{% endif %}
+    {{ column_right }}
+	</div>
+</div>
+{% if (position_2 is defined or position_3 is defined) %}
+	<div class="box-bg-full bg_mode_pos_2">
+	<div class="container">
+		<div class="row-flex">
+			{% if (position_2 is defined) %}
+			<div class="col-xs-12 col-sm-6 col-md-6 pos2">
+			{% for pos2 in position_2 %}
+				{{ pos2 }}
+			{% endfor %}
+			</div>
+			{% endif %}
+			{% if (position_3 is defined) %}
+			<div class="col-xs-12 col-sm-6 col-md-6 pos3">
+				{% for pos3 in position_3 %}
+					{{ pos3 }}
+				{% endfor %}
+			</div>
+			{% endif %}
+		</div>
+	</div>
+	</div>
+{% endif %}
+{% if (position_4 is defined or position_5 is defined) %}
+	<div class="container">
+		<div class="row-flex">
+			{% if (position_4 is defined) %}
+			<div class="col-xs-12 col-sm-4 col-md-3 pos4">
+				{% for pos4 in position_4 %}
+					{{ pos4 }}
+				{% endfor %}
+			</div>
+			{% endif %}
+			{% if (position_5 is defined) %}
+			<div class="col-xs-12 col-sm-8 col-md-9 pos5">
+				{% for pos5 in position_5 %}
+					{{ pos5 }}
+				{% endfor %}
+			</div>
+			{% endif %}
+		</div>
+	</div>
+{% endif %}
+{% if (position_6 is defined or position_7 is defined) %}
+	<div class="container">
+		<div class="row-flex">
+			{% if (position_6 is defined) %}
+			<div class="col-xs-12 col-sm-8 col-md-9 pos6">
+				{% for pos6 in position_6 %}
+					{{ pos6 }}
+				{% endfor %}
+			</div>
+			{% endif %}
+			{% if (position_7 is defined) %}
+			<div class="col-xs-12 col-sm-4 col-md-3 pos7">
+				{% for pos7 in position_7 %}
+					{{ pos7 }}
+				{% endfor %}
+			</div>
+			{% endif %}
+		</div>
+	</div>
+{% endif %}
+{% if (position_8 is defined or position_9 is defined or position_10 is defined) %}
+	<div class="container">
+		<div class="row">
+		{% if (position_8 is defined and position_9 is defined) %}
+		{% set class10 = 'col-md-6' %}
+		{% elseif (position_8 is defined or position_9 is defined) %}
+		{% set class10 = 'col-md-9' %}
+		{% else %}
+		{% set class10 = 'col-md-12' %}
+		{% endif %}
+			{% if (position_8 is defined) %}
+				<div class="col-xs-12 col-md-3 pos8">
+					{% for pos8 in position_8 %}
+						{{ pos8 }}
+					{% endfor %}
+				</div>
+			{% endif %}
+			{% if (position_9 is defined) %}
+				<div class="col-xs-12 col-md-3 pos9">
+					{% for pos9 in position_9 %}
+						{{ pos9 }}
+					{% endfor %}
+				</div>
+			{% endif %}
+			{% if (position_10 is defined) %}
+				<div class="col-xs-12 {{ class10 }} pos10">
+					{% for pos10 in position_10 %}
+						{{ pos10 }}
+					{% endfor %}
+				</div>
+			{% endif %}
+		</div>
+	</div>
+{% endif %}
+{% if (position_22 is defined) %}
+	<div class="box-bg-full bg_mode_pos_22">
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-12 pos22">
+			{% for pos22 in position_22 %}
+				{{ pos22 }}
+			{% endfor %}
+			</div>
+		</div>
+	</div>
+	</div>
+{% endif %}
+{% if (position_11 is defined or position_12 is defined or position_13 is defined or position_14 is defined) %}
+	<div class="box-bg-full bg_mode_pos_11">
+	<div class="container">
+		<div class="row-flex">
+			{% if (position_11 is defined) %}
+			<div class="col-xs-12 col-sm-6 col-md-6 col-lg-3 position-no-owl pos11">
+				{% for pos11 in position_11 %}
+					{{ pos11 }}
+				{% endfor %}
+			</div>
+			{% endif %}
+			{% if (position_12 is defined) %}
+			<div class="col-xs-12 col-sm-6 col-md-6 col-lg-3 position-no-owl pos12">
+				{% for pos12 in position_12 %}
+					{{ pos12 }}
+				{% endfor %}
+			</div>
+			{% endif %}
+			{% if (position_13 is defined) %}
+			<div class="col-xs-12 col-sm-6 col-md-6 col-lg-3 position-no-owl pos13">
+				{% for pos13 in position_13 %}
+					{{ pos13 }}
+				{% endfor %}
+			</div>
+			{% endif %}
+			{% if (position_14 is defined) %}
+			<div class="col-xs-12 col-sm-6 col-md-6 col-lg-3 position-no-owl pos14">
+				{% for pos14 in position_14 %}
+					{{ pos14 }}
+				{% endfor %}
+			</div>
+			{% endif %}
+		</div>
+	</div>
+</div>
+{% endif %}
+{% if (position_15 is defined) %}
+	<div class="box-bg-full bg_mode_pos_15">
+	<div class="container">
+		<div class="row">
+		<div class="col-sm-12 pos15">
+			{% for pos15 in position_15 %}
+				{{ pos15 }}
+			{% endfor %}
+		</div>
+		</div>
+	</div>
+	</div>
+{% endif %}
+{% if (position_16 is defined) %}
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-sm-12 pos16">
+			{% for pos16 in position_16 %}
+				{{ pos16 }}
+			{% endfor %}
+			</div>
+		</div>
+	</div>
+{% endif %}
+{{ footer }}

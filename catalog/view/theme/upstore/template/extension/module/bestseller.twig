@@ -1,0 +1,235 @@
+<div class="container-module">
+	<div class="title-module"><span>{{ heading_title }}</span></div>
+	<div class="swiper-mod-navigation">
+		<div class="swiper-mod-arrow swiper-button-lock swiper-button-disabled prev-prod"><i class="up-icon-arrow-left" aria-hidden="true"></i></div>
+		<div class="swiper-mod-arrow swiper-button-lock next-prod"><i class="up-icon-arrow-right" aria-hidden="true"></i></div>
+	</div>
+	<div class="swiper swiper-module bmod_{{ module }}">
+		<div class="swiper-wrapper bestseller">
+			{% for product in products %}
+			{# h-auto #}
+				<div class="item swiper-slide h-284{% if not bg_image %} p-xs-0{% endif %}">
+					<div class="product-thumb dflex flex-column h-100{% if bg_image %} bg_image{% endif %}">
+						<div class="image">
+							<div class="stickers-ns">
+								{% if ((on_off_sticker_special == '1') and product.special) %}
+									<div class="sticker-ns special">
+										{% if (config_change_icon_sticker_special is not empty) %}<i class="fa {{ config_change_icon_sticker_special }} "></i>{% endif %}
+										{{ text_sticker_special[lang_id].config_change_text_sticker_special }}
+									</div>
+								{% endif %}
+								{% if ((on_off_percent_discount == '1') and product.special) %}<div class="sticker-ns special">{{ product.skidka }} %</div>{% endif %}
+								{% if ((on_off_sticker_topbestseller == '1') and (product.top_bestsellers >= config_limit_order_product_topbestseller)) %}
+									<div class="sticker-ns bestseller">
+										{% if (config_change_icon_sticker_topbestseller is not empty) %}<i class="fa {{ config_change_icon_sticker_topbestseller }} "></i>{% endif %}
+										{{ text_sticker_topbestseller[lang_id].config_change_text_sticker_topbestseller }}
+									</div>
+								{% endif %}
+								{% if ((on_off_sticker_popular == '1') and (product.viewed>=config_min_quantity_popular)) %}
+									<div class="sticker-ns popular">
+										{% if (config_change_icon_sticker_popular is not empty) %}<i class="fa {{ config_change_icon_sticker_popular }} "></i>{% endif %}
+										{{ text_sticker_popular[lang_id].config_change_text_sticker_popular }}
+									</div>
+								{% endif %}
+								{% if ((on_off_sticker_newproduct == '1') and product.sticker_new_prod ) %}
+									<div class="sticker-ns newproduct">
+										{% if (config_change_icon_sticker_newproduct is not empty) %}<i class="fa {{ config_change_icon_sticker_newproduct }}"></i>{% endif %}
+										{{ text_sticker_newproduct[lang_id].config_change_text_sticker_newproduct }}
+									</div>
+								{% endif %}
+							</div>
+							{% if product.pro_sticker is defined and product.pro_sticker.status and product.pro_sticker.items is not empty %}
+								<div class="pro_sticker {% if product.pro_sticker.hide_hover %}hide-hover{% endif %}">
+									{% if product.pro_sticker.items is not empty %}
+										{% for position, stickers in product.pro_sticker.items %}
+											<div class="pro_sticker__position {{ position }}">
+												{% for sticker in stickers %}
+													<div class="pro_sticker__item pro_sticker__{{ sticker.type }}">
+														{% if sticker.type == 'image' %}
+															<img loading="lazy" decoding="async" width="{{ sticker.width }}" height="{{ sticker.height }}" class="img-responsive" src="{{ sticker.image }}" alt="">
+														{% else %}
+															<span style="color:#{{ sticker.color }};background:#{{ sticker.bg }}">{{ sticker.text }}</span>
+														{% endif %}
+													</div>
+												{% endfor %}
+											</div>
+										{% endfor %}
+									{% endif %}
+								</div>
+							{% endif %}
+							<a {% if product.image_hm is not empty %}class="gallery-images"{% endif %} href="{{ product.href }}">
+								<img class="img-responsive{% if product.image_hm is not empty %} ch-g-image active-image{% endif %}" {% if product.image_h %}data-additional-hover="{{ product.image_h }}"{% endif %} decoding="async" width="{{ product.width }}" height="{{ product.height }}" loading="lazy" src="{{ product.thumb }}" alt="{{ product.name }}" />
+								{% if product.image_hm is not empty %}
+									<div class="ch-g-items">
+										{% for dop_image in product.image_hm %}
+											<img class="ch-g-image img-responsive" decoding="async" width="{{ product.width }}" height="{{ product.height }}" loading="lazy" data-src="{{ dop_image }}" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="{{ product.name }}" />
+										{% endfor %}
+									</div>
+									<div class="ch-g-dots">
+										<div class="ch-g-line active-line"></div>
+										{% for dop_image in product.image_hm %}
+											<div class="ch-g-line"></div>
+										{% endfor %}
+									</div>
+								{% endif %}
+							</a>
+							{% if (show_special_timer_module == '1' and product.special) %}
+								<div class="action-timer" data-date-end="{{ product.date_end }}"></div>
+							{% endif %}
+							{% if setting_module.status_actions is not defined %}
+								<div class="addit-action">
+									{% if config_on_off_bestseller_quickview == '1' %}
+										<div class="quickview">
+											<button aria-label="Quickview" class="btn btn-quickview" title="{{ config_quickview_btn_name[lang_id].config_quickview_btn_name }}" onclick="quickview_open({{ product.product_id }});">
+												<i class="up-icon-quickview" aria-hidden="true"></i>
+											</button>
+										</div>
+									{% endif %}
+									{% if setting_module.status_fastorder is defined and setting_module.status_fastorder == '1' and product['show_buy_button'] %}
+										{% if (not disable_fastorder_button and (product.product_quantity <= 0 or product.product_quantity > 0)) or (disable_fastorder_button and product.product_quantity > 0) %}
+											<div class="quick-order">
+												<button aria-label="Fastorder" class="btn btn-fastorder" title="{{ config_text_open_form_send_order[lang_id].config_text_open_form_send_order }}" type="button" onclick="fastorder_open({{ product.product_id }});" {% if product.product_quantity <= 0 and disable_fastorder_button %}disabled{% endif %}>
+													<i class="up-icon-fastorder" aria-hidden="true"></i>
+												</button>
+											</div>
+										{% endif %}
+									{% endif %}
+									{% if setting_module.status_compare is defined and setting_module.status_compare == '1' %}
+										<div class="compare">
+											<button aria-label="Compare" class="btn btn-compare" type="button" title="{{ button_compare }}" onclick="compare.add('{{ product.product_id }}');">
+												<i class="up-icon-compare" aria-hidden="true"></i>
+											</button>
+										</div>
+									{% endif %}
+									{% if setting_module.status_wishlist is defined and setting_module.status_wishlist == '1' %}
+										<div class="wishlist">
+											<button aria-label="Wishlist" class="btn btn-wishlist" type="button" title="{{ button_wishlist }}" onclick="wishlist.add('{{ product.product_id }}');">
+												<i class="up-icon-wishlist" aria-hidden="true"></i>
+											</button>
+										</div>
+									{% endif %}
+								</div>
+							{% endif %}
+						</div>
+						<div class="caption dflex flex-column flex-grow-1">
+							<div class="product-name"><a href="{{ product.href }}">{{ product.name }}</a></div>
+							{% if product.pro_sticker and product.pro_sticker.status and product.pro_sticker.block is not empty %}
+								<div class="pro_sticker_block">
+									{% for sticker in product.pro_sticker.block %}
+										<div class="pro_sticker_block__item pro_sticker_block__{{ sticker.type }}{% if sticker.popover %} pro_sticker_popover{% endif %}"
+										{% if sticker.popover %}data-toggle="popover" data-content="{{ sticker.popover }}"{% endif %}>
+											{% if sticker.type == 'image' %}
+												<img loading="lazy" decoding="async" width="{{ sticker.width }}" height="{{ sticker.height }}" class="img-responsive" src="{{ sticker.image }}" alt="">
+											{% else %}
+												<span style="color:#{{ sticker.color }};background:#{{ sticker.bg }}">{{ sticker.text }}</span>
+											{% endif %}
+										</div>
+									{% endfor %}
+								</div>
+							{% endif %}
+							{% if setting_module.status_rating and setting_module.status_rating == '1' %}
+								<div class="rating mb-10 d-flex align-items-center">
+									<div class="rating-stars d-flex align-items-center">
+										{% for star_width in product.rating_stars %}
+											<div class="rating-star up-icon">
+												<div class="rating-star-active up-icon" style="width:{{ star_width }}%"></div>
+											</div>
+										{% endfor %}
+									</div>
+									<div class="product-reviews d-flex align-items-center">
+										<i class="up-icon-18 up-icon-message" aria-hidden="true"></i>
+										{% if product.reviews > 0 %}
+											<span class="total-reviews d-flex align-items-center justify-content-center">{{ product.reviews }}</span>
+										{% endif %}
+									</div>
+								</div>
+							{% endif %}
+							{% if setting_module.status_model and setting_module.status_model == '1' or show_stock_status %}
+								<div class="product_model_sstatus mb-10">
+									{% if setting_module.status_model and setting_module.status_model == '1' %}
+										<div class="product-model">{{ text_model }}{{ product.model }}</div>
+									{% endif %}
+									{% if product.product_quantity <= 0 %}
+										<div class="stock-status outofstock">{{ product.stock_status }}</div>
+									{% else %}
+										<div class="stock-status up-icon instock">
+											{{ text_instock }}
+										</div>
+									{% endif %}
+								</div>
+							{% endif %}
+							{% if (setting_module.status_description is defined and (setting_module.status_description == '1')) %}
+								<div class="product-description">{{ product.description }}</div>
+							{% endif %}
+							<div class="price-actions-box dflex flex-wrap mt-auto">
+								{% if (product.price) %}
+									{% if (setting_module.status_actions is not defined) %}
+										{% if (config_additional_settings_upstore.quantity_btn_module is defined and (config_additional_settings_upstore.quantity_btn_module == '1') and product['show_buy_button']) %}
+											<div class="quantity_plus_minus">
+												<span class="add-up add-action">
+													<svg xmlns="http://www.w3.org/2000/svg" width="7" height="5" fill="none" viewBox="0 0 7 5">
+														<path fill="#000" fill-rule="evenodd" d="M3.826 2.144a.5.5 0 00-.707.004L.856 4.438a.5.5 0 01-.712-.704l2.264-2.289a1.5 1.5 0 012.121-.012L6.852 3.73a.5.5 0 11-.704.711L3.826 2.144z" clip-rule="evenodd"/>
+													</svg>
+												</span>
+												<input type="text" class="quantity-num form-control" name="quantity" value="{{ product.minimum }}" data-minimum="{{ product.minimum }}"  {% if (config_additional_settings_upstore.quantity_multiple is defined and (config_additional_settings_upstore.quantity_multiple == '1') and product.minimum > 1) %}disabled{% endif %}>
+												<span class="add-down add-action">
+													<svg xmlns="http://www.w3.org/2000/svg" width="7" height="5" fill="none" viewBox="0 0 7 5">
+														<path fill="#000" fill-rule="evenodd" d="M3.174 2.856a.5.5 0 00.707-.004L6.144.562a.5.5 0 01.712.704L4.592 3.555a1.5 1.5 0 01-2.121.012L.148 1.27A.5.5 0 11.852.559l2.322 2.297z" clip-rule="evenodd"/>
+													</svg>
+												</span>
+											</div>
+										{% endif %}
+									{% endif %}
+									<div class="price{% if (setting_module.status_actions is defined) %} mb-0{% endif %}" data-price-value="{{ product.price_value }}" data-special-value="{{ product.special_value }}">
+										{% if (not product.special) %}
+											<span class="price_value">{{ product.price }}</span>
+										{% else %}
+											<span class="price-old"><span class="price_value">{{ product.price }}</span></span>
+											<span class="price-new"><span class="special_value">{{ product.special }}</span></span>
+										{% endif %}
+										{% if (product.tax) %}
+											<span class="price-tax">{{ text_tax }} {{ product.tax }}</span>
+										{% endif %}
+									</div>
+								{% endif %}
+								{% if (setting_module.status_actions is not defined) %}
+									<div class="cart">
+										{% if (product['show_buy_button']) %}
+											<button aria-label="Add to cart" class="btn btn-general {{ ch_type_btn }}{% if product.in_cart %} is-active{% endif %}" type="button" {% if ((product.product_quantity <= 0) and disable_cart_button) %}disabled{% else %}onclick="cart.add('{{ product.product_id }}',this)"{% endif %}><i class="up-icon-22 up-icon-cart" aria-hidden="true"></i><span class="text-cart-add">{% if (change_text_cart_button_out_of_stock == 1 and product.product_quantity <= 0) %}{{ disable_cart_button_text }}{% else %}{% if product.in_cart %}{{ text_in_cart }}{% else %}{{ button_cart }}{% endif %}{% endif %}</span></button>
+										{% else %}
+											<button aria-label="notify stock" class="btn btn-general {{ ch_type_btn }}{% if product.in_waitlist %} is-active{% endif %}" type="button" onclick="upstoreNotifyStock('{{ product['product_id'] }}');"><i class="up-icon-22 up-icon-notify" aria-hidden="true"></i><span class="text-cart-add">{{ button_notify_stock }}</span></button>
+										{% endif %}
+									</div>
+								{% endif %}
+							</div>
+						</div>
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+<script>
+	if ($(".bmod_{{ module }}").parents(".position-no-owl").length == 1) {
+		$('.bmod_{{ module }} .swiper-wrapper').each(function() {
+			var items = $(this).children('div.item');
+
+			$(items).each(function() {
+				let product_name = $(this).find('.product-name');
+				$(this).find('.image').before(product_name);
+			});
+
+			for (var i = 0; i < items.length; i+=2) {
+				items.removeClass('swiper-slide');
+				items.slice(i, i+2).wrapAll('<div class="row_items swiper-slide"></div>');
+			}
+		});
+		document.addEventListener('DOMContentLoaded', function() {
+			swiperModule(".bmod_{{ module }}", 1);
+		});
+	} else {
+		document.addEventListener('DOMContentLoaded', function() {
+			swiperModule(".bmod_{{ module }}");
+		});
+	}
+</script>
+</div>

@@ -1,0 +1,129 @@
+<div id="product">
+<div class="modal-header">
+	<div class="modal-title">{{ text_select_options }}</div>
+	<button type="button" class="close-modal" data-dismiss="modal"><i class="up-icon-close" aria-hidden="true"></i></button>
+</div>
+<div class="modal-body">
+{% if options %}
+	<div class="options">
+		{% for option in options %}
+			{% if option.type == 'select' %}
+				<div class="form-group{% if option.required %} required{% endif %}">
+					<label class="control-label" for="input-kit-option{{ option.product_option_id }}">{{ option.name }}</label>
+					<select name="option[{{ option.product_option_id }}]" id="input-kit-option{{ option.product_option_id }}" class="form-control">
+						<option value="">{{ text_select }}</option>
+						{% for option_value in option.product_option_value %}
+						<option value="{{ option_value.product_option_value_id }}" data-prefix="{{ option_value.price_prefix }}" data-price="{{ option_value.price_value }}">{{ option_value.name }}
+						{% if option_value.price %}
+						({{ option_value.price_prefix }}{{ option_value.price }})
+						{% endif %}
+						</option>
+						{% endfor %}
+					</select>
+				</div>
+			{% endif %}
+			{% if (option.type == 'radio') %}
+				<div class="form-group{{ option.required ? ' required' : '' }}">
+					<label class="control-label">{{ option.name }}</label>
+					<div id="input-kit-option{{ option.product_option_id }}">
+						{% for option_value in option.product_option_value %}
+							{% if (option_value.image or option_value.color) %}
+								{% if (option.status_color_type == '1') %}
+									<div class="color-radio">
+										<input type="radio" name="option[{{ option.product_option_id }}]" value="{{ option_value.product_option_value_id }}" data-prefix="{{ option_value.price_prefix }}" data-price="{{ option_value.price_value }}" id="kit{{ option.product_option_id }}_{{ option_value.product_option_value_id }}" />
+										<label {% if (option_value['price']) %}data-toggle="tooltip" title="{{ option_value.price_prefix ~ option_value.price }}"{% endif %} for="kit{{ option.product_option_id }}_{{ option_value.product_option_value_id }}">
+											<span class="color-option" style="background-color:{{ option_value.color}}"></span>
+									  </label>
+									</div>
+								{% else %}
+									<div class="image-radio">
+										<input type="radio" name="option[{{ option.product_option_id }}]" value="{{ option_value.product_option_value_id }}" data-prefix="{{ option_value.price_prefix }}" data-price="{{ option_value.price_value }}" id="kit{{ option.product_option_id }}_{{ option_value.product_option_value_id }}" />
+										<label {% if (option_value['price']) %}data-toggle="tooltip" title="{{ option_value.price_prefix ~ option_value.price }}"{% endif %} for="kit{{ option.product_option_id }}_{{ option_value.product_option_value_id }}">
+											<img src="{{ option_value.image }}" alt="" class="img-thumbnail" />
+									  </label>
+									</div>
+								{% endif %}
+							{% else %}
+								<div class="default-radio">
+								  <input type="radio" name="option[{{ option.product_option_id }}]" value="{{ option_value.product_option_value_id }}" data-prefix="{{ option_value.price_prefix }}" data-price="{{ option_value.price_value }}" id="kit{{ option.product_option_id }}_{{ option_value.product_option_value_id }}" />
+									<label {% if (option_value['price']) %}data-toggle="tooltip" title="{{ option_value.price_prefix ~ option_value.price }}"{% endif %} for="kit{{ option.product_option_id }}_{{ option_value.product_option_value_id }}">
+									<span class="option-name">{{ option_value.name }}</span>
+								  </label>
+								</div>
+							{% endif %}
+						{% endfor %}
+					</div>
+				</div>
+			{% endif %}
+			{% if (option.type == 'checkbox') %}
+				<div class="form-group{{ option.required ? ' required' : '' }}">
+					<label class="control-label">{{ option.name }}</label>
+					<div id="input-kit-option{{ option.product_option_id }}">
+						{% for option_value in option.product_option_value %}
+							{% if (option_value.image or option_value.color) %}
+									{% if (option.status_color_type == '1') %}
+										<div class="color-radio">
+											<input type="checkbox" name="option[{{ option.product_option_id }}][]" value="{{ option_value.product_option_value_id }}" data-prefix="{{ option_value.price_prefix }}" data-price="{{ option_value.price_value }}" id="kit{{ option.product_option_id }}_{{ option_value.product_option_value_id }}" />
+											<label {% if (option_value['price']) %}data-toggle="tooltip" title="{{ option_value.price_prefix ~ option_value.price }}"{% endif %} for="kit{{ option.product_option_id }}_{{ option_value.product_option_value_id }}">
+												<span class="color-option" {% if (option_value['price']) %}data-toggle="tooltip" title="{{ option_value.price_prefix ~ option_value.price }}"{% endif %} style="background-color:{{ option_value.color}}"></span>
+										  </label>
+										</div>
+									{% else %}
+										<div class="image-radio">
+											<input type="checkbox" name="option[{{ option.product_option_id }}][]" value="{{ option_value.product_option_value_id }}" data-prefix="{{ option_value.price_prefix }}" data-price="{{ option_value.price_value }}" id="kit{{ option.product_option_id }}_{{ option_value.product_option_value_id }}" />
+											<label {% if (option_value['price']) %}data-toggle="tooltip" title="{{ option_value.price_prefix ~ option_value.price }}"{% endif %} for="kit{{ option.product_option_id }}_{{ option_value.product_option_value_id }}">
+												<img src="{{ option_value.image }}" alt="" class="img-thumbnail" />
+										  </label>
+										</div>
+									{% endif %}
+								{% else %}
+									<div class="default-radio">
+									  <input type="checkbox" name="option[{{ option.product_option_id }}][]" value="{{ option_value.product_option_value_id }}" data-prefix="{{ option_value.price_prefix }}" data-price="{{ option_value.price_value }}" id="kit{{ option.product_option_id }}_{{ option_value.product_option_value_id }}" />
+										<label {% if (option_value['price']) %}data-toggle="tooltip" title="{{ option_value.price_prefix ~ option_value.price }}"{% endif %} for="kit{{ option.product_option_id }}_{{ option_value.product_option_value_id }}">
+										<span class="option-name">{{ option_value.name }}</span>
+									  </label>
+									</div>
+								{% endif %}
+						{% endfor %}
+					</div>
+				</div>
+			{% endif %}
+		{% endfor %}
+	</div>
+{% endif %}
+</div>
+<div class="modal-footer">
+    <div class="info-kit-bottom dflex">
+        <input type="hidden" name="kit_id" value="{{ info_kit.kit_id }}">
+        <input type="hidden" name="vk_id" value="{{ info_kit.vk_id }}">
+        <input type="hidden" name="main_product" value="{{ info_kit.main_product }}">
+        <input type="hidden" name="prod_id" value="{{ info_kit.product_id }}">
+        <input type="hidden" name="check_option" value="true">
+        <div class="product-kit-totals d-flex">
+            <div class="kit-discount">- <span class="kit-discount-total">{{ discount_kit }}</span></div>
+            <div class="kit-totals"
+                 data-total="{{ total }}"
+                 data-kit-td="{{ info_kit.type_discount }}"
+                 data-kit-d="{{ info_kit.discount }}">
+                {{ total_kit }}
+            </div>
+        </div>
+        <div class="kit-cart">
+            <button class="btn btn-general kitAddToCart" type="button">{{ button_kit_cart }}</button>
+        </div>
+    </div>
+</div>
+<script>
+function kit_price_format(n){
+	c = {{ currency_autocalc['decimals'] is empty ? "0" : currency_autocalc['decimals'] }};
+	d = '{{ currency_autocalc['decimal_point'] }}';
+	t = '{{ currency_autocalc['thousand_point'] }}';
+	s_left = '{{ currency_autocalc['symbol_left'] }}';
+	s_right = '{{ currency_autocalc['symbol_right'] }}';
+	n = n * {{ currency_autocalc['value'] }};
+	i = parseInt(n = Math.abs(n).toFixed(c)) + '';
+	j = ((j = i.length) > 3) ? j % 3 : 0;
+	return s_left + (j ? i.substr(0, j) + t : '') + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : '') + s_right;
+}
+</script>
+</div>

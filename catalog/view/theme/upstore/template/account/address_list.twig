@@ -1,0 +1,57 @@
+{{ header }}
+<div id="account-address" class="container">
+	<ul class="breadcrumb">
+		{% for i,breadcrumb in breadcrumbs %}
+			{% if (i+1 < breadcrumbs|length) %}
+				<li><a href="{{ breadcrumb.href }}"><span>{{ breadcrumb.text }}</span></a></li>
+			{% else %}
+				<li><span>{{ breadcrumb.text }}</span></li>
+			{% endif %}
+		{% endfor %}
+	</ul>
+	<h1>{{ text_address_book }}</h1>
+	{% if success %}
+		<div class="alert ch-alert-success">
+			<img class="success-icon" alt="success-icon" src="catalog/view/theme/upstore/image/success-icon.svg">
+			<div class="text-modal-block">{{ success }}</div>
+			<button type="button" class="close" data-dismiss="alert"><i class="up-icon-close" aria-hidden="true"></i></button>
+		</div>
+	{% endif %}
+	{% if error_warning %}
+		<div class="alert ch-alert-danger">
+			<img class="warning-icon" alt="warning-icon" src="catalog/view/theme/upstore/image/warning-icon.svg">
+			<div class="text-modal-block">{{ error_warning }}</div>
+			<button type="button" class="close" data-dismiss="alert"><i class="up-icon-close" aria-hidden="true"></i></button>
+		</div>
+	{% endif %}
+	<div class="row-flex">{{ column_left }}
+	{% if column_left and column_right %}
+	{% set class = 'col-sm-6' %}
+	{% elseif column_left or column_right %}
+	{% set class = 'col-sm-9' %}
+	{% else %}
+	{% set class = 'col-sm-12' %}
+	{% endif %}
+	<div id="content" class="{{ class }}">{{ content_top }}
+		<div class="chm-account-content h-100">
+			{% if addresses %}
+				{% for result in addresses %}
+					<div class="address-item">
+						<div class="chm-address-info">{{ result.address }}</div>
+						<div class="chm-address-action">
+							<a href="{{ result.update }}" class="chm-btn-info"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> {{ button_edit }}</a>
+							<a href="{{ result.delete }}" class="chm-btn-delete"><i class="fa fa-trash-o" aria-hidden="true"></i> {{ button_delete }}</a>
+						</div>
+					</div>
+				{% endfor %}
+			{% else %}
+				<div class="chm-text-empty">{{ text_empty }}</div>
+			{% endif %}
+			<div class="buttons clearfix">
+				<a href="{{ add }}" class="btn btn-primary">+ {{ button_new_address }}</a>
+			</div>
+		</div>
+		{{ content_bottom }}</div>
+	{{ column_right }}</div>
+</div>
+{{ footer }}

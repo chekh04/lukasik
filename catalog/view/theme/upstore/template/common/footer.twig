@@ -1,0 +1,294 @@
+</main>
+<footer class="{% if (footer_theme_mode is defined and (footer_theme_mode == 1)) %}ch-dark-theme{% else %}ch-light-theme{% endif %}{% if fm_bottom %} fm_b{% endif %}">
+{% if (config_on_off_footer_ribbon == '1') %}
+	<div class="container pos-rel">
+		<div class="footer-ribbon-box">
+			<div class="footer-ribbon">
+				<span>{{ config_footer_ribbon[lang_id]['config_footer_ribbon'] }}</span>
+			</div>
+		</div>
+	</div>
+{% endif %}
+{% if banner_items_footers is not empty %}
+<div class="container box-banner-container">
+    <div class="row-flex banner-footer">
+        {% for banner_items_footer in banner_items_footers %}
+        <div class="col-xs-6 col-sm-6 col-md-4 col-lg-2">
+            <div class="block-banner-footer
+                {% if (banner_items_footer.popup == '1' and banner_items_footer.link) or (banner_items_footer.popup == '0' and banner_items_footer.link) %}is_a_link{% endif %}"
+                {% if banner_items_footer.popup == '1' and banner_items_footer.link %}
+                onclick="banner_link_open('{{ banner_items_footer.link }}')"
+                {% elseif banner_items_footer.popup == '0' and banner_items_footer.link %}
+                onclick="location='{{ banner_items_footer.link }}'"
+                {% endif %}>
+
+                {% if banner_items_footer.icon_type == 0 %}
+                <div class="icon-banner-footer">
+                    <span><i class="{{ banner_items_footer.icon_image }}"></i></span>
+                </div>
+                {% else %}
+                <div class="image-banner-footer">
+                    <img loading="lazy" width="35" height="35" src="{{ banner_items_footer.image }}" alt="{{ banner_items_footer.title[lang_id] }}">
+                </div>
+                {% endif %}
+
+                <div class="text-footer-banner">
+                    <div class="banner-title-footer">{{ banner_items_footer.title[lang_id] }}</div>
+                    <div class="banner-description-footer">{{ banner_items_footer.description[lang_id] }}</div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+<div class="container">
+	<div class="footer-top row pt-4 pb-4">
+		<div class="col-xs-12 col-sm-4 col-md-6">
+			{% if ns_logo_footer is not empty %}
+				<div id="logo-footer">
+					<img {% if logo_iwh_status %}width="{{ logo_w }}" height="{{ logo_h }}"{% endif %} src="{{ ns_logo_footer }}" alt="" class="img-responsive">
+				</div>
+			{% endif %}
+		</div>
+	</div>
+	<div class="footer-center row-flex">
+		<div class="col-xs-12 col-sm-12 col-md-5 col-lg-4 footer-contact">
+			<div class="d-flex flex-column flex-sm-row">
+				<ul class="list-unstyled">
+					{% if phones_footer %}
+						{% for phone_footer in phones_footer %}
+							{% if phone_footer.type is not empty %}
+								<li>
+									<a class="dflex" {{ phone_footer.type|raw }}>
+										{% if phone_footer.icon_footer_phone is not empty %}
+											<i class="{{ phone_footer.icon_footer_phone }} fa-width"></i>
+										{% endif %}
+										{% if phone_footer.icon_image is not empty %}
+											<div class="icon-image">
+												<img loading="lazy" width="22" height="22" src="{{ phone_footer.icon_image }}" alt="" />
+											</div>
+										{% endif %}
+										{{ phone_footer.phone_footer }}
+									</a>
+								</li>
+							{% else %}
+								<li>
+									<div class="dflex">
+										{% if phone_footer.icon_footer_phone is not empty %}
+											<i class="{{ phone_footer.icon_footer_phone }} fa-width"></i>
+										{% endif %}
+										{% if phone_footer.icon_image is not empty %}
+											<div class="icon-image">
+												<img loading="lazy" width="22" height="22" src="{{ phone_footer.icon_image }}" alt="" />
+											</div>
+										{% endif %}
+										<div>{{ phone_footer.phone_footer }}</div>
+									</div>
+								</li>
+							{% endif %}
+						{% endfor %}
+					{% endif %}
+				</ul>
+				{% if social_footer %}
+					<ul class="ch-socials list-unstyled">
+						{% for rsf in social_footer %}
+							<li>
+								<a class="dflex align-items-center" href="{{ rsf.social_link_footer }}">
+									{% if rsf.social_icon_footer is not empty %}
+										<i class="{{ rsf.social_icon_footer }}"></i>
+									{% else %}
+										<img loading="lazy" width="25" height="25" src="{{ rsf.ifs }}" alt="">
+									{% endif %}
+									{% if rsf.text is not empty %}
+										{{ rsf.text }}
+									{% endif %}
+								</a>
+							</li>
+						{% endfor %}
+					</ul>
+				{% endif %}
+			</div>
+		</div>
+		<div class="col-xs-12 col-sm-12 col-md-7 col-lg-8 f-column">
+			{% if informations %}
+				<div class="col-xs-12 col-sm-4">
+					<div class="title-f">
+						{% if fcols['column_1'][lang_id]['icon_image'] is defined and fcols['column_1'][lang_id]['icon_image'] != '' %}
+							<i class="{{ fcols['column_1'][lang_id]['icon_image'] }}"></i>
+						{% endif %}
+						{{ fcols['column_1'][lang_id]['name_column']|default('') }}
+					</div>
+					<ul class="list-unstyled">
+						{% for information in informations %}
+							<li><a href="{{ information.href }}">{{ information.title }}</a></li>
+						{% endfor %}
+						{% if fcols['link_manufacturer'] is defined %}<li><a href="{{ manufacturer }}">{{ text_manufacturer }}</a></li>{% endif %}
+						{% if fcols['link_voucher'] is defined %}<li><a href="{{ voucher }}">{{ text_voucher }}</a></li>{% endif %}
+						{% if fcols['link_affiliate'] is defined %}<li><a href="{{ affiliate }}">{{ text_affiliate }}</a></li>{% endif %}
+						{% if fcols['link_special'] is defined %}<li><a href="{{ special }}">{{ text_special }}</a></li>{% endif %}
+						{% if fcols['link_sitemap'] is defined %}<li><a href="{{ sitemap }}">{{ text_sitemap }}</a></li>{% endif %}
+						{% if footer_links %}
+							{% for result in footer_links %}
+								{% if result.column_link == 2 %}
+									<li><a href="{{ result.link }}">{{ result.title }}</a></li>
+								{% endif %}
+							{% endfor %}
+						{% endif %}
+					</ul>
+				</div>
+			{% endif %}
+			{% if footer_links %}
+				<div class="col-xs-12 col-sm-4">
+					<div class="title-f">
+						{% if fcols['column_4'][lang_id]['icon_image'] is defined and fcols['column_4'][lang_id]['icon_image'] != '' %}
+							<i class="{{ fcols['column_4'][lang_id]['icon_image'] }}"></i>
+						{% endif %}
+						{{ fcols['column_4'][lang_id]['name_column']|default('') }}
+					</div>
+					<ul class="list-unstyled">
+						{% if footer_links %}
+							{% for result in footer_links %}
+								{% if result.column_link == 4 %}
+									<li><a href="{{ result.link }}">{{ result.title }}</a></li>
+								{% endif %}
+							{% endfor %}
+						{% endif %}
+					</ul>
+				</div>
+			{% endif %}
+			<div class="col-xs-12 col-sm-4">
+				<div class="title-f">
+					{% if fcols['column_3'][lang_id]['icon_image'] is defined and fcols['column_3'][lang_id]['icon_image'] != '' %}
+						<i class="{{ fcols['column_3'][lang_id]['icon_image'] }}"></i>
+					{% endif %}
+					{{ fcols['column_3'][lang_id]['name_column']|default('') }}
+				</div>
+				<ul class="list-unstyled two-c-pc">
+					{% if fcols['link_account'] is defined %}<li><a href="{{ account }}">{{ text_account }}</a></li>{% endif %}
+					{% if fcols['link_order'] is defined %}<li><a href="{{ order }}">{{ text_order }}</a></li>{% endif %}
+					{% if fcols['link_wishlist'] is defined %}<li><a href="{{ wishlist }}">{{ text_wishlist }}</a></li>{% endif %}
+					{% if fcols['link_newsletter'] is defined %}<li><a href="{{ newsletter }}">{{ text_newsletter }}</a></li>{% endif %}
+					{% if fcols['link_contact'] is defined %}<li><a href="{{ contact }}">{{ text_contact }}</a></li>{% endif %}
+					{% if fcols['link_return'] is defined %}<li><a href="{{ return }}">{{ text_return }}</a></li>{% endif %}
+					{% if footer_links %}
+						{% for result in footer_links %}
+							{% if result.column_link == 3 %}
+								<li><a href="{{ result.link }}">{{ result.title }}</a></li>
+							{% endif %}
+						{% endfor %}
+					{% endif %}
+				</ul>
+			</div>
+		</div>
+		{% if footer_desc_status or footer_map_status != 'off' %}
+			{% if footer_desc_status == 1 %}
+				<div class="description_store_footer col-xs-12 {% if footer_map_status == 'off' %}col-md-12{% else %}col-md-6{% endif %}">
+					<div>{{ description_store_footer }}</div>
+				</div>
+			{% endif %}
+			{% if footer_map_status == 'codemap' %}
+				<div class="gmap col-xs-12 {% if footer_desc_status %}col-md-6{% else %}col-md-12{% endif %}">
+					{{ code_map }}
+				</div>
+			{% endif %}
+		{% endif %}
+		<div class="copyright__payments col-xs-12 dflex flex-column flex-md-row justify-content-between">
+			{% if config_payments_footer %}
+				<div class="ch-payments dflex flex-wrap align-items-center justify-content-center">
+					{% for config_payment in config_payments_array_footer %}
+						<span {% if config_payment.payments_link_footer %}class="plink" onclick="location='{{ config_payment.payments_link_footer }}'"{% endif %}>
+							<img loading="lazy" width="46" height="32" src="{{ config_payment.icon_footer_payments }}" alt="">
+						</span>
+					{% endfor %}
+				</div>
+			{% endif %}
+			<div class="dflex align-items-center justify-content-center">
+				<div class="copyright">{{ powered_new }}</div>
+			</div>
+		</div>
+	</div>
+</div>
+</footer>
+<div id="back-top">
+	<button type="button" class="btn btn-back-top" aria-label="Back Top">
+		<svg class="icon-back-top-arrow" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6"><path fill="#fff" fill-rule="evenodd" d="M9.889 4.794a.584.584 0 0 1-.778.103L5 2.032.889 4.897a.584.584 0 0 1-.778-.103.492.492 0 0 1 .111-.723l4.111-2.865a1.18 1.18 0 0 1 1.334 0l4.11 2.865a.492.492 0 0 1 .112.723Z" clip-rule="evenodd"/></svg>
+		<svg class="svg-progress svg-progress--circle" width="100" height="100" viewBox="0 0 100 100">
+			<circle class="percent" cx="50" cy="50" r="46" fill="none" stroke-width="8"></circle>
+		</svg>
+	</button>
+</div>
+{{ config_ns_footer_counters }}
+{{ js_upstore_footer }}
+<script>
+$(document).on('click', '.title-f', function () {
+	if($(document).width() < 768){
+		$(this).toggleClass('show-info');
+		$(this).next().slideToggle(100);
+		$('html, body').animate({ scrollTop: $(this).offset().top - 80}, 250);
+	}
+});
+
+function downloadCSSAtOnload() {
+	{% if (css_upstore_footer is not empty) %}
+		{% for key,value_href in css_upstore_footer %}
+			var element{{ key }} = document.createElement("link");
+			element{{ key }}.href = "{{ value_href }}";
+			element{{ key }}.rel = "stylesheet";
+			document.body.appendChild(element{{ key }});
+		{% endfor %}
+	{% endif %}
+}
+
+function downloadJSAtOnload() {
+	{% if (js_upstore_onload is not empty) %}
+		{% for key,value_src in js_upstore_onload %}
+			var element{{ key }} = document.createElement("script");
+			element{{ key }}.src = "{{ value_src }}";
+			document.body.appendChild(element{{ key }});
+		{% endfor %}
+	{% endif %}
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+	{% if (css_upstore_footer is not empty) %}
+	downloadCSSAtOnload();
+	{% endif %}
+	{% if (js_upstore_onload is not empty) %}
+	downloadJSAtOnload();
+	{% endif %}
+});
+
+if(/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream){
+	var el_tag_a = document.getElementsByTagName('a');
+	for(var i = 0; i < el_tag_a.length; i++){
+	    el_tag_a[i].addEventListener('touchend',function(){});
+	}
+	var el_tag_b = document.getElementsByTagName('button');
+	for(var i = 1; i < el_tag_b.length; i++){
+	    el_tag_b[i].addEventListener('touchend',function(){});
+	}
+	var el_tag_i = document.getElementsByTagName('input');
+	for(var i = 0; i < el_tag_i.length; i++){
+	    el_tag_i[i].addEventListener('touchend',function(){});
+	}
+	var el_tag_s = document.getElementsByTagName('span');
+	for(var i = 0; i < el_tag_s.length; i++){
+	    el_tag_s[i].addEventListener('touchend',function(){});
+	}
+}
+document.addEventListener("DOMContentLoaded", function() {
+	if(/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream){
+		var viewportMeta = document.querySelector('meta[name="viewport"]');
+		if (viewportMeta) {
+			viewportMeta.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no');
+		} else {
+			viewportMeta = document.createElement('meta');
+			viewportMeta.setAttribute('name', 'viewport');
+			viewportMeta.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no');
+			document.head.appendChild(viewportMeta);
+		}
+	}
+});
+</script>
+</body></html>

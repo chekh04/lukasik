@@ -1,0 +1,136 @@
+<div id="popup-notify-stock" class="modal-dialog chm-modal sm-modal-4 modal-dialog-centered">
+	<div class="modal-content">
+		{% if not in_waitlist %}
+			<div class="modal-header">
+				<div class="modal-title">{{ setting.popup_title[lang_id] ?? '' }}</div>
+				<button type="button" class="close-modal" data-dismiss="modal"><i class="up-icon-close" aria-hidden="true"></i></button>
+			</div>
+			<div class="modal-body">
+				{% if setting.popup_text_after_title[lang_id] is not empty %}
+					<div class="info-text-notify-stock">
+						{{ setting.popup_text_after_title[lang_id] | raw }}
+					</div>
+				{% endif %}
+				<form id="form-notify-stock" method="post" enctype="multipart/form-data">
+					<div class="form-group hidden">
+						<input type="hidden" name="ns_product_id" value="{{ product_id }}" />
+						<input type="hidden" name="token_csrf" value="{{ csrf_token }}" />
+					</div>
+					{% if setting.name_field %}
+						<div class="form-group {{ setting.name_field_required == '1' ? 'field_required' : '' }}">
+							<div class="input-group-flex">
+								<div class="input-group-icon"><img src="catalog/view/theme/upstore/image/form-icon/name-icon.svg" alt=""></div>
+								<input id="contact-name" class="form-control contact-name" type="text" placeholder="{{ setting.name_field_placeholder[lang_id].text ?? '' }}" value="{{ name }}" name="name">
+							</div>
+						</div>
+					{% endif %}
+					{% if setting.telephone_field %}
+						<div class="form-group {{ setting.telephone_field_required == '1' ? 'field_required' : '' }}">
+							<div class="input-group-flex">
+								<div class="input-group-icon"><img src="catalog/view/theme/upstore/image/form-icon/tel-icon.svg" alt=""></div>
+								<input id="contact-telephone" class="form-control contact-telephone" type="text" placeholder="{{ setting.telephone_field_placeholder[lang_id].text ?? '' }}" value="{{ telephone }}" name="telephone">
+							</div>
+						</div>
+					{% endif %}
+					<div class="form-group field_required">
+						<div class="input-group-flex">
+							<div class="input-group-icon"><img src="catalog/view/theme/upstore/image/form-icon/email-icon.svg" alt=""></div>
+							<input id="contact-email" class="form-control contact-email" type="text" placeholder="{{ text_placeholder_email }}" value="{{ email }}" name="email">
+						</div>
+					</div>
+					{% if text_agree %}
+						<div class="form-group">
+							<label class="chm-checkbox mb-0">
+								<input class="checkbox-input" type="checkbox" name="agree" value="1" />
+								<span class="checkbox-check"></span>{{ text_agree }}
+							</label>
+							<div class="error_agree"></div>
+						</div>
+					{% endif %}
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button id="up-btn-notify-stock" class="chm-btn chm-btn-primary chm-px-lg chm-lg-rounded w-100" type="button" onclick="notifyStockConfirm()">{{ button_send }}</button>
+			</div>
+			{% if setting.telephone_field_mask != '' %}
+				<script src="catalog/view/theme/upstore/js/maskedinput.js" type="text/javascript"></script>
+				<script>$(".contact-telephone").mask('{{ setting.telephone_field_mask }}');</script>
+			{% endif %}
+			<script>
+
+			function showErrorMessage(message) {
+				clearTimeout(upNsTimeout_id);
+				$('.ch-alert-danger').remove();
+
+				$('body').append(`
+					<div class="alert ch-alert-danger mh-100">
+					<img class="success-icon" alt="warning-icon" src="catalog/view/theme/upstore/image/warning-icon.svg">
+					<div class="text-modal-block">${message}</div>
+					<button type="button" class="close" data-dismiss="alert"><i class="up-icon-close" aria-hidden="true"></i></button>
+					</div>
+					`);
+
+				upNsTimeout_id = setTimeout(function () {
+					$('.ch-alert-danger').remove();
+				}, 7000);
+			}
+
+			var upNsTimeout_id = 0;
+			function notifyStockConfirm() {
+				$.ajax({
+					url: 'index.php?route=extension/module/upstore_notify_stock/confirm',
+					type: 'post',
+					data: $('#form-notify-stock').serialize() + '&action=send',
+					dataType: 'json',
+					beforeSend: function() {
+						creatOverlayLoadPage(true);
+						clearTimeout(upNsTimeout_id);
+						$('#up-btn-notify-stock').data('original-content', $('#up-btn-notify-stock').html());
+						$('#up-btn-notify-stock').html('<i class="fa fa-spinner fa-spin"></i>').prop('disabled', true);
+					},
+					complete: function() {
+						setTimeout(function () {
+							creatOverlayLoadPage(false);
+							$('#up-btn-notify-stock').html($('#up-btn-notify-stock').data('original-content')).prop('disabled', false);
+						}, 300);
+					},
+					success: function(json) {
+						$('#popup-notify-stock .form-control').removeClass('error_input');
+						$('#popup-notify-stock .form-control').removeClass('success_input');
+						$('#popup-notify-stock').find('.us-error-agree').removeClass('us-error-agree');
+						$('.alert.ch-alert-danger,.us-success-icon,.us-error-icon,.us-text-error').remove();
+
+						if (json['error']) {
+
+							if (json['error']['product'] || json['error']['exists']) {
+								const errorMessage = json['error']['product'] || json['error']['exists'];
+								showErrorMessage(errorMessage);
+							}
+
+							handleFieldNotifications('#popup-notify-stock', json['error']);
+						}
+
+						if (json['success']){
+							$('#modal-notify-stock').modal('hide');
+
+							showModalWithMessage(json['success']);
+
+							$(document).on('hide.bs.modal', '#modal-notify-stock.modal.fade', function () {
+								$('#modal-notify-stock').remove();
+							});
+						}
+					}
+				});
+			}
+			</script>
+		{% else %}
+			<div class="modal-header">
+				<div class="modal-title">{{ setting.popup_title[lang_id] ?? '' }}</div>
+				<button type="button" class="close-modal" data-dismiss="modal"><i class="up-icon-close" aria-hidden="true"></i></button>
+			</div>
+			<div class="modal-body">
+				<div class="text-modal-block">{{ text_notify_stock_exists }}</div>
+			</div>
+		{% endif %}
+	</div>
+</div>

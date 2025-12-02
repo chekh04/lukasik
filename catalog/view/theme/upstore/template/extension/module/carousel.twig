@@ -1,0 +1,55 @@
+<div class="container-module carousel-mod">
+  <div class="swiper swiper-module carousel_{{ module }}">
+  <div class="swiper-wrapper">
+	 {% for banner in banners %}
+		<div class="item swiper-slide text-center">
+		  {% if (banner.link) %}
+			 <a href="{{ banner.link }}"><img src="{{ banner.image }}" alt="{{ banner.title }}" class="img-responsive img-center" /></a>
+		  {% else %}
+			 <img src="{{ banner.image }}" alt="{{ banner.title }}" class="img-responsive img-center" />
+		  {% endif %}
+		</div>
+	{% endfor %}
+  </div>
+  <div class="swiper-scrollbar carousel-scrollbar"></div>
+  </div>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var swiperCarousel = new Swiper('.carousel_{{ module }}', {
+	 slidesPerView: 1.75,
+	 watchSlidesVisibility: true,
+	 watchSlidesProgress: true,
+	 watchOverflow: true,
+	 observer: true,
+	 observeParents: true,
+	 spaceBetween: 20,
+	 nested: false,
+	 speed: 400,
+	 breakpointsBase: 'container',
+	 grabCursor: true,
+	 navigation: {
+		enabled: false,
+	 },
+	 scrollbar: {
+		el: '.carousel-scrollbar',
+		draggable: true,
+	 },
+	 on: {
+		afterInit: function () {
+		  setTimeout(function () {
+			 $('.carousel_{{ module }}').addClass('swiper-visible');
+		  }, 500);
+
+		},
+	 },
+	 breakpoints: {
+		400 : {slidesPerView: 2},
+		600 : {slidesPerView: 3},
+		740: {slidesPerView: 4},
+		992: {slidesPerView: 5},
+		1200: {slidesPerView: 6}
+	 }
+  });
+});
+</script>
