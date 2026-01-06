@@ -471,21 +471,49 @@
 
 {# Filter Modal DESKTOP #}
 <div class="modal fade" id="filterModal" tabindex="-1" role="dialog" aria-labelledby="filterModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="filterModalLabel">Filter</h4>
+                <h4 class="modal-title" id="filterModalLabel">Фільтр товарів</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                {# Filter content will go here #}
-                <p>Filter options coming soon...</p>
+                <div class="row">
+                    {# Price Filter Desktop #}
+                    <div class="col-md-6">
+                        <div class="desktop-filter-section">
+                            <h5 class="desktop-filter-title">Ціна</h5>
+                            <div class="price-filter-inputs">
+                                <div class="price-input-group">
+                                    <label for="desktop-price-min">від</label>
+                                    <input type="number" id="desktop-price-min" class="price-input desktop-price-input" placeholder="0" min="0">
+                                    <span class="price-currency">₴</span>
+                                </div>
+                                <div class="price-input-separator">—</div>
+                                <div class="price-input-group">
+                                    <label for="desktop-price-max">до</label>
+                                    <input type="number" id="desktop-price-max" class="price-input desktop-price-input" placeholder="50000" min="0">
+                                    <span class="price-currency">₴</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {# Size Filter Desktop #}
+                    <div class="col-md-6">
+                        <div class="desktop-filter-section">
+                            <h5 class="desktop-filter-title">Розмір</h5>
+                            <div class="size-filter-list" id="desktopSizeFilterList">
+                                {# Sizes will be loaded dynamically #}
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Apply Filters</button>
+                <button type="button" class="btn btn-secondary" onclick="resetDesktopFilter()">Скинути</button>
+                <button type="button" class="btn btn-primary" onclick="applyDesktopFilter()">Застосувати</button>
             </div>
         </div>
     </div>
@@ -511,8 +539,49 @@
 			</button>
 		</div>
 		<div class="filter-modal-fullpage__body">
-			{# Filter content will go here #}
-			<p>Опції фільтра скоро з'являться...</p>
+			{# Price Filter #}
+			<div class="custom-filter-section" id="priceFilterSection">
+				<div class="custom-filter-header" onclick="toggleFilterSection('priceFilterSection')">
+					<span class="custom-filter-title">Ціна</span>
+					<svg class="custom-filter-arrow" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+				</div>
+				<div class="custom-filter-body">
+					<div class="price-filter-inputs">
+						<div class="price-input-group">
+							<label for="price-min">від</label>
+							<input type="number" id="price-min" class="price-input" placeholder="0" min="0">
+							<span class="price-currency">₴</span>
+						</div>
+						<div class="price-input-separator">—</div>
+						<div class="price-input-group">
+							<label for="price-max">до</label>
+							<input type="number" id="price-max" class="price-input" placeholder="50000" min="0">
+							<span class="price-currency">₴</span>
+						</div>
+					</div>
+					<div class="price-slider-container">
+						<div class="price-slider-track">
+							<div class="price-slider-range" id="priceSliderRange"></div>
+						</div>
+						<input type="range" id="price-slider-min" class="price-slider" min="0" max="50000" value="0" step="100">
+						<input type="range" id="price-slider-max" class="price-slider" min="0" max="50000" value="50000" step="100">
+					</div>
+				</div>
+			</div>
+
+			{# Size Filter #}
+			<div class="custom-filter-section" id="sizeFilterSection">
+				<div class="custom-filter-header" onclick="toggleFilterSection('sizeFilterSection')">
+					<span class="custom-filter-title">Розмір</span>
+					<svg class="custom-filter-arrow" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+				</div>
+				<div class="custom-filter-body">
+					<div class="size-filter-list" id="sizeFilterList">
+						{# Sizes will be loaded dynamically #}
+						<div class="size-loading">Завантаження розмірів...</div>
+					</div>
+				</div>
+			</div>
 		</div>
 		<div class="filter-modal-fullpage__footer">
 			<button type="button" class="btn btn-outline-secondary filter-modal-fullpage__btn-reset" onclick="resetMobileFilter()">Скинути</button>
@@ -719,43 +788,641 @@ body.filter-modal-open {
 	border-color: #444;
 	color: #ddd;
 }
+
+/* Custom Filter Sections */
+.custom-filter-section {
+	border-bottom: 1px solid #eee;
+	margin-bottom: 0;
+}
+.custom-filter-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 16px 0;
+	cursor: pointer;
+	user-select: none;
+}
+.custom-filter-title {
+	font-size: 15px;
+	font-weight: 600;
+	color: #222;
+}
+.custom-filter-arrow {
+	transition: transform 0.2s ease;
+}
+.custom-filter-section.collapsed .custom-filter-arrow {
+	transform: rotate(-90deg);
+}
+.custom-filter-body {
+	padding-bottom: 16px;
+	overflow: hidden;
+	transition: max-height 0.3s ease, opacity 0.2s ease;
+}
+.custom-filter-section.collapsed .custom-filter-body {
+	max-height: 0 !important;
+	padding-bottom: 0;
+	opacity: 0;
+}
+
+/* Price Filter */
+.price-filter-inputs {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	margin-bottom: 20px;
+}
+.price-input-group {
+	flex: 1;
+	position: relative;
+	display: flex;
+	align-items: center;
+	background: #f5f5f5;
+	border-radius: 8px;
+	padding: 8px 12px;
+}
+.price-input-group label {
+	font-size: 12px;
+	color: #888;
+	margin-right: 8px;
+	white-space: nowrap;
+}
+.price-input {
+	width: 100%;
+	border: none;
+	background: transparent;
+	font-size: 15px;
+	font-weight: 500;
+	color: #222;
+	outline: none;
+	-moz-appearance: textfield;
+}
+.price-input::-webkit-outer-spin-button,
+.price-input::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+.price-currency {
+	font-size: 14px;
+	color: #666;
+	margin-left: 4px;
+}
+.price-input-separator {
+	color: #999;
+	font-size: 14px;
+}
+
+/* Price Slider */
+.price-slider-container {
+	position: relative;
+	height: 40px;
+	padding: 15px 0;
+}
+.price-slider-track {
+	position: absolute;
+	top: 50%;
+	left: 0;
+	right: 0;
+	height: 4px;
+	background: #e0e0e0;
+	border-radius: 2px;
+	transform: translateY(-50%);
+}
+.price-slider-range {
+	position: absolute;
+	height: 100%;
+	background: var(--up-bg-btn-general, #333);
+	border-radius: 2px;
+}
+.price-slider {
+	position: absolute;
+	top: 50%;
+	left: 0;
+	width: 100%;
+	height: 4px;
+	background: transparent;
+	-webkit-appearance: none;
+	appearance: none;
+	pointer-events: none;
+	transform: translateY(-50%);
+}
+.price-slider::-webkit-slider-thumb {
+	-webkit-appearance: none;
+	width: 22px;
+	height: 22px;
+	background: #fff;
+	border: 2px solid var(--up-bg-btn-general, #333);
+	border-radius: 50%;
+	cursor: pointer;
+	pointer-events: auto;
+	box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+	transition: transform 0.1s ease;
+}
+.price-slider::-webkit-slider-thumb:hover {
+	transform: scale(1.1);
+}
+.price-slider::-moz-range-thumb {
+	width: 22px;
+	height: 22px;
+	background: #fff;
+	border: 2px solid var(--up-bg-btn-general, #333);
+	border-radius: 50%;
+	cursor: pointer;
+	pointer-events: auto;
+	box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+/* Size Filter */
+.size-filter-list {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+}
+.size-checkbox-item {
+	display: flex;
+	align-items: center;
+}
+.size-checkbox-input {
+	display: none;
+}
+.size-checkbox-label {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 52px;
+	padding: 10px 14px;
+	background: #f5f5f5;
+	border: 2px solid transparent;
+	border-radius: 8px;
+	font-size: 14px;
+	font-weight: 500;
+	color: #333;
+	cursor: pointer;
+	transition: all 0.15s ease;
+	user-select: none;
+}
+.size-checkbox-label:hover {
+	background: #eee;
+}
+.size-checkbox-input:checked + .size-checkbox-label {
+	background: #fff;
+	border-color: var(--up-bg-btn-general, #333);
+	color: var(--up-bg-btn-general, #333);
+}
+.size-loading {
+	color: #888;
+	font-size: 14px;
+	padding: 10px 0;
+}
+
+/* Dark Theme Support */
+.dark-theme .custom-filter-section {
+	border-bottom-color: #333;
+}
+.dark-theme .custom-filter-title {
+	color: #fff;
+}
+.dark-theme .price-input-group {
+	background: #2a2a2a;
+}
+.dark-theme .price-input {
+	color: #fff;
+}
+.dark-theme .price-slider-track {
+	background: #444;
+}
+.dark-theme .size-checkbox-label {
+	background: #2a2a2a;
+	color: #ddd;
+}
+.dark-theme .size-checkbox-label:hover {
+	background: #333;
+}
+.dark-theme .size-checkbox-input:checked + .size-checkbox-label {
+	background: #333;
+	border-color: var(--up-bg-btn-general, #fff);
+	color: #fff;
+}
+
+/* Desktop Filter Modal Styles */
+.desktop-filter-section {
+	margin-bottom: 20px;
+}
+.desktop-filter-title {
+	font-size: 15px;
+	font-weight: 600;
+	margin-bottom: 15px;
+	color: #222;
+}
+#filterModal .price-filter-inputs {
+	margin-bottom: 0;
+}
+#filterModal .modal-body {
+	padding: 20px 25px;
+}
+#filterModal .size-filter-list {
+	max-height: 200px;
+	overflow-y: auto;
+}
 </style>
 
 <script>
-function openMobileFilter() {
-	var modal = document.getElementById('filterModalFullpage');
-	if (modal) {
-		modal.classList.add('is-open');
-		document.body.classList.add('filter-modal-open');
-	}
-}
+(function() {
+	// Filter State
+	var filterState = {
+		priceMin: null,
+		priceMax: null,
+		sizes: []
+	};
 
-function closeMobileFilter() {
-	var modal = document.getElementById('filterModalFullpage');
-	if (modal) {
-		modal.classList.remove('is-open');
-		document.body.classList.remove('filter-modal-open');
-	}
-}
+	// Price slider config
+	var priceConfig = {
+		min: 0,
+		max: 50000,
+		step: 100
+	};
 
-function applyMobileFilter() {
-	// Apply filters logic here
-	closeMobileFilter();
-}
+	// Available sizes (will be loaded or predefined)
+	var availableSizes = [
+		{ id: 70, name: '55' },
+		{ id: 71, name: '60' },
+		{ id: 73, name: '65' },
+		{ id: 74, name: '70' },
+		{ id: 75, name: '75' },
+		{ id: 68, name: '80' },
+		{ id: 69, name: '86' },
+		{ id: 58, name: '92' },
+		{ id: 66, name: '98' },
+		{ id: 62, name: '104' },
+		{ id: 60, name: '110' },
+		{ id: 79, name: '116' },
+		{ id: 77, name: '122' },
+		{ id: 76, name: '128' },
+		{ id: 88, name: '134' },
+		{ id: 82, name: '140' },
+		{ id: 91, name: '146' }
+	];
 
-function resetMobileFilter() {
-	// Reset filters logic here
-}
+	// Initialize
+	document.addEventListener('DOMContentLoaded', function() {
+		initPriceSlider();
+		initSizeFilter();
+		parseUrlFilters();
+	});
 
-// Close on Escape key
-document.addEventListener('keydown', function(e) {
-	if (e.key === 'Escape') {
+	// Open/Close Modal
+	window.openMobileFilter = function() {
 		var modal = document.getElementById('filterModalFullpage');
-		if (modal && modal.classList.contains('is-open')) {
-			closeMobileFilter();
+		if (modal) {
+			modal.classList.add('is-open');
+			document.body.classList.add('filter-modal-open');
+		}
+	};
+
+	window.closeMobileFilter = function() {
+		var modal = document.getElementById('filterModalFullpage');
+		if (modal) {
+			modal.classList.remove('is-open');
+			document.body.classList.remove('filter-modal-open');
+		}
+	};
+
+	// Toggle Filter Section
+	window.toggleFilterSection = function(sectionId) {
+		var section = document.getElementById(sectionId);
+		if (section) {
+			section.classList.toggle('collapsed');
+		}
+	};
+
+	// Price Slider Logic
+	function initPriceSlider() {
+		var minInput = document.getElementById('price-min');
+		var maxInput = document.getElementById('price-max');
+		var minSlider = document.getElementById('price-slider-min');
+		var maxSlider = document.getElementById('price-slider-max');
+		var range = document.getElementById('priceSliderRange');
+
+		if (!minSlider || !maxSlider) return;
+
+		function updateSliderRange() {
+			var min = parseInt(minSlider.value);
+			var max = parseInt(maxSlider.value);
+			var total = priceConfig.max - priceConfig.min;
+			
+			var minPercent = ((min - priceConfig.min) / total) * 100;
+			var maxPercent = ((max - priceConfig.min) / total) * 100;
+			
+			range.style.left = minPercent + '%';
+			range.style.width = (maxPercent - minPercent) + '%';
+		}
+
+		function syncInputs() {
+			minInput.value = minSlider.value;
+			maxInput.value = maxSlider.value;
+			filterState.priceMin = parseInt(minSlider.value);
+			filterState.priceMax = parseInt(maxSlider.value);
+		}
+
+		minSlider.addEventListener('input', function() {
+			var min = parseInt(this.value);
+			var max = parseInt(maxSlider.value);
+			if (min > max - priceConfig.step) {
+				this.value = max - priceConfig.step;
+			}
+			syncInputs();
+			updateSliderRange();
+		});
+
+		maxSlider.addEventListener('input', function() {
+			var min = parseInt(minSlider.value);
+			var max = parseInt(this.value);
+			if (max < min + priceConfig.step) {
+				this.value = min + priceConfig.step;
+			}
+			syncInputs();
+			updateSliderRange();
+		});
+
+		minInput.addEventListener('change', function() {
+			var val = parseInt(this.value) || priceConfig.min;
+			val = Math.max(priceConfig.min, Math.min(val, parseInt(maxSlider.value) - priceConfig.step));
+			this.value = val;
+			minSlider.value = val;
+			filterState.priceMin = val;
+			updateSliderRange();
+		});
+
+		maxInput.addEventListener('change', function() {
+			var val = parseInt(this.value) || priceConfig.max;
+			val = Math.min(priceConfig.max, Math.max(val, parseInt(minSlider.value) + priceConfig.step));
+			this.value = val;
+			maxSlider.value = val;
+			filterState.priceMax = val;
+			updateSliderRange();
+		});
+
+		updateSliderRange();
+	}
+
+	// Size Filter Logic
+	function initSizeFilter() {
+		var container = document.getElementById('sizeFilterList');
+		if (!container) return;
+
+		var html = '';
+		availableSizes.forEach(function(size) {
+			html += '<div class="size-checkbox-item">' +
+				'<input type="checkbox" class="size-checkbox-input" id="size-' + size.id + '" value="' + size.id + '" onchange="updateSizeFilter(this)">' +
+				'<label class="size-checkbox-label" for="size-' + size.id + '">' + size.name + '</label>' +
+				'</div>';
+		});
+		container.innerHTML = html;
+	}
+
+	window.updateSizeFilter = function(checkbox) {
+		var sizeId = parseInt(checkbox.value);
+		if (checkbox.checked) {
+			if (filterState.sizes.indexOf(sizeId) === -1) {
+				filterState.sizes.push(sizeId);
+			}
+		} else {
+			var idx = filterState.sizes.indexOf(sizeId);
+			if (idx > -1) {
+				filterState.sizes.splice(idx, 1);
+			}
+		}
+	};
+
+	// Parse URL Filters
+	function parseUrlFilters() {
+		var url = new URL(window.location.href);
+		var ocfParam = url.searchParams.get('ocf');
+		
+		if (ocfParam) {
+			var filters = ocfParam.split(',');
+			filters.forEach(function(filter) {
+				if (filter.indexOf('price.0') === 0) {
+					var priceRange = filter.replace('price.0-', '').split('_');
+					if (priceRange.length === 2) {
+						filterState.priceMin = parseInt(priceRange[0]);
+						filterState.priceMax = parseInt(priceRange[1]);
+						
+						var minInput = document.getElementById('price-min');
+						var maxInput = document.getElementById('price-max');
+						var minSlider = document.getElementById('price-slider-min');
+						var maxSlider = document.getElementById('price-slider-max');
+						
+						if (minInput && minSlider) {
+							minInput.value = filterState.priceMin;
+							minSlider.value = filterState.priceMin;
+						}
+						if (maxInput && maxSlider) {
+							maxInput.value = filterState.priceMax;
+							maxSlider.value = filterState.priceMax;
+						}
+						
+						// Update range display
+						var range = document.getElementById('priceSliderRange');
+						if (range) {
+							var minPercent = ((filterState.priceMin - priceConfig.min) / (priceConfig.max - priceConfig.min)) * 100;
+							var maxPercent = ((filterState.priceMax - priceConfig.min) / (priceConfig.max - priceConfig.min)) * 100;
+							range.style.left = minPercent + '%';
+							range.style.width = (maxPercent - minPercent) + '%';
+						}
+					}
+				}
+				
+				if (filter.indexOf('2.4-') === 0) {
+					var sizeIds = filter.replace('2.4-', '').split('-');
+					sizeIds.forEach(function(id) {
+						var sizeId = parseInt(id);
+						if (!isNaN(sizeId)) {
+							filterState.sizes.push(sizeId);
+							var checkbox = document.getElementById('size-' + sizeId);
+							if (checkbox) checkbox.checked = true;
+						}
+					});
+				}
+			});
 		}
 	}
-});
+
+	// Apply Filters
+	window.applyMobileFilter = function() {
+		var url = new URL(window.location.href);
+		var filters = [];
+		
+		// Price filter
+		var minInput = document.getElementById('price-min');
+		var maxInput = document.getElementById('price-max');
+		var priceMin = minInput ? parseInt(minInput.value) : null;
+		var priceMax = maxInput ? parseInt(maxInput.value) : null;
+		
+		if (priceMin && priceMax && (priceMin > 0 || priceMax < priceConfig.max)) {
+			filters.push('price.0-' + priceMin + '_' + priceMax);
+		}
+		
+		// Size filter
+		if (filterState.sizes.length > 0) {
+			filters.push('2.4-' + filterState.sizes.join('-'));
+		}
+		
+		// Update URL
+		if (filters.length > 0) {
+			url.searchParams.set('ocf', filters.join(','));
+		} else {
+			url.searchParams.delete('ocf');
+		}
+		
+		// Remove page parameter when filtering
+		url.searchParams.delete('page');
+		
+		closeMobileFilter();
+		window.location.href = url.toString();
+	};
+
+	// Reset Filters
+	window.resetMobileFilter = function() {
+		// Reset state
+		filterState.priceMin = null;
+		filterState.priceMax = null;
+		filterState.sizes = [];
+		
+		// Reset inputs
+		var minInput = document.getElementById('price-min');
+		var maxInput = document.getElementById('price-max');
+		var minSlider = document.getElementById('price-slider-min');
+		var maxSlider = document.getElementById('price-slider-max');
+		var range = document.getElementById('priceSliderRange');
+		
+		if (minInput) minInput.value = '';
+		if (maxInput) maxInput.value = '';
+		if (minSlider) minSlider.value = priceConfig.min;
+		if (maxSlider) maxSlider.value = priceConfig.max;
+		if (range) {
+			range.style.left = '0%';
+			range.style.width = '100%';
+		}
+		
+		// Reset size checkboxes
+		var checkboxes = document.querySelectorAll('.size-checkbox-input');
+		checkboxes.forEach(function(cb) {
+			cb.checked = false;
+		});
+		
+		// Navigate without filters
+		var url = new URL(window.location.href);
+		url.searchParams.delete('ocf');
+		url.searchParams.delete('page');
+		
+		closeMobileFilter();
+		window.location.href = url.toString();
+	};
+
+	// Close on Escape key
+	document.addEventListener('keydown', function(e) {
+		if (e.key === 'Escape') {
+			var modal = document.getElementById('filterModalFullpage');
+			if (modal && modal.classList.contains('is-open')) {
+				closeMobileFilter();
+			}
+		}
+	});
+
+	// Desktop Filter Functions
+	function initDesktopSizeFilter() {
+		var container = document.getElementById('desktopSizeFilterList');
+		if (!container) return;
+
+		var html = '';
+		availableSizes.forEach(function(size) {
+			html += '<div class="size-checkbox-item">' +
+				'<input type="checkbox" class="size-checkbox-input desktop-size-cb" id="desktop-size-' + size.id + '" value="' + size.id + '">' +
+				'<label class="size-checkbox-label" for="desktop-size-' + size.id + '">' + size.name + '</label>' +
+				'</div>';
+		});
+		container.innerHTML = html;
+		
+		// Sync with current filters
+		filterState.sizes.forEach(function(sizeId) {
+			var checkbox = document.getElementById('desktop-size-' + sizeId);
+			if (checkbox) checkbox.checked = true;
+		});
+	}
+
+	// Initialize desktop filter when modal opens
+	$('#filterModal').on('show.bs.modal', function() {
+		initDesktopSizeFilter();
+		
+		// Sync price inputs
+		var minInput = document.getElementById('desktop-price-min');
+		var maxInput = document.getElementById('desktop-price-max');
+		if (minInput && filterState.priceMin) minInput.value = filterState.priceMin;
+		if (maxInput && filterState.priceMax) maxInput.value = filterState.priceMax;
+	});
+
+	window.applyDesktopFilter = function() {
+		var url = new URL(window.location.href);
+		var filters = [];
+		
+		// Price filter
+		var minInput = document.getElementById('desktop-price-min');
+		var maxInput = document.getElementById('desktop-price-max');
+		var priceMin = minInput ? parseInt(minInput.value) : null;
+		var priceMax = maxInput ? parseInt(maxInput.value) : null;
+		
+		if ((priceMin && priceMin > 0) || (priceMax && priceMax < priceConfig.max)) {
+			var pMin = priceMin || 0;
+			var pMax = priceMax || priceConfig.max;
+			filters.push('price.0-' + pMin + '_' + pMax);
+		}
+		
+		// Size filter
+		var desktopSizes = [];
+		var checkboxes = document.querySelectorAll('.desktop-size-cb:checked');
+		checkboxes.forEach(function(cb) {
+			desktopSizes.push(parseInt(cb.value));
+		});
+		
+		if (desktopSizes.length > 0) {
+			filters.push('2.4-' + desktopSizes.join('-'));
+		}
+		
+		// Update URL
+		if (filters.length > 0) {
+			url.searchParams.set('ocf', filters.join(','));
+		} else {
+			url.searchParams.delete('ocf');
+		}
+		
+		url.searchParams.delete('page');
+		
+		$('#filterModal').modal('hide');
+		window.location.href = url.toString();
+	};
+
+	window.resetDesktopFilter = function() {
+		// Reset inputs
+		var minInput = document.getElementById('desktop-price-min');
+		var maxInput = document.getElementById('desktop-price-max');
+		if (minInput) minInput.value = '';
+		if (maxInput) maxInput.value = '';
+		
+		// Reset size checkboxes
+		var checkboxes = document.querySelectorAll('.desktop-size-cb');
+		checkboxes.forEach(function(cb) {
+			cb.checked = false;
+		});
+		
+		// Navigate without filters
+		var url = new URL(window.location.href);
+		url.searchParams.delete('ocf');
+		url.searchParams.delete('page');
+		
+		$('#filterModal').modal('hide');
+		window.location.href = url.toString();
+	};
+})();
 </script>
 
 {{ footer }}
