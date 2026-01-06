@@ -1032,8 +1032,8 @@ body.filter-modal-open {
 		priceMin: null,
 		priceMax: null,
 		sizes: [],
-		priceFilterKey: 'price.0',
-		sizeFilterKey: null
+		priceFilterKey: '2.0',  // OcFilter special price filter key (filter_id=2, source=0)
+		sizeFilterKey: '2.4'    // OcFilter size filter key (filter_id=2, source=4)
 	};
 
 	// Price slider config (will be updated from backend)
@@ -1046,12 +1046,15 @@ body.filter-modal-open {
 	// Available sizes (will be loaded from backend)
 	var availableSizes = [];
 	
-	// URL parameters for OcFilter
+	// URL parameters for OcFilter (will be updated from backend)
 	var urlParams = {
 		index: 'ocf',
-		sep_filt: ',',
-		sep_vals: '-',
-		sep_sran: '_'
+		sep_filt: 'F',  // Filter prefix
+		sep_fsrc: 'S',  // Source prefix
+		sep_vals: 'V',  // Values prefix
+		sep_sdot: 'D',  // Decimal dot
+		sep_sneg: 'N',  // Negative prefix
+		sep_sran: 'T'   // Range separator (min T max)
 	};
 
 	// Data loaded flag
@@ -1081,7 +1084,7 @@ body.filter-modal-open {
 				if (data.price) {
 					priceConfig.min = Math.floor(data.price.min);
 					priceConfig.max = Math.ceil(data.price.max);
-					filterState.priceFilterKey = data.price.filter_key || 'price.0';
+					filterState.priceFilterKey = data.price.filter_key || '2.0';  // OcFilter price key
 					
 					// Update slider elements
 					updatePriceSliderConfig();
@@ -1317,47 +1320,63 @@ body.filter-modal-open {
 		}
 	};
 
-	// Parse URL Filters
+	// Parse URL Filters (OcFilter format: F{id}S{source}V{values})
+	// Example: F2S0V2500T2599 = price range 2500-2599
+	// Example: F2S4V58V66 = sizes 58 and 66
 	function parseUrlFilters() {
 		var url = new URL(window.location.href);
 		var ocfParam = url.searchParams.get(urlParams.index);
 		
-		if (ocfParam) {
-			var filterParts = ocfParam.split(urlParams.sep_filt);
-			filterParts.forEach(function(filter) {
-				// Price filter - check for price.0 or similar
-				if (filter.indexOf('price') === 0 || filter.indexOf(filterState.priceFilterKey) === 0) {
-					var parts = filter.split(urlParams.sep_vals);
-					if (parts.length >= 2) {
-						var rangeStr = parts.slice(1).join(urlParams.sep_vals);
-						var priceRange = rangeStr.split(urlParams.sep_sran);
-						if (priceRange.length === 2) {
-							filterState.priceMin = parseFloat(priceRange[0].replace(/[^0-9.-]/g, ''));
-							filterState.priceMax = parseFloat(priceRange[1].replace(/[^0-9.-]/g, ''));
-							
-							updatePriceInputsFromState();
-						}
+		if (!ocfParam) return;
+		
+		// OcFilter pattern: F(\d+)S(\d+)V(...)
+		var pattern = /F(\d+)S(\d+)V([^F]+)/g;
+		var match;
+		
+		while ((match = pattern.exec(ocfParam)) !== null) {
+			var filterId = match[1];
+			var source = match[2];
+			var valuesStr = match[3];
+			var filterKey = filterId + '.' + source;
+			
+			// Price filter (special filter, source=0, typically filter_key "2.0")
+			var priceKey = filterState.priceFilterKey || '2.0';
+			if (filterKey === priceKey) {
+				// Check if it's a range (contains T separator)
+				if (valuesStr.indexOf(urlParams.sep_sran) !== -1) {
+					var rangeParts = valuesStr.split(urlParams.sep_sran);
+					if (rangeParts.length === 2) {
+						// Convert back from encoded format (D -> ., N -> -)
+						var minVal = rangeParts[0].replace(new RegExp(urlParams.sep_sdot, 'g'), '.').replace(new RegExp(urlParams.sep_sneg, 'g'), '-');
+						var maxVal = rangeParts[1].replace(new RegExp(urlParams.sep_sdot, 'g'), '.').replace(new RegExp(urlParams.sep_sneg, 'g'), '-');
+						
+						filterState.priceMin = parseFloat(minVal);
+						filterState.priceMax = parseFloat(maxVal);
+						
+						updatePriceInputsFromState();
 					}
 				}
-				
-				// Size filter - use dynamic key
-				var sizeKey = filterState.sizeFilterKey || '2.4';
-				if (filter.indexOf(sizeKey + urlParams.sep_vals) === 0) {
-					var sizeIds = filter.replace(sizeKey + urlParams.sep_vals, '').split(urlParams.sep_vals);
-					sizeIds.forEach(function(id) {
-						var sizeId = parseInt(id);
-						if (!isNaN(sizeId)) {
-							if (filterState.sizes.indexOf(sizeId) === -1) {
-								filterState.sizes.push(sizeId);
-							}
-							var checkbox = document.getElementById('size-' + sizeId);
-							if (checkbox) checkbox.checked = true;
-							var desktopCheckbox = document.getElementById('desktop-size-' + sizeId);
-							if (desktopCheckbox) desktopCheckbox.checked = true;
+				continue;
+			}
+			
+			// Size filter (option, source=4, typically filter_key like "2.4")
+			var sizeKey = filterState.sizeFilterKey || '2.4';
+			if (filterKey === sizeKey) {
+				// Values are separated by V: V58V66 -> split by V
+				var sizeIds = valuesStr.split(urlParams.sep_vals).filter(function(v) { return v.length > 0; });
+				sizeIds.forEach(function(id) {
+					var sizeId = parseInt(id);
+					if (!isNaN(sizeId)) {
+						if (filterState.sizes.indexOf(sizeId) === -1) {
+							filterState.sizes.push(sizeId);
 						}
-					});
-				}
-			});
+						var checkbox = document.getElementById('size-' + sizeId);
+						if (checkbox) checkbox.checked = true;
+						var desktopCheckbox = document.getElementById('desktop-size-' + sizeId);
+						if (desktopCheckbox) desktopCheckbox.checked = true;
+					}
+				});
+			}
 		}
 	}
 	
@@ -1396,24 +1415,62 @@ body.filter-modal-open {
 		}
 	}
 	
-	// Build filter URL parameter string
+	// Build filter URL parameter string in OcFilter format
+	// Format: F{filter_id}S{source}V{values} 
+	// Example for price: F2S0V2500T2599 (filter_key 2.0, range 2500-2599)
+	// Example for size: F2S4V58V66 (filter_key 2.4, values 58 and 66)
 	function buildFilterParam() {
 		var filters = [];
 		
-		// Price filter
+		// Price filter (special filter key like "2.0")
 		var priceMin = filterState.priceMin;
 		var priceMax = filterState.priceMax;
 		
-		if (priceMin !== null && priceMax !== null && (priceMin > priceConfig.min || priceMax < priceConfig.max)) {
-			filters.push(filterState.priceFilterKey + urlParams.sep_vals + priceMin + urlParams.sep_sran + priceMax);
+		// Use defaults if only one value is set
+		if (priceMin === null && priceMax !== null) {
+			priceMin = priceConfig.min;
+		}
+		if (priceMax === null && priceMin !== null) {
+			priceMax = priceConfig.max;
 		}
 		
-		// Size filter
+		// Add filter if we have any price values and they differ from full range
+		var hasValidPriceFilter = (priceMin !== null && priceMax !== null) && 
+			(priceMin > priceConfig.min || priceMax < priceConfig.max);
+		
+		if (hasValidPriceFilter) {
+			// Parse filter_key "2.0" into filter_id=2, source=0
+			var priceKey = filterState.priceFilterKey || '2.0';
+			var priceParts = priceKey.split('.');
+			var priceFilterId = priceParts[0];
+			var priceSource = priceParts[1] || '0';
+			
+			// Format range: V{min}T{max} - handle decimals
+			var minStr = String(priceMin).replace('.', urlParams.sep_sdot).replace('-', urlParams.sep_sneg);
+			var maxStr = String(priceMax).replace('.', urlParams.sep_sdot).replace('-', urlParams.sep_sneg);
+			
+			filters.push(priceFilterId + urlParams.sep_fsrc + priceSource + urlParams.sep_vals + minStr + urlParams.sep_sran + maxStr);
+		}
+		
+		// Size filter (attribute/option key like "2.4")
 		if (filterState.sizes.length > 0 && filterState.sizeFilterKey) {
-			filters.push(filterState.sizeFilterKey + urlParams.sep_vals + filterState.sizes.join(urlParams.sep_vals));
+			// Parse filter_key "2.4" into filter_id=2, source=4
+			var sizeKey = filterState.sizeFilterKey;
+			var sizeParts = sizeKey.split('.');
+			var sizeFilterId = sizeParts[0];
+			var sizeSource = sizeParts[1] || '4';
+			
+			// Format values: V{val1}V{val2}V{val3}
+			var sizeValues = filterState.sizes.map(function(v) { return v; }).sort(function(a,b) { return a-b; });
+			filters.push(sizeFilterId + urlParams.sep_fsrc + sizeSource + urlParams.sep_vals + sizeValues.join(urlParams.sep_vals));
 		}
 		
-		return filters.join(urlParams.sep_filt);
+		// Join with filter prefix
+		if (filters.length > 0) {
+			return urlParams.sep_filt + filters.join(urlParams.sep_filt);
+		}
+		
+		return '';
 	}
 
 	// Apply Filters

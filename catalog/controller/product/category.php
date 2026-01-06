@@ -200,6 +200,16 @@ class ControllerProductCategory extends Controller {
 				'limit'              => $limit
 			);
 
+			// Parse OCFilter price parameter (format: ocf=F2S0V{min}T{max})
+			if (isset($this->request->get['ocf'])) {
+				$ocf = $this->request->get['ocf'];
+				// Match price filter: F2S0V{min}T{max}
+				if (preg_match('/F2S0V(\d+)T(\d+)/', $ocf, $matches)) {
+					$filter_data['filter_price_min'] = (float)$matches[1];
+					$filter_data['filter_price_max'] = (float)$matches[2];
+				}
+			}
+
 			$product_total = $this->model_catalog_product->getTotalProducts($filter_data);
 
 			$results = $this->model_catalog_product->getProducts($filter_data);

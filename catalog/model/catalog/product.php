@@ -158,6 +158,25 @@ class ModelCatalogProduct extends Model {
 			$sql .= " AND p.manufacturer_id = '" . (int)$data['filter_manufacturer_id'] . "'";
 		}
 
+		// Price filter - filter by actual selling price (special or regular)
+		if (!empty($data['filter_price_min']) || !empty($data['filter_price_max'])) {
+			$price_min = isset($data['filter_price_min']) ? (float)$data['filter_price_min'] : 0;
+			$price_max = isset($data['filter_price_max']) ? (float)$data['filter_price_max'] : 999999999;
+			
+			// Filter using COALESCE to check special price first, then regular price
+			$sql .= " AND (
+				COALESCE(
+					(SELECT ps2.price FROM " . DB_PREFIX . "product_special ps2 
+					 WHERE ps2.product_id = p.product_id 
+					 AND ps2.customer_group_id = '" . (int)$this->config->get('config_customer_group_id') . "' 
+					 AND ((ps2.date_start = '0000-00-00' OR ps2.date_start < NOW()) 
+					 AND (ps2.date_end = '0000-00-00' OR ps2.date_end > NOW())) 
+					 ORDER BY ps2.priority ASC, ps2.price ASC LIMIT 1),
+					p.price
+				) BETWEEN '" . $price_min . "' AND '" . $price_max . "'
+			)";
+		}
+
 		$sql .= " GROUP BY p.product_id";
 
 		$sort_data = array(
@@ -513,6 +532,24 @@ class ModelCatalogProduct extends Model {
 
 		if (!empty($data['filter_manufacturer_id'])) {
 			$sql .= " AND p.manufacturer_id = '" . (int)$data['filter_manufacturer_id'] . "'";
+		}
+
+		// Price filter - filter by actual selling price (special or regular)
+		if (!empty($data['filter_price_min']) || !empty($data['filter_price_max'])) {
+			$price_min = isset($data['filter_price_min']) ? (float)$data['filter_price_min'] : 0;
+			$price_max = isset($data['filter_price_max']) ? (float)$data['filter_price_max'] : 999999999;
+			
+			$sql .= " AND (
+				COALESCE(
+					(SELECT ps2.price FROM " . DB_PREFIX . "product_special ps2 
+					 WHERE ps2.product_id = p.product_id 
+					 AND ps2.customer_group_id = '" . (int)$this->config->get('config_customer_group_id') . "' 
+					 AND ((ps2.date_start = '0000-00-00' OR ps2.date_start < NOW()) 
+					 AND (ps2.date_end = '0000-00-00' OR ps2.date_end > NOW())) 
+					 ORDER BY ps2.priority ASC, ps2.price ASC LIMIT 1),
+					p.price
+				) BETWEEN '" . $price_min . "' AND '" . $price_max . "'
+			)";
 		}
 
 		$query = $this->db->query($sql);

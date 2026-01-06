@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<modification>
+    <name>Custom Price Filter</name>
+    <version>1.0</version>
+    <author>Dev</author>
+    <code>custom_price_filter</code>
+    <description>Adds price filtering support for ocf parameter</description>
+    
+    <file path="catalog/controller/product/category.php">
+        <operation>
+            <search><![CDATA[$product_total = $this->model_catalog_product->getTotalProducts($filter_data);]]></search>
+            <add position="before"><![CDATA[
+			// Custom Price Filter - Parse OCFilter price parameter (format: ocf=F2S0V{min}T{max})
+			if (isset($this->request->get['ocf'])) {
+				$ocf = $this->request->get['ocf'];
+				// Match price filter: F2S0V{min}T{max}
+				if (preg_match('/F2S0V(\d+)T(\d+)/', $ocf, $matches)) {
+					$filter_data['filter_price_min'] = (float)$matches[1];
+					$filter_data['filter_price_max'] = (float)$matches[2];
+				}
+			}
+			]]></add>
+        </operation>
+    </file>
+    
+    <file path="catalog/model/catalog/product.php">
+        <operation>
+            <search><![CDATA[if (!empty($data['filter_manufacturer_id'])) {
+			$sql .= " AND p.manufacturer_id = '" . (int)$data['filter_manufacturer_id'] . "'";
+		}
+
+		$sql .= " GROUP BY p.product_id";]]></search>
+            <add position="replace"><![CDATA[if (!empty($data['filter_manufacturer_id'])) {
+			$sql .= " AND p.manufacturer_id = '" . (int)$data['filter_manufacturer_id'] . "'";
+		}
+
+		// Custom Price Filter - filter by actual selling price (special or regular)
+		if (!empty($data['filter_price_min']) || !empty($data['filter_price_max'])) {
+			$price_min = isset($data['filter_price_min']) ? (float)$data['filter_price_min'] : 0;
+			$price_max = isset($data['filter_price_max']) ? (float)$data['filter_price_max'] : 999999999;
+			
+			$sql .= " AND (
+				COALESCE(
+					(SELECT ps2.price FROM " . DB_PREFIX . "product_special ps2 
+					 WHERE ps2.product_id = p.product_id 
+					 AND ps2.customer_group_id = '" . (int)$this->config->get('config_customer_group_id') . "' 
+					 AND (ps2.date_start IS NULL OR ps2.date_start <= NOW()) 
+					 AND (ps2.date_end IS NULL OR ps2.date_end >= NOW())
+					 ORDER BY ps2.priority ASC, ps2.price ASC LIMIT 1),
+					p.price
+				) BETWEEN '" . $price_min . "' AND '" . $price_max . "'
+			)";
+		}
+
+		$sql .= " GROUP BY p.product_id";]]></add>
+        </operation>
+        
+        <operation>
+            <search><![CDATA[if (!empty($data['filter_manufacturer_id'])) {
+			$sql .= " AND p.manufacturer_id = '" . (int)$data['filter_manufacturer_id'] . "'";
+		}
+
+		$query = $this->db->query($sql);
+
+		return $query->row['total'];]]></search>
+            <add position="replace"><![CDATA[if (!empty($data['filter_manufacturer_id'])) {
+			$sql .= " AND p.manufacturer_id = '" . (int)$data['filter_manufacturer_id'] . "'";
+		}
+
+		// Custom Price Filter - filter by actual selling price (special or regular)
+		if (!empty($data['filter_price_min']) || !empty($data['filter_price_max'])) {
+			$price_min = isset($data['filter_price_min']) ? (float)$data['filter_price_min'] : 0;
+			$price_max = isset($data['filter_price_max']) ? (float)$data['filter_price_max'] : 999999999;
+			
+			$sql .= " AND (
+				COALESCE(
+					(SELECT ps2.price FROM " . DB_PREFIX . "product_special ps2 
+					 WHERE ps2.product_id = p.product_id 
+					 AND ps2.customer_group_id = '" . (int)$this->config->get('config_customer_group_id') . "' 
+					 AND (ps2.date_start IS NULL OR ps2.date_start <= NOW()) 
+					 AND (ps2.date_end IS NULL OR ps2.date_end >= NOW())
+					 ORDER BY ps2.priority ASC, ps2.price ASC LIMIT 1),
+					p.price
+				) BETWEEN '" . $price_min . "' AND '" . $price_max . "'
+			)";
+		}
+
+		$query = $this->db->query($sql);
+
+		return $query->row['total'];]]></add>
+        </operation>
+    </file>
+</modification>
+
