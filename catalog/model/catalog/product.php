@@ -177,6 +177,16 @@ class ModelCatalogProduct extends Model {
 			)";
 		}
 
+		// Size/Option filter - filter by product option values
+		if (!empty($data['filter_option_values'])) {
+			$option_value_ids = array_map('intval', $data['filter_option_values']);
+			$sql .= " AND p.product_id IN (
+				SELECT DISTINCT pov.product_id 
+				FROM " . DB_PREFIX . "product_option_value pov 
+				WHERE pov.option_value_id IN (" . implode(',', $option_value_ids) . ")
+			)";
+		}
+
 		$sql .= " GROUP BY p.product_id";
 
 		$sort_data = array(
@@ -549,6 +559,16 @@ class ModelCatalogProduct extends Model {
 					 ORDER BY ps2.priority ASC, ps2.price ASC LIMIT 1),
 					p.price
 				) BETWEEN '" . $price_min . "' AND '" . $price_max . "'
+			)";
+		}
+
+		// Size/Option filter - filter by product option values
+		if (!empty($data['filter_option_values'])) {
+			$option_value_ids = array_map('intval', $data['filter_option_values']);
+			$sql .= " AND p.product_id IN (
+				SELECT DISTINCT pov.product_id 
+				FROM " . DB_PREFIX . "product_option_value pov 
+				WHERE pov.option_value_id IN (" . implode(',', $option_value_ids) . ")
 			)";
 		}
 

@@ -200,13 +200,21 @@ class ControllerProductCategory extends Controller {
 				'limit'              => $limit
 			);
 
-			// Parse OCFilter price parameter (format: ocf=F2S0V{min}T{max})
+			// Parse OCFilter parameters (format: ocf=F{id}S{source}V{values})
 			if (isset($this->request->get['ocf'])) {
 				$ocf = $this->request->get['ocf'];
+				
 				// Match price filter: F2S0V{min}T{max}
 				if (preg_match('/F2S0V(\d+)T(\d+)/', $ocf, $matches)) {
 					$filter_data['filter_price_min'] = (float)$matches[1];
 					$filter_data['filter_price_max'] = (float)$matches[2];
+				}
+				
+				// Match size filter: F2S4V{value1}V{value2}...
+				// Source 4 = product options
+				if (preg_match('/F2S4V([\dV]+)/', $ocf, $matches)) {
+					$size_values = array_filter(explode('V', $matches[1]));
+					$filter_data['filter_option_values'] = array_map('intval', $size_values);
 				}
 			}
 
